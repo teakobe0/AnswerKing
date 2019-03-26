@@ -1,0 +1,792 @@
+<style>
+    * {
+            margin: 0;
+            padding: 0;
+    }
+    
+    .home {
+        width: 100%;
+        position: relative;
+        padding-bottom: 370px;
+    }
+
+    .home-con {
+        margin-top: 80px;
+    }
+
+    .home-ser {
+        width: 100%;
+        height: 860px;
+        background-color: #4559ae;
+        position: relative;
+    }
+
+    .home-ser-img1 {
+        width: 1100px;
+        /*margin: 0 auto;*/
+        position: absolute;
+        left: 50%;
+        bottom: 0px;
+        margin-left: -550px;
+        text-align: center;
+        background-repeat: no-repeat;
+    }
+
+    .home-ser-img-1 {
+        width: 100%;
+        max-width: 1000px;
+        position: relative;
+        bottom: -3px;
+    }
+
+    .home-ser-img2 {
+        width: 1100px;
+        /*margin: 0 auto;*/
+        position: absolute;
+        left: 50%;
+        bottom: 0px;
+        margin-left: -550px;
+        text-align: center;
+        background-repeat: no-repeat;
+    }
+
+    .home-ser-img-2 {
+        width: 100%;
+        max-width: 1100px;
+        position: relative;
+        bottom: -10px;
+    }
+
+    .home-ser-con {
+        width: 1300px;
+        height: 860px;
+        margin: 0 auto;
+    }
+
+    .ser-con-left {
+        width: 1200px;
+        height: 860px;
+        margin-left: 50px;
+        overflow: hidden;
+    }
+
+    .ser-left-deta {
+        width: 1200px;
+        height: 350px;
+        margin: 0 auto;
+        margin-top: 120px;
+        text-align: center;
+    }
+
+    .ser-left-deta p {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #ffffff;
+    }
+
+    .home-heading {
+        font-size: 3.5rem;
+        text-align: center;
+        margin-bottom: 5px;
+        color: #ffffff;
+    }
+
+    /*学科区域*/
+    .home-sub {
+        width: 100%;
+        height: 825px;
+        background-color: rgb(254, 254, 254);
+    }
+
+    .home-sub-con {
+        width: 1300px;
+        height: 650px;
+        margin: 0 auto;
+    }
+
+    .sub-con-title {
+        height: 50px;
+        text-align: left;
+        line-height: 50px;
+        font-size: 28px;
+    }
+
+    .sub-con-title i {
+        float: left;
+        width: 80px;
+        height: 8px;
+        margin-top: 20px;
+        margin-right: 20px;
+        background-color: #ffc267;
+    }
+
+    .con-sort-top {
+        position: relative;
+    }
+
+    .sub-con-sort {
+        width: 100%;
+        height: 600px;
+    }
+
+    .sort-left {
+        width: 363px;
+        height: 240px;
+        padding: 30px;
+        margin-right: 15px;
+        float: left;
+        position: relative;
+        overflow: hidden;
+        border-radius: 2px;
+    }
+
+    .sort-img {
+        width: 100%;
+        position: absolute;
+        left: 0px;
+        top: 0px;
+        transition: all 0.3s;
+    }
+
+    .sort-img:hover {
+        transform: scale(1.1);
+    }
+
+    .sort-cen {
+        width: 363px;
+        height: 350px;
+        padding: 30px;
+        margin-right: 15px;
+        border-radius: 2px;
+        float: left;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .sort-right {
+        width: 363px;
+        height: 240px;
+        padding: 30px;
+        float: left;
+        position: relative;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    .sort-head {
+        position: absolute;
+        left: 40px;
+        bottom: 40px;
+        font-size: 24px;
+        color: #000;
+    }
+
+    .sort-head:hover {
+        color: red;
+    }
+
+    .sort-left1 {
+        width: 363px;
+        height: 350px;
+        padding: 30px;
+        margin-right: 15px;
+        float: left;
+        position: relative;
+        top: -95px;
+        overflow: hidden;
+        border-radius: 2px;
+
+    }
+
+    .sort-cen2 {
+        width: 363px;
+        height: 240px;
+        padding: 30px;
+        margin-right: 15px;
+        border-radius: 2px;
+        float: left;
+        position: relative;
+        top: 15px;
+        overflow: hidden;
+    }
+
+    .sort-right2 {
+        width: 363px;
+        height: 350px;
+        padding: 30px;
+        float: left;
+        position: relative;
+        top: -95px;
+        border-radius: 2px;
+        overflow: hidden;
+    }
+
+    /*宣传栏*/
+    .home-pub {
+        width: 100%;
+        height: 1200px;
+        background-color: #ffffff;
+        overflow: hidden;
+    }
+
+    .home-pub-con {
+        width: 1300px;
+        margin: 0 auto;
+        margin-top: 100px;
+    }
+
+    .pub-con-left {
+        width: 630px;
+        height: 1000px;
+        margin-right: 40px;
+        float: left;
+
+    }
+
+    .con-left-top {
+        width: 328px;
+        height: 235px;
+        padding-right: 80px;
+        float: right;
+    }
+
+    .con-left-top h1 {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .con-left-top p {
+        text-align: right;
+        margin-bottom: 10px;
+    }
+
+    .con-left-top p a {
+        text-align: right;
+        text-decoration: none;
+        padding: 0 0 0.75rem;
+        border-bottom: 5px solid #3ccfcf;
+        color: #000;
+        font-family: '微软雅黑';
+    }
+
+    .con-left-top p a:hover {
+        color: #fbcc28;
+        border-bottom: 5px solid #fbcc28;
+    }
+
+    .con-left-middle {
+        width: 408px;
+        height: 544px;
+        float: right;
+        margin-bottom: 40px;
+    }
+
+    .con-left-middle img {
+        width: 408px;
+        height: 544px;
+    }
+
+    .con-left-bottom {
+        width: 408px;
+        height: 200px;
+        float: right;
+        margin-top: 20px;
+    }
+
+    .con-left-bottom h2 {
+        text-align: right;
+        font-size: 37px;
+    }
+
+    .pub-con-right {
+        width: 630px;
+        height: 1000px;
+        float: right;
+        text-align: left;
+    }
+
+    .con-right-middle {
+        width: 328px;
+        height: 235px;
+        padding-left: 80px;
+        margin-top: 40px;
+    }
+
+    .con-right-middle h1 {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .con-right-middle p {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+
+    .con-right-middle p a {
+        text-align: left;
+        text-decoration: none;
+        padding: 0 0 0.75rem;
+        border-bottom: 5px solid #3ccfcf;
+        color: #000;
+        font-family: '微软雅黑';
+    }
+
+    .con-right-middle p a:hover {
+        color: #fbcc28;
+        border-bottom: 5px solid #fbcc28;
+    }
+
+    .con-right-bottom {
+        width: 408px;
+        margin-top: 20px;
+    }
+
+    .con-right-bottom p {
+        margin-bottom: 15px;
+        font-family: '微软雅黑';
+    }
+
+    .con-right-bottom p a {
+        display: block;
+        width: 132px;
+        margin-top: 15px;
+        text-decoration: none;
+        color: #000;
+        font-size: 20px;
+        padding: 0 0 0.75rem;
+        border-bottom: 5px solid #3ccfcf;
+    }
+
+    .con-right-bottom p a:hover {
+        color: #fbcc28;
+        border-bottom: 5px solid #fbcc28;
+    }
+
+    .homeserch {
+        width: 1000px;
+        height: 60px;
+        border: none;
+
+    }
+
+    .homeserch:focus {
+        border: none;
+    }
+
+    .inline-input {
+        margin-left: 200px;
+
+    }
+
+    .inline-input input {
+        width: 800px;
+        height: 60px;
+        border: none;
+        /*box-shadow: 1px 1px 10px #cacaca, -1px -1px 10px #cacaca;*/
+    }
+
+
+    .bbc input {
+        width: 500px;
+        height: 60px;
+        /*box-shadow: 1px 1px 10px #cacaca, -1px -1px 10px #cacaca;*/
+
+    }
+
+    .text-center {
+        text-align: center;
+        overflow: hidden;
+    }
+
+    .features-title {
+        width: 1300px;
+        margin: 0 auto;
+        padding-top: 50px;
+        padding-bottom: 50px;
+    }
+
+    .features-title-one {
+        font-size: 50px;
+        font-weight: 700;
+        color: #3b3b3b;
+    }
+
+    .features-title-tow {
+        font-size: 30px;
+        color: #3b3b3b;
+    }
+
+    .conclusion {
+        width: 1300px;
+        height: 420px;
+        margin: 0 auto;
+    }
+
+    .conclusion-left {
+        width: 600px;
+        float: left;
+        margin-top: 150px;
+        margin-left: 50px;
+    }
+
+    .conclusion-left h2 {
+        color: #383838;
+        font-size: 30px;
+    }
+
+    .conclusion-left h4 {
+        width: 400px;
+        margin: 0 auto;
+        color: #383838;
+        font-size: 20px;
+    }
+
+    .conclusion-right {
+        float: right;
+        margin-right: 50px;
+    }
+
+    .conclusion-right img {
+        width: 600px;
+    }
+
+    .divider_line {
+        width: 200px;
+        border-bottom: 2px solid #32A7B8;
+        margin: 2.5rem auto;
+    }
+
+    @media screen and (max-width: 1024px) {
+        .home {
+            width: 1300px;
+            position: relative;
+            padding-bottom: 370px;
+        }
+    }
+</style>
+<template>
+    <div class="home">
+        <homeNav msg="登录/注册"/>
+        <div class="home-con">
+            <div class="home-ser">
+                <div class="home-ser-con">
+                    <div class="ser-con-left">
+                        <div class="ser-left-deta">
+                            <h1 class="home-heading">AnswerKing</h1>
+
+                            <p>搜数百万学习集或创建自己的学习集。通过用单词卡、游戏和其他功能提高学习成绩。</p>
+
+                            <div class="homeserch" v-if="homeSerchShow">
+                                <el-autocomplete
+                                        class="inline-input"
+                                        v-model="state1"
+                                        :fetch-suggestions="querySearch"
+                                        placeholder="请输入文档内容"
+                                        @select="handleSelect"
+                                        @keyup.enter.native="handleEnter(state1)"
+                                        prefix-icon="el-icon-tickets"
+                                        :trigger-on-focus="false"
+                                        >
+                                    <template slot-scope="{ item }">
+                                        <span>{{item.value}}</span><span style="font-weight: 700;color: #08b4e1">{{item.queryString}}</span><span>{{item.queryStringRight}}</span>
+                                        -<span style='color:#878787;'>{{item.type}}</span>
+                                    </template>
+                                </el-autocomplete>
+                            </div>
+                            <div class="home-ser-img1">
+                                <img src="../assets/home2.png" alt="" class="home-ser-img-1"/>
+                            </div>
+                            <div class="home-ser-img2">
+                                <img src="../assets/home1.png" alt="" class="home-ser-img-2"/>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="features-area text-center">
+                <div class="features-title">
+                    <p class="features-title-one">产品特色</p>
+
+                    <p class="features-title-tow">AnswerKing使您的答题更便捷。</p>
+                </div>
+                <div class="divider_line"></div>
+                <div class="conclusion">
+                    <div class="conclusion-left">
+                        <h2>清单管理</h2>
+                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                    </div>
+                    <div class="conclusion-right">
+                        <img class="img-fluid"
+                             src="https://cdn.mailblast.io/assets/list-50ad5615e1e0df9354f78ff3d98e8c496931245b1427a86750386ef5104e18a5.png">
+                    </div>
+                </div>
+                <div class="divider_line"></div>
+                <div class="conclusion">
+                    <div class="conclusion-left" style="float: right">
+                        <h2>迅速查询</h2>
+                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                    </div>
+                    <div class="conclusion-right">
+                        <img class="img-fluid"
+                             src="https://cdn.mailblast.io/assets/campaign-c3032257a370cfdec294d866cb3c6951542b3f0acaff85b664b7b5fc668ac853.png">
+                    </div>
+                </div>
+                <div class="divider_line"></div>
+                <div class="conclusion">
+                    <div class="conclusion-left">
+                        <h2>详细报告</h2>
+                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                    </div>
+                    <div class="conclusion-right">
+                        <img class="img-fluid"
+                             src="https://cdn.mailblast.io/assets/report-5e5760aec4e92a3b1f42bf7bb88e2f9033a1fca00609848ea54c1034ad36d4ef.png">
+
+                    </div>
+                </div>
+                <div class="divider_line"></div>
+            </div>
+
+            <div>
+                <div class="home-pub">
+                    <div class="home-pub-con">
+                        <div class="pub-con-left">
+                            <div class="con-left-top">
+                                <h1>更高效的学习</h1>
+
+                                <p>超过95%的学生声称使用AnswerKing报告学习提高了分数。请查看AnswerKing的简单工具如何帮助你学习各种知识，包括代数、历史、经济学—及更多。</p>
+
+                                <p><a href="#">我是学生</a></p>
+                            </div>
+                            <div class="con-left-middle">
+                                <img src="../assets/3.jpg" alt=""/>
+                            </div>
+                            <div class="con-left-bottom">
+                                <h2>我们的使命是帮助学生练习和掌握任何学习内容。</h2>
+                            </div>
+                        </div>
+                        <div class="pub-con-right">
+                            <div class="con-right-top">
+                                <img src="../assets/4.jpg" alt=""/>
+                            </div>
+                            <div class="con-right-middle">
+                                <h1>更高效的学习</h1>
+
+                                <p>超过95%的学生声称使用AnswerKing报告学习提高了分数。请查看AnswerKing的简单工具如何帮助你学习各种知识，包括代数、历史、经济学—及更多。</p>
+
+                                <p><a href="#">我是教师</a></p>
+                            </div>
+                            <div class="con-right-bottom">
+                                <p>我们为学生和教师提供便捷的工具，以创建和分享在线学习材料。AnswerKing是美国最流行的在线教育服务工具，每月有超过3000万名学生和教师使用。</p>
+
+                                <p>AnswerKing从简单的在线学习工具起步，如今为学生提供学习工具，可制作单词卡、练习拼写、参与游戏、测试知识水平、与其他同学合作等。</p>
+
+                                <p><a href="#">AnswerKing的宗旨</a></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <homeFooter></homeFooter>
+
+    </div>
+</template>
+
+<script type="es6">
+
+    // @ is an alias to /src
+    import homeNav from '@/components/public/homeNav.vue'
+    import homeFooter from '@/components/public/homeFooter.vue'
+
+    export default {
+        name: 'home',
+        components: {
+            homeNav,
+            homeFooter
+        },
+        data() {
+            return {
+                state1: '',
+                state2: '',
+                homeSerchShow: true,
+                homeSerchHide: true,
+                queryString:'',
+                restaurants:[],
+                timeout:  null
+            };
+        },
+        created: function () {
+            var _this = this;
+            document.documentElement.scrollTop = 0;
+        },
+        methods: {
+            querySearch(queryString, cb) {
+                var _this = this;
+                _this.state2 = queryString;
+                _this.queryString = queryString;
+                var restaurants = this.restaurants;
+                var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+                
+                    this.axios({
+                        method: "get",
+                        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                        async: false,
+                        params: {
+                            name: queryString
+                        },
+                        xhrFields: {
+                            withCredentials: true
+                        }
+                    }).then(function (res) {
+                        console.log(res);
+                        
+                        if (res.data.data.classes != null && res.data.data.classes.length > 0) {
+                            for (var i = 0; i < 3; i++) {
+                                if (res.data.data.classes[i]) {
+                                    results.push({
+                                        "value": res.data.data.classes[i].name,
+                                        'type': res.data.data.classes[i].university,
+                                        'class':'classes',
+                                        'num':i
+                                    });
+                                }
+                            }
+                        } else {
+                             results.push({"value": "没有找到对应的课程"});
+                        }
+
+                        if (res.data.data.classes != null && res.data.data.content.length > 0) {
+                            for (var i = 0; i < 3; i++) {
+                                if (res.data.data.content[i]) {
+                                    var aa;
+                                    aa = res.data.data.content[i].contents.indexOf(_this.state2);
+                                     results.push({
+                                        "value": res.data.data.content[i].contents.substring(aa - 10, aa),
+                                        'queryString': res.data.data.content[i].contents.substr(aa, queryString.length),
+                                        'queryStringRight': res.data.data.content[i].contents.substring(aa + queryString.length, aa + queryString.length + 10),
+                                        'type': '课程内容',
+                                        'class':'content',
+                                        'num':i
+                                    });
+                                }
+                            }
+                        } else {
+                             results.push({"value": "没有找到对应的课程内容"});
+                        }
+
+                        if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+                            for (var i = 0; i < 3; i++) {
+                                if (res.data.data.ls[i]) {
+                                     results.push({
+                                        "value": res.data.data.ls[i].university.name,
+                                        'type': '大学',
+                                        'class':'university',
+                                        'num':i
+                                    });
+                                }
+                            }
+                        } else {
+                             results.push({"value": "没有找到对应的大学"});
+                        }
+                        cb( results);
+
+
+                    }).catch(function (error) {
+                        console.log(error);
+                    });
+                    
+
+            },
+            createFilter(queryString) {
+                return (restaurant) => {
+                    return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0);
+                };
+            },
+            handleSelect(item) {
+                var _this = this;
+                this.axios({
+                    method: "get",
+                    url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                    async: false,
+                    params: {
+                        name: _this.queryString
+                    },
+                    xhrFields: {
+                        withCredentials: true
+                    }
+                }).then(function (res) {
+                    console.log(res);
+                    // console.log(_this.state1);
+                    //课程
+                    if(item.class == 'classes'){
+                        _this.$router.push({
+                            path: '/classesDetails',
+                            query: {
+                                 id: res.data.data.classes[item.num].id
+                            }
+                        });
+                    }else if(item.class == 'content'){
+                        //课程内容
+                        _this.$router.push({
+                            path: '/serchDetailsContent',
+                            query: {
+                                id: res.data.data.content[item.num].classId,
+                                classInfoId: res.data.data.content[item.num].classInfoId
+                            }
+                        })
+                    }else if(item.class == 'university'){
+                     //学校
+                        _this.$router.push({
+                            path: '/serchDetailsUniversity',
+                            query: {
+                                id: res.data.data.ls[item.num].university.id
+                            }
+                        })
+                    }
+                }).catch(function (error) {
+                    console.log(error);
+                });
+
+            },
+            handleEnter(item){
+                var _this = this;
+                console.log(item);
+                console.log('handleEnter')
+                 var patt = /^[\s]*$/;
+                 var pvalue = patt.test(_this.queryString);
+                 if(pvalue){
+                    alert("不能搜索全空格的内容");
+                 }else {
+                    _this.$router.push({
+                        path: '/serch',
+                            query: {
+                                serchName: _this.queryString
+                            }
+                    })
+                }
+                console.log(pvalue)
+
+            
+            },
+            handle: function () {
+                //console.log('获取焦点')
+                this.homeSerchHide = false;
+                this.homeSerchShow = true;
+            },
+            homeLoseFocus: function () {
+                console.log('失去焦点')
+                this.homeSerchHide = true;
+                this.homeSerchShow = false;
+            }
+        },
+        mounted() {
+
+        }
+
+    }
+
+</script>

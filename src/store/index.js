@@ -1,0 +1,17 @@
+import Vue from 'vue'
+import vuex from 'vuex'
+Vue.use(vuex);
+
+import logo_store from '../storeComponents/logo_store.js';//����ĳ��store����
+import modified_store from '../storeComponents/modified_store.js';//����ĳ��store����
+import serch_message from '../storeComponents/serch_message.js';//����ĳ��store����
+import vip_store from '../storeComponents/vip_store.js';
+
+export default new vuex.Store({
+    modules:{
+        logo:logo_store,
+        modified:modified_store,
+        serchMessage:serch_message,
+        vip:vip_store
+    }
+})
