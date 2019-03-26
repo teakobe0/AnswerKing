@@ -857,7 +857,7 @@
                         <div class="opencontrolretext">
                           <div
                             class="openMessageRetext"
-                            @click="replyTwolevel(index,item.parentId,openitem.id,openitem.replyname)"
+                            @click="replyTwolevel(index,openitem.parentId,openitem.id,openitem.replyname)"
                           >
                             <span>回复</span>
                             <!-- <img src="../assets/留言.svg" alt> -->
@@ -1462,11 +1462,18 @@ export default {
             }
 
             for (var j = 0; j < _this.comment.length; j++) {
+              var arr = _this.reviews[i].parentId.split(",")
               if (_this.comment[j].id == _this.reviews[i].parentId) {
                 _this.comment[j].replies.push(_this.reviews[i]);
+              }else if(arr.length >= 2){
+                if (_this.comment[j].id == arr[0]) {
+                    _this.comment[j].replies.push(_this.reviews[i]);
+                }
               }
+              
             }
-
+            // var arr = _this.reviews[i].parentId.split(",")
+            //   console.log(arr[0])
           }
           
 

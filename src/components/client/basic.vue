@@ -84,7 +84,6 @@
         <div class="pd-con-head-right">
             <div class="head-right-top">
                 <p class="right-top-title">个人信息</p>
-
                 <p class="right-top-acctype">
                     账户类型: 
                     <strong v-if="this.$store.state.vip.succeed == false">普通</strong>
@@ -108,6 +107,10 @@
                     <li>性别:&nbsp;{{this.value.Sex}}</li>
                     <li>生日:&nbsp;{{this.value.Birthday | formatDate}}</li>
                 </ul>
+            </div>
+            <div class="head-right-middle">
+                <p class="right-middle-title">通知</p>
+                
             </div>
             <div class="head-right-middle">
                 <p class="right-middle-title">文件</p>
