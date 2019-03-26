@@ -1465,7 +1465,8 @@ export default {
               var arr = _this.reviews[i].parentId.split(",")
               if (_this.comment[j].id == _this.reviews[i].parentId) {
                 _this.comment[j].replies.push(_this.reviews[i]);
-              }else if(arr.length >= 2){
+              }
+              else if(arr.length >= 2){
                 if (_this.comment[j].id == arr[0]) {
                     _this.comment[j].replies.push(_this.reviews[i]);
                 }
@@ -1624,7 +1625,8 @@ export default {
       var _this = this;
       _this.comment[indexs].openreply = true;
       _this.comment[indexs].model = "";
-      _this.replyTwolevelid = id;
+      _this.replyOneTwoid = id;
+      console.log(id)
     },
     // 关闭评论框的方法
     cancel: function(indexs) {
