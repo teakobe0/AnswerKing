@@ -1519,6 +1519,7 @@ export default {
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
+      _this.addComments.contenturl = model+","+_this.$route.query.id+","+_this.$route.query.classInfoId;
       console.log(_this.addComments)
       _this
         .axios({
@@ -1615,6 +1616,7 @@ export default {
       _this.comment[index].openreply = true;
       _this.comment[index].model = "回复 " + name + ":";
       _this.replyOneTwoid = oneid +","+twoid;
+      console.log(window.location.pathname)
       console.log(_this.replyOneTwoid)
       console.log(oneid)
       console.log(twoid)

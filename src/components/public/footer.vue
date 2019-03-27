@@ -23,7 +23,7 @@
                 <a href="#">发现</a>·
                 <a href="#">移动应用</a>·
                 <a href="#">联系我们</a>·
-                <a href="#">来AnswoerKing工作</a>·
+                <a href="#">来AnswerKing工作</a>·
                 <a href="#">注册机构号</a>
             </p>
             <p>

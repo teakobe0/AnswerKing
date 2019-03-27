@@ -1,4 +1,8 @@
 <style>
+.regi-cc {
+  overflow: hidden;
+  height: 800px;
+}
 .regi-emp {
   background-image: url(../assets/021716cbsvz0og66o07s20.jpg);
   background-color: #dfdfdf;
@@ -15,8 +19,8 @@
 .register-con {
   margin: 0 auto;
   width: 410px;
-  margin-top: 170px;
-  margin-bottom: 242px;
+  margin-top: 220px;
+  /* margin-bottom: 242px; */
   background-color: #ffffff;
   border-radius: 2px;
   text-align: center;
@@ -52,77 +56,76 @@
   <div class="register">
     <!--<Nav msg="登录/注册"></Nav>-->
     <div class="regi-emp">
-      <div class="register-con">
-        <div class="register-con-top">
-          <p class="brand">AnswerKing</p>
-          <el-form
-            :model="ruleForm"
-            :rules="rules"
-            ref="ruleForm"
-            label-width="50px"
-            class="demo-ruleForm"
-          >
-            <el-form-item style="margin-left: -50px;" label prop="Email">
-              <el-input
-                style="margin-bottom: 6px;"
-                prefix-icon="el-icon-edit"
-                v-model="ruleForm.Email"
-                placeholder="输入用户名/邮箱"
-              ></el-input>
-            </el-form-item>
+      <div class="regi-cc">
+        <div class="register-con">
+          <div class="register-con-top">
+            <p class="brand">AnswerKing</p>
+            <el-form
+              :model="ruleForm"
+              :rules="rules"
+              ref="ruleForm"
+              label-width="50px"
+              class="demo-ruleForm"
+            >
+              <el-form-item style="margin-left: -50px;" label prop="Email">
+                <el-input
+                  prefix-icon="el-icon-edit"
+                  v-model="ruleForm.Email"
+                  placeholder="输入用户名/邮箱"
+                ></el-input>
+              </el-form-item>
 
-            <!--<el-form-item label="昵称" prop="Name" class="register-name">-->
-            <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Name" placeholder="昵称"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="QQ" prop="QQ" class="register-name">-->
-            <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.QQ" placeholder="QQ"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="手机" prop="Tel" class="register-name">-->
-            <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Tel" placeholder="手机"></el-input>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="性别" prop="Sex">-->
-            <!--<el-radio-group v-model="ruleForm.Sex">-->
-            <!--<el-radio label="男"></el-radio>-->
-            <!--<el-radio label="女"></el-radio>-->
-            <!--</el-radio-group>-->
-            <!--</el-form-item>-->
-            <!--<el-form-item label="生日" required>-->
-            <!--<el-col :span="11">-->
-            <!--<el-form-item prop="Birthday">-->
-            <!--<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.Birthday" style="width: 100%;"></el-date-picker>-->
-            <!--</el-form-item>-->
-            <!--</el-col>-->
-            <!--</el-form-item>-->
-            <el-form-item style="margin-left: -50px;" label prop="Password">
-              <el-input
-                style="margin-bottom: 6px;"
-                prefix-icon="el-icon-goods"
-                type="Password"
-                v-model="ruleForm.Password"
-                placeholder="输入密码"
-                autocomplete="off"
-              ></el-input>
-            </el-form-item>
-            <el-form-item style="margin-left: -50px;" label prop="Passwords">
-              <el-input
-                style="margin-bottom: 6px;"
-                prefix-icon="el-icon-goods"
-                type="Password"
-                v-model="ruleForm.Passwords"
-                placeholder="再次输入密码"
-                autocomplete="off"
-                @keyup.enter.native="register('ruleForm')"
-              ></el-input>
-            </el-form-item>
+              <!--<el-form-item label="昵称" prop="Name" class="register-name">-->
+              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Name" placeholder="昵称"></el-input>-->
+              <!--</el-form-item>-->
+              <!--<el-form-item label="QQ" prop="QQ" class="register-name">-->
+              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.QQ" placeholder="QQ"></el-input>-->
+              <!--</el-form-item>-->
+              <!--<el-form-item label="手机" prop="Tel" class="register-name">-->
+              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Tel" placeholder="手机"></el-input>-->
+              <!--</el-form-item>-->
+              <!--<el-form-item label="性别" prop="Sex">-->
+              <!--<el-radio-group v-model="ruleForm.Sex">-->
+              <!--<el-radio label="男"></el-radio>-->
+              <!--<el-radio label="女"></el-radio>-->
+              <!--</el-radio-group>-->
+              <!--</el-form-item>-->
+              <!--<el-form-item label="生日" required>-->
+              <!--<el-col :span="11">-->
+              <!--<el-form-item prop="Birthday">-->
+              <!--<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.Birthday" style="width: 100%;"></el-date-picker>-->
+              <!--</el-form-item>-->
+              <!--</el-col>-->
+              <!--</el-form-item>-->
+              <el-form-item style="margin-left: -50px;" label prop="Password">
+                <el-input
+                  prefix-icon="el-icon-goods"
+                  type="Password"
+                  v-model="ruleForm.Password"
+                  placeholder="输入密码"
+                  autocomplete="off"
+                ></el-input>
+              </el-form-item>
+              <el-form-item style="margin-left: -50px;" label prop="Passwords">
+                <el-input
+                  prefix-icon="el-icon-goods"
+                  type="Password"
+                  v-model="ruleForm.Passwords"
+                  placeholder="再次输入密码"
+                  autocomplete="off"
+                  @keyup.enter.native="register('ruleForm')"
+                ></el-input>
+              </el-form-item>
 
-            <el-form-item style="margin-left: -50px;text-align: center">
-              <el-button type="primary" id="regi" @click="register('ruleForm')">注册</el-button>
-            </el-form-item>
-          </el-form>
-        </div>
-        <div class="reg-bottom">
-          <span>已有账号？</span>
-          <router-link class="login-resi" to="/login">登录</router-link>
+              <el-form-item style="margin-left: -50px;text-align: center">
+                <el-button type="primary" id="regi" @click="register('ruleForm')">注册</el-button>
+              </el-form-item>
+            </el-form>
+          </div>
+          <div class="reg-bottom">
+            <span>已有账号？</span>
+            <router-link class="login-resi" to="/login">登录</router-link>
+          </div>
         </div>
       </div>
       <div class="login-footer">
@@ -248,9 +251,6 @@ export default {
           return false;
         }
       });
-    },
-    submitForm() {
-      this.$router.push({ path: "/login" });
     }
   }
 };
