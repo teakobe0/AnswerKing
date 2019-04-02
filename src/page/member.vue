@@ -168,7 +168,6 @@
         height: 150px;
         text-align: center;
         line-height: 150px;
-        font-size: 35px;
         color: #ffffff;
     }
 
@@ -211,11 +210,17 @@
         background-color: #ff9f32;
         border-radius: 2px;
     }
-    .member-join-con .purchase p {
+    .member-join-con .purchase a {
         text-align: center;
-        color: #000;
-        font-size: 18px;
-        font-weight: 700;
+        color: #fff;
+        text-decoration: none;
+        font-size: 35px;
+        width: 700px;
+        height: 150px;
+        display: inline-block;
+    }
+    .member-join-con .purchase a:hover {
+        background: #ffa33a
     }
 </style>
 <template>
@@ -308,7 +313,10 @@
                         <!--如何成为会员-->
                     <!--</div>-->
                     <div class="purchase">
-                        立即加入会员!
+                        <router-link to="/personalData/vip">
+                            立即加入会员!
+                        </router-link>
+                        
                     </div>
                     <div class="weixin">
                         <img src="../assets/微信.png" alt=""/>

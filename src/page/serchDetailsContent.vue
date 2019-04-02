@@ -63,11 +63,11 @@
 
 .content-bookmark {
   list-style-type: none;
-  overflow: hidden;
 }
 
 .content-bookmark li {
   float: right;
+  overflow: hidden;
 }
 
 .content-bookmark i {
@@ -414,6 +414,8 @@
   filter: blur(5px);
 }
 .popContainer .purchase {
+  text-decoration: none;
+  display: block;
   width: 200px;
   height: 50px;
   cursor: pointer;
@@ -422,6 +424,7 @@
   margin: 0 auto;
   text-align: center;
   line-height: 50px;
+  color: #000;
   margin-top: 30px;
 }
 .popContainer .closeshade {
@@ -709,7 +712,6 @@
           <div class="serchDetailsContent-top-info">
             <div>
               <h2>{{value.name}}</h2>
-
               <p>
                 School:
                 <router-link
@@ -974,7 +976,7 @@
 
     <div class="popContainer" v-show="shade==true">
       <p style="color: #ffffff;text-align: center;margin-top: 400px;">{{content}}</p>
-      <div class="purchase">立即加入我们!</div>
+      <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
       <div class="closeshade" @click="Closemask">关闭</div>
     </div>
     <homeFooter></homeFooter>
@@ -1463,11 +1465,11 @@ export default {
 
             for (var j = 0; j < _this.comment.length; j++) {
               var arr = _this.reviews[i].parentId.split(",")
-              if (_this.comment[j].id == _this.reviews[i].parentId) {
+              if (_this.comment[j].id == arr[0]) {
                 _this.comment[j].replies.push(_this.reviews[i]);
               }
               else if(arr.length >= 2){
-                if (_this.comment[j].id == arr[0]) {
+                if (_this.comment[j].id == arr[1]) {
                     _this.comment[j].replies.push(_this.reviews[i]);
                 }
               }
@@ -1616,6 +1618,7 @@ export default {
       _this.comment[index].openreply = true;
       _this.comment[index].model = "回复 " + name + ":";
       _this.replyOneTwoid = oneid +","+twoid;
+      console.log("2级评论回复方法")
       console.log(window.location.pathname)
       console.log(_this.replyOneTwoid)
       console.log(oneid)
@@ -1627,13 +1630,18 @@ export default {
       var _this = this;
       _this.comment[indexs].openreply = true;
       _this.comment[indexs].model = "";
-      _this.replyOneTwoid = id;
-      console.log(id)
+      _this.replyOneTwoid = ","+id;
+      console.log("1级评论回复方法");
+      console.log(_this.replyOneTwoid)
     },
     // 关闭评论框的方法
     cancel: function(indexs) {
       var _this = this;
       _this.comment[indexs].openreply = false;
+    },
+    joim:function(){
+      var _this = this;
+
     }
   }
 };

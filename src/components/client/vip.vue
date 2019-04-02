@@ -186,7 +186,7 @@
           <li :class="{dredgeTag:num == 1}" @click="tabdredge(1,149)">
             <p>12个月</p>
 
-            <p>149</p>
+            <p>￥149</p>
 
             <p>
               <s>原价￥180</s>
@@ -304,6 +304,7 @@ export default {
     dredgePay: function() {
       var _this = this;
       _this.$store.state.vip.succeed = true;
+      console.log(_this.money)
       _this.$message({
         message: "开通成功",
         type: "success"

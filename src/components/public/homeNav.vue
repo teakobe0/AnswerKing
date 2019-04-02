@@ -123,7 +123,7 @@
         border: none;
         height: 40px;
         line-height: 40px;
-
+        position: relative;
     }
 
     .nav ul li .homenav-resi {
@@ -193,11 +193,30 @@
         width: 100px;
         height: 80px;
         color: #fdb841;
+        position: relative;
     }
     #nickname img {
         margin-top: 22.5px;
         width: 35px;
         height: 35px;
+    }
+    .messageRed {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        background: #e20000;
+        position: absolute;
+        top: 21px;
+        right: 24px;
+    }
+    .messageReds {
+        width: 10px;
+        height: 10px;
+        border-radius: 10px;
+        background: #e20000;
+        position: absolute;
+        top: 3px;
+        right: 10px;
     }
 </style>
 
@@ -256,14 +275,14 @@
                     <li v-if="$store.state.logo.show">
                         <router-link class="homenav-resi" to='/register'>注册</router-link>
                     </li>
-                    <li v-if="$store.state.logo.hide">
-                        <router-link to='/personalData' id="nickname"><img src="../../assets/个人中心.svg" alt=""/></router-link>
+                    <li v-if="$store.state.logo.hide" >
+                        <router-link to='/personalData' id="nickname"><img src="../../assets/个人中心.svg" alt=""/><div :class="{messageRed:ismessage}"></div> </router-link>
                         <table cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>
                                     <ul>
                                         <li><router-link to='/personalData'>个人信息</router-link></li>
-                                        <li><router-link to='/personalData'>查看回复</router-link></li>
+                                        <li><router-link to='/personalData'>查看回复 <div :class="{messageReds:ismessage}"></div> </router-link></li>
                                         <li><a href="javascript:void(0)" @click="logout">注销</a></li>
                                     </ul>
                                 </td>
@@ -293,9 +312,14 @@
                 showname: false,
                 nickname:this.$store.state.logo.nickname,
                 searchBarFixed:false,
+                ismessage:false,
+                nummessage:"",
+                nummessagetwo:"",
+                personreviewsid:""
             };
         },
         created: function () {
+            var _this = this;
             if(localStorage.getItem("token")){
                 this.$store.state.logo.show = false
                 this.$store.state.logo.hide = true
@@ -303,9 +327,85 @@
                 this.$store.state.logo.show = true
                 this.$store.state.logo.hide = false
             }
+            _this.gainpersonal();
+
 
         },
         methods: {
+            gainmessage: function() {
+            var _this = this;
+            _this
+                .axios({
+                method: "get",
+                url: `http://192.168.1.27:8088/api/Notice/Notices`,
+                async: false,
+                params: {
+                    clientid: _this.personreviewsid
+                },
+                xhrFields: {
+                    withCredentials: true
+                }
+            }).then(function(res) {
+                _this.$store.state.logo.message = res.data.data.length;
+            }).catch(function(error) {
+                console.log(error);
+            });
+            },
+            gainmessages: function() {
+            var _this = this;
+            _this
+                .axios({
+                method: "get",
+                url: `http://192.168.1.27:8088/api/Notice/Notices`,
+                async: false,
+                params: {
+                    clientid: _this.personreviewsid
+                },
+                xhrFields: {
+                    withCredentials: true
+                }
+            }).then(function(res) {
+                _this.nummessage = res.data.data.length;
+                if(_this.$store.state.logo.message < _this.nummessage){
+                    _this.ismessage = true; 
+                }
+                
+            }).catch(function(error) {
+                console.log(error);
+            });
+            },
+            // 获取个人信息
+            gainpersonal: function() {
+            var _this = this;
+            if (localStorage.getItem("token")) {
+                _this
+                .axios({
+                    method: "get",
+                    url: `http://192.168.1.27:8088/api/Client/GetClient`,
+                    async: false,
+                    xhrFields: {
+                    withCredentials: true
+                    },
+                    headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                })
+                .then(function(res) {
+                    console.log(res);
+                    _this.personreviewsid = res.data.data.id;
+                    
+                    _this.gainmessage();
+                    setInterval(function () {
+                        _this.gainmessages();
+                    }, 1000);
+                })
+                .catch(function(error) {
+                    console.log(error);
+                    console.log("获取token失败")
+                });
+            } else {
+            }
+            },
             homenavRe: function () {
                 this.vanish = false;
                 this.vanishs = true;

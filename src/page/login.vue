@@ -206,6 +206,10 @@ export default {
             })
             .catch(function(error) {
               console.log(error);
+              _this.$message({
+                  message: "密码或账号错误",
+                  type: "success"
+                });
             });
         } else {
           console.log("error submit!!");

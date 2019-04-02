@@ -119,7 +119,7 @@
             <div class="message">
               <div v-for="item in messages">
                 {{item.sendname}}回复您：{{item.content}}
-                <el-button @click="gomessage(item.contentsUrl)" style="float:right;"  size="mini">查看</el-button>
+                <el-button @click="gomessage(item.contentsUrl,item.id)" style="float:right;"  size="mini">查看</el-button>
               </div>
             </div>
           </el-tab-pane>
@@ -200,13 +200,16 @@ export default {
             _this.value.Birthday = res.data.data.birthday;
             _this.personreviewsid = res.data.data.id;
             _this.gainmessage();
+            console.log(new Date())
           })
           .catch(function(error) {
             console.log(error);
+            console.log("获取token失败")
           });
       } else {
       }
     },
+    // 检索通知
     gainmessage: function() {
       var _this = this;
       _this
@@ -219,9 +222,6 @@ export default {
           },
           xhrFields: {
             withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
@@ -244,8 +244,10 @@ export default {
           console.log(error);
         });
     },
-    gomessage: function(url) {
+    // 修改通知状态（删除）
+    gomessage: function(url,ids) {
       var _this = this;
+      console.log(ids)
       var a = url.split(",");
       _this.ids = a[1];
       _this.classinfoid = a[2];
@@ -253,6 +255,25 @@ export default {
         path: "/serchDetailsContent",
         query: { id: a[1], classInfoId: a[2] }
       });
+      _this
+        .axios({
+          method: "put",
+          url: `http://192.168.1.27:8088/api/Notice/ChangeStatus`,
+          async: false,
+          params: {
+            id: ids
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _this.gainmessage();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   }
 };
