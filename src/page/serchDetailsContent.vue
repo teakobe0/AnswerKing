@@ -68,6 +68,7 @@
 .content-bookmark li {
   float: right;
   overflow: hidden;
+  margin-left: 8px;
 }
 
 .content-bookmark i {
@@ -199,6 +200,7 @@
   width: 308px;
   float: right;
   margin-top: 24px;
+  margin-bottom: 24px;
 }
 
 .content-tag-con-right-con {
@@ -217,7 +219,8 @@
 }
 
 .content-tag-con-right-con-div {
-  width: 306px;
+  width: 290px;
+  padding: 8px;
   border: 1px solid #e1e1e1;
 }
 
@@ -230,7 +233,6 @@
   margin-top: 10px;
   margin-bottom: 10px;
   position: relative;
-  cursor: pointer;
 }
 
 .content-tag-con-right-con-div ul li i {
@@ -241,11 +243,17 @@
   font-size: 30px;
 }
 
-.content-tag-con-right-con-div ul p {
+.content-tag-con-right-con-div ul a {
   font-size: 16px;
   color: #4b4b4b;
-}
+  cursor: pointer;
+  text-decoration: none;
 
+}
+.content-tag-con-right-con-div ul a:hover {
+  font-size: 16px;
+  color: red;
+}
 .content-tag-con-right-con-div ul span {
   font-size: 14px;
   color: #838383;
@@ -680,6 +688,10 @@
   width: 50px;
   height: 50px;
 }
+/* 轮播图指示器 */
+.el-carousel__button{
+  background-color: #cecece !important; 
+}
 </style>
 
 <template>
@@ -725,6 +737,16 @@
                   <i class="el-icon-star-on" v-if="bookmark == true"></i>
                   <span>收藏</span>
                 </li>
+                <li @click="noUses">
+                  <i class="el-icon-thirdcai" v-if="noUse == false"></i>
+                  <i class="el-icon-thirdxia" v-if="noUse == true"></i>
+                  <span>没用</span>  
+                </li>
+                <li @click="beOfUses">
+                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="beOfUse == false"></i>
+                  <i class="el-icon-thirddianzan1" v-if="beOfUse == true" style="color:#f52424"></i>
+                  <span>有用</span>
+                </li>
               </ul>
             </div>
           </div>
@@ -765,12 +787,13 @@
                 </li>
               </ul>
               <div class="tabCon">
-                <p class="tabCon-wu" v-if="tabconwu">No content</p>
+                <p class="tabCon-wu" v-if="tabconwu">暂无内容</p>
 
                 <div
                   v-for="(items,index) in Answer"
-                  @click="handleanwer"
-                  v-viewer="{toolbar: true,fullscreen:false,navbar:false,title:false}"
+                  @click="handleanwer()"
+                  @keyup.esc="handleEsc()"
+                  v-viewer="{keyboard: false,fullscreen:false,navbar:false,title:false}"
                 >
                   <div
                     v-for="item in items.Imgs"
@@ -916,56 +939,24 @@
           </div>
           <div class="content-tag-con-right">
             <div class="content-tag-con-right-con">
-              <el-carousel trigger="click" :interval="5000" height="240px">
-                <el-carousel-item v-for="item in cards">
+              <el-carousel trigger="click" :interval="5000" height="240px" >
+                <el-carousel-item v-for="item in courses" :key="item.id" >
                   <img :src="item.Imgs" alt>
-
-                  <h3>{{item.names}}</h3>
-
-                  <p>{{item.texts}}</p>
-                  <button>{{item.buttons}}</button>
+                  <h3>{{item.id}}</h3>
+                  <p>{{item.totalGrade}}</p>
+                  <button @click="skipclass(item.classId,item.id)" @click.native="flushCom">进入题库</button>
                 </el-carousel-item>
               </el-carousel>
             </div>
-            <p class="content-tag-con-right-con-p">推荐的课程</p>
+            <p class="content-tag-con-right-con-p">推荐课程</p>
 
             <div class="content-tag-con-right-con-div">
-              <ul>
+              <ul v-for="item in universityClass">
                 <li>
                   <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
-                </li>
-                <li>
-                  <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
-                </li>
-                <li>
-                  <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
-                </li>
-                <li>
-                  <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
-                </li>
-                <li>
-                  <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
-                </li>
-                <li>
-                  <i class="el-icon-tickets"></i>
-
-                  <p>航空航天研究</p>
-                  <span>美国空军</span>
+                  <router-link :to="{ path: 'classesDetails',query: {id: item.cla.id}}">{{item.cla.name}}</router-link>
+                  <!-- <span>{{item.cla.university}}</span> -->
+                  <span>题库:{{item.order}}</span>
                 </li>
               </ul>
             </div>
@@ -1016,6 +1007,8 @@ export default {
       tabconwu: true,
       isChoose: false,
       bookmark: false,
+      beOfUse: false,
+      noUse: false,
       cards: [
         {
           names: "欢迎来到AnswerKing",
@@ -1039,13 +1032,13 @@ export default {
       openretext: "",
       //登录人信息
       personreviews: {},
-      personreviewsid:"",
+      personreviewsid: "",
       //评论内容
       reviews: [],
       replyTwolevelname: "",
       replyTwolevelid: "",
-      replyOnelevelid:"",
-      replyOneTwoid:"",
+      replyOnelevelid: "",
+      replyOneTwoid: "",
       LikeimgRed: false,
       LikeimgGray: true,
       addComments: {
@@ -1056,6 +1049,12 @@ export default {
         contenturl: ""
       },
       comment: [],
+      // 根据课程ID检索课程题库
+      courses: [],
+      // 学校ID
+      skipuniversityId: "",
+      // 学校课程
+      universityClass: []
       //blurswith:true,
       //message: '',
       //template: '<div>{{ message }}</div>'
@@ -1072,6 +1071,8 @@ export default {
     _this.ClassWeeks();
     // 向reviews评论数组中添加控制打开关闭的openreply属性，动态显示ipnut值得model属性
     _this.openreview();
+    // 根据课程ID检索课程题库
+    _this.Classinfos();
   },
   filters: {
     formatDate: function(time) {
@@ -1118,9 +1119,12 @@ export default {
           console.log(res);
           console.log("根据课程ID检索");
           _this.value = res.data.data;
+          _this.skipuniversityId = res.data.data.universityId;
           document.documentElement.scrollTop = 0;
           // 获取评论刷新
           _this.searching();
+          // 通过学校ID查询所有课程
+          _this.universityidClass();
         })
         .catch(function(error) {
           console.log(error);
@@ -1294,7 +1298,6 @@ export default {
     tab(index, classWeekTypeId) {
       var _this = this;
       _this.numnum = index;
-      console.log(classWeekTypeId);
       _this
         .axios({
           method: "get",
@@ -1339,9 +1342,11 @@ export default {
         });
     },
     //点击答案方法
-    handleanwer: function() {
+    handleanwer: function(item) {
       var _this = this;
+      console.log(item);
       //_this.isChoose = !_this.isChoose
+      _this.handleEsc();
       _this.shade = true;
       _this.content = _this.totalTime + "s后可观看答案";
       let clock = window.setInterval(() => {
@@ -1356,10 +1361,13 @@ export default {
         }
       }, 1000);
     },
+    handleEsc: function() {
+      var _this = this;
+      console.log(11);
+    },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       var _this = this;
-      console.log(classWeekTypeId);
       _this
         .axios({
           method: "get",
@@ -1409,6 +1417,23 @@ export default {
       var _this = this;
       _this.bookmark = !_this.bookmark;
     },
+    beOfUses: function() {
+      var _this = this;
+      if(_this.noUse == true){
+      _this.beOfUse = _this.beOfUse;
+      }else{
+      _this.beOfUse = !_this.beOfUse;
+      }
+    },
+    noUses: function() {
+      var _this = this;
+      if(_this.beOfUse == true){
+      _this.noUse = _this.noUse;        
+      }else {
+      _this.noUse = !_this.noUse;
+      }
+      
+    },
     onMouseOver: function() {
       var _this = this;
       _this.MouseOver = true;
@@ -1445,7 +1470,6 @@ export default {
         .then(function(res) {
           console.log(res);
           console.log("检索评论");
-          console.log(_this.personreviewsid)
           _this.reviews = res.data.data;
           for (var i = 0; i < _this.reviews.length; i++) {
             _this.$set(_this.reviews[i], "openreply", false);
@@ -1464,24 +1488,18 @@ export default {
             }
 
             for (var j = 0; j < _this.comment.length; j++) {
-              var arr = _this.reviews[i].parentId.split(",")
+              var arr = _this.reviews[i].parentId.split(",");
               if (_this.comment[j].id == arr[0]) {
                 _this.comment[j].replies.push(_this.reviews[i]);
-              }
-              else if(arr.length >= 2){
+              } else if (arr.length >= 2) {
                 if (_this.comment[j].id == arr[1]) {
-                    _this.comment[j].replies.push(_this.reviews[i]);
+                  _this.comment[j].replies.push(_this.reviews[i]);
                 }
               }
-              
             }
             // var arr = _this.reviews[i].parentId.split(",")
             //   console.log(arr[0])
           }
-          
-
-          console.log(_this.comment);
-          console.log(2);
         })
         .catch(function(error) {
           console.log(error);
@@ -1507,6 +1525,7 @@ export default {
         .then(function(res) {
           console.log(res);
           console.log("新增评论");
+          _this.retext = "";
           _this.searching();
         })
         .catch(function(error) {
@@ -1521,8 +1540,13 @@ export default {
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
-      _this.addComments.contenturl = model+","+_this.$route.query.id+","+_this.$route.query.classInfoId;
-      console.log(_this.addComments)
+      _this.addComments.contenturl =
+        model +
+        "," +
+        _this.$route.query.id +
+        "," +
+        _this.$route.query.classInfoId;
+      console.log(_this.addComments);
       _this
         .axios({
           method: "POST",
@@ -1551,7 +1575,7 @@ export default {
           url: `http://192.168.1.27:8088/api/Comment/Del`,
           async: false,
           params: {
-               id: ids
+            id: ids
           },
           xhrFields: {
             withCredentials: true
@@ -1561,9 +1585,9 @@ export default {
           console.log(res);
           console.log("删除评论");
           _this.$message({
-                  message: "删除成功",
-                  type: "success"
-                });
+            message: "删除成功",
+            type: "success"
+          });
           _this.searching();
         })
         .catch(function(error) {
@@ -1589,9 +1613,9 @@ export default {
           })
           .then(function(res) {
             _this.personreviews = res.data.data;
-            _this.personreviewsid = res.data.data.id
+            _this.personreviewsid = res.data.data.id;
             console.log(res);
-            console.log("登录人信息")
+            console.log("登录人信息");
           })
           .catch(function(error) {
             console.log(error);
@@ -1602,46 +1626,131 @@ export default {
     //向reviews评论数组中添加控制打开关闭的openreply属性，动态显示ipnut值得model属性
     openreview: function() {
       var _this = this;
-     
-      
     },
     openLike: function(like) {
       var _this = this;
       console.log(like);
     },
     // 2级评论的回复方法
-    replyTwolevel: function(index, oneid, twoid,name) {
+    replyTwolevel: function(index, oneid, twoid, name) {
       var _this = this;
       _this.replyTwolevelname = name;
       _this.replyOnelevelid = oneid.toString();
       _this.replyTwolevelid = twoid.toString();
       _this.comment[index].openreply = true;
       _this.comment[index].model = "回复 " + name + ":";
-      _this.replyOneTwoid = oneid +","+twoid;
-      console.log("2级评论回复方法")
-      console.log(window.location.pathname)
-      console.log(_this.replyOneTwoid)
-      console.log(oneid)
-      console.log(twoid)
-      console.log(_this.comment[index].model)
+      _this.replyOneTwoid = oneid + "," + twoid;
+      console.log("2级评论回复方法");
+      console.log(window.location.pathname);
+      console.log(_this.replyOneTwoid);
+      console.log(oneid);
+      console.log(twoid);
+      console.log(_this.comment[index].model);
     },
     //留言的方法
     opencontrol: function(indexs, id) {
       var _this = this;
       _this.comment[indexs].openreply = true;
       _this.comment[indexs].model = "";
-      _this.replyOneTwoid = ","+id;
+      _this.replyOneTwoid = "," + id;
       console.log("1级评论回复方法");
-      console.log(_this.replyOneTwoid)
+      console.log(_this.replyOneTwoid);
     },
     // 关闭评论框的方法
     cancel: function(indexs) {
       var _this = this;
       _this.comment[indexs].openreply = false;
     },
-    joim:function(){
+    joim: function() {
       var _this = this;
+    },
+    //根据课程id检索课程订单
+    Classinfos: function() {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Classinfo/Classinfos`,
+          async: false,
+          params: {
+            classid: _this.$route.query.id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          for (var i = 0; i < res.data.data.length; i++) {
+            _this.$set(res.data.data[i], "Imgs", blueleftimg);
+            if (res.data.data[i].id != _this.$route.query.classInfoId) {
+              _this.courses.push(res.data.data[i]);
+            }
+          }
+          console.log("据课程id检索课程资料");
+          console.log(_this.courses);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    skipclass: function(classId, id) {
+      var _this = this;
+      // window.location.reload();
+      _this.$router.push({
+        path: "/serchDetailsContent",
+        query: { id: classId, classInfoId: id }
+      });
+    },
+    // 通过学校ID查询所有课程并展示题库数量多的
+    universityidClass: function() {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Class/Class`,
+          async: false,
+          params: {
+            universityid: _this.skipuniversityId
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          console.log("通过学校ID查询所有课程");
+          // _this.classes = res.data.data;
+          // _this.classeslength = _this.classes.length;
+          // _this.universityClass = res.data.data;
+          sortByKey(res.data.data, "order");
+          //数组对象排序
+          function sortByKey(array, key) {
+            array.sort(function(a, b) {
+              var x = a[key];
+              var y = b[key];
+              return y < x ? -1 : x > y ? 1 : 0;
+            });
+          }
+          console.log(_this.universityClass);
+          for(var i=0;i<5;i++){
+            if(res.data.data[i].cla.id !=_this.$route.query.id){
+              _this.universityClass.push(res.data.data[i])
+            }else {
+              // _this.universityClass.push(res.data.data[6])
 
+            }
+              
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
+  // 监听路由变化
+  watch: {
+    '$route' (to, from) {
+        this.$router.go(0);
     }
   }
 };

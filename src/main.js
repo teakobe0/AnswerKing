@@ -9,10 +9,14 @@ Vue.use(ElementUI)
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
 Vue.use(Viewer)
+// 引入icon第三方
+import './icon/iconfont.css'
+
 //引入库
 import store from './store'
 //引入Axios
 import axios from 'axios'
+
 Vue.prototype.axios=axios;
 
 Vue.config.productionTip = false

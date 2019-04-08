@@ -79,7 +79,7 @@
        
     }
 
-    .classes-con-course li {
+    .classes-con-course div {
         display: inline-block;
         list-style-type: none;
         border-bottom: 1px dashed #757575;
@@ -93,12 +93,12 @@
 
     }
 
-    .classes-con-course li:nth-last-child(2n+0) {
+    .classes-con-course div:nth-last-child(2n+0) {
         float: right;
         margin-right: 0px;
     }
 
-    .classes-con-course li a {
+    .classes-con-course div a {
         color: #5B9DFD;
         text-decoration: none;
         font-size: 18px;
@@ -106,11 +106,11 @@
 
     }
 
-    .classes-con-course li a:hover {
+    .classes-con-course div a:hover {
         color: #fd2490;
     }
 
-    .classes-con-course li p {
+    .classes-con-course div p {
         color: #b8b8b8;
         font-size: 14px;
         /*float: right;*/
@@ -207,14 +207,12 @@
 
             </div>
             <div class="classes-con-course">
-                <ul>
-                    <li v-for="item in classes">
+                <div v-for="item in classes">
                         <router-link :to="{path:'/classesDetails',query:{id:item.cla.id}}" href="javascript:void(0);">
                             {{item.cla.name}}
                         </router-link>
                         <p>题库集:{{item.order}}</p>
-                    </li>
-                </ul>
+                </div>
             </div>
         </div>
 

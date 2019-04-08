@@ -127,6 +127,7 @@ export default new Router({
             path: '/serchDetailsContent',      //设置跳转
             name: 'serchDetailsContent',
             component: serchDetailsContent,
+            
         },
         {
             path: '/serchDetailsUniversity',      //设置跳转

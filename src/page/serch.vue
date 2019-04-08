@@ -336,7 +336,7 @@
         </div>
 
         <div class="serch-cover">
-            <div class="serch-con">
+            <div class="serch-con"  v-if="clesstops">
                 <!-- 课程 -->
                 <div class="cless" v-if="clessBoxShow">
                     <div class="clesstop" @click="clessClick">
@@ -490,6 +490,7 @@
                 clessBoxShow: true,
                 contentBoxShow: true,
                 universityBoxShow: true,
+                clesstops:true,
                 //三大类型的数量
                 classeNum: 0,
                 contentNum: 0,
