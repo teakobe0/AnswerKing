@@ -71,14 +71,6 @@
   margin-top: 16px;
   margin-bottom: 8px;
 }
-.message div {
-  margin-bottom: 8px;
-  height: 28px;
-  line-height: 28px;
-}
-.message div el-button{
-  float: right;
-}
 </style>
 
 
@@ -113,26 +105,12 @@
         </ul>
       </div>
       <div class="head-right-middle">
-        <p class="right-middle-title">通知</p>
-        <el-tabs v-model="message" @tab-click="handleClick">
-          <el-tab-pane label="回复我的" name="reply">
-            <div class="message">
-              <div v-for="item in messages">
-                {{item.sendname}}回复您：{{item.content}}
-                <el-button @click="gomessage(item.contentsUrl,item.id)" style="float:right;"  size="mini">查看</el-button>
-              </div>
-            </div>
-          </el-tab-pane>
-          <!-- <el-tab-pane label="@提到我的" name="first">@提到我的</el-tab-pane> -->
+        <p class="right-middle-title">文件</p>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="最近浏览过的文件" name="first">最近浏览过的文件</el-tab-pane>
+          <el-tab-pane label="我的上传" name="second">我的上传</el-tab-pane>
         </el-tabs>
       </div>
-      <!-- <div class="head-right-middle"> -->
-      <!-- <p class="right-middle-title">文件</p> -->
-      <!-- <el-tabs v-model="activeName" @tab-click="handleClick"> -->
-      <!-- <el-tab-pane label="最近浏览过的文件" name="first">最近浏览过的文件</el-tab-pane> -->
-      <!-- <el-tab-pane label="我的上传" name="second">我的上传</el-tab-pane> -->
-      <!-- </el-tabs> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -158,7 +136,7 @@ export default {
       personreviewsid: "",
       ids: "",
       classinfoid: "",
-      a:[]
+      a: []
     };
   },
   created: function() {
@@ -200,81 +178,15 @@ export default {
             _this.value.Birthday = res.data.data.birthday;
             _this.personreviewsid = res.data.data.id;
             _this.gainmessage();
-            console.log(new Date())
+            console.log(new Date());
           })
           .catch(function(error) {
             console.log(error);
-            console.log("获取token失败")
+            console.log("获取token失败");
           });
       } else {
       }
     },
-    // 检索通知
-    gainmessage: function() {
-      var _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `http://192.168.1.27:8088/api/Notice/Notices`,
-          async: false,
-          params: {
-            clientid: _this.personreviewsid
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          _this.messages = res.data.data;
-          for (var i = 0; i < _this.messages.length; i++) {
-            _this.$set(_this.messages[i], "content", []);
-            var a = _this.messages[i].contentsUrl.split(",")
-            var b = a[0].split(":")
-            if(b.length >= 2){
-                b.splice(0,1)
-                _this.messages[i].content  = b[0]
-            }else {
-                _this.messages[i].content  = b[0]
-            }
-          }
-          console.log(_this.messages);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    // 修改通知状态（删除）
-    gomessage: function(url,ids) {
-      var _this = this;
-      console.log(ids)
-      var a = url.split(",");
-      _this.ids = a[1];
-      _this.classinfoid = a[2];
-      _this.$router.push({
-        path: "/serchDetailsContent",
-        query: { id: a[1], classInfoId: a[2] }
-      });
-      _this
-        .axios({
-          method: "put",
-          url: `http://192.168.1.27:8088/api/Notice/ChangeStatus`,
-          async: false,
-          params: {
-            id: ids
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          console.log(res);
-          _this.gainmessage();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    }
   }
 };
 </script>

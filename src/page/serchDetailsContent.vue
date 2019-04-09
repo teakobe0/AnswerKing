@@ -939,7 +939,7 @@
           </div>
           <div class="content-tag-con-right">
             <div class="content-tag-con-right-con">
-              <el-carousel trigger="click" :interval="5000" height="240px" >
+              <el-carousel trigger="click" :interval="5000" height="240px" indicator-position="none">
                 <el-carousel-item v-for="item in courses" :key="item.id" >
                   <img :src="item.Imgs" alt>
                   <h3>{{item.id}}</h3>
@@ -1684,6 +1684,8 @@ export default {
             _this.$set(res.data.data[i], "Imgs", blueleftimg);
             if (res.data.data[i].id != _this.$route.query.classInfoId) {
               _this.courses.push(res.data.data[i]);
+            }else if(res.data.data.length == 1){
+              _this.courses.push(res.data.data[0]);
             }
           }
           console.log("据课程id检索课程资料");

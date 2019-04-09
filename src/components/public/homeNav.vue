@@ -276,13 +276,13 @@
                         <router-link class="homenav-resi" to='/register'>注册</router-link>
                     </li>
                     <li v-if="$store.state.logo.hide" >
-                        <router-link to='/personalData' id="nickname"><img src="../../assets/个人中心.svg" alt=""/><div :class="{messageRed:ismessage}"></div> </router-link>
+                        <router-link to='/personalData' id="nickname"><img src="../../assets/个人中心.svg" alt=""/><div :class="{messageRed:this.$store.state.logo.message>=1}"></div> </router-link>
                         <table cellpadding="0" cellspacing="0">
                             <tr>
                                 <td>
                                     <ul>
                                         <li><router-link to='/personalData'>个人信息</router-link></li>
-                                        <li><router-link to='/personalData'>查看回复 <div :class="{messageReds:ismessage}"></div> </router-link></li>
+                                        <li><router-link to='/personalData/inform'>查看回复<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span> <div :class="{messageReds:this.$store.state.logo.message>=1}"></div> </router-link></li>
                                         <li><a href="javascript:void(0)" @click="logout">注销</a></li>
                                     </ul>
                                 </td>
@@ -312,10 +312,11 @@
                 showname: false,
                 nickname:this.$store.state.logo.nickname,
                 searchBarFixed:false,
-                ismessage:false,
+                ismessage:true,
                 nummessage:"",
                 nummessagetwo:"",
-                personreviewsid:""
+                personreviewsid:"",
+                messageLength:0
             };
         },
         created: function () {
@@ -347,33 +348,42 @@
                 }
             }).then(function(res) {
                 _this.$store.state.logo.message = res.data.data.length;
-            }).catch(function(error) {
-                console.log(error);
-            });
-            },
-            gainmessages: function() {
-            var _this = this;
-            _this
-                .axios({
-                method: "get",
-                url: `http://192.168.1.27:8088/api/Notice/Notices`,
-                async: false,
-                params: {
-                    clientid: _this.personreviewsid
-                },
-                xhrFields: {
-                    withCredentials: true
-                }
-            }).then(function(res) {
-                _this.nummessage = res.data.data.length;
-                if(_this.$store.state.logo.message < _this.nummessage){
+                _this.messageLength = res.data.data.length;
+                if(res.data.data.length >= 1){
                     _this.ismessage = true; 
+                }else {
+                    _this.ismessage = false; 
+
                 }
-                
+                console.log(res)
+                console.log(123)
             }).catch(function(error) {
                 console.log(error);
             });
             },
+            // gainmessages: function() {
+            // var _this = this;
+            // _this
+            //     .axios({
+            //     method: "get",
+            //     url: `http://192.168.1.27:8088/api/Notice/Notices`,
+            //     async: false,
+            //     params: {
+            //         clientid: _this.personreviewsid
+            //     },
+            //     xhrFields: {
+            //         withCredentials: true
+            //     }
+            // }).then(function(res) {
+            //     _this.nummessage = res.data.data.length;
+            //     if(_this.$store.state.logo.message < _this.nummessage){
+            //         _this.ismessage = true; 
+            //     }
+                
+            // }).catch(function(error) {
+            //     console.log(error);
+            // });
+            // },
             // 获取个人信息
             gainpersonal: function() {
             var _this = this;
@@ -395,9 +405,9 @@
                     _this.personreviewsid = res.data.data.id;
                     
                     _this.gainmessage();
-                    setInterval(function () {
-                        _this.gainmessages();
-                    }, 1000);
+                    // setInterval(function () {
+                    //     _this.gainmessages();
+                    // }, 1000);
                 })
                 .catch(function(error) {
                     console.log(error);

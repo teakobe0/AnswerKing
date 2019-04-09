@@ -23,6 +23,7 @@ import schoolClasses from '@/components/school/schoolClasses.vue'
 import file from '@/components/classes/file.vue'
 import schoolFile from '@/components/school/schoolFile.vue'
 import vip from '@/components/client/vip.vue'
+import inform from '@/components/client/inform.vue'
 import platinavip from '@/components/client/platinayearly.vue'
 
 
@@ -102,6 +103,11 @@ export default new Router({
                     path: 'award',      //设置跳转
                     name: 'award',
                     component: award,
+                },
+                {
+                    path: 'inform',      //设置跳转
+                    name: 'inform',
+                    component: inform,
                 },
                 {
                     path: 'vip',      //设置跳转

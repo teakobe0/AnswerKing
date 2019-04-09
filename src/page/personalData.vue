@@ -90,7 +90,6 @@
         color: #5b9dfd;
     }
     .perSet li a span {
-        display: inline-block;
         width: 190px;
         height: 50px;
     }
@@ -179,6 +178,7 @@
                     <li><router-link to="/personalData/basic"><span @click="getData"><i class="el-icon-info"></i>个人信息</span></router-link></li>
                     <li><router-link to="/personalData/modifiedData" ><span @click="getData"><i class="el-icon-edit"></i>修改资料</span></router-link></li>
                     <li><router-link to="/personalData/changePassword"><span><i class="el-icon-setting"></i>修改密码</span></router-link></li>
+                    <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
                     <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
                     <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
                     <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li>
