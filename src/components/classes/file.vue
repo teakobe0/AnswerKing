@@ -61,10 +61,10 @@
     /*.file-course-img {*/
         /*margin: 0;*/
     /*}*/
-    .file-course-img:nth-child(6){
+    /* .file-course-img:nth-child(6){
         margin-right: 0px;
         float: right;
-    }
+    } */
     .file-course-img:hover {
         color: #fe2a93;
     }

@@ -355,8 +355,6 @@
                     _this.ismessage = false; 
 
                 }
-                console.log(res)
-                console.log(123)
             }).catch(function(error) {
                 console.log(error);
             });
@@ -403,7 +401,6 @@
                 .then(function(res) {
                     console.log(res);
                     _this.personreviewsid = res.data.data.id;
-                    
                     _this.gainmessage();
                     // setInterval(function () {
                     //     _this.gainmessages();
@@ -433,7 +430,7 @@
                 if(localStorage.getItem("token")){
                     localStorage.removeItem("token");
                 } else {
-                    console.log(111)
+                    console.log('没有TOKEN')
                 }
                 _this.$router.push({
                     path: '/home',

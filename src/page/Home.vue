@@ -474,7 +474,7 @@
                         <div class="ser-left-deta">
                             <h1 class="home-heading">AnswerKing</h1>
 
-                            <p>搜数百万学习集或创建自己的学习集。通过用单词卡、游戏和其他功能提高学习成绩。</p>
+                            <p>一触即答，放飞自我!</p>
 
                             <div class="homeserch" v-if="homeSerchShow">
                                 <el-autocomplete
@@ -509,15 +509,15 @@
 
             <div class="features-area text-center">
                 <div class="features-title">
-                    <p class="features-title-one">产品特色</p>
+                    <p class="features-title-one">快速了解AnswerKing</p>
 
-                    <p class="features-title-tow">AnswerKing使您的答题更便捷。</p>
+                    <p class="features-title-tow">最强大，最专业，最直接的学科学习辅助工具</p>
                 </div>
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left">
-                        <h2>清单管理</h2>
-                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                        <!-- <h2>清单管理</h2> -->
+                        <h4 class="text-center">查找你的学校，定位你的课程，全程高度匹配</font></font></h4>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"
@@ -527,8 +527,8 @@
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left" style="float: right">
-                        <h2>迅速查询</h2>
-                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                        <!-- <h2>迅速查询</h2> -->
+                        <h4 class="text-center">帮助你提高学习小效率，快速融入留学生活，发现自己，发展自己</font></font></h4>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"
@@ -538,8 +538,8 @@
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left">
-                        <h2>详细报告</h2>
-                        <h4 class="text-center">在线上传和管理您的订户列表。易于使用的过滤器和导入功能使管理变得轻而易举。</font></font></h4>
+                        <!-- <h2>详细报告</h2> -->
+                        <h4 class="text-center">共享优质学习资源，创造更多价值，即时享受创造成果</font></font></h4>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"

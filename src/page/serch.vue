@@ -487,9 +487,9 @@
                 unicondownShow: true,
                 uniconupShow: false,
                 //外层盒子的显示隐藏
-                clessBoxShow: true,
-                contentBoxShow: true,
-                universityBoxShow: true,
+                clessBoxShow: false,
+                contentBoxShow: false,
+                universityBoxShow: false,
                 clesstops:true,
                 //三大类型的数量
                 classeNum: 0,

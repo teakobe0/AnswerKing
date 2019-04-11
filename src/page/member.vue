@@ -50,8 +50,8 @@
         border-bottom: 1px solid #c1c1c1;
         margin-top: 50px;
         float: left;
-        margin-right: 20px;
-        margin-left: 20px;
+        margin-right: 50px;
+        margin-left: 50px;
     }
 
     .member-Privilege ul li img {
@@ -229,7 +229,7 @@
         <div class="member-con">
             <div class="member-title">
                 <p>会员中心</p>
-                <p>5大专属特权,享受只属于你的与众不同,还在等什么？
+                <p>4大专属特权,享受只属于你的与众不同,还在等什么？
                 </p>
             </div>
             <div class="member-Privilege">
@@ -239,46 +239,46 @@
 
                         <p>核心服务</p>
 
-                        <p>贵宾礼遇 身份象征</p>
+                        <p>同步享受海量学习资源</p>
 
-                        <p>金色驿站，您的旅途专属会所</p>
+                        <p>准确定位你的需求</p>
 
-                        <p>随时恭候您的到来</p>
+                        <p>导向结果</p>
                     </li>
                     <li>
                         <img src="../assets/增值.svg" alt=""/>
 
                         <p>核心服务</p>
 
-                        <p>贵宾礼遇 身份象征</p>
+                        <p>百所学校</p>
 
-                        <p>金色驿站，您的旅途专属会所</p>
+                        <p>相关课程即时更新</p>
 
-                        <p>随时恭候您的到来</p>
+                        <p>随时随地获取一手资料</p>
                     </li>
                     <li>
                         <img src="../assets/群组.svg" alt=""/>
 
                         <p>核心服务</p>
 
-                        <p>贵宾礼遇 身份象征</p>
+                        <p>锁定你的学校</p>
 
-                        <p>金色驿站，您的旅途专属会所</p>
+                        <p>提交课程</p>
 
-                        <p>随时恭候您的到来</p>
+                        <p>定制化服务</p>
                     </li>
                     <li>
                         <img src="../assets/教育.svg" alt=""/>
 
-                        <p>核心服务</p>
+                        <p>互动学习</p>
 
-                        <p>贵宾礼遇 身份象征</p>
+                        <p>同步提高</p>
 
-                        <p>金色驿站，您的旅途专属会所</p>
+                        <p>同步贡献</p>
 
-                        <p>随时恭候您的到来</p>
+                        <p>同步分享</p>
                     </li>
-                    <li>
+                    <!-- <li>
                         <img src="../assets/教育1.svg" alt=""/>
 
                         <p>核心服务</p>
@@ -288,7 +288,7 @@
                         <p>金色驿站，您的旅途专属会所</p>
 
                         <p>随时恭候您的到来</p>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div class="member-recruiting">
@@ -301,11 +301,11 @@
                     <span>每月八日</span>
                     <span>会员活动</span>
                 </div>
-                <p>会员日特价商品折扣优惠不停</p>
+                <p>每月八日组团充值会员优惠活动</p>
 
-                <p>感恩节活动期消费满599元即可升级VIP会员</p>
+                <p>3人抱团充值享受九五折</p>
 
-                <p>现火热招募ing...</p>
+                <p>5人抱团享受九折优惠等</p>
             </div>
             <div class="member-join">
                 <div class="member-join-con">
