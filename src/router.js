@@ -1,18 +1,17 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '@/page/login.vue'
-import register from '@/page/register.vue'
+import login from '@/page/accountLogin.vue'
+import register from '@/page/accountRegister.vue'
+import forgetPassword from '@/page/accountForgetPassword.vue'
+import personalData from '@/page/accountPersonalData.vue'
 import home from '@/page/Home.vue'
-import serch from '@/page/serch.vue'
+import serch from '@/page/search.vue'
 import schoolStudy from '@/page/schoolStudy.vue'
-import subject from '@/page/subject.vue'
-import serchDetails from '@/page/serchDetails.vue'
-import personalData from '@/page/personalData.vue'
-import serchDetailsContent from '@/page/serchDetailsContent.vue'
-import serchDetailsUniversity from '@/page/serchDetailsUniversity.vue'
+import serchDetails from '@/page/searchDetails.vue'
+import serchDetailsContent from '@/page/searchDetailsContent.vue'
+import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'
 import classesDetails from '@/page/classesDetails.vue'
 import member from '@/page/member.vue'
-import forgetPassword from '@/page/forgetPassword.vue'
 //子组件
 import basic from '@/components/client/basic.vue'
 import modifiedData from '@/components/client/modifiedData.vue'
@@ -63,11 +62,6 @@ export default new Router({
             path: '/schoolStudy',      //设置跳转
             name: 'schoolStudy',
             component: schoolStudy
-        },
-        {
-            path: '/subject',      //设置跳转
-            name: 'subject',
-            component: subject
         },
         {
             path: '/serchDetails',      //设置跳转

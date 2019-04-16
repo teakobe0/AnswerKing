@@ -308,7 +308,7 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         inactive-text="展开课程结果"
-                        :change="clessSwitch()"
+                        @change="searchResultSwitch($event,'clessShow')"
                         style="margin-top: 15px;margin-right: 10px;">
                 </el-switch>
                 <el-switch
@@ -316,7 +316,7 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         inactive-text="展开题库结果"
-                        :change="contentSwitch()"
+                        @change="searchResultSwitch($event,'contentShow')"
                         style="margin-top: 15px;margin-right: 10px;">
                 </el-switch>
                 <el-switch
@@ -324,7 +324,7 @@
                         active-color="#13ce66"
                         inactive-color="#ff4949"
                         inactive-text="展开学校结果"
-                        :change="universitySwitch()"
+                        @change="searchResultSwitch($event,'universityShow')"
                         style="margin-top: 15px">
                 </el-switch>
 
@@ -339,7 +339,7 @@
             <div class="serch-con"  v-if="clesstops">
                 <!-- 课程 -->
                 <div class="cless" v-if="clessBoxShow">
-                    <div class="clesstop" @click="clessClick">
+                    <div class="clesstop" @click="searchResultShow('clessShow')">
                         课程({{classeNum}})
                         <i class="el-icon-caret-bottom" v-if="clessicondownShow"></i>
                         <i class="el-icon-caret-top" v-if="clessiconupShow"></i>
@@ -367,13 +367,13 @@
                             <div class="serchtext-time">{{item.createTime | formatDate}}</div>
                         </router-link>
                         <div class="clessmore">
-                            <el-button @click="handleClassChange">查看更多</el-button>
+                            <el-button @click="viewMmore('clessChange')">查看更多</el-button>
                         </div>
                     </div>
                 </div>
                 <!-- 题库答案 -->
                 <div class="cless" v-if="contentBoxShow">
-                    <div class="clesstop" @click="contentClick">
+                    <div class="clesstop" @click="searchResultShow('contentShow')">
                         题库答案({{contentNum}})
                         <i class="el-icon-caret-bottom" v-if="conicondownShow"></i>
                         <i class="el-icon-caret-top" v-if="coniconupShow"></i>
@@ -400,13 +400,13 @@
 
                         </router-link>
                         <div class="clessmore">
-                            <el-button @click="handleContentChange">查看更多</el-button>
+                            <el-button @click="viewMmore('contentChange')">查看更多</el-button>
                         </div>
                     </div>
                 </div>
                 <!-- 学校 -->
                 <div class="cless" v-if="universityBoxShow">
-                    <div class="clesstop" @click="universityClick">
+                    <div class="clesstop" @click="searchResultShow('universityShow')">
                         学校({{universityNum}})
                         <i class="el-icon-caret-bottom" v-if="unicondownShow"></i>
                         <i class="el-icon-caret-top" v-if="uniconupShow"></i>
@@ -434,7 +434,7 @@
 
                         </router-link>
                         <div class="clessmore">
-                            <el-button @click="handleUniverChange">查看更多</el-button>
+                            <el-button @click="viewMmore('univerChange')">查看更多</el-button>
                         </div>
                     </div>
                 </div>
@@ -609,91 +609,82 @@
                     console.log(error);
                 });
             },
-            //课程查看更多发方法
-            handleClassChange: function () {
+            // 查看更多方法
+            viewMmore: function (name) {
                 var _this = this;
-                if (_this.value1.length != 0) {
-                    _this.value1 = _this.allClasses.slice(0, _this.value1.length + _this.pageSize)
-                    _this.clessShow = true
-                }else {
-                    _this.clessShow = false
+                if(name == 'clessChange'){
+                    if (_this.value1.length != 0) {
+                        _this.value1 = _this.allClasses.slice(0, _this.value1.length + _this.pageSize)
+                        _this.clessShow = true
+                    }else {
+                        _this.clessShow = false
+                    }
+                }else if (name == 'contentChange'){
+                    if (_this.value2.length != 0) {
+                        _this.value2 = _this.allContent.slice(0, _this.value2.length + _this.pageSize)
+                        _this.contentShow = true
+                    }else {
+                        _this.contentShow = false
+                    }
+                }else if(name == 'univerChange'){
+                    if (_this.value3.length != 0) {
+                        _this.value3 = _this.allUniversity.slice(0, _this.value3.length + _this.pageSize)
+                        _this.universityShow = true
+                    }else {
+                        _this.universityShow = false
+                    }
                 }
+                
             },
-            //订单内容查看更多发方法
-            handleContentChange: function () {
+            // 点击控制搜索结果的打开关闭
+            searchResultShow: function (name) {
                 var _this = this;
-                if (_this.value2.length != 0) {
-                    _this.value2 = _this.allContent.slice(0, _this.value2.length + _this.pageSize)
-                    _this.contentShow = true
-                }else {
-                    _this.contentShow = false
+                if(name == 'clessShow'){
+                    _this.clessShow = !_this.clessShow
+                    _this.clessicondownShow = !_this.clessicondownShow
+                    _this.clessiconupShow = !_this.clessiconupShow
+                }else if(name == 'contentShow'){
+                    _this.contentShow = !_this.contentShow
+                    _this.conicondownShow = !_this.conicondownShow
+                    _this.coniconupShow = !_this.coniconupShow
+                }else if(name == 'universityShow'){
+                    _this.universityShow = !_this.universityShow
+                    _this.unicondownShow = !_this.unicondownShow
+                    _this.uniconupShow = !_this.uniconupShow
                 }
-            },
-            //学校查看更多发方法
-            handleUniverChange: function (val) {
-                var _this = this;
-                if (_this.value3.length != 0) {
-                    _this.value3 = _this.allUniversity.slice(0, _this.value3.length + _this.pageSize)
-                    _this.universityShow = true
-                }else {
-                    _this.universityShow = false
-                }
-
-            },
-            //课程显示隐藏
-            clessClick: function () {
-                var _this = this;
-                _this.abc = !_this.abc
-                _this.clessShow = !_this.clessShow
-                _this.clessicondownShow = !_this.clessicondownShow
-                _this.clessiconupShow = !_this.clessiconupShow
-            },
-            //订单内容显示隐藏
-            contentClick: function () {
-                var _this = this;
-                _this.contentShow = !_this.contentShow
-                _this.conicondownShow = !_this.conicondownShow
-                _this.coniconupShow = !_this.coniconupShow
-            },
-            //学校显示隐藏
-            universityClick: function () {
-                var _this = this;
-                _this.universityShow = !_this.universityShow
-                _this.unicondownShow = !_this.unicondownShow
-                _this.uniconupShow = !_this.uniconupShow
+                
             },
             Switch: function () {
                 var _this = this;
                 _this.isserchTextSwitch = !_this.isserchTextSwitch
             },
-            clessSwitch: function () {
+            // 顶部开关控制搜索结果的打开关闭
+            searchResultSwitch: function (val,name) {
                 var _this = this;
-                if (_this.clessShow == true) {
-                    _this.clessicondownShow = true
-                    _this.clessiconupShow = false
-                } else {
-                    _this.clessicondownShow = false
-                    _this.clessiconupShow = true
-                }
-            },
-            contentSwitch: function () {
-                var _this = this;
-                if (_this.contentShow == true) {
-                    _this.conicondownShow = true
-                    _this.coniconupShow = false
-                } else {
-                    _this.conicondownShow = false
-                    _this.coniconupShow = true
-                }
-            },
-            universitySwitch: function () {
-                var _this = this;
-                if (_this.universityShow == true) {
-                    _this.unicondownShow = true
-                    _this.uniconupShow = false
-                } else {
-                    _this.unicondownShow = false
-                    _this.uniconupShow = true
+                if(name == 'clessShow'){
+                    if (_this.clessShow == true) {
+                        _this.clessicondownShow = true
+                        _this.clessiconupShow = false
+                    } else {
+                        _this.clessicondownShow = false
+                        _this.clessiconupShow = true
+                    }
+                }else if (name == 'contentShow'){
+                    if (_this.contentShow == true) {
+                        _this.conicondownShow = true
+                        _this.coniconupShow = false
+                    } else {
+                        _this.conicondownShow = false
+                        _this.coniconupShow = true
+                    }
+                }else if(name == 'universityShow'){
+                    if (_this.universityShow == true) {
+                        _this.unicondownShow = true
+                        _this.uniconupShow = false
+                    } else {
+                        _this.unicondownShow = false
+                        _this.uniconupShow = true
+                    }
                 }
             }
         },

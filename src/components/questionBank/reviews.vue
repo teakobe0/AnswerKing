@@ -247,7 +247,7 @@
           <img src="../../assets/头像.jpg" alt>
         </div>
         <div class="retext">
-          <p>{{name}}</p>
+          <p>{{personreviews.name}}</p>
           <el-input type="textarea" :rows="2" v-model="retext" resize="none" style="width:893px"></el-input>
           <div style="height:28px;margin-top:8px">
             <div class="face">
@@ -326,7 +326,7 @@
               <img src="../../assets/头像.jpg" alt>
             </div>
             <div class="openretext">
-              <p>{{name}}</p>
+              <p>{{personreviews.name}}</p>
               <el-input
                 type="textarea"
                 :rows="2"
@@ -355,10 +355,8 @@
 import { formatDate } from "@/common/js/date.js";
 export default {
   name: "reviews",
-  props: ["name"],
   data() {
     return {
-      personreviewsid: this.$store.state.review.personreviewsid,
       retext: "",
       openretext: "",
       //评论内容
@@ -376,12 +374,16 @@ export default {
         clientid: "",
         contenturl: ""
       },
-      comment: []
+      comment: [],
+      //登录人信息
+      personreviews: {},
+      personreviewsid:"",
     };
   },
   created: function() {
     var _this = this;
-    _this.searching();
+    //获取个人信息
+    _this.personal();
   },
   filters: {
     formatDate: function(time) {
@@ -390,6 +392,36 @@ export default {
     }
   },
   methods: {
+    //获取登录人的个人信息
+    personal: function() {
+      var _this = this;
+      if (localStorage.getItem("token")) {
+        var _this = this;
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.personreviews = res.data.data;
+            _this.personreviewsid = res.data.data.id;
+            _this.searching();
+            console.log(res);
+            console.log("登录人信息");
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+      }
+    },
     //检索评论
     searching: function() {
       var _this = this;

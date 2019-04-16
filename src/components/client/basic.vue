@@ -177,7 +177,6 @@ export default {
             _this.value.Sex = res.data.data.sex;
             _this.value.Birthday = res.data.data.birthday;
             _this.personreviewsid = res.data.data.id;
-            _this.gainmessage();
             console.log(new Date());
           })
           .catch(function(error) {

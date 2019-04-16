@@ -400,8 +400,6 @@
 .popContainer .closeshade:hover {
   background-color: #dadada;
 }
-
-
 </style>
 
 <template>
@@ -513,9 +511,8 @@
                     <img
                       v-if="item.conurl == true"
                       :src="'http://192.168.1.27:8086'+item.contentUrl"
-                      alt
+                      :alt=items.contents
                     >
-
                     <p v-if="item.context == true">{{item.contents}}</p>
                     <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
                   </div>
@@ -523,7 +520,7 @@
               </div>
             </div>
             <!-- 评论组件 -->
-            <reviews :name="personreviewsname"></reviews>
+            <reviews></reviews>
           </div>
           <div class="content-tag-con-right">
             <otherQuestions></otherQuestions>
@@ -546,8 +543,11 @@
 <script type="es6">
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+// 轮播图切换题库
 import otherQuestions from "@/components/questionBank/otherQuestions.vue";
+// 列表展示其他课程
 import recommendClass from "@/components/questionBank/recommendClass.vue";
+// 评论组件
 import reviews from "@/components/questionBank/reviews.vue";
 
 import { formatDate } from "@/common/js/date.js";
@@ -589,23 +589,19 @@ export default {
       totalTime: 30,
       movable: false,
       retext: "",
-      openretext: "",
-      //登录人信息
-      personreviews: {},
-      personreviewsname: "",
+      openretext: ""
     };
   },
   created: function() {
     var _this = this;
     _this.Id = _this.$route.query.id;
-    //获取个人信息
-    _this.personal();
+
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
     _this.ClassWeeks();
   },
-  
+
   mounted() {
     var _this = this;
   },
@@ -965,36 +961,7 @@ export default {
       //}
       _this.totalTime = 0;
     },
-    //获取登录人的个人信息
-    personal: function() {
-      var _this = this;
-      if (localStorage.getItem("token")) {
-        var _this = this;
-        _this
-          .axios({
-            method: "get",
-            url: `http://192.168.1.27:8088/api/Client/GetClient`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            _this.personreviews = res.data.data;
-            _this.personreviewsname = res.data.data.name;
-            _this.$store.state.review.personreviewsid = res.data.data.id;
-            console.log(res);
-            console.log("登录人信息");
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      } else {
-      }
-    },
+
     joim: function() {
       var _this = this;
     }
