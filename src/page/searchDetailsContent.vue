@@ -440,19 +440,23 @@
                 <span>Teach:{{value.professor}}</span>
               </p>
               <ul class="content-bookmark">
-                <li @click="bookmarks">
+                <!-- <li @click="bookmarks">
                   <i class="el-icon-star-off" v-if="bookmark == false"></i>
                   <i class="el-icon-star-on" v-if="bookmark == true"></i>
                   <span>收藏</span>
-                </li>
+                </li>-->
                 <li @click="noUses">
-                  <i class="el-icon-thirdcai" v-if="noUse == false"></i>
-                  <i class="el-icon-thirdxia" v-if="noUse == true"></i>
+                  <i class="el-icon-thirdcai" v-if="informations.noUse == 0"></i>
+                  <i class="el-icon-thirdxia" v-if="informations.noUse == 1"></i>
                   <span>没用</span>
                 </li>
                 <li @click="beOfUses">
-                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="beOfUse == false"></i>
-                  <i class="el-icon-thirddianzan1" v-if="beOfUse == true" style="color:#f52424"></i>
+                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="informations.use == 0"></i>
+                  <i
+                    class="el-icon-thirddianzan1"
+                    v-if="informations.use == 1"
+                    style="color:#f52424"
+                  ></i>
                   <span>有用</span>
                 </li>
               </ul>
@@ -500,22 +504,22 @@
                 <div
                   v-for="(items,index) in Answer"
                   @click="handleanwer()"
-                  @keyup.esc="handleEsc()"
-                  v-viewer="{keyboard: false,fullscreen:false,navbar:false,title:false}"
+
                 >
-                  <div
-                    v-for="item in items.Imgs"
+                    <viewer :images="items.Imgs"
+                    v-for="item in items.Imgs" 
                     @mouseenter="onMouseOver"
-                    @mouseleave="onMouseout"
-                  >
-                    <img
-                      v-if="item.conurl == true"
-                      :src="'http://192.168.1.27:8086'+item.contentUrl"
-                      :alt=items.contents
+                    @mouseleave="onMouseout" 
+                    v-if="imageShow == true"
                     >
-                    <p v-if="item.context == true">{{item.contents}}</p>
-                    <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
-                  </div>
+                      <img
+                        v-if="item.conurl == true"
+                        :src="'http://192.168.1.27:8086'+item.contentUrl"
+                        :alt="items.contents"
+                      >
+                      <p v-if="item.context == true">{{item.contents}}</p>
+                      <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
+                    </viewer>
                 </div>
               </div>
             </div>
@@ -523,6 +527,7 @@
             <reviews></reviews>
           </div>
           <div class="content-tag-con-right">
+
             <otherQuestions></otherQuestions>
             <p class="content-tag-con-right-con-p">推荐课程</p>
             <recommendClass></recommendClass>
@@ -589,7 +594,14 @@ export default {
       totalTime: 30,
       movable: false,
       retext: "",
-      openretext: ""
+      openretext: "",
+      useOnuse:{
+        Id: "",
+        type:"",
+        check:""
+      },
+      informations: {},
+      imageShow:true
     };
   },
   created: function() {
@@ -600,10 +612,8 @@ export default {
     _this.Getclass();
     // 获取每一周
     _this.ClassWeeks();
-  },
-
-  mounted() {
-    var _this = this;
+    //根据课程id检索课程订单
+    _this.Classinfos();
   },
   methods: {
     handleScroll() {
@@ -611,6 +621,10 @@ export default {
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
+    },
+    abcd:function(event){
+      var _this = this;
+      console.log(1222222222222)
     },
     //根据课程id检索
     Getclass: function() {
@@ -765,6 +779,36 @@ export default {
           console.log(error);
         });
     },
+    //根据课程id检索课程订单
+    Classinfos: function() {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Classinfo/Classinfos`,
+          async: false,
+          params: {
+            classid: _this.$route.query.id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          console.log("据课程id检索课程资料123");
+          console.log(res);
+          for (var i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].id == _this.$route.query.classInfoId) {
+              _this.informations = res.data.data[i];
+            }
+          }
+          // 根据课程资料id检索该课程资料有用、没用
+          _this.UseRecord();
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     //将图片的ID和路径保存到outputList的方法
     getUrlList: function(rawList) {
       var imgUrlArray = rawList.url.split("|");
@@ -857,25 +901,20 @@ export default {
       var _this = this;
       console.log(item);
       //_this.isChoose = !_this.isChoose
-      _this.handleEsc();
       _this.shade = true;
       _this.content = _this.totalTime + "s后可观看答案";
       let clock = window.setInterval(() => {
         _this.totalTime--;
         _this.content = _this.totalTime + "s后可观看答案";
-
-        if (_this.totalTime <= 0) {
-          //当倒计时小于0时清除定时器
-          window.clearInterval(clock); //清除定时器
+        if (_this.totalTime < 1) {
           _this.content = "s后可观看答案";
           _this.totalTime = 30;
           _this.shade = false;
+           //当倒计时小于0时清除定时器
+          window.clearInterval(clock); //清除定时器
         }
       }, 1000);
-    },
-    handleEsc: function() {
-      var _this = this;
-      console.log(11);
+      
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
@@ -931,19 +970,117 @@ export default {
     },
     beOfUses: function() {
       var _this = this;
-      if (_this.noUse == true) {
-        _this.beOfUse = _this.beOfUse;
-      } else {
-        _this.beOfUse = !_this.beOfUse;
-      }
+      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+      _this.useOnuse.type = "Y";
+      _this.useOnuse.check = 1
+      _this
+        .axios({
+          method: "put",
+          url: `http://192.168.1.27:8088/api/Classinfo/ChangeClassInfo`,
+          async: false,
+          params: {
+            classInfoId: _this.useOnuse.Id,
+            type: _this.useOnuse.type,
+            check: _this.useOnuse.check
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+             token: localStorage.getItem("token")
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+      // 根据课程id检索课程订单
+      // _this.Classinfos();
+      //     if (_this.noUse == true) {
+      //       _this.beOfUse = _this.beOfUse;
+      //     } else {
+      //       _this.beOfUse = !_this.beOfUse;
+      //     }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     noUses: function() {
       var _this = this;
-      if (_this.beOfUse == true) {
-        _this.noUse = _this.noUse;
-      } else {
-        _this.noUse = !_this.noUse;
+      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+      if (_this.informations.use == 0 && _this.informations.noUse == 0) {
+        _this.useOnuse.Use = 0;
+        _this.useOnuse.NoUse = 1;
+        _this.informations.noUse = 1;
+        _this.ChangeClassInfo();
+      } else if (_this.informations.use == 0 && _this.informations.noUse == 1) {
+        _this.useOnuse.Use = 0;
+        _this.useOnuse.NoUse = -1;
+        _this.informations.noUse = 0;
+        _this.ChangeClassInfo();
+      }else if (_this.informations.use == 1 && _this.informations.noUse == 0){
+        _this.useOnuse.Use = -1;
+        _this.useOnuse.NoUse = 1;
+        _this.informations.noUse = 1;
+        _this.informations.use = 0;
+        _this.ChangeClassInfo();
       }
+      
+    },
+    // 更改课程资料的有用没用
+    ChangeClassInfo: function() {
+      var _this = this;
+      // _this
+      //   .axios({
+      //     method: "put",
+      //     url: `http://192.168.1.27:8088/api/Classinfo/ChangeClassInfo`,
+      //     async: false,
+      //     data: _this.useOnuse,
+      //     xhrFields: {
+      //       withCredentials: true
+      //     },
+      // headers: {
+      //   token: localStorage.getItem("token");
+      // }
+      //   })
+      //   .then(function(res) {
+      //     console.log(res);
+      //根据课程id检索课程订单
+      // _this.Classinfos();
+      //     if (_this.noUse == true) {
+      //       _this.beOfUse = _this.beOfUse;
+      //     } else {
+      //       _this.beOfUse = !_this.beOfUse;
+      //     }
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
+    },
+    // 根据课程资料id检索该课程资料有用、没用
+    UseRecord:function(){
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
+          async: false,
+          params: {
+            classInfoid: Number(_this.$route.query.classInfoId),
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+             Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          console.log("根据课程资料id检索该课程资料有用、没用")
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     onMouseOver: function() {
       var _this = this;
@@ -956,10 +1093,11 @@ export default {
     Closemask: function() {
       var _this = this;
       _this.shade = false;
-      //if(_this.totalTime > 0){
-      //    _this.totalTime = 0
-      //}
       _this.totalTime = 0;
+      _this.imageShow = false;
+      setTimeout(function () {
+        _this.imageShow = true;
+      }, 1);
     },
 
     joim: function() {

@@ -253,11 +253,14 @@
     .con-left-top h1 {
         text-align: right;
         margin-bottom: 10px;
+        color: #383838;
     }
 
-    .con-left-top p {
+    .con-left-top h3 {
         text-align: right;
         margin-bottom: 10px;
+        color: #383838;
+
     }
 
     .con-left-top p a {
@@ -296,6 +299,7 @@
     .con-left-bottom h2 {
         text-align: right;
         font-size: 37px;
+        color: #383838;
     }
 
     .pub-con-right {
@@ -314,12 +318,15 @@
 
     .con-right-middle h1 {
         text-align: left;
+        color: #383838;
         margin-bottom: 10px;
     }
 
-    .con-right-middle p {
+    .con-right-middle h3 {
         text-align: left;
         margin-bottom: 10px;
+        color: #383838;
+
     }
 
     .con-right-middle p a {
@@ -429,16 +436,19 @@
         margin-left: 50px;
     }
 
-    .conclusion-left h2 {
-        color: #383838;
-        font-size: 30px;
-    }
-
-    .conclusion-left h4 {
+    .conclusion-left h1 {
         width: 400px;
         margin: 0 auto;
         color: #383838;
-        font-size: 20px;
+        text-align: left;
+        margin-bottom: 8px;
+    }
+
+    .conclusion-left h3 {
+        width: 400px;
+        margin: 0 auto;
+        color: #383838;
+        text-align: left;
     }
 
     .conclusion-right {
@@ -472,9 +482,9 @@
                 <div class="home-ser-con">
                     <div class="ser-con-left">
                         <div class="ser-left-deta">
-                            <h1 class="home-heading">AnswerKing</h1>
+                            <h1 class="home-heading">AnswerWang</h1>
 
-                            <p>一触即答，放飞自我!</p>
+                            <p>一触即答，放飞自我</p>
 
                             <div class="homeserch" v-if="homeSerchShow">
                                 <el-autocomplete
@@ -509,15 +519,15 @@
 
             <div class="features-area text-center">
                 <div class="features-title">
-                    <p class="features-title-one">快速了解AnswerKing</p>
+                    <p class="features-title-one">快速了解AnswerWang</p>
 
-                    <p class="features-title-tow">最强大，最专业，最直接的学科学习辅助工具</p>
+                    <p class="features-title-tow">更直接.更专业.更强大.更多元.更贴心</p>
                 </div>
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left">
-                        <!-- <h2>清单管理</h2> -->
-                        <h4 class="text-center">查找你的学校，定位你的课程，全程高度匹配</font></font></h4>
+                        <h1>更直接</h1>
+                        <h3 class="text-center">通过关键字直接定位课程，全程高度匹配，给你想要的答案</h3>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"
@@ -527,8 +537,8 @@
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left" style="float: right">
-                        <!-- <h2>迅速查询</h2> -->
-                        <h4 class="text-center">帮助你提高学习小效率，快速融入留学生活，发现自己，发展自己</font></font></h4>
+                        <h1 style="text-align:right">更专业</h1>
+                        <h3 class="text-center" style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"
@@ -538,8 +548,8 @@
                 <div class="divider_line"></div>
                 <div class="conclusion">
                     <div class="conclusion-left">
-                        <!-- <h2>详细报告</h2> -->
-                        <h4 class="text-center">共享优质学习资源，创造更多价值，即时享受创造成果</font></font></h4>
+                        <h1>更强大</h1>
+                        <h3 class="text-center">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
                     </div>
                     <div class="conclusion-right">
                         <img class="img-fluid"
@@ -555,11 +565,11 @@
                     <div class="home-pub-con">
                         <div class="pub-con-left">
                             <div class="con-left-top">
-                                <h1>更高效的学习</h1>
+                                <h1>更多元</h1>
 
-                                <p>超过95%的学生声称使用AnswerKing报告学习提高了分数。请查看AnswerKing的简单工具如何帮助你学习各种知识，包括代数、历史、经济学—及更多。</p>
+                                <h3 style="text-align:right">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
 
-                                <p><a href="#">我是学生</a></p>
+                                <!-- <p><a href="#">我是学生</a></p> -->
                             </div>
                             <div class="con-left-middle">
                                 <img src="../assets/3.jpg" alt=""/>
@@ -573,19 +583,19 @@
                                 <img src="../assets/4.jpg" alt=""/>
                             </div>
                             <div class="con-right-middle">
-                                <h1>更高效的学习</h1>
+                                <h1>更贴心</h1>
 
-                                <p>超过95%的学生声称使用AnswerKing报告学习提高了分数。请查看AnswerKing的简单工具如何帮助你学习各种知识，包括代数、历史、经济学—及更多。</p>
+                                <h3>根据你的专业，学科推送相关内容，省去二次查找的麻烦；定制化服务让你高枕无忧，留学生活更加丰富</h3>
 
-                                <p><a href="#">我是教师</a></p>
+                                <!-- <p><a href="#">我是教师</a></p> -->
                             </div>
-                            <div class="con-right-bottom">
+                            <!-- <div class="con-right-bottom">
                                 <p>我们为学生和教师提供便捷的工具，以创建和分享在线学习材料。AnswerKing是美国最流行的在线教育服务工具，每月有超过3000万名学生和教师使用。</p>
 
                                 <p>AnswerKing从简单的在线学习工具起步，如今为学生提供学习工具，可制作单词卡、练习拼写、参与游戏、测试知识水平、与其他同学合作等。</p>
 
                                 <p><a href="#">AnswerKing的宗旨</a></p>
-                            </div>
+                            </div> -->
                         </div>
                     </div>
                 </div>

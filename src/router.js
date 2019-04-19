@@ -12,6 +12,7 @@ import serchDetailsContent from '@/page/searchDetailsContent.vue'
 import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'
 import classesDetails from '@/page/classesDetails.vue'
 import member from '@/page/member.vue'
+import termsOfService from '@/page/termsOfService.vue'
 //子组件
 import basic from '@/components/client/basic.vue'
 import modifiedData from '@/components/client/modifiedData.vue'
@@ -184,6 +185,11 @@ export default new Router({
             path: '/forgetPassword',      //设置跳转
             name: 'forgetPassword',
             component: forgetPassword
+        },
+        {
+            path: '/termsOfService',      //设置跳转
+            name: 'termsOfService',
+            component: termsOfService
         },
 
 

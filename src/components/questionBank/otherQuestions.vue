@@ -1,8 +1,6 @@
 <style>
 .content-tag-con-right-con {
   width: 306px;
-  height: 240px;
-  border: 1px solid #e1e1e1;
   margin: 0 auto;
   position: relative;
   margin-bottom: 20px;
@@ -15,7 +13,9 @@
 </style>
 <template>
   <div class="content-tag-con-right-con" v-if="otherQuestionShow == true">
-    <el-carousel trigger="click" :interval="5000" height="240px" indicator-position="none">
+    <p class="content-tag-con-right-con-p">该课程的其他题库</p>
+
+    <el-carousel trigger="click" :interval="5000" height="240px" indicator-position="none" style="border:1px solid #e1e1e1">
       <el-carousel-item v-for="item in courses" :key="item.id">
         <img :src="item.Imgs" alt>
         <h3>{{item.id}}</h3>

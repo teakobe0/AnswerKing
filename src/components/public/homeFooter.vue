@@ -58,7 +58,7 @@
         <div class="H-footer">
             <ul class="footer-1">
                 <li class="footer-title">功能</li>
-                <li><router-link to='/home'>AnswerKing</router-link></li>
+                <li><router-link to='/home'>AnswerWang</router-link></li>
                 <li><a href="#">图表</a></li>
                 <li><a href="#">单词卡</a></li>
             </ul>
@@ -77,9 +77,9 @@
                 <li><a href="#">条款</a></li>
             </ul>
             <ul class="footer-4">
-                <li class="footer-title">AnswerKing</li>
-                <img src="../../assets/6.png" alt=""/>
-                <p>© 2018 Orange Inc.</p>
+                <li class="footer-title">AnswerWang</li>
+                <!-- <img src="../../assets/6.png" alt=""/> -->
+                <p>© 2019 AnswerWang Inc.</p>
             </ul>
         </div>
     </div>

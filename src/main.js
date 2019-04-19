@@ -8,7 +8,15 @@ Vue.use(ElementUI)
 //引入viewer.css (图片放大查看工具)
 import 'viewerjs/dist/viewer.css'
 import Viewer from 'v-viewer'
-Vue.use(Viewer)
+Vue.use(Viewer, {
+  defaultOptions: {
+    title: 0,
+    tooltip:1,
+    rotatable:1,
+    scalable:1,
+    keyboard:0
+  }
+})
 // 引入icon第三方
 import './icon/iconfont.css'
 

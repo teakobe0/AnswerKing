@@ -225,7 +225,7 @@
         <div :class="searchBarFixed == true ? 'navcolor' :''">
             <div class="homenav-con">
                 <div class="nav-logo">
-                    <router-link to='/home'>AnswerKing</router-link>
+                    <router-link to='/home'>AnswerWang</router-link>
                 </div>
                 <div class="homenav-ser">
                     <div class="homenav-register" v-model="toggle" @click="homenavRe()" v-if="vanish">

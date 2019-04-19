@@ -17,6 +17,5 @@ export default new vuex.Store({
         vip:vip_store,
         recommendClass:recommendClass_store,
         review:review_store,
-
     }
 })
