@@ -73,8 +73,7 @@
                 <li><a href="#">公司</a></li>
                 <li><a href="#">新闻</a></li>
                 <li><a href="#">职位</a></li>
-                <li><a href="#">隐私</a></li>
-                <li><a href="#">条款</a></li>
+                <li><router-link to="/termsOfService">条款</router-link></li>
             </ul>
             <ul class="footer-4">
                 <li class="footer-title">AnswerWang</li>

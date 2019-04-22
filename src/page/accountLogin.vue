@@ -108,10 +108,10 @@
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Username"
-                  placeholder="输入用户名/邮箱"
+                  placeholder="输入邮箱地址"
                 ></el-input>
               </el-form-item>
-              <el-form-item style="margin-left: -50px;margin-bottom:0px;" label prop="Password">
+              <el-form-item style="margin-left: -50px;" label prop="Password">
                 <el-input
                   prefix-icon="el-icon-goods"
                   type="Password"
@@ -120,7 +120,9 @@
                   @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
-              <div class="forgetpassword"><router-link to="/forgetPassword">忘记密码？</router-link></div>
+              <!-- <div class="forgetpassword">
+                <router-link to="/forgetPassword">忘记密码？</router-link>
+                </div> -->
 
               <el-form-item style="margin-left: -50px;">
                 <el-button id="submit" type="primary" @click="submitForm('ruleForm')">登录</el-button>

@@ -244,15 +244,15 @@
       <!-- 本人的评论框 -->
       <div style="overflow:hidden;width:953px">
         <div class="headPortrait">
-          <img src="../../assets/头像.jpg" alt>
+          <img src="../../assets/5.jpg" alt>
         </div>
         <div class="retext">
           <p>{{personreviews.name}}</p>
           <el-input type="textarea" :rows="2" v-model="retext" resize="none" style="width:893px"></el-input>
           <div style="height:28px;margin-top:8px">
-            <div class="face">
+            <!-- <div class="face">
               <img src="../../assets/笑脸.svg" alt>
-            </div>
+            </div> -->
             <div class="reviewButton">
               <el-button type="primary" size="mini" @click="addComment">评论</el-button>
             </div>
@@ -262,7 +262,7 @@
       <!-- 评论内容 -->
       <div class="statereview" v-for="(item, index) in comment">
         <div class="headPortrait">
-          <img src="../../assets/头像.jpg" alt>
+          <img src="../../assets/5.jpg" alt>
         </div>
         <div class="staterretext">
           <p>
@@ -287,7 +287,7 @@
           <div>
             <div class="openstatereview" v-for="(openitem,openindex) in item.replies">
               <div class="openheadPortrait">
-                <img src="../../assets/头像.jpg" alt>
+                <img src="../../assets/5.jpg" alt>
               </div>
               <div class="openstaterretext">
                 <p>
@@ -323,7 +323,7 @@
             style="background:rgb(252, 252, 252);overflow:hidden;padding:8px;"
           >
             <div class="headPortrait">
-              <img src="../../assets/头像.jpg" alt>
+              <img src="../../assets/5.jpg" alt>
             </div>
             <div class="openretext">
               <p>{{personreviews.name}}</p>
@@ -335,9 +335,9 @@
                 style="width:815px"
               ></el-input>
               <div style="height:28px;margin-top:8px">
-                <div class="face">
+                <!-- <div class="face">
                   <img src="../../assets/笑脸.svg" alt>
-                </div>
+                </div> -->
                 <div class="reviewButton">
                   <el-button type="info" size="mini" @click="cancel(index)">取消</el-button>
                   <el-button type="primary" size="mini" @click="submitReview(item.model)">评论</el-button>

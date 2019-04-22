@@ -1,6 +1,9 @@
+
+
 <template>
-  <div id="app">
-    <router-view/>
+
+  <div id="app" >
+    <router-view v-title data-title="AnswerWang"/>
   </div>
 </template>
 
@@ -14,7 +17,6 @@
 </style>
 
 <script>
-
   export default {
     
   }

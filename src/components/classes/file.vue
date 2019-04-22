@@ -174,7 +174,7 @@ export default {
     },
     Information: function(item) {
       var _this = this;
-      _this.$store.state.information.informations = item;
+      // _this.$store.state.information.informations = item;
     }
   }
 };

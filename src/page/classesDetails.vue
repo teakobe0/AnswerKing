@@ -1,7 +1,7 @@
 <style>
     #classesDetails {
         position: relative;
-        padding-bottom: 332px;
+        padding-bottom: 276px;
     }
 
     .classesDetails-con {

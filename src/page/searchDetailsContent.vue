@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  padding-bottom: 332px;
+  padding-bottom: 276px;
 }
 
 .serchDetailsContent-con {
@@ -446,17 +446,13 @@
                   <span>收藏</span>
                 </li>-->
                 <li @click="noUses">
-                  <i class="el-icon-thirdcai" v-if="informations.noUse == 0"></i>
-                  <i class="el-icon-thirdxia" v-if="informations.noUse == 1"></i>
+                  <i class="el-icon-thirdcai" v-if="noUse == false"></i>
+                  <i class="el-icon-thirdxia" v-if="noUse == true"></i>
                   <span>没用</span>
                 </li>
                 <li @click="beOfUses">
-                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="informations.use == 0"></i>
-                  <i
-                    class="el-icon-thirddianzan1"
-                    v-if="informations.use == 1"
-                    style="color:#f52424"
-                  ></i>
+                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="use == false"></i>
+                  <i class="el-icon-thirddianzan1" v-if="use == true" style="color:#f52424"></i>
                   <span>有用</span>
                 </li>
               </ul>
@@ -501,25 +497,22 @@
               <div class="tabCon">
                 <p class="tabCon-wu" v-if="tabconwu">暂无内容</p>
 
-                <div
-                  v-for="(items,index) in Answer"
-                  @click="handleanwer()"
-
-                >
-                    <viewer :images="items.Imgs"
-                    v-for="item in items.Imgs" 
+                <div v-for="(items,index) in Answer" @click="handleanwer()">
+                  <viewer
+                    :images="items.Imgs"
+                    v-for="item in items.Imgs"
                     @mouseenter="onMouseOver"
-                    @mouseleave="onMouseout" 
+                    @mouseleave="onMouseout"
                     v-if="imageShow == true"
+                  >
+                    <img
+                      v-if="item.conurl == true"
+                      :src="'http://192.168.1.27:8086'+item.contentUrl"
+                      :alt="items.contents"
                     >
-                      <img
-                        v-if="item.conurl == true"
-                        :src="'http://192.168.1.27:8086'+item.contentUrl"
-                        :alt="items.contents"
-                      >
-                      <p v-if="item.context == true">{{item.contents}}</p>
-                      <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
-                    </viewer>
+                    <p v-if="item.context == true">{{item.contents}}</p>
+                    <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
+                  </viewer>
                 </div>
               </div>
             </div>
@@ -527,7 +520,6 @@
             <reviews></reviews>
           </div>
           <div class="content-tag-con-right">
-
             <otherQuestions></otherQuestions>
             <p class="content-tag-con-right-con-p">推荐课程</p>
             <recommendClass></recommendClass>
@@ -536,11 +528,11 @@
       </div>
     </div>
 
-    <div class="popContainer" v-show="shade==true">
+    <!-- <div class="popContainer" v-show="shade==true">
       <p style="color: #ffffff;text-align: center;margin-top: 400px;">{{content}}</p>
       <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
       <div class="closeshade" @click="Closemask">关闭</div>
-    </div>
+    </div>-->
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -586,8 +578,7 @@ export default {
       tabconwu: true,
       isChoose: false,
       bookmark: false,
-      beOfUse: false,
-      noUse: false,
+
       MouseOver: false,
       shade: false,
       content: "请购买会员！",
@@ -595,13 +586,17 @@ export default {
       movable: false,
       retext: "",
       openretext: "",
-      useOnuse:{
+      useOnuse: {
         Id: "",
-        type:"",
-        check:""
+        type: "",
+        check: ""
       },
       informations: {},
-      imageShow:true
+      imageShow: true,
+      // 有用没用
+      use: false,
+      noUse: false,
+      UseRecords: {}
     };
   },
   created: function() {
@@ -622,9 +617,9 @@ export default {
         document.documentElement.scrollTop ||
         document.body.scrollTop;
     },
-    abcd:function(event){
+    abcd: function(event) {
       var _this = this;
-      console.log(1222222222222)
+      console.log(1222222222222);
     },
     //根据课程id检索
     Getclass: function() {
@@ -897,25 +892,25 @@ export default {
         });
     },
     //点击答案方法
-    handleanwer: function(item) {
-      var _this = this;
-      console.log(item);
-      //_this.isChoose = !_this.isChoose
-      _this.shade = true;
-      _this.content = _this.totalTime + "s后可观看答案";
-      let clock = window.setInterval(() => {
-        _this.totalTime--;
-        _this.content = _this.totalTime + "s后可观看答案";
-        if (_this.totalTime < 1) {
-          _this.content = "s后可观看答案";
-          _this.totalTime = 30;
-          _this.shade = false;
-           //当倒计时小于0时清除定时器
-          window.clearInterval(clock); //清除定时器
-        }
-      }, 1000);
-      
-    },
+    // handleanwer: function(item) {
+    //   var _this = this;
+    //   console.log(item);
+    //   //_this.isChoose = !_this.isChoose
+    //   _this.shade = true;
+    //   _this.content = _this.totalTime + "s后可观看答案";
+    //   let clock = window.setInterval(() => {
+    //     _this.totalTime--;
+    //     _this.content = _this.totalTime + "s后可观看答案";
+    //     if (_this.totalTime < 1) {
+    //       _this.content = "s后可观看答案";
+    //       _this.totalTime = 30;
+    //       _this.shade = false;
+    //        //当倒计时小于0时清除定时器
+    //       window.clearInterval(clock); //清除定时器
+    //     }
+    //   }, 1000);
+
+    // },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       var _this = this;
@@ -971,93 +966,65 @@ export default {
     beOfUses: function() {
       var _this = this;
       _this.useOnuse.Id = Number(this.$route.query.classInfoId);
-      _this.useOnuse.type = "Y";
-      _this.useOnuse.check = 1
+      if (_this.use == false || _this.noUse == true) {
+        _this.useOnuse.type = "Y";
+        _this.useOnuse.check = 1;
+        _this.use = true;
+        _this.noUse = false;
+        _this.ChangeClassInfo();
+      } else if (_this.use == true && _this.noUse == false) {
+        _this.useOnuse.type = "Y";
+        _this.useOnuse.check = -1;
+        _this.use = false;
+        _this.ChangeClassInfo();
+      }
+    },
+    noUses: function() {
+      var _this = this;
+      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+      if (_this.noUse == false || _this.use == true) {
+        _this.useOnuse.type = "N";
+        _this.useOnuse.check = 1;
+        _this.noUse = true;
+        _this.use = false;
+        _this.ChangeClassInfo();
+      } else if (_this.noUse == true && _this.use == false) {
+        _this.useOnuse.type = "N";
+        _this.useOnuse.check = -1;
+        _this.noUse = false;
+        _this.ChangeClassInfo();
+      }
+    },
+    // 更改课程资料的有用没用
+    ChangeClassInfo: function() {
+      var _this = this;
       _this
         .axios({
           method: "put",
           url: `http://192.168.1.27:8088/api/Classinfo/ChangeClassInfo`,
           async: false,
           params: {
-            classInfoId: _this.useOnuse.Id,
-            type: _this.useOnuse.type,
-            check: _this.useOnuse.check
+            classInfoid: Number(_this.$route.query.classInfoId),
+            type:_this.useOnuse.type,
+            check:_this.useOnuse.check
           },
           xhrFields: {
             withCredentials: true
           },
           headers: {
-             token: localStorage.getItem("token")
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
           console.log(res);
-      // 根据课程id检索课程订单
-      // _this.Classinfos();
-      //     if (_this.noUse == true) {
-      //       _this.beOfUse = _this.beOfUse;
-      //     } else {
-      //       _this.beOfUse = !_this.beOfUse;
-      //     }
+          _this.UseRecord();
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    noUses: function() {
-      var _this = this;
-      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
-      if (_this.informations.use == 0 && _this.informations.noUse == 0) {
-        _this.useOnuse.Use = 0;
-        _this.useOnuse.NoUse = 1;
-        _this.informations.noUse = 1;
-        _this.ChangeClassInfo();
-      } else if (_this.informations.use == 0 && _this.informations.noUse == 1) {
-        _this.useOnuse.Use = 0;
-        _this.useOnuse.NoUse = -1;
-        _this.informations.noUse = 0;
-        _this.ChangeClassInfo();
-      }else if (_this.informations.use == 1 && _this.informations.noUse == 0){
-        _this.useOnuse.Use = -1;
-        _this.useOnuse.NoUse = 1;
-        _this.informations.noUse = 1;
-        _this.informations.use = 0;
-        _this.ChangeClassInfo();
-      }
-      
-    },
-    // 更改课程资料的有用没用
-    ChangeClassInfo: function() {
-      var _this = this;
-      // _this
-      //   .axios({
-      //     method: "put",
-      //     url: `http://192.168.1.27:8088/api/Classinfo/ChangeClassInfo`,
-      //     async: false,
-      //     data: _this.useOnuse,
-      //     xhrFields: {
-      //       withCredentials: true
-      //     },
-      // headers: {
-      //   token: localStorage.getItem("token");
-      // }
-      //   })
-      //   .then(function(res) {
-      //     console.log(res);
-      //根据课程id检索课程订单
-      // _this.Classinfos();
-      //     if (_this.noUse == true) {
-      //       _this.beOfUse = _this.beOfUse;
-      //     } else {
-      //       _this.beOfUse = !_this.beOfUse;
-      //     }
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
-    },
     // 根据课程资料id检索该课程资料有用、没用
-    UseRecord:function(){
+    UseRecord: function() {
       var _this = this;
       _this
         .axios({
@@ -1065,18 +1032,35 @@ export default {
           url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
           async: false,
           params: {
-            classInfoid: Number(_this.$route.query.classInfoId),
+            classInfoid: Number(_this.$route.query.classInfoId)
           },
           xhrFields: {
             withCredentials: true
           },
           headers: {
-             Authorization: `Bearer ${localStorage.getItem("token")}`
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
           console.log(res);
-          console.log("根据课程资料id检索该课程资料有用、没用")
+          console.log("根据课程资料id检索该课程资料有用、没用");
+          _this.UseRecords = res.data.data;
+          if (_this.UseRecords == null || _this.UseRecords.check == -1) {
+            _this.use = false;
+            _this.noUse = false;
+          } else if (
+            _this.UseRecords.check == 1 &&
+            _this.UseRecords.type == "Y"
+          ) {
+            _this.use = true;
+            _this.noUse = false;
+          } else if (
+            _this.UseRecords.check == 1 &&
+            _this.UseRecords.type == "N"
+          ) {
+            _this.use = false;
+            _this.noUse = true;
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -1095,7 +1079,7 @@ export default {
       _this.shade = false;
       _this.totalTime = 0;
       _this.imageShow = false;
-      setTimeout(function () {
+      setTimeout(function() {
         _this.imageShow = true;
       }, 1);
     },

@@ -81,7 +81,7 @@
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Email"
-                  placeholder="输入用户名/邮箱"
+                  placeholder="输入邮箱地址"
                 ></el-input>
               </el-form-item>
 

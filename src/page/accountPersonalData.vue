@@ -3,7 +3,7 @@
         width: 100%;
         height: 100%;
         position: relative;
-        padding-bottom: 332px;
+        padding-bottom: 276px;
     }
 
     .personalData-con {
@@ -181,7 +181,7 @@
                     <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
                     <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
                     <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
-                    <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li>
+                    <!-- <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li> -->
                     <!-- <li><a href="javascript:0"><span><i class="el-icon-service"></i>在线客服</span></a></li> -->
                 </ul>
             </div>

@@ -84,18 +84,17 @@
           <strong v-if="this.$store.state.vip.succeed == false">普通</strong>
           <strong v-if="this.$store.state.vip.succeed == true">会员</strong>
 
-          <span v-if="this.$store.state.vip.succeed == false">
-            （
-            <router-link to="/personalData/vip">升级</router-link>）
-          </span>
+          <!-- <span v-if="this.$store.state.vip.succeed == false">
+           （ <router-link to="/personalData/vip">升级</router-link>）
+          </span> -->
         </p>
 
-        <div class="right-top-warn" v-if="this.$store.state.vip.succeed == false">
+        <!-- <div class="right-top-warn" v-if="this.$store.state.vip.succeed == false">
           <p>升级到高级会员获取更多。</p>
           <router-link to="/personalData/vip" style="text-decoration: none;color: #ffffff;">
             <el-button class="warn-button" type="danger">现在升级</el-button>
           </router-link>
-        </div>
+        </div> -->
         <ul>
           <li>名称:&nbsp;{{this.value.Name}}</li>
           <li>Q&nbsp;Q:&nbsp;{{this.value.QQ}}</li>

@@ -7,7 +7,7 @@
     .home {
         width: 100%;
         position: relative;
-        padding-bottom: 370px;
+        padding-bottom: 276px;
     }
 
     .home-con {
@@ -476,6 +476,7 @@
 </style>
 <template>
     <div class="home">
+        
         <homeNav msg="登录/注册"/>
         <div class="home-con">
             <div class="home-ser">

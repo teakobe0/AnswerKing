@@ -18,7 +18,7 @@
     <el-carousel trigger="click" :interval="5000" height="240px" indicator-position="none" style="border:1px solid #e1e1e1">
       <el-carousel-item v-for="item in courses" :key="item.id">
         <img :src="item.Imgs" alt>
-        <h3>{{item.id}}</h3>
+        <h3>{{value.name}}</h3>
         <p>分数:{{item.totalGrade}}</p>
         <button @click="skipclass(item.classId,item.id)" @click.native="flushCom">进入题库</button>
       </el-carousel-item>
@@ -33,6 +33,7 @@ export default {
   name: "ptherQuestions",
   data() {
     return {
+      value:{},
       // 根据课程ID检索课程题库
       courses: [],
       otherQuestionShow:true
@@ -42,6 +43,7 @@ export default {
     var _this = this;
     // 根据课程ID检索课程题库
     _this.Classinfos();
+    _this.Getclass();
   },
   methods: {
     //根据课程id检索课程订单
@@ -82,6 +84,28 @@ export default {
         path: "/serchDetailsContent",
         query: { id: classId, classInfoId: id }
       });
+    },
+    //根据课程id检索
+    Getclass: function() {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Class/Getclass`,
+          async: false,
+          params: {
+            id: _this.$route.query.id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.value = res.data.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
   },
   // 监听路由变化

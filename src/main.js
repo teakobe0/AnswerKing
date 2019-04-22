@@ -20,6 +20,14 @@ Vue.use(Viewer, {
 // 引入icon第三方
 import './icon/iconfont.css'
 
+
+// 浏览器title修改
+Vue.directive('title', {
+  inserted: function (el, binding) {
+    document.title = el.dataset.title
+  }
+})
+
 //引入库
 import store from './store'
 //引入Axios

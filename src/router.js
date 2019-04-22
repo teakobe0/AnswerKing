@@ -37,7 +37,7 @@ export default new Router({
         {
             path: '/',
             name: 'home',
-            component: home
+            component: home,
         },
         {
             path: '/login',      //设置跳转

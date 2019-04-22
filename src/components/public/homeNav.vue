@@ -258,16 +258,16 @@
                             <!--</tr>-->
                         <!--</table>-->
                     </li>
-                    <li>
+                    <!-- <li>
                         <a href="#">贡献获取</a>
                         <ul>
                             <li><a href="#">上传资料</a></li>
                             <li><a href="#">获取酬劳</a></li>
                         </ul>
-                    </li>
-                    <li>
+                    </li> -->
+                    <!-- <li>
                         <router-link to='/member'>成为会员</router-link>
-                    </li>
+                    </li> -->
                     <li v-if="$store.state.logo.show">
                         <router-link to='/login'>登录</router-link>
 
