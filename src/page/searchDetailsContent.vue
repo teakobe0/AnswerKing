@@ -448,12 +448,12 @@
                 <li @click="noUses">
                   <i class="el-icon-thirdcai" v-if="noUse == false"></i>
                   <i class="el-icon-thirdxia" v-if="noUse == true"></i>
-                  <span>没用</span>
+                  <span>没用({{informations.noUse}})</span>
                 </li>
                 <li @click="beOfUses">
                   <i class="el-icon-thirdqinziAPPtubiao-" v-if="use == false"></i>
                   <i class="el-icon-thirddianzan1" v-if="use == true" style="color:#f52424"></i>
-                  <span>有用</span>
+                  <span>有用({{informations.use}})</span>
                 </li>
               </ul>
             </div>
@@ -645,6 +645,7 @@ export default {
           document.documentElement.scrollTop = 0;
           // 获取评论刷新
           // _this.searching();
+          _this.UseRecord();
         })
         .catch(function(error) {
           console.log(error);
@@ -790,15 +791,12 @@ export default {
           }
         })
         .then(function(res) {
-          console.log("据课程id检索课程资料123");
           console.log(res);
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];
             }
           }
-          // 根据课程资料id检索该课程资料有用、没用
-          _this.UseRecord();
         })
         .catch(function(error) {
           console.log(error);
@@ -1044,6 +1042,7 @@ export default {
         .then(function(res) {
           console.log(res);
           console.log("根据课程资料id检索该课程资料有用、没用");
+          _this.Classinfos();
           _this.UseRecords = res.data.data;
           if (_this.UseRecords == null || _this.UseRecords.check == -1) {
             _this.use = false;

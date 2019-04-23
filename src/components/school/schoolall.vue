@@ -89,6 +89,7 @@
         padding-top: 10px;
         padding-bottom: 10px;
         /*border: 1px dashed #a3a3a3;*/
+        overflow: hidden;
 
 
     }
@@ -101,7 +102,8 @@
     .classes-con-course div a {
         color: #5B9DFD;
         text-decoration: none;
-        font-size: 18px;
+        font-size: 16px;
+        white-space:nowrap;
         /*border-bottom: 1px dashed #a2a2a2;*/
 
     }
