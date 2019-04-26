@@ -3,7 +3,7 @@
 <template>
 
   <div id="app" >
-    <router-view v-title data-title="AnswerWang"/>
+    <router-view/>
   </div>
 </template>
 

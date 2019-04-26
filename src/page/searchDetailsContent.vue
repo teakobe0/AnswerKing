@@ -220,7 +220,7 @@
   float: left;
 }
 
-.tabCon div div {
+.tabCon .cover {
   width: 150px;
   height: 180px;
   float: left;
@@ -229,12 +229,10 @@
   margin-top: 10px;
   padding: 10px;
   overflow: hidden;
-  background-color: #ffffff;
   cursor: pointer;
-  position: relative;
 }
 
-.tabCon div div:hover {
+.tabCon .cover:hover {
   border: 1px solid #136bd3;
 }
 .tabCon div p {
@@ -496,24 +494,32 @@
               </ul>
               <div class="tabCon">
                 <p class="tabCon-wu" v-if="tabconwu">暂无内容</p>
-
-                <div v-for="(items,index) in Answer" @click="handleanwer()">
-                  <viewer
-                    :images="items.Imgs"
-                    v-for="item in items.Imgs"
+                <div v-for="(items,index) in Answer">
+                  <div
+                    class="cover"
+                    v-for="(item,indexs) in items.Imgs"
                     @mouseenter="onMouseOver"
                     @mouseleave="onMouseout"
-                    v-if="imageShow == true"
+                    @click="() => handleanwer(indexs)"
                   >
-                    <img
-                      v-if="item.conurl == true"
-                      :src="'http://192.168.1.27:8086'+item.contentUrl"
-                      :alt="items.contents"
+                    <img v-if="item.conurl == true" :src="item.contentUrl" :alt="items.contents">
+                  </div>
+                  <!-- <div
+                      v-for="item in items.Imgs" 
+                      @mouseenter="onMouseOver"
+                      @mouseleave="onMouseout"
+                      v-if="imageShow == true"
                     >
-                    <p v-if="item.context == true">{{item.contents}}</p>
-                    <!--<div id="mouseover" v-if="MouseOver == true"></div>-->
-                  </viewer>
+                      <img v-viewer
+                        v-if="item.conurl == true"
+                        :src="item.contentUrl"
+                        :alt="items.contents"
+                      >
+                      <p v-if="item.context == true">{{item.contents}}</p>
+                      <div id="mouseover" v-if="MouseOver == true"></div>
+                  </div>-->
                 </div>
+                <VueEasyLightbox :visible="visible" :imgs="imgss" :index="index" @hide="handleHide"></VueEasyLightbox>
               </div>
             </div>
             <!-- 评论组件 -->
@@ -528,11 +534,11 @@
       </div>
     </div>
 
-    <!-- <div class="popContainer" v-show="shade==true">
+    <div class="popContainer" v-show="shade==true">
       <p style="color: #ffffff;text-align: center;margin-top: 400px;">{{content}}</p>
       <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
       <div class="closeshade" @click="Closemask">关闭</div>
-    </div>-->
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -549,6 +555,8 @@ import reviews from "@/components/questionBank/reviews.vue";
 
 import { formatDate } from "@/common/js/date.js";
 
+import VueEasyLightbox from "vue-easy-lightbox";
+import { constants } from "crypto";
 export default {
   name: "serchDetailsContent",
   components: {
@@ -556,7 +564,8 @@ export default {
     homeFooter,
     otherQuestions,
     recommendClass,
-    reviews
+    reviews,
+    VueEasyLightbox
   },
   data() {
     return {
@@ -578,11 +587,13 @@ export default {
       tabconwu: true,
       isChoose: false,
       bookmark: false,
-
       MouseOver: false,
+      // 控制遮罩的打开关闭
       shade: false,
       content: "请购买会员！",
+      countdownClock: null,
       totalTime: 30,
+      
       movable: false,
       retext: "",
       openretext: "",
@@ -596,13 +607,16 @@ export default {
       // 有用没用
       use: false,
       noUse: false,
-      UseRecords: {}
+      UseRecords: {},
+      // 图片查看器
+      imgss: "",
+      visible: false,
+      index: 0
     };
   },
   created: function() {
     var _this = this;
     _this.Id = _this.$route.query.id;
-
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -611,15 +625,12 @@ export default {
     _this.Classinfos();
   },
   methods: {
+    
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
         document.body.scrollTop;
-    },
-    abcd: function(event) {
-      var _this = this;
-      console.log(1222222222222);
     },
     //根据课程id检索
     Getclass: function() {
@@ -707,8 +718,7 @@ export default {
                 url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
                 async: false,
                 params: {
-                  classweektypeid: _this.$route.query.classweektypeid,
-                  id: _this.$route.query.answerID
+                  classweektypeid: _this.$route.query.classweektypeid
                 },
                 xhrFields: {
                   withCredentials: true
@@ -732,11 +742,13 @@ export default {
                     _this.Answer[i].conurl = false;
                     _this.Answer[i].context = true;
                     _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                    _this.imgss = _this.getUrlListCover(_this.Answer[i]);
                     console.log("URL空");
                   } else {
                     _this.Answer[i].conurl = true;
                     _this.Answer[i].context = false;
                     _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                    _this.imgss = _this.getUrlListCover(_this.Answer[i]);
                     console.log("content空");
                   }
                 }
@@ -775,6 +787,21 @@ export default {
           console.log(error);
         });
     },
+    //将图片的ID和路径保存到outputList的方法
+    getUrlList: function(rawList) {
+      var imgUrlArray = rawList.url.split("|");
+      var outputList = [];
+      for (var i = 0; i < imgUrlArray.length; i++) {
+        outputList.push({
+          id: rawList.id,
+          contentUrl: "http://192.168.1.27:8086" + imgUrlArray[i],
+          contents: rawList.contents,
+          context: rawList.context,
+          conurl: rawList.conurl
+        });
+      }
+      return outputList;
+    },
     //根据课程id检索课程订单
     Classinfos: function() {
       var _this = this;
@@ -791,7 +818,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];
@@ -801,21 +827,6 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlList: function(rawList) {
-      var imgUrlArray = rawList.url.split("|");
-      var outputList = [];
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        outputList.push({
-          id: rawList.id,
-          contentUrl: imgUrlArray[i],
-          contents: rawList.contents,
-          context: rawList.context,
-          conurl: rawList.conurl
-        });
-      }
-      return outputList;
     },
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
@@ -876,11 +887,13 @@ export default {
               _this.Answer[i].conurl = false;
               _this.Answer[i].context = true;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
               console.log("URL空");
             } else {
               _this.Answer[i].conurl = true;
               _this.Answer[i].context = false;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
               console.log("content空");
             }
           }
@@ -889,26 +902,87 @@ export default {
           console.log(error);
         });
     },
-    //点击答案方法
-    // handleanwer: function(item) {
-    //   var _this = this;
-    //   console.log(item);
-    //   //_this.isChoose = !_this.isChoose
-    //   _this.shade = true;
-    //   _this.content = _this.totalTime + "s后可观看答案";
-    //   let clock = window.setInterval(() => {
-    //     _this.totalTime--;
-    //     _this.content = _this.totalTime + "s后可观看答案";
-    //     if (_this.totalTime < 1) {
-    //       _this.content = "s后可观看答案";
-    //       _this.totalTime = 30;
-    //       _this.shade = false;
-    //        //当倒计时小于0时清除定时器
-    //       window.clearInterval(clock); //清除定时器
-    //     }
-    //   }, 1000);
+    //将图片的ID和路径保存到outputList的方法
+    getUrlListCover: function(rawList) {
+      var _this = this;
+      var imgUrlArray = rawList.url.split("|");
+      var outputList = [];
+      for (var i = 0; i < imgUrlArray.length; i++) {
+        outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
+      }
+      return outputList;
+    },
+    clockTick: function() {
+      let _this = this;
 
-    // },
+      return setTimeout(() => {
+        if (_this.totalTime > 0) {
+          _this.totalTime--;
+          _this.content = _this.totalTime + "s后可观看答案";
+          _this.clockTick();
+        } else {
+          _this.Closemask();
+        }
+      }, 1000);
+    },
+    //点击答案显示遮罩方法
+    handleanwer: function(index) {
+      var _this = this;
+      if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
+        _this.shade = false;
+        // 控制图片查看器的打开
+        _this.index = index;
+        _this.shows();
+      } else {
+        _this.shade = true;
+        _this.totalTime = 30;
+        _this.content = _this.totalTime + "s后可观看答案";
+
+        let clock = window.setInterval(() => {
+          _this.totalTime--;
+          _this.content = _this.totalTime + "s后可观看答案";
+          if (_this.totalTime < 1) {
+            _this.content = "s后可观看答案";
+            _this.totalTime = 30;
+            _this.shade = false;
+            // 控制图片查看器的打开
+            _this.index = index;
+            _this.shows();
+            //当倒计时小于0时清除定时器
+            window.clearInterval(clock); //清除定时器
+          }
+        }, 1000);
+      }
+
+      // _this.isChoose = !_this.isChoose
+      // clearInterval(clock); //清除定时器
+      // console.log(_this.countdownClock);
+      // if (!_this.countdownClock) {
+      //   clearTimeout(_this.countdownClock);
+      //   _this.countdownClock = null;
+      // }
+      // console.log(_this.countdownClock);
+      // _this.countdownClock = _this.clockTick();
+
+      // let remainTime = _this.totalTime;
+    },
+    // 关闭遮罩
+    Closemask: function() {
+      var _this = this;
+      _this.countdownClock = null;
+      _this.shade = false;
+      _this.totalTime = 0;
+      _this.imageShow = true;
+      
+    },
+    shows() {
+      let _this = this;
+      _this.visible = true;
+    },
+    handleHide() {
+      let _this = this;
+      _this.visible = false;
+    },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       var _this = this;
@@ -1003,8 +1077,8 @@ export default {
           async: false,
           params: {
             classInfoid: Number(_this.$route.query.classInfoId),
-            type:_this.useOnuse.type,
-            check:_this.useOnuse.check
+            type: _this.useOnuse.type,
+            check: _this.useOnuse.check
           },
           xhrFields: {
             withCredentials: true
@@ -1014,7 +1088,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.UseRecord();
         })
         .catch(function(error) {
@@ -1040,8 +1113,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("根据课程资料id检索该课程资料有用、没用");
           _this.Classinfos();
           _this.UseRecords = res.data.data;
           if (_this.UseRecords == null || _this.UseRecords.check == -1) {
@@ -1072,15 +1143,6 @@ export default {
     onMouseout: function() {
       var _this = this;
       _this.MouseOver = false;
-    },
-    Closemask: function() {
-      var _this = this;
-      _this.shade = false;
-      _this.totalTime = 0;
-      _this.imageShow = false;
-      setTimeout(function() {
-        _this.imageShow = true;
-      }, 1);
     },
 
     joim: function() {

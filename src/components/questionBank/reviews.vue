@@ -252,7 +252,7 @@
           <div style="height:28px;margin-top:8px">
             <!-- <div class="face">
               <img src="../../assets/笑脸.svg" alt>
-            </div> -->
+            </div>-->
             <div class="reviewButton">
               <el-button type="primary" size="mini" @click="addComment">评论</el-button>
             </div>
@@ -337,7 +337,7 @@
               <div style="height:28px;margin-top:8px">
                 <!-- <div class="face">
                   <img src="../../assets/笑脸.svg" alt>
-                </div> -->
+                </div>-->
                 <div class="reviewButton">
                   <el-button type="info" size="mini" @click="cancel(index)">取消</el-button>
                   <el-button type="primary" size="mini" @click="submitReview(item.model)">评论</el-button>
@@ -377,7 +377,7 @@ export default {
       comment: [],
       //登录人信息
       personreviews: {},
-      personreviewsid:"",
+      personreviewsid: ""
     };
   },
   created: function() {
@@ -484,6 +484,9 @@ export default {
       _this.addComments.contents = _this.retext;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
+      console.log(_this.addComments.contents)
+      console.log(_this.addComments.classInfoId)
+      console.log(_this.addComments.clientid)
       _this
         .axios({
           method: "POST",
@@ -492,6 +495,9 @@ export default {
           data: _this.addComments,
           xhrFields: {
             withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
@@ -512,12 +518,7 @@ export default {
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
-      _this.addComments.contenturl =
-        model +
-        "," +
-        _this.$route.query.id +
-        "," +
-        _this.$route.query.classInfoId;
+      _this.addComments.contenturl =model +"," +_this.$route.query.id +"," +_this.$route.query.classInfoId;
       console.log(_this.addComments);
       _this
         .axios({
@@ -527,6 +528,9 @@ export default {
           data: _this.addComments,
           xhrFields: {
             withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
@@ -551,6 +555,9 @@ export default {
           },
           xhrFields: {
             withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {

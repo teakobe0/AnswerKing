@@ -340,11 +340,11 @@
                 method: "get",
                 url: `http://192.168.1.27:8088/api/Notice/Notices`,
                 async: false,
-                params: {
-                    clientid: _this.personreviewsid
-                },
                 xhrFields: {
                     withCredentials: true
+                },
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
                 }
             }).then(function(res) {
                 _this.$store.state.logo.message = res.data.data.length;
@@ -400,6 +400,8 @@
                 })
                 .then(function(res) {
                     console.log(res);
+                    _this.$store.state.loginPerson.loginPerson = res.data.data;
+                    console.log(_this.$store.state.loginPerson.loginPerson)
                     _this.personreviewsid = res.data.data.id;
                     _this.gainmessage();
                     // setInterval(function () {

@@ -5,28 +5,12 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
-//引入viewer.css (图片放大查看工具)
-import 'viewerjs/dist/viewer.css'
-import Viewer from 'v-viewer'
-Vue.use(Viewer, {
-  defaultOptions: {
-    title: 0,
-    tooltip:1,
-    rotatable:1,
-    scalable:1,
-    keyboard:0
-  }
-})
+// 引入vue-easy-lightbox（图片放大工具）
+import Lightbox from 'vue-easy-lightbox'
+Vue.use(Lightbox)
 // 引入icon第三方
 import './icon/iconfont.css'
 
-
-// 浏览器title修改
-Vue.directive('title', {
-  inserted: function (el, binding) {
-    document.title = el.dataset.title
-  }
-})
 
 //引入库
 import store from './store'
