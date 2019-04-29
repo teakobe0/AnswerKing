@@ -140,9 +140,10 @@
 .find-select-bootom {
   width: 1140px;
   margin: 0 auto;
-  padding: 30px;
+  padding: 30px 30px 60px 30px;
   position: relative;
   font-size: 0;
+  z-index: 0;
 }
 
 .find-select-bootom ul {
@@ -280,7 +281,7 @@
               </el-select>
             </div>
           </div>
-          <div class="find-select-bootom">
+          <div class="find-select-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in universitys">
                 <router-link
@@ -336,7 +337,8 @@ export default {
         //}
       ],
       pageSize: 40,
-      queryString: ""
+      queryString: "",
+      loading:true
     };
   },
   created: function() {
@@ -461,7 +463,6 @@ export default {
     //根据国家 州/省份检索学校
     GetUniversitys: function(index) {
       var _this = this;
-      console.log(index);
       _this
         .axios({
           method: "get",
@@ -476,9 +477,8 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.alluniversitys = res.data.data;
-
+          _this.loading = false;
           sortByKey(_this.alluniversitys, "number");
           //数组对象排序
           function sortByKey(array, key) {
@@ -489,7 +489,6 @@ export default {
             });
           }
           _this.viewMore();
-          console.log(_this.alluniversitys);
         })
         .catch(function(error) {
           console.log(error);

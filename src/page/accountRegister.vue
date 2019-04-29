@@ -84,29 +84,6 @@
                   placeholder="输入邮箱地址"
                 ></el-input>
               </el-form-item>
-
-              <!--<el-form-item label="昵称" prop="Name" class="register-name">-->
-              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Name" placeholder="昵称"></el-input>-->
-              <!--</el-form-item>-->
-              <!--<el-form-item label="QQ" prop="QQ" class="register-name">-->
-              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.QQ" placeholder="QQ"></el-input>-->
-              <!--</el-form-item>-->
-              <!--<el-form-item label="手机" prop="Tel" class="register-name">-->
-              <!--<el-input prefix-icon="el-icon-edit" v-model="ruleForm.Tel" placeholder="手机"></el-input>-->
-              <!--</el-form-item>-->
-              <!--<el-form-item label="性别" prop="Sex">-->
-              <!--<el-radio-group v-model="ruleForm.Sex">-->
-              <!--<el-radio label="男"></el-radio>-->
-              <!--<el-radio label="女"></el-radio>-->
-              <!--</el-radio-group>-->
-              <!--</el-form-item>-->
-              <!--<el-form-item label="生日" required>-->
-              <!--<el-col :span="11">-->
-              <!--<el-form-item prop="Birthday">-->
-              <!--<el-date-picker type="date" placeholder="选择日期" v-model="ruleForm.Birthday" style="width: 100%;"></el-date-picker>-->
-              <!--</el-form-item>-->
-              <!--</el-col>-->
-              <!--</el-form-item>-->
               <el-form-item style="margin-left: -50px;" label prop="Password">
                 <el-input
                   prefix-icon="el-icon-goods"
@@ -128,7 +105,7 @@
                 
               </el-form-item>
               <el-form-item style="margin-left: -50px;text-align: center">
-                <el-button type="primary" id="regi" @click="register('ruleForm')">注册</el-button>
+                <el-button type="primary" id="regi" @click="register('ruleForm')" :disabled="loadings" :loading="loadings">注册</el-button>
               </el-form-item>
             </el-form>
             <p class="termsOfService">注册即代表同意 <router-link to="/termsOfService">《AnswerWang服务条款》</router-link> </p>
@@ -178,7 +155,7 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
-      wer: 123,
+      loadings:false,
       ruleForm: {
         Email: "",
         //Name:'',
@@ -231,6 +208,7 @@ export default {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
+          this.loadings = true;
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/Register`,

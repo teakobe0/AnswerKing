@@ -648,8 +648,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("根据课程ID检索");
           _this.value = res.data.data;
           _this.$store.state.recommendClass.skipuniversityId =
             res.data.data.universityId;
@@ -678,8 +676,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("根据课程资料id检索每周课程");
           _this.valueWeek = res.data.data;
           if (
             _this.$route.query.classWeekId &&
@@ -698,8 +694,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
-                console.log("根据每周课程的id检索类型(点击答案进入)");
                 _this.value1 = Number(_this.$route.query.classWeekId);
                 _this.tabs = res.data.data;
                 for (var i = 0; i < _this.tabs.length; i++) {
@@ -725,8 +719,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
-                console.log("根据每周课程类型id检索答案");
                 _this.Answer = res.data.data;
                 if (_this.Answer.length == 0) {
                   _this.tabconwu = true;
@@ -743,13 +735,11 @@ export default {
                     _this.Answer[i].context = true;
                     _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
                     _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                    console.log("URL空");
                   } else {
                     _this.Answer[i].conurl = true;
                     _this.Answer[i].context = false;
                     _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
                     _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                    console.log("content空");
                   }
                 }
               })
@@ -770,10 +760,7 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
-                console.log("根据每周课程的id检索类型(从课程进入)");
                 _this.tabs = res.data.data;
-                console.log(_this.tabs);
 
                 _this.value1 = Number(_this.valueWeek[0].id);
                 _this.RetrieveTheTnswer(_this.tabs[0].id);
@@ -844,8 +831,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("根据每周课程的id检索类型");
           _this.tabs = res.data.data;
           _this.RetrieveTheTnswer(_this.tabs[0].id);
         })
@@ -870,8 +855,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("根据每周课程类型id检索答案");
           _this.Answer = res.data.data;
           if (_this.Answer.length == 0) {
             _this.tabconwu = true;
@@ -881,7 +864,6 @@ export default {
           for (var i = 0; i < _this.Answer.length; i++) {
             if (
               _this.Answer[i].url == null ||
-              _this.Answer[i].url == "" ||
               _this.Answer[i].url == ""
             ) {
               _this.Answer[i].conurl = false;
@@ -999,10 +981,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log(
-            "根据每周课程类型id检索答案(切换每周的时候默认触发第一个状态获取答案)"
-          );
           _this.Answer = res.data.data;
           _this.numnum = 0;
           if (_this.Answer.length == 0) {
@@ -1115,6 +1093,7 @@ export default {
         .then(function(res) {
           _this.Classinfos();
           _this.UseRecords = res.data.data;
+          console.log(_this.UseRecords)
           if (_this.UseRecords == null || _this.UseRecords.check == -1) {
             _this.use = false;
             _this.noUse = false;

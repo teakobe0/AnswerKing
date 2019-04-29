@@ -88,8 +88,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("通过学校ID查询所有课程");
           // _this.classes = res.data.data;
           // _this.classeslength = _this.classes.length;
           // _this.universityClass = res.data.data;
@@ -102,7 +100,6 @@ export default {
               return y < x ? -1 : x > y ? 1 : 0;
             });
           }
-          console.log(_this.universityClass);
           for (var i = 0; i < 5; i++) {
             if (res.data.data[i].cla.id != _this.$route.query.id) {
               _this.universityClass.push(res.data.data[i]);

@@ -23,7 +23,6 @@
 
 .home-ser-img1 {
   width: 1100px;
-  /*margin: 0 auto;*/
   position: absolute;
   left: 50%;
   bottom: 0px;
@@ -41,7 +40,6 @@
 
 .home-ser-img2 {
   width: 1100px;
-  /*margin: 0 auto;*/
   position: absolute;
   left: 50%;
   bottom: 0px;
@@ -260,19 +258,6 @@
   color: #383838;
 }
 
-.con-left-top p a {
-  text-align: right;
-  text-decoration: none;
-  padding: 0 0 0.75rem;
-  border-bottom: 5px solid #3ccfcf;
-  color: #000;
-  font-family: "微软雅黑";
-}
-
-.con-left-top p a:hover {
-  color: #fbcc28;
-  border-bottom: 5px solid #fbcc28;
-}
 
 .con-left-middle {
   width: 408px;
@@ -383,13 +368,6 @@
   width: 800px;
   height: 60px;
   border: none;
-  /*box-shadow: 1px 1px 10px #cacaca, -1px -1px 10px #cacaca;*/
-}
-
-.bbc input {
-  width: 500px;
-  height: 60px;
-  /*box-shadow: 1px 1px 10px #cacaca, -1px -1px 10px #cacaca;*/
 }
 
 .text-center {
@@ -554,10 +532,7 @@
             <div class="pub-con-left">
               <div class="con-left-top">
                 <h1>更多元</h1>
-
                 <h3 style="text-align:right">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
-
-                <!-- <p><a href="#">我是学生</a></p> -->
               </div>
               <div class="con-left-middle">
                 <img src="../assets/3.jpg" alt>
@@ -572,18 +547,8 @@
               </div>
               <div class="con-right-middle">
                 <h1>更贴心</h1>
-
                 <h3>根据你的专业，学科推送相关内容，省去二次查找的麻烦；定制化服务让你高枕无忧，留学生活更加丰富</h3>
-
-                <!-- <p><a href="#">我是教师</a></p> -->
               </div>
-              <!-- <div class="con-right-bottom">
-                                <p>我们为学生和教师提供便捷的工具，以创建和分享在线学习材料。AnswerKing是美国最流行的在线教育服务工具，每月有超过3000万名学生和教师使用。</p>
-
-                                <p>AnswerKing从简单的在线学习工具起步，如今为学生提供学习工具，可制作单词卡、练习拼写、参与游戏、测试知识水平、与其他同学合作等。</p>
-
-                                <p><a href="#">AnswerKing的宗旨</a></p>
-              </div>-->
             </div>
           </div>
         </div>
@@ -631,7 +596,6 @@ export default {
       var results = queryString
         ? restaurants.filter(this.createFilter(queryString))
         : restaurants;
-
       this.axios({
         method: "get",
         url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
@@ -644,8 +608,6 @@ export default {
         }
       })
         .then(function(res) {
-          console.log(res);
-					
           if (
 						res.data.data.classes != null && 
 						res.data.data.classes.length > 0
@@ -739,8 +701,6 @@ export default {
         }
       })
         .then(function(res) {
-          console.log(res);
-          // console.log(_this.state1);
           //课程
           if (item.class == "classes") {
             _this.$router.push({
@@ -774,14 +734,18 @@ export default {
     },
     handleEnter(item) {
       var _this = this;
-      console.log(item);
-      console.log("handleEnter");
       var patt = /^[\s]*$/;
-      var pvalue = patt.test(_this.queryString);
+      var pvalue = patt.test(_this.state1);
       if (pvalue) {
-        alert("不能搜索全空格的内容");
-      } else if(_this.state1 == "") {
-        alert("不能搜索全空格的内容");
+        _this.$message({
+          message: "不能搜索全空格的内容",
+          type: "success"
+        });
+      } else if(_this.state1.length<3) {
+        _this.$message({
+          message: "搜索长度最少三位数",
+          type: "success"
+        });
       }else {
         _this.$router.push({
           path: "/serch",
@@ -793,12 +757,10 @@ export default {
       console.log(pvalue);
     },
     handle: function() {
-      //console.log('获取焦点')
       this.homeSerchHide = false;
       this.homeSerchShow = true;
     },
     homeLoseFocus: function() {
-      console.log("失去焦点");
       this.homeSerchHide = true;
       this.homeSerchShow = false;
     }

@@ -70,8 +70,6 @@ export default {
               _this.otherQuestionShow=false
             }
           }
-          console.log("据课程id检索课程资料");
-          console.log(_this.courses);
         })
         .catch(function(error) {
           console.log(error);

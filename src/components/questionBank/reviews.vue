@@ -16,11 +16,14 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
-  background-color: rgb(252, 252, 252);
+  background-color:#4458b0;
 }
-.headPortrait img {
+.headPortrait p {
   width: 50px;
   height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
 }
 .retext {
   float: left;
@@ -231,10 +234,14 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
+  background-color:#4458b0;
 }
-.openheadPortrait img {
+.openheadPortrait p {
   width: 50px;
   height: 50px;
+  text-align: center;
+  line-height: 50px;
+  color: #fff;
 }
 </style>
 
@@ -244,7 +251,8 @@
       <!-- 本人的评论框 -->
       <div style="overflow:hidden;width:953px">
         <div class="headPortrait">
-          <img src="../../assets/5.jpg" alt>
+          <!-- <img src="../../assets/5.jpg" alt> -->
+          <p>AW</p>
         </div>
         <div class="retext">
           <p>{{personreviews.name}}</p>
@@ -260,9 +268,10 @@
         </div>
       </div>
       <!-- 评论内容 -->
-      <div class="statereview" v-for="(item, index) in comment">
+      <div class="statereview" v-for="(item,index) in comment">
         <div class="headPortrait">
-          <img src="../../assets/5.jpg" alt>
+          <p>AW</p>
+          <!-- <img src="../../assets/5.jpg" alt> -->
         </div>
         <div class="staterretext">
           <p>
@@ -287,7 +296,8 @@
           <div>
             <div class="openstatereview" v-for="(openitem,openindex) in item.replies">
               <div class="openheadPortrait">
-                <img src="../../assets/5.jpg" alt>
+                <p>AW</p>
+                <!-- <img src="../../assets/5.jpg" alt> -->
               </div>
               <div class="openstaterretext">
                 <p>
@@ -323,7 +333,8 @@
             style="background:rgb(252, 252, 252);overflow:hidden;padding:8px;"
           >
             <div class="headPortrait">
-              <img src="../../assets/5.jpg" alt>
+              <p>AW</p>
+              <!-- <img src="../../assets/5.jpg" alt> -->
             </div>
             <div class="openretext">
               <p>{{personreviews.name}}</p>
@@ -353,6 +364,7 @@
 
 <script type="es6">
 import { formatDate } from "@/common/js/date.js";
+import { constants } from 'crypto';
 export default {
   name: "reviews",
   data() {
@@ -376,7 +388,7 @@ export default {
       },
       comment: [],
       //登录人信息
-      personreviews: {},
+      personreviews: [],
       personreviewsid: ""
     };
   },
@@ -395,38 +407,20 @@ export default {
     //获取登录人的个人信息
     personal: function() {
       var _this = this;
-      if (localStorage.getItem("token")) {
-        var _this = this;
-        _this
-          .axios({
-            method: "get",
-            url: `http://192.168.1.27:8088/api/Client/GetClient`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            _this.personreviews = res.data.data;
-            _this.personreviewsid = res.data.data.id;
-            _this.searching();
-            console.log(res);
-            console.log("登录人信息");
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      } else {
-      }
+      setTimeout(function () {
+        _this.personreviews = _this.$store.state.loginPerson.loginPerson;
+        _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
+        // console.log(_this.$store.state.loginPerson.loginPerson)
+        console.log(_this.personreviewsid)
+        _this.searching();
+      }, 300);
+      
     },
     //检索评论
     searching: function() {
       var _this = this;
       _this.comment.length = 0;
-
+      
       _this
         .axios({
           method: "get",
@@ -440,9 +434,8 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("检索评论");
           _this.reviews = res.data.data;
+          
           for (var i = 0; i < _this.reviews.length; i++) {
             _this.$set(_this.reviews[i], "openreply", false);
             _this.$set(_this.reviews[i], "deleteshow", false);
@@ -484,9 +477,6 @@ export default {
       _this.addComments.contents = _this.retext;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
-      console.log(_this.addComments.contents)
-      console.log(_this.addComments.classInfoId)
-      console.log(_this.addComments.clientid)
       _this
         .axios({
           method: "POST",
@@ -501,8 +491,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("新增评论");
           _this.retext = "";
           _this.searching();
         })
@@ -513,13 +501,11 @@ export default {
     // 新增2级评论
     submitReview: function(model) {
       var _this = this;
-      console.log(model);
       _this.addComments.parentId = _this.replyOneTwoid;
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
       _this.addComments.contenturl =model +"," +_this.$route.query.id +"," +_this.$route.query.classInfoId;
-      console.log(_this.addComments);
       _this
         .axios({
           method: "POST",
@@ -534,8 +520,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("新增评论");
           _this.searching();
         })
         .catch(function(error) {
@@ -561,8 +545,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          console.log("删除评论");
           _this.$message({
             message: "删除成功",
             type: "success"
@@ -592,11 +574,11 @@ export default {
       _this.comment[index].model = "回复 " + name + ":";
       _this.replyOneTwoid = oneid + "," + twoid;
       console.log("2级评论回复方法");
-      console.log(window.location.pathname);
-      console.log(_this.replyOneTwoid);
-      console.log(oneid);
-      console.log(twoid);
-      console.log(_this.comment[index].model);
+      // console.log(window.location.pathname);
+      // console.log(_this.replyOneTwoid);
+      // console.log(oneid);
+      // console.log(twoid);
+      // console.log(_this.comment[index].model);
     },
     //留言的方法
     opencontrol: function(indexs, id) {
@@ -605,7 +587,7 @@ export default {
       _this.comment[indexs].model = "";
       _this.replyOneTwoid = "," + id;
       console.log("1级评论回复方法");
-      console.log(_this.replyOneTwoid);
+      console.log(indexs);
     },
     // 关闭评论框的方法
     cancel: function(indexs) {

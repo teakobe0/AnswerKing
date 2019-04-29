@@ -125,7 +125,8 @@
                 </div> -->
 
               <el-form-item style="margin-left: -50px;">
-                <el-button id="submit" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                <!-- <el-button id="submit" type="primary" @click="submitForm('ruleForm')" v-if="loadings == true">登录</el-button> -->
+                <el-button id="submit" type="primary" @click="submitForm('ruleForm')" :disabled="loadings" :loading="loadings" >登录</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -144,6 +145,7 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import Footer from "@/components/public/footer.vue";
+import { truncate } from 'fs';
 export default {
   name: "login",
   components: {
@@ -160,9 +162,10 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
+      loadings: false,
       ruleForm: {
         Email: "",
-        Password: ""
+        Password: "",
       },
       //rules是Element的表单验证规则
       rules: {
@@ -176,11 +179,14 @@ export default {
   //页面的方法还是写在methods{}中
   methods: {
     submitForm(ruleForm) {
+              
+
       //$refs是获取DOM节点的，它直接在页面找到ruleForm这个表单
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
+          this.loadings = true;   
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/login`,
@@ -197,6 +203,7 @@ export default {
               localStorage.token = res.data.data.token;
               console.log(res);
               if (res.data.status == 1) {
+                
                 _this.$message({
                   message: "登陆成功",
                   type: "success"

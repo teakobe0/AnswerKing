@@ -359,29 +359,6 @@
                 console.log(error);
             });
             },
-            // gainmessages: function() {
-            // var _this = this;
-            // _this
-            //     .axios({
-            //     method: "get",
-            //     url: `http://192.168.1.27:8088/api/Notice/Notices`,
-            //     async: false,
-            //     params: {
-            //         clientid: _this.personreviewsid
-            //     },
-            //     xhrFields: {
-            //         withCredentials: true
-            //     }
-            // }).then(function(res) {
-            //     _this.nummessage = res.data.data.length;
-            //     if(_this.$store.state.logo.message < _this.nummessage){
-            //         _this.ismessage = true; 
-            //     }
-                
-            // }).catch(function(error) {
-            //     console.log(error);
-            // });
-            // },
             // 获取个人信息
             gainpersonal: function() {
             var _this = this;
@@ -399,14 +376,9 @@
                     }
                 })
                 .then(function(res) {
-                    console.log(res);
                     _this.$store.state.loginPerson.loginPerson = res.data.data;
-                    console.log(_this.$store.state.loginPerson.loginPerson)
                     _this.personreviewsid = res.data.data.id;
                     _this.gainmessage();
-                    // setInterval(function () {
-                    //     _this.gainmessages();
-                    // }, 1000);
                 })
                 .catch(function(error) {
                     console.log(error);
