@@ -131,7 +131,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.$store.state.logo.message = res.data.data.length;
           _this.messages = res.data.data;
           for (var i = 0; i < _this.messages.length; i++) {
@@ -145,7 +144,6 @@ export default {
               _this.messages[i].content = b[0];
             }
           }
-          console.log(_this.messages);
         })
         .catch(function(error) {
           console.log(error);
@@ -154,7 +152,6 @@ export default {
     // 跳转评论页面
     gomessage: function(url, ids) {
       var _this = this;
-      console.log(ids);
       var a = url.split(",");
       _this.ids = a[1];
       _this.classinfoid = a[2];
@@ -179,7 +176,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.gainmessage();
         })
         .catch(function(error) {

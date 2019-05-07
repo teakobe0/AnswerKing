@@ -8,7 +8,6 @@
 
 .serchDetailsContent-con {
   margin-top: 80px;
-  /*overflow: hidden;*/
 }
 
 .Content-con-img {
@@ -19,7 +18,6 @@
 
 .con-img {
   overflow: hidden;
-  /*height: 125px;*/
   background-color: #ebf5f424;
 }
 
@@ -43,8 +41,6 @@
 
 .serchDetailsContent-top-info {
   float: left;
-  /*height: 140px;*/
-  /* margin-top: 10px; */
   width: 100%;
 }
 
@@ -72,14 +68,12 @@
 }
 
 .content-bookmark i {
-  /*float: right;*/
   margin-left: 3px;
   font-size: 16px;
   color: #464646;
 }
 
 .content-bookmark span {
-  /*float: right;*/
   margin-left: 3px;
   line-height: 21px;
   color: #464646;
@@ -177,10 +171,6 @@
   cursor: pointer;
   font-size: 16px;
   color: #181818;
-  /*list-style-type: none;*/
-  /*border-right: 1px solid #000000;*/
-  /*border-top: 1px solid #000000;*/
-  /*border-left: 1px solid #000000;*/
 }
 .serchDetailsContent-tag-right ul li:nth-last-of-type(1) {
   margin-bottom: 0px;
@@ -214,61 +204,6 @@
   border-right: 3px solid #136bd3;
   font-weight: 700;
 }
-
-.tabCon {
-  width: 763px;
-  float: left;
-}
-
-.tabCon .cover {
-  width: 150px;
-  height: 180px;
-  float: left;
-  border: 1px solid #cacaca;
-  margin-right: 18px;
-  margin-top: 10px;
-  padding: 10px;
-  overflow: hidden;
-  cursor: pointer;
-}
-
-.tabCon .cover:hover {
-  border: 1px solid #136bd3;
-}
-.tabCon div p {
-  height: 180px;
-  width: 150px;
-  overflow: hidden;
-}
-
-.tabCon div img {
-  width: 100%;
-  height: 100%;
-}
-
-.aabb {
-  max-width: 1440px;
-  max-height: 900px;
-  position: absolute;
-  transition: all ease 0.2s;
-  border: 5px solid #ffffff;
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  margin-left: -720px;
-  margin-top: -450px;
-  z-index: 100;
-}
-
-.tabCon-wu {
-  width: 100px;
-  line-height: 212px;
-  text-align: center;
-  font-size: 20px;
-  color: #136bd3;
-  margin: 0 auto;
-}
-
 .serchDetailsContent-tag-right ul li a {
   display: block;
   line-height: 50px;
@@ -356,48 +291,6 @@
 /*from {background: #a2a2a2;}*/
 /*to {background: #838383;}*/
 /*}*/
-.popContainer {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: rgba(0, 0, 0, 0.9);
-  z-index: 9999;
-}
-.blur {
-  filter: blur(5px);
-}
-.popContainer .purchase {
-  text-decoration: none;
-  display: block;
-  width: 200px;
-  height: 50px;
-  cursor: pointer;
-  background-color: #ff9f32;
-  border-radius: 2px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 50px;
-  color: #000;
-  margin-top: 30px;
-}
-.popContainer .closeshade {
-  width: 60px;
-  height: 30px;
-  cursor: pointer;
-  background-color: #ffffff;
-  border-radius: 2px;
-  margin: 0 auto;
-  text-align: center;
-  line-height: 30px;
-  margin-top: 30px;
-  font-size: 14px;
-  color: #272727;
-}
-.popContainer .closeshade:hover {
-  background-color: #dadada;
-}
 </style>
 
 <template>
@@ -492,35 +385,8 @@
                   <span style="color: #136bd3;">{{item.grade}}</span>分)
                 </li>
               </ul>
-              <div class="tabCon">
-                <p class="tabCon-wu" v-if="tabconwu">暂无内容</p>
-                <div v-for="(items,index) in Answer">
-                  <div
-                    class="cover"
-                    v-for="(item,indexs) in items.Imgs"
-                    @mouseenter="onMouseOver"
-                    @mouseleave="onMouseout"
-                    @click="() => handleanwer(indexs)"
-                  >
-                    <img v-if="item.conurl == true" :src="item.contentUrl" :alt="items.contents">
-                  </div>
-                  <!-- <div
-                      v-for="item in items.Imgs" 
-                      @mouseenter="onMouseOver"
-                      @mouseleave="onMouseout"
-                      v-if="imageShow == true"
-                    >
-                      <img v-viewer
-                        v-if="item.conurl == true"
-                        :src="item.contentUrl"
-                        :alt="items.contents"
-                      >
-                      <p v-if="item.context == true">{{item.contents}}</p>
-                      <div id="mouseover" v-if="MouseOver == true"></div>
-                  </div>-->
-                </div>
-                <VueEasyLightbox :visible="visible" :imgs="imgss" :index="index" @hide="handleHide"></VueEasyLightbox>
-              </div>
+              <!-- 答案图片组件 -->
+              <answer></answer>
             </div>
             <!-- 评论组件 -->
             <reviews></reviews>
@@ -532,12 +398,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div class="popContainer" v-show="shade==true">
-      <p style="color: #ffffff;text-align: center;margin-top: 400px;">{{content}}</p>
-      <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
-      <div class="closeshade" @click="Closemask">关闭</div>
     </div>
     <homeFooter></homeFooter>
   </div>
@@ -552,10 +412,11 @@ import otherQuestions from "@/components/questionBank/otherQuestions.vue";
 import recommendClass from "@/components/questionBank/recommendClass.vue";
 // 评论组件
 import reviews from "@/components/questionBank/reviews.vue";
+// 答案图片组件
+import answer from "@/components/questionBank/answer.vue";
 
 import { formatDate } from "@/common/js/date.js";
 
-import VueEasyLightbox from "vue-easy-lightbox";
 import { constants } from "crypto";
 export default {
   name: "serchDetailsContent",
@@ -565,7 +426,7 @@ export default {
     otherQuestions,
     recommendClass,
     reviews,
-    VueEasyLightbox
+    answer
   },
   data() {
     return {
@@ -584,16 +445,10 @@ export default {
       numnum: 0,
       context: false,
       conurl: false,
-      tabconwu: true,
       isChoose: false,
       bookmark: false,
       MouseOver: false,
-      // 控制遮罩的打开关闭
-      shade: false,
-      content: "请购买会员！",
-      countdownClock: null,
-      totalTime: 30,
-      
+
       movable: false,
       retext: "",
       openretext: "",
@@ -607,11 +462,7 @@ export default {
       // 有用没用
       use: false,
       noUse: false,
-      UseRecords: {},
-      // 图片查看器
-      imgss: "",
-      visible: false,
-      index: 0
+      UseRecords: {}
     };
   },
   created: function() {
@@ -625,7 +476,6 @@ export default {
     _this.Classinfos();
   },
   methods: {
-    
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
@@ -652,8 +502,6 @@ export default {
           _this.$store.state.recommendClass.skipuniversityId =
             res.data.data.universityId;
           document.documentElement.scrollTop = 0;
-          // 获取评论刷新
-          // _this.searching();
           _this.UseRecord();
         })
         .catch(function(error) {
@@ -720,10 +568,11 @@ export default {
               })
               .then(function(res) {
                 _this.Answer = res.data.data;
+
                 if (_this.Answer.length == 0) {
-                  _this.tabconwu = true;
+                  _this.$store.state.answer.tabconwu = true;
                 } else {
-                  _this.tabconwu = false;
+                  _this.$store.state.answer.tabconwu = false;
                 }
                 for (var i = 0; i < _this.Answer.length; i++) {
                   if (
@@ -742,6 +591,8 @@ export default {
                     _this.imgss = _this.getUrlListCover(_this.Answer[i]);
                   }
                 }
+                _this.$store.state.answer.answer = _this.Answer;
+                _this.$store.state.answer.imgss = _this.imgss;
               })
               .catch(function(error) {
                 console.log(error);
@@ -857,15 +708,12 @@ export default {
         .then(function(res) {
           _this.Answer = res.data.data;
           if (_this.Answer.length == 0) {
-            _this.tabconwu = true;
+            _this.$store.state.answer.tabconwu = true;
           } else {
-            _this.tabconwu = false;
+            _this.$store.state.answer.tabconwu = false;
           }
           for (var i = 0; i < _this.Answer.length; i++) {
-            if (
-              _this.Answer[i].url == null ||
-              _this.Answer[i].url == ""
-            ) {
+            if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
               _this.Answer[i].conurl = false;
               _this.Answer[i].context = true;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
@@ -879,6 +727,9 @@ export default {
               console.log("content空");
             }
           }
+          _this.$store.state.answer.answer = _this.Answer;
+          _this.$store.state.answer.imgss = _this.imgss;
+          console.log(_this.$store.state.answer.answer);
         })
         .catch(function(error) {
           console.log(error);
@@ -893,69 +744,6 @@ export default {
         outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
       }
       return outputList;
-    },
-    clockTick: function() {
-      let _this = this;
-
-      return setTimeout(() => {
-        if (_this.totalTime > 0) {
-          _this.totalTime--;
-          _this.content = _this.totalTime + "s后可观看答案";
-          _this.clockTick();
-        } else {
-          _this.Closemask();
-        }
-      }, 1000);
-    },
-    //点击答案显示遮罩方法
-    handleanwer: function(index) {
-      var _this = this;
-      if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
-        _this.shade = false;
-        // 控制图片查看器的打开
-        _this.index = index;
-        _this.shows();
-      } else {
-        _this.shade = true;
-        _this.totalTime = 30;
-        _this.content = _this.totalTime + "s后可观看答案";
-
-        let clock = window.setInterval(() => {
-          _this.totalTime--;
-          _this.content = _this.totalTime + "s后可观看答案";
-          if (_this.totalTime < 1) {
-            _this.content = "s后可观看答案";
-            _this.totalTime = 30;
-            _this.shade = false;
-            // 控制图片查看器的打开
-            _this.index = index;
-            _this.shows();
-            //当倒计时小于0时清除定时器
-            window.clearInterval(clock); //清除定时器
-          }
-        }, 1000);
-      }
-
-      // _this.isChoose = !_this.isChoose
-      // clearInterval(clock); //清除定时器
-      // console.log(_this.countdownClock);
-      // if (!_this.countdownClock) {
-      //   clearTimeout(_this.countdownClock);
-      //   _this.countdownClock = null;
-      // }
-      // console.log(_this.countdownClock);
-      // _this.countdownClock = _this.clockTick();
-
-      // let remainTime = _this.totalTime;
-    },
-    // 关闭遮罩
-    Closemask: function() {
-      var _this = this;
-      _this.countdownClock = null;
-      _this.shade = false;
-      _this.totalTime = 0;
-      _this.imageShow = true;
-      
     },
     shows() {
       let _this = this;
@@ -984,9 +772,9 @@ export default {
           _this.Answer = res.data.data;
           _this.numnum = 0;
           if (_this.Answer.length == 0) {
-            _this.tabconwu = true;
+            _this.$store.state.answer.tabconwu = true;
           } else {
-            _this.tabconwu = false;
+            _this.$store.state.answer.tabconwu = false;
           }
           for (var i = 0; i < _this.Answer.length; i++) {
             if (
@@ -1004,6 +792,8 @@ export default {
               console.log("content空");
             }
           }
+          _this.$store.state.answer.answer = _this.Answer;
+          _this.$store.state.answer.imgss = _this.imgss;
         })
         .catch(function(error) {
           console.log(error);
@@ -1093,7 +883,7 @@ export default {
         .then(function(res) {
           _this.Classinfos();
           _this.UseRecords = res.data.data;
-          console.log(_this.UseRecords)
+          console.log(_this.UseRecords);
           if (_this.UseRecords == null || _this.UseRecords.check == -1) {
             _this.use = false;
             _this.noUse = false;
@@ -1114,18 +904,6 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-    onMouseOver: function() {
-      var _this = this;
-      _this.MouseOver = true;
-    },
-    onMouseout: function() {
-      var _this = this;
-      _this.MouseOver = false;
-    },
-
-    joim: function() {
-      var _this = this;
     }
   }
 };

@@ -15,6 +15,7 @@ import recommendClass_store from '../storeComponents/recommendClass.js';
 import review_store from '../storeComponents/review.js';
 // 登录人信息
 import loginPerson_store from '../storeComponents/loginPerson.js';
+import answer_store from '../storeComponents/answer.js';
 
 
 export default new vuex.Store({
@@ -26,5 +27,6 @@ export default new vuex.Store({
         recommendClass:recommendClass_store,
         review:review_store,
         loginPerson:loginPerson_store,
+        answer:answer_store,
     }
 })

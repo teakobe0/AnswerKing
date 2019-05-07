@@ -155,6 +155,8 @@ export default {
     // 获取个人信息
     gainpersonal: function() {
       var _this = this;
+      console.log(_this.$store.state.loginPerson.loginPerson)
+
       if (localStorage.getItem("token")) {
         _this
           .axios({
@@ -169,14 +171,12 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             _this.value.Name = res.data.data.name;
             _this.value.QQ = res.data.data.qq;
             _this.value.Tel = res.data.data.tel;
             _this.value.Sex = res.data.data.sex;
             _this.value.Birthday = res.data.data.birthday;
             _this.personreviewsid = res.data.data.id;
-            console.log(new Date());
           })
           .catch(function(error) {
             console.log(error);

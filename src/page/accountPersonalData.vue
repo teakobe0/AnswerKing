@@ -175,8 +175,8 @@
                     快速通道
                 </div>
                 <ul class="perSet">
-                    <li><router-link to="/personalData/basic"><span @click="getData"><i class="el-icon-info"></i>个人信息</span></router-link></li>
-                    <li><router-link to="/personalData/modifiedData" ><span @click="getData"><i class="el-icon-edit"></i>修改资料</span></router-link></li>
+                    <li><router-link to="/personalData/basic"><span><i class="el-icon-info"></i>个人信息</span></router-link></li>
+                    <li><router-link to="/personalData/modifiedData" ><span><i class="el-icon-edit"></i>修改资料</span></router-link></li>
                     <li><router-link to="/personalData/changePassword"><span><i class="el-icon-setting"></i>修改密码</span></router-link></li>
                     <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
                     <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
@@ -226,7 +226,6 @@
                         Authorization: `Bearer ${localStorage.getItem("token")}`
                     }
                 }).then(function (res) {
-                    console.log(res);
                     _this.$store.state.modified.Name = res.data.data.name;
                 }).catch(function (error) {
                     console.log(error);
@@ -239,9 +238,7 @@
             
         },
         methods: {
-            getData:function(){
-                var _this = this;
-            },
+            
         },
 
     }

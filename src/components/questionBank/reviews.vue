@@ -16,7 +16,7 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
-  background-color:#4458b0;
+  background-color: #4458b0;
 }
 .headPortrait p {
   width: 50px;
@@ -234,7 +234,7 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
-  background-color:#4458b0;
+  background-color: #4458b0;
 }
 .openheadPortrait p {
   width: 50px;
@@ -364,7 +364,7 @@
 
 <script type="es6">
 import { formatDate } from "@/common/js/date.js";
-import { constants } from 'crypto';
+import { constants } from "crypto";
 export default {
   name: "reviews",
   data() {
@@ -389,11 +389,13 @@ export default {
       comment: [],
       //登录人信息
       personreviews: [],
-      personreviewsid: ""
+      personreviewsid: "",
+      aabb:[]
     };
   },
   created: function() {
     var _this = this;
+    this.aabb = this.$store.state.loginPerson.loginPerson;
     //获取个人信息
     _this.personal();
   },
@@ -407,20 +409,48 @@ export default {
     //获取登录人的个人信息
     personal: function() {
       var _this = this;
-      setTimeout(function () {
+      console.log(_this.aabb)
+      console.log(999)
+      if (_this.$store.state.loginPerson.loginPerson.id) {
         _this.personreviews = _this.$store.state.loginPerson.loginPerson;
         _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
-        // console.log(_this.$store.state.loginPerson.loginPerson)
-        console.log(_this.personreviewsid)
         _this.searching();
-      }, 300);
+        console.log(123)
+        console.log(_this.$store.state.loginPerson.loginPerson)
+      } else {
+        if (localStorage.getItem("token")) {
+          _this
+            .axios({
+              method: "get",
+              url: `http://192.168.1.27:8088/api/Client/GetClient`,
+              async: false,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.personreviews = res.data.data;
+              _this.personreviewsid = res.data.data.id;
+              _this.searching();
+              console.log(222)
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else {
+        }
+      }
+      
       
     },
     //检索评论
     searching: function() {
       var _this = this;
       _this.comment.length = 0;
-      
+
       _this
         .axios({
           method: "get",
@@ -435,7 +465,7 @@ export default {
         })
         .then(function(res) {
           _this.reviews = res.data.data;
-          
+
           for (var i = 0; i < _this.reviews.length; i++) {
             _this.$set(_this.reviews[i], "openreply", false);
             _this.$set(_this.reviews[i], "deleteshow", false);
@@ -505,7 +535,12 @@ export default {
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
       _this.addComments.clientid = _this.personreviewsid;
-      _this.addComments.contenturl =model +"," +_this.$route.query.id +"," +_this.$route.query.classInfoId;
+      _this.addComments.contenturl =
+        model +
+        "," +
+        _this.$route.query.id +
+        "," +
+        _this.$route.query.classInfoId;
       _this
         .axios({
           method: "POST",
@@ -593,6 +628,11 @@ export default {
     cancel: function(indexs) {
       var _this = this;
       _this.comment[indexs].openreply = false;
+    }
+  },
+  computed: {
+    posVersion() {
+      return this.$store.state.loginPerson.loginPerson;
     }
   }
 };

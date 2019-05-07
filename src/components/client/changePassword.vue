@@ -72,7 +72,6 @@ export default {
         }
       })
         .then(function(res) {
-          console.log(res);
           _this.$message({
             message: "修改密码成功",
             type: "success"
