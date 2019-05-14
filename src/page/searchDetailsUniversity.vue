@@ -105,6 +105,8 @@
 <template>
     <div id="serchDetailsUniversity">
         <homeNav></homeNav>
+        <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+        </div>
         <div class="serchDetailsUniversity-con">
             <div class="con-img">
                 <div class="crumbs">
@@ -165,6 +167,7 @@
                 num: 0,
                 tab01Text: "tab01",
                 tab02Text: "tab02",
+                titleShow:false
             };
         },
         created: function () {
@@ -189,6 +192,7 @@
                 }).then(function (res) {
                     console.log(res);
                     _this.value = res.data.data
+                    _this.titleShow = true;
 
                 }).catch(function (error) {
                     console.log(error);

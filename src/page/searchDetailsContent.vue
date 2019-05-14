@@ -296,6 +296,8 @@
 <template>
   <div id="serchDetailsContent">
     <homeNav></homeNav>
+    <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+        </div>
     <div class="serchDetailsContent-con">
       <div class="Content-con-img">
         <div class="crumbs">
@@ -462,7 +464,8 @@ export default {
       // 有用没用
       use: false,
       noUse: false,
-      UseRecords: {}
+      UseRecords: {},
+      titleShow:false,
     };
   },
   created: function() {
@@ -499,6 +502,7 @@ export default {
         })
         .then(function(res) {
           _this.value = res.data.data;
+          _this.titleShow = true;
           _this.$store.state.recommendClass.skipuniversityId =
             res.data.data.universityId;
           document.documentElement.scrollTop = 0;
@@ -744,14 +748,6 @@ export default {
         outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
       }
       return outputList;
-    },
-    shows() {
-      let _this = this;
-      _this.visible = true;
-    },
-    handleHide() {
-      let _this = this;
-      _this.visible = false;
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {

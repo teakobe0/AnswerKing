@@ -36,11 +36,6 @@
 
 .brand {
   color: #1574e5;
-  font-size: 45px;
-  font-weight: 500;
-  font-family: 微软雅黑;
-  text-align: center;
-  margin-bottom: 22px;
 }
 
 .slogan {
@@ -89,13 +84,15 @@
 
 
 <template>
-  <div class="login">
+  <div class="login" v-title data-title="登录-AnswerWang">
     <!--<Nav msg="登录"></Nav>-->
     <div class="login-lo">
       <div class="login-cc">
         <div class="login-con">
           <div class="login-con-top">
-            <p class="brand">AnswerKing</p>
+            <p class="brand">
+              <img src="../assets/logo2.png" alt="">
+            </p>
             <!--<p class="slogan">登录答题王,打开通往知识的大门</p>-->
             <el-form
               :model="ruleForm"
@@ -126,7 +123,7 @@
 
               <el-form-item style="margin-left: -50px;">
                 <!-- <el-button id="submit" type="primary" @click="submitForm('ruleForm')" v-if="loadings == true">登录</el-button> -->
-                <el-button id="submit" type="primary" @click="submitForm('ruleForm')" :disabled="loadings" :loading="loadings" >登录</el-button>
+                <el-button id="submit" type="primary" @click="submitForm('ruleForm')">登录</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -162,7 +159,6 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
-      loadings: false,
       ruleForm: {
         Email: "",
         Password: "",
@@ -179,14 +175,11 @@ export default {
   //页面的方法还是写在methods{}中
   methods: {
     submitForm(ruleForm) {
-              
-
       //$refs是获取DOM节点的，它直接在页面找到ruleForm这个表单
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
-          this.loadings = true;   
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/login`,
@@ -202,6 +195,7 @@ export default {
             .then(function(res) {
               localStorage.token = res.data.data.token;
               console.log(res);
+               
               if (res.data.status == 1) {
                 
                 _this.$message({

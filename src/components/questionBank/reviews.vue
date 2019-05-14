@@ -443,14 +443,11 @@ export default {
         } else {
         }
       }
-      
-      
     },
     //检索评论
     searching: function() {
       var _this = this;
       _this.comment.length = 0;
-
       _this
         .axios({
           method: "get",
@@ -492,8 +489,6 @@ export default {
                 }
               }
             }
-            // var arr = _this.reviews[i].parentId.split(",")
-            //   console.log(arr[0])
           }
         })
         .catch(function(error) {
@@ -522,6 +517,10 @@ export default {
         })
         .then(function(res) {
           _this.retext = "";
+          _this.$message({
+            message: "评论成功",
+            type: "success"
+          });
           _this.searching();
         })
         .catch(function(error) {

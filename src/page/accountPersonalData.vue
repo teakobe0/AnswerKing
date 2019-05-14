@@ -162,7 +162,7 @@
 </style>
 
 <template>
-    <div id="personalData">
+    <div id="personalData" v-title data-title="个人信息-AnswerWang">
         <homeNav></homeNav>
         <div class="personalData-con">
             <div class="pd-con-head">

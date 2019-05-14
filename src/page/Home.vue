@@ -16,7 +16,7 @@
 
 .home-ser {
   width: 100%;
-  height: 860px;
+  height: 960px;
   background-color: #4559ae;
   position: relative;
 }
@@ -72,20 +72,25 @@
   width: 1200px;
   height: 350px;
   margin: 0 auto;
-  margin-top: 120px;
+  margin-top: 80px;
   text-align: center;
 }
 
-.ser-left-deta p {
-  text-align: center;
+.ser-left-deta-tit p {
+  text-align: right;
   margin-bottom: 20px;
-  color: #ffffff;
+  color: #8da3ff;
+  font-weight: 700;
+  width: 800px;
+  margin: 0 auto;
 }
 
 .home-heading {
-  font-size: 3.5rem;
-  text-align: center;
-  margin-bottom: 5px;
+  width: 800px;
+  margin: 0 auto;
+  font-size: 32px;
+  text-align: right;
+  margin-bottom: 40px;
   color: #ffffff;
 }
 
@@ -359,7 +364,45 @@
 .homeserch:focus {
   border: none;
 }
-
+.homeClassText {
+  width: 800px;
+  margin: 0 auto;
+}
+.homeClassText div {
+  width: 210px;
+  display: inline-block;
+  color: #ffffff;
+  background-color: #3c4b9173;
+  margin-right: 5px;
+  margin-left: 5px;
+  margin-top: 32px;
+  padding: 20px;
+}
+.homeClassText div .homeClassText-1{
+  font-size: 32px;
+}
+.homeClassText div .homeClassText-2{
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.homeClassText div .homeClassText-3{
+  font-size: 16px;
+}
+.homeUniversity {
+  width: 800px;
+  margin: 0 auto;
+}
+.homeUniversity .homeUniv-button{
+  display: inline-block;
+  text-decoration: none;
+  margin: 0 auto;
+  width: 180px;
+  padding: 10px;
+  /* cursor: pointer; */
+  margin-top: 32px;
+  background-color: #303e75ab;
+  color: #ffffff;
+}
 .inline-input {
   margin-left: 200px;
 }
@@ -445,23 +488,23 @@
 }
 </style>
 <template>
-  <div class="home">
+  <div class="home" v-title data-title="首页-AnswerWang">
     <homeNav msg="登录/注册"/>
     <div class="home-con">
       <div class="home-ser">
         <div class="home-ser-con">
           <div class="ser-con-left">
             <div class="ser-left-deta">
-              <h1 class="home-heading">AnswerWang</h1>
-
-              <p>一触即答，放飞自我</p>
-
+              <div class="ser-left-deta-tit">
+                <p>找到属于你的学校与课程,为你</p>
+                <h1 class="home-heading">轻松获得准确、高效的QUIZ解答</h1>
+              </div>
               <div class="homeserch" v-if="homeSerchShow">
                 <el-autocomplete
                   class="inline-input"
                   v-model="state1"
                   :fetch-suggestions="querySearch"
-                  placeholder="请输入文档内容"
+                  placeholder="查询你的学校，例如University of California"
                   @select="handleSelect"
                   @keyup.enter.native="handleEnter(state1)"
                   prefix-icon="el-icon-tickets"
@@ -475,6 +518,27 @@
                     <span style="color:#878787;">{{item.type}}</span>
                   </template>
                 </el-autocomplete>
+              </div>
+              <div class="homeClassText">
+                  <div>
+                      <p class="homeClassText-1">761</p>
+                      <p class="homeClassText-2">课程</p>
+                      <p class="homeClassText-3">UNIVERSITY OF IOWA</p>
+                  </div>
+                  <div>
+                      <p class="homeClassText-1">1522</p>
+                      <p class="homeClassText-2">题库集</p>
+                      <p class="homeClassText-3">HISTORY OF ECONIMIC</p>
+                  </div>
+                  <div>
+                      <p class="homeClassText-1">120</p>
+                      <p class="homeClassText-2">贡献者</p>
+                      <p class="homeClassText-3">TEAKOBE</p>
+                  </div>
+              </div>
+              <div class="homeUniversity">
+                <router-link to='/schoolStudy' class="homeUniv-button">查看162所全部学校资源</router-link>
+
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home2.png" alt class="home-ser-img-1">
@@ -608,57 +672,57 @@ export default {
         }
       })
         .then(function(res) {
-          if (
-						res.data.data.classes != null && 
-						res.data.data.classes.length > 0
-          ) {
-            for (var i = 0; i < 3; i++) {
-              if (res.data.data.classes[i]) {
-                results.push({
-                  value: res.data.data.classes[i].name,
-                  type: res.data.data.classes[i].university,
-                  class: "classes",
-                  num: i
-                });
-              }
-            }
-          } else {
-            results.push({ value: "没有找到对应的课程" });
-          }
+          // if (
+					// 	res.data.data.classes != null && 
+					// 	res.data.data.classes.length > 0
+          // ) {
+          //   for (var i = 0; i < 3; i++) {
+          //     if (res.data.data.classes[i]) {
+          //       results.push({
+          //         value: res.data.data.classes[i].name,
+          //         type: res.data.data.classes[i].university,
+          //         class: "classes",
+          //         num: i
+          //       });
+          //     }
+          //   }
+          // } else {
+          //   results.push({ value: "没有找到对应的课程" });
+          // }
 
-          if (
-            res.data.data.classes != null &&
-            res.data.data.content.length > 0
-          ) {
-            for (var i = 0; i < 3; i++) {
-              if (res.data.data.content[i]) {
-                var aa;
-                aa = res.data.data.content[i].contents.indexOf(_this.state2);
-                results.push({
-                  value: res.data.data.content[i].contents.substring(
-                    aa - 10,
-                    aa
-                  ),
-                  queryString: res.data.data.content[i].contents.substr(
-                    aa,
-                    queryString.length
-                  ),
-                  queryStringRight: res.data.data.content[i].contents.substring(
-                    aa + queryString.length,
-                    aa + queryString.length + 10
-                  ),
-                  type: "课程内容",
-                  class: "content",
-                  num: i
-                });
-              }
-            }
-          } else {
-            results.push({ value: "没有找到对应的课程内容" });
-          }
+          // if (
+          //   res.data.data.classes != null &&
+          //   res.data.data.content.length > 0
+          // ) {
+          //   for (var i = 0; i < 3; i++) {
+          //     if (res.data.data.content[i]) {
+          //       var aa;
+          //       aa = res.data.data.content[i].contents.indexOf(_this.state2);
+          //       results.push({
+          //         value: res.data.data.content[i].contents.substring(
+          //           aa - 10,
+          //           aa
+          //         ),
+          //         queryString: res.data.data.content[i].contents.substr(
+          //           aa,
+          //           queryString.length
+          //         ),
+          //         queryStringRight: res.data.data.content[i].contents.substring(
+          //           aa + queryString.length,
+          //           aa + queryString.length + 10
+          //         ),
+          //         type: "课程内容",
+          //         class: "content",
+          //         num: i
+          //       });
+          //     }
+          //   }
+          // } else {
+          //   results.push({ value: "没有找到对应的课程内容" });
+          // }
 
           if (res.data.data.ls != null && res.data.data.ls.length > 0) {
-            for (var i = 0; i < 3; i++) {
+            for (var i = 0; i < 10; i++) {
               if (res.data.data.ls[i]) {
                 results.push({
                   value: res.data.data.ls[i].university.name,
@@ -733,28 +797,27 @@ export default {
         });
     },
     handleEnter(item) {
-      var _this = this;
-      var patt = /^[\s]*$/;
-      var pvalue = patt.test(_this.state1);
-      if (pvalue) {
-        _this.$message({
-          message: "不能搜索全空格的内容",
-          type: "success"
-        });
-      } else if(_this.state1.length<3) {
-        _this.$message({
-          message: "搜索长度最少三位数",
-          type: "success"
-        });
-      }else {
-        _this.$router.push({
-          path: "/serch",
-          query: {
-            serchName: _this.state1
-          }
-        });
-			}
-      console.log(pvalue);
+      // var _this = this;
+      // var patt = /^[\s]*$/;
+      // var pvalue = patt.test(_this.state1);
+      // if (pvalue) {
+      //   _this.$message({
+      //     message: "不能搜索全空格的内容",
+      //     type: "success"
+      //   });
+      // } else if(_this.state1.length<3) {
+      //   _this.$message({
+      //     message: "搜索长度最少三位数",
+      //     type: "success"
+      //   });
+      // }else {
+      //   _this.$router.push({
+      //     path: "/serch",
+      //     query: {
+      //       serchName: _this.state1
+      //     }
+      //   });
+			// }
     },
     handle: function() {
       this.homeSerchHide = false;

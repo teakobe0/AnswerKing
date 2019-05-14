@@ -63,13 +63,15 @@
 
 
 <template>
-  <div class="register">
+  <div class="register" v-title data-title="注册-AnswerWang">
     <!--<Nav msg="登录/注册"></Nav>-->
     <div class="regi-emp">
       <div class="regi-cc">
         <div class="register-con">
           <div class="register-con-top">
-            <p class="brand">AnswerKing</p>
+            <p class="brand">
+              <img src="../assets/logo2.png" alt="">
+            </p>
             <el-form
               :model="ruleForm"
               :rules="rules"
@@ -105,7 +107,7 @@
                 
               </el-form-item>
               <el-form-item style="margin-left: -50px;text-align: center">
-                <el-button type="primary" id="regi" @click="register('ruleForm')" :disabled="loadings" :loading="loadings">注册</el-button>
+                <el-button type="primary" id="regi" @click="register('ruleForm')">注册</el-button>
               </el-form-item>
             </el-form>
             <p class="termsOfService">注册即代表同意 <router-link to="/termsOfService">《AnswerWang服务条款》</router-link> </p>
@@ -155,7 +157,6 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
-      loadings:false,
       ruleForm: {
         Email: "",
         //Name:'',
@@ -208,7 +209,6 @@ export default {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
-          this.loadings = true;
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/Register`,

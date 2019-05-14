@@ -194,6 +194,7 @@
 <template>
   <div class="schoolStydy clearfix">
     <homeNav></homeNav>
+    <div v-title data-title="学校资源-AnswerWang"></div>
     <div class="school-con">
       <div class="school-query">
         <div class="query-con">
@@ -338,7 +339,7 @@ export default {
       ],
       pageSize: 40,
       queryString: "",
-      loading:true
+      loading: true
     };
   },
   created: function() {
@@ -385,51 +386,50 @@ export default {
     querySearch(queryString, cb) {
       var _this = this;
       _this.queryString = queryString;
-      console.log(queryString);
-      this.axios({
-        method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
-        async: false,
-        params: {
-          name: queryString
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-        .then(function(res) {
-          console.log(res);
-          console.log(queryString);
-          var results = [];
-          if (res.data.data.ls != null && res.data.data.ls.length > 0) {
-            for (var i = 0; i < 10; i++) {
-              if (res.data.data.ls[i]) {
-                results.push({
-                  value: res.data.data.ls[i].university.name,
-                  type: "大学",
-                  class: "university",
-                  num: i
-                });
-              }
-            }
-          } else {
-            results.push({ value: "没有找到对应的大学" });
+      if (queryString.length >= 3) {
+        this.axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+          async: false,
+          params: {
+            name: queryString
+          },
+          xhrFields: {
+            withCredentials: true
           }
-
-          cb(results);
         })
-        .catch(function(error) {
-          console.log(error);
-        });
+          .then(function(res) {
+            var results = [];
+            if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+              for (var i = 0; i < 10; i++) {
+                if (res.data.data.ls[i]) {
+                  results.push({
+                    value: res.data.data.ls[i].university.name,
+                    type: "大学",
+                    class: "university",
+                    num: i
+                  });
+                }
+              }
+            } else {
+              results.push({ value: "没有找到对应的大学" });
+            }
+
+            cb(results);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     },
     handleSelectauto(item) {
       var _this = this;
       console.log(item.num);
       _this.loading = this.$loading({
-            lock: true,
-            text: "加载中",
-            spinner: "el-icon-loading",
-            background: "rgba(0, 0, 0, 0.7)"
+        lock: true,
+        text: "加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)"
       });
       this.axios({
         method: "get",

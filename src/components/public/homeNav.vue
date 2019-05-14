@@ -22,24 +22,21 @@
     }
 
     .nav-logo {
-        width: 146px;
-        height: 80px;
         float: left;
         z-index: 999;
-
     }
 
     .nav-logo a {
-        width: 146px;
         height: 80px;
         float: left;
         color: #ff9e00;
         text-decoration: none;
         font-size: 30px;
         line-height: 80px;
-
     }
-
+    .nav-logo a img {
+        margin-top: 19px;
+    }
     .homenav-ser {
         float: left;
         margin-top: 20px;
@@ -225,13 +222,15 @@
         <div :class="searchBarFixed == true ? 'navcolor' :''">
             <div class="homenav-con">
                 <div class="nav-logo">
-                    <router-link to='/home'>AnswerWang</router-link>
+                    <router-link to='/home'>
+                        <img src="../../assets/logo.png" alt="">
+                    </router-link>
                 </div>
                 <div class="homenav-ser">
-                    <div class="homenav-register" v-model="toggle" @click="homenavRe()" v-if="vanish">
+                    <!-- <div class="homenav-register" v-model="toggle" @click="homenavRe()" v-if="vanish">
                         <i class="el-icon-search"></i>
                         <a href="javascript:void(0)">搜索</a>
-                    </div>
+                    </div> -->
                     <div class="homenavInput" v-if="vanishs" >
                         <i class="el-icon-search"></i>
                         <input type="text" placeholder="搜索" v-focus @blur="homenavLoseFoucs" v-model="statle" @keyup.enter="handleEnter(statle)"></input>

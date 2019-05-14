@@ -31,14 +31,6 @@
   padding: 30px 40px 0px 40px;
 }
 
-.brand {
-  color: #1574e5;
-  font-size: 45px;
-  font-weight: 500;
-  font-family: 微软雅黑;
-  text-align: center;
-  margin-bottom: 22px;
-}
 
 .slogan {
   padding: 5px 0px;
@@ -78,7 +70,9 @@
       <div class="forgetPassword-cc">
         <div class="forgetPassword-con">
           <div class="forgetPassword-con-top">
-            <p class="brand">AnswerKing</p>
+            <p class="brand">
+              <img src="../assets/logo2.png" alt="">              
+            </p>
             <!--<p class="slogan">登录答题王,打开通往知识的大门</p>-->
             <el-form
               :model="ruleForm"

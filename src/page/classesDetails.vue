@@ -125,9 +125,11 @@
 </style>
 
 <template>
-    <div id="classesDetails">
+    <div id="classesDetails" >
         <homeNav></homeNav>
-        <div class="classesDetails-con">
+        <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+        </div>
+        <div class="classesDetails-con" >
             <div class="con-img">
                 <div class="crumbs">
                     <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 24px;">
@@ -141,9 +143,9 @@
                         <!--<img src="../assets/serHead.jpg" alt=""/>-->
                     <!--</div>-->
                     <div class="classesDetails-top-info">
-                        <div>
+                        <div >
                             <h2>{{value.name}}</h2>
-
+        
                             <p>School:<router-link :to="{path:'/serchDetailsUniversity',query: {id: this.universityId}}">{{value.university}}</router-link><span>Teach:{{value.professor}}</span>
                             </p>
 
@@ -192,6 +194,8 @@
                 universityId:'',
                 tab01Text: "tab01",
                 tab02Text: "tab02",
+                className:"",
+                titleShow:false
             };
         },
         created: function () {
@@ -215,6 +219,8 @@
                     }
                 }).then(function (res) {
                     _this.value = res.data.data
+                    _this.className = res.data.data.name
+                    _this.titleShow = true
                     _this.universityId = res.data.data.universityId
                 }).catch(function (error) {
                     console.log(error);
