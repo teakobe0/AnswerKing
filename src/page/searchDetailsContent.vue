@@ -801,35 +801,51 @@ export default {
     },
     beOfUses: function() {
       var _this = this;
-      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
-      if (_this.use == false || _this.noUse == true) {
-        _this.useOnuse.type = "Y";
-        _this.useOnuse.check = 1;
-        _this.use = true;
-        _this.noUse = false;
-        _this.ChangeClassInfo();
-      } else if (_this.use == true && _this.noUse == false) {
-        _this.useOnuse.type = "Y";
-        _this.useOnuse.check = -1;
-        _this.use = false;
-        _this.ChangeClassInfo();
+      if(localStorage.token){
+        _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+        if (_this.use == false || _this.noUse == true) {
+          _this.useOnuse.type = "Y";
+          _this.useOnuse.check = 1;
+          _this.use = true;
+          _this.noUse = false;
+          _this.ChangeClassInfo();
+        } else if (_this.use == true && _this.noUse == false) {
+          _this.useOnuse.type = "Y";
+          _this.useOnuse.check = -1;
+          _this.use = false;
+          _this.ChangeClassInfo();
+        }
+      }else {
+         _this.$message({
+              message: "请登录之后在进行操作",
+              type: "warning"
+          });
       }
+      
     },
     noUses: function() {
       var _this = this;
-      _this.useOnuse.Id = Number(this.$route.query.classInfoId);
-      if (_this.noUse == false || _this.use == true) {
-        _this.useOnuse.type = "N";
-        _this.useOnuse.check = 1;
-        _this.noUse = true;
-        _this.use = false;
-        _this.ChangeClassInfo();
-      } else if (_this.noUse == true && _this.use == false) {
-        _this.useOnuse.type = "N";
-        _this.useOnuse.check = -1;
-        _this.noUse = false;
-        _this.ChangeClassInfo();
-      }
+      if(localStorage.token){
+          _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+        if (_this.noUse == false || _this.use == true) {
+          _this.useOnuse.type = "N";
+          _this.useOnuse.check = 1;
+          _this.noUse = true;
+          _this.use = false;
+          _this.ChangeClassInfo();
+        } else if (_this.noUse == true && _this.use == false) {
+          _this.useOnuse.type = "N";
+          _this.useOnuse.check = -1;
+          _this.noUse = false;
+          _this.ChangeClassInfo();
+        }
+        }else {
+          _this.$message({
+              message: "请登录之后在进行操作",
+              type: "warning"
+          });
+        }
+      
     },
     // 更改课程资料的有用没用
     ChangeClassInfo: function() {
@@ -861,7 +877,8 @@ export default {
     // 根据课程资料id检索该课程资料有用、没用
     UseRecord: function() {
       var _this = this;
-      _this
+      if(localStorage.token){
+        _this
         .axios({
           method: "get",
           url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
@@ -879,7 +896,6 @@ export default {
         .then(function(res) {
           _this.Classinfos();
           _this.UseRecords = res.data.data;
-          console.log(_this.UseRecords);
           if (_this.UseRecords == null || _this.UseRecords.check == -1) {
             _this.use = false;
             _this.noUse = false;
@@ -900,6 +916,8 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      }
+      
     }
   }
 };

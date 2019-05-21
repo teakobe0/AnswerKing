@@ -1,6 +1,6 @@
 <style>
 .demo-ruleForm {
-  padding: 5px 0px 0px 0px;
+  /* padding: 5px 0px 0px 0px; */
 }
 .login-cc {
     height: 800px;
@@ -17,7 +17,7 @@
   position: fixed;
   overflow: hidden;
   text-align: center;
-}
+} 
 
 .login-con {
   margin: 0 auto;
@@ -36,8 +36,13 @@
 
 .brand {
   color: #1574e5;
+  margin-bottom: 22px;
+  height: 32px;
 }
-
+.brand img {
+  width: 200px;
+  height: 32px;
+}
 .slogan {
   padding: 5px 0px;
   color: #1781fe;

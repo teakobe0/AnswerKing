@@ -17,7 +17,7 @@
 .home-ser {
   width: 100%;
   height: 960px;
-  background-color: #4559ae;
+  background-color: #4458b0;
   position: relative;
 }
 
@@ -90,7 +90,7 @@
   margin: 0 auto;
   font-size: 32px;
   text-align: right;
-  margin-bottom: 40px;
+  margin-bottom: 32px;
   color: #ffffff;
 }
 
@@ -403,6 +403,9 @@
   background-color: #303e75ab;
   color: #ffffff;
 }
+.homeUniversity .homeUniv-button:hover {
+  color: #b9b9b9;
+}
 .inline-input {
   margin-left: 200px;
 }
@@ -523,7 +526,7 @@
                   <div>
                       <p class="homeClassText-1">761</p>
                       <p class="homeClassText-2">课程</p>
-                      <p class="homeClassText-3">UNIVERSITY OF IOWA</p>
+                      <p class="homeClassText-3">Academy of Art University</p>
                   </div>
                   <div>
                       <p class="homeClassText-1">1522</p>

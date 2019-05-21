@@ -35,7 +35,9 @@
         line-height: 80px;
     }
     .nav-logo a img {
-        margin-top: 19px;
+        width: 200px;
+        height: 32px;
+        margin-top: 24px;
     }
     .homenav-ser {
         float: left;
@@ -194,8 +196,8 @@
     }
     #nickname img {
         margin-top: 22.5px;
-        width: 35px;
-        height: 35px;
+        width: 32px;
+        height: 32px;
     }
     .messageRed {
         width: 10px;

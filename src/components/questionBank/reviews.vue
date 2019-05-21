@@ -256,7 +256,7 @@
         </div>
         <div class="retext">
           <p>{{personreviews.name}}</p>
-          <el-input type="textarea" :rows="2" v-model="retext" resize="none" style="width:893px"></el-input>
+          <el-input type="textarea" :rows="2" v-model="retext" resize="none" style="width:893px" :placeholder="placeholder"></el-input>
           <div style="height:28px;margin-top:8px">
             <!-- <div class="face">
               <img src="../../assets/笑脸.svg" alt>
@@ -390,14 +390,18 @@ export default {
       //登录人信息
       personreviews: [],
       personreviewsid: "",
-      aabb:[]
+      placeholder:""
     };
   },
   created: function() {
     var _this = this;
-    this.aabb = this.$store.state.loginPerson.loginPerson;
     //获取个人信息
     _this.personal();
+    if(localStorage.token){
+      _this.placeholder = "请输入评论内容:"
+    }else {
+      _this.placeholder = "请登录之后进行评论!"
+    }
   },
   filters: {
     formatDate: function(time) {
@@ -409,16 +413,12 @@ export default {
     //获取登录人的个人信息
     personal: function() {
       var _this = this;
-      console.log(_this.aabb)
-      console.log(999)
       if (_this.$store.state.loginPerson.loginPerson.id) {
         _this.personreviews = _this.$store.state.loginPerson.loginPerson;
         _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
         _this.searching();
-        console.log(123)
-        console.log(_this.$store.state.loginPerson.loginPerson)
       } else {
-        if (localStorage.getItem("token")) {
+        if (localStorage.token) {
           _this
             .axios({
               method: "get",
@@ -435,12 +435,12 @@ export default {
               _this.personreviews = res.data.data;
               _this.personreviewsid = res.data.data.id;
               _this.searching();
-              console.log(222)
             })
             .catch(function(error) {
               console.log(error);
             });
         } else {
+          _this.searching();
         }
       }
     },
@@ -498,6 +498,7 @@ export default {
     //新增评论
     addComment: function() {
       var _this = this;
+      if(localStorage.token){
       _this.addComments.parentId = 0;
       _this.addComments.contents = _this.retext;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
@@ -526,10 +527,18 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      }else {
+        _this.$message({
+            message: "请登录之后在进行评论",
+            type: "warning"
+        });
+      }
+      
     },
     // 新增2级评论
     submitReview: function(model) {
       var _this = this;
+      if(localStorage.token){
       _this.addComments.parentId = _this.replyOneTwoid;
       _this.addComments.contents = model;
       _this.addComments.classInfoId = _this.$route.query.classInfoId;
@@ -559,6 +568,13 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+      }else {
+        _this.$message({
+            message: "请登录之后在进行评论",
+            type: "warning"
+        });
+      }
+      
     },
     // 删除本人评论
     deletecom: function(ids) {
@@ -617,11 +633,9 @@ export default {
     //留言的方法
     opencontrol: function(indexs, id) {
       var _this = this;
-      _this.comment[indexs].openreply = true;
+      _this.comment[indexs].openreply = !_this.comment[indexs].openreply;
       _this.comment[indexs].model = "";
       _this.replyOneTwoid = "," + id;
-      console.log("1级评论回复方法");
-      console.log(indexs);
     },
     // 关闭评论框的方法
     cancel: function(indexs) {

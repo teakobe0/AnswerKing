@@ -131,16 +131,17 @@
                 <div class="un-tag-con">
                     <ul>
                         <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-                            <router-link :to="{path:'/serchDetailsUniversity/schoolall',query: {id: this.Id}}">所有
+                            <router-link :to="{path:'/serchDetailsUniversity/schoolall',query: {id: this.Id}}">课程
                             </router-link>
                         </li>
-                        <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
+                        <!-- <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
                             <router-link :to="{path:'/serchDetailsUniversity/schoolClasses',query: {id: this.Id}}">课程
                             </router-link>
-                        </li>
+                        </li> -->
                     </ul>
                 </div>
             </div>
+            
             <div>
                 <router-view/>
             </div>

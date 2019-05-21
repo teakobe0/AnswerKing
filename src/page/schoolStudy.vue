@@ -292,7 +292,7 @@
               </li>
             </ul>
           </div>
-          <div @click="viewMore" class="viewmores">
+          <div @click="viewMore" class="viewmores" v-show="viewMores == true">
             查看更多
             <i class="el-icon-caret-bottom"></i>
           </div>
@@ -339,7 +339,8 @@ export default {
       ],
       pageSize: 40,
       queryString: "",
-      loading: true
+      loading:true,
+      viewMores:false
     };
   },
   created: function() {
@@ -424,7 +425,6 @@ export default {
     },
     handleSelectauto(item) {
       var _this = this;
-      console.log(item.num);
       _this.loading = this.$loading({
         lock: true,
         text: "加载中",
@@ -479,6 +479,7 @@ export default {
         .then(function(res) {
           _this.alluniversitys = res.data.data;
           _this.loading = false;
+          _this.viewMores = true;
           sortByKey(_this.alluniversitys, "number");
           //数组对象排序
           function sortByKey(array, key) {

@@ -159,11 +159,11 @@
                 <div class="classesDetails-tag-con">
                     <ul>
                         <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-                            <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">所有</router-link>
-                        </li>
-                        <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
                             <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">题库集</router-link>
                         </li>
+                        <!-- <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
+                            <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">题库集</router-link>
+                        </li> -->
                     </ul>
                 </div>
             </div>
