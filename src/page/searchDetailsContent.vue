@@ -296,7 +296,7 @@
 <template>
   <div id="serchDetailsContent">
     <homeNav></homeNav>
-    <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+    <div v-if="titleShow==true" v-title :data-title="value.name+'-CourseWhale'">
         </div>
     <div class="serchDetailsContent-con">
       <div class="Content-con-img">

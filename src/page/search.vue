@@ -299,7 +299,7 @@
 <template>
   <div id="serch">
     <homeNav></homeNav>
-    <div v-title data-title="搜索结果-AnswerWang"></div>
+    <div v-title data-title="搜索结果-CourseWhale"></div>
     <div class="serch-nav" :class="{fixedNav:isfixedNav}">
       <div class="serch-nav-con">
         <el-switch

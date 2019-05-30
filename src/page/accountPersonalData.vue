@@ -25,17 +25,16 @@
 
     .head-img {
         width: 140px;
-        height: 200px;
         text-align: center;
         margin: 0 auto;
         margin-top: 20px;
+        margin-bottom: 29.5px;
 
     }
 
     .head-img img {
         width: 140px;
         height: 140px;
-        margin-top: 10px;
     }
 
     .head-img a {
@@ -47,6 +46,13 @@
 
     .head-img a:hover {
         color: #d91685;
+    }
+    .head-img p {
+        line-height: 40px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin-bottom: 7px;
     }
 
     .fasttrack {
@@ -73,7 +79,7 @@
         display: inline-block;
         text-decoration: none;
         text-align: left;
-        text-indent: 10px;
+        /* text-indent: 10px; */
         line-height: 50px;
         color: #666666;
         font-size: 14px;
@@ -90,86 +96,23 @@
         color: #5b9dfd;
     }
     .perSet li a span {
-        width: 190px;
         height: 50px;
+        margin-left: 30px;
     }
-    /*右侧*/
-    .pd-con-head-right {
-        width: 1000px;
-        height: 960px;
-        float: left;
-        padding: 20px 40px 0px 40px;
-        overflow: hidden;
-    }
-
-    .head-right-top {
-        width: 100%;
-        border-bottom: 1px dashed #dedede;
-    }
-
-    .head-right-top .right-top-title {
-        font-size: 20px;
-        font-weight: 700;
-    }
-
-    /*.head-right-top .right-top-acctype {*/
-        /*margin-top: 10px;*/
-        /*margin-bottom: 10px;*/
-    /*}*/
-
-    .head-right-top .right-top-acctype a {
-        text-decoration: none;
-    }
-
-    .head-right-top .right-top-acctype a:hover {
-        color: #d91685;
-    }
-    .head-right-top .right-top-warn {
-        height: 60px;
-        background-color: #fcfce2;
-        border-bottom: 1px solid #e2e2e2;
-    }
-    .head-right-top .right-top-warn p{
-        font-weight: 700;
-        line-height: 60px;
-        float: left;
-    }
-    .head-right-top .right-top-warn .warn-button{
-        float: right;
-        margin-top: 10px;
-    }
-    .pd-con-head-right ul {
-        margin-top: 10px;
-        margin-bottom: 10px;
-    }
-    .pd-con-head-right li {
-        list-style-type: none;
-        display: inline-block;
-        height: 30px;
-        line-height: 30px;
-    }
-    .head-right-middle {
-        width: 100%;
-        height: 400px;
-    }
-    .head-right-middle .right-middle-title {
-        font-size: 20px;
-        font-weight: 700;
-        margin-top: 20px;
-        margin-bottom: 10px;
-    }
+    
 
 </style>
 
 <template>
-    <div id="personalData" v-title data-title="个人信息-AnswerWang">
+    <div id="personalData" v-title data-title="个人信息-CourseWhale">
         <homeNav></homeNav>
         <div class="personalData-con">
             <div class="pd-con-head">
                 <div class="head-img">
+                    <p>{{this.$store.state.modified.Name}}</p>
                     <img src="../assets/5.jpg" alt=""/>
 
-                    <p>{{this.$store.state.modified.Name}}</p>
+                    
                 </div>
                 <div class="fasttrack">
                     快速通道
@@ -178,10 +121,11 @@
                     <li><router-link to="/personalData/basic"><span><i class="el-icon-info"></i>个人信息</span></router-link></li>
                     <li><router-link to="/personalData/modifiedData" ><span><i class="el-icon-edit"></i>修改资料</span></router-link></li>
                     <li><router-link to="/personalData/changePassword"><span><i class="el-icon-setting"></i>修改密码</span></router-link></li>
-                    <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
+                    <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span style="margin-left:0px;" v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
                     <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
                     <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
-                    <!-- <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li> -->
+                    <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li>
+                    <li><router-link to="/personalData/orderHistory"><span><i class="el-icon-sold-out"></i>购买记录</span></router-link></li>
                     <!-- <li><a href="javascript:0"><span><i class="el-icon-service"></i>在线客服</span></a></li> -->
                 </ul>
             </div>

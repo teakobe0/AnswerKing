@@ -7,12 +7,6 @@
         padding: 20px 40px 0px 40px;
         overflow: hidden;
     }
-    #changePassword h2 {
-        border-bottom: 1px solid #dddddd;
-        color: #999999;
-        line-height: 40px;
-        margin-bottom: 20px;
-    }
 
 </style>
 

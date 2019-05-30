@@ -1,23 +1,27 @@
 <style>
-#inform h2 {
+#inform h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
   line-height: 40px;
+  padding-bottom: 6px;
+  margin-bottom: 20px;
 }
 .message {
-    margin-top: 24px;
+  margin-top: 24px;
 }
 .message div {
   margin-bottom: 8px;
   overflow: hidden;
-  word-wrap:break-word;
+  word-wrap: break-word;
   line-height: 28px;
+  color: #444;
 }
-.message div el-button{
+.message div el-button {
   float: right;
 }
 .message .sendname {
-    color: #5b9dfd
+  color: #5b9dfd;
+  vertical-align: auto
 }
 </style>
 
@@ -25,10 +29,12 @@
 <template>
   <div id="inform">
     <div class="pd-con-head-right">
-      <h2>通知信息</h2>
+      <h3>通知信息</h3>
       <div class="message">
+        <div style="text-align:center" v-show="dataNull == true">暂无数据</div>
         <div v-for="item in messages">
-          <span class="sendname">{{item.sendname}}</span> 回复您：{{item.content}}
+          <span class="sendname">{{item.sendname}}</span>
+          回复您：{{item.content}}
           <el-button
             @click="deletemessage(item.contentsUrl,item.id)"
             style="float:right;"
@@ -71,7 +77,8 @@ export default {
       messages: [],
       personreviewsid: "",
       ids: "",
-      classinfoid: ""
+      classinfoid: "",
+      dataNull: false
     };
   },
   created: function() {
@@ -133,15 +140,19 @@ export default {
         .then(function(res) {
           _this.$store.state.logo.message = res.data.data.length;
           _this.messages = res.data.data;
-          for (var i = 0; i < _this.messages.length; i++) {
-            _this.$set(_this.messages[i], "content", []);
-            var a = _this.messages[i].contentsUrl.split(",");
-            var b = a[0].split(":");
-            if (b.length >= 2) {
-              b.splice(0, 1);
-              _this.messages[i].content = b[0];
-            } else {
-              _this.messages[i].content = b[0];
+          if (_this.messages.length == 0) {
+            _this.dataNull = true;
+          } else {
+            for (var i = 0; i < _this.messages.length; i++) {
+              _this.$set(_this.messages[i], "content", []);
+              var a = _this.messages[i].contentsUrl.split(",");
+              var b = a[0].split(":");
+              if (b.length >= 2) {
+                b.splice(0, 1);
+                _this.messages[i].content = b[0];
+              } else {
+                _this.messages[i].content = b[0];
+              }
             }
           }
         })

@@ -105,7 +105,7 @@
 <template>
     <div id="serchDetailsUniversity">
         <homeNav></homeNav>
-        <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+        <div v-if="titleShow==true" v-title :data-title="value.name+'-CourseWhale'">
         </div>
         <div class="serchDetailsUniversity-con">
             <div class="con-img">

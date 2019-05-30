@@ -194,7 +194,7 @@
 <template>
   <div class="schoolStydy clearfix">
     <homeNav></homeNav>
-    <div v-title data-title="学校资源-AnswerWang"></div>
+    <div v-title data-title="学校资源-CourseWhale"></div>
     <div class="school-con">
       <div class="school-query">
         <div class="query-con">

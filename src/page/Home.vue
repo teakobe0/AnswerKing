@@ -491,7 +491,7 @@
 }
 </style>
 <template>
-  <div class="home" v-title data-title="首页-AnswerWang">
+  <div class="home" v-title data-title="首页-CourseWhale">
     <homeNav msg="登录/注册"/>
     <div class="home-con">
       <div class="home-ser">
@@ -529,7 +529,7 @@
                       <p class="homeClassText-3">Academy of Art University</p>
                   </div>
                   <div>
-                      <p class="homeClassText-1">1522</p>
+                      <p class="homeClassText-1">2035</p>
                       <p class="homeClassText-2">题库集</p>
                       <p class="homeClassText-3">HISTORY OF ECONIMIC</p>
                   </div>
@@ -556,7 +556,7 @@
 
       <div class="features-area text-center">
         <div class="features-title">
-          <p class="features-title-one">快速了解AnswerWang</p>
+          <p class="features-title-one">快速了解CourseWhale</p>
 
           <p class="features-title-tow">更直接.更专业.更强大.更多元.更贴心</p>
         </div>

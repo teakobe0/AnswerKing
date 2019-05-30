@@ -58,7 +58,7 @@
         <div class="H-footer">
             <ul class="footer-1">
                 <li class="footer-title">功能</li>
-                <li><router-link to='/home'>AnswerWang</router-link></li>
+                <li><router-link to='/home'>CourseWhale</router-link></li>
                 <li><a href="#">图表</a></li>
                 <li><a href="#">单词卡</a></li>
             </ul>
@@ -76,9 +76,9 @@
                 <li><router-link to="/termsOfService">条款</router-link></li>
             </ul>
             <ul class="footer-4">
-                <li class="footer-title">AnswerWang</li>
+                <li class="footer-title">CourseWhale</li>
                 <!-- <img src="../../assets/6.png" alt=""/> -->
-                <p>© 2019 AnswerWang Inc.</p>
+                <p>© 2019 CourseWhale Inc.</p>
             </ul>
         </div>
     </div>

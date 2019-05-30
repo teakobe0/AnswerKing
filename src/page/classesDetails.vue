@@ -127,7 +127,7 @@
 <template>
     <div id="classesDetails" >
         <homeNav></homeNav>
-        <div v-if="titleShow==true" v-title :data-title="value.name+'-AnswerWang'">
+        <div v-if="titleShow==true" v-title :data-title="value.name+'-CourseWhale'">
         </div>
         <div class="classesDetails-con" >
             <div class="con-img">

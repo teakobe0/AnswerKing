@@ -23,6 +23,7 @@ import schoolClasses from '@/components/school/schoolClasses.vue'
 import file from '@/components/classes/file.vue'
 import schoolFile from '@/components/school/schoolFile.vue'
 import vip from '@/components/client/vip.vue'
+import orderHistory from '@/components/client/orderHistory.vue'
 import inform from '@/components/client/inform.vue'
 import platinavip from '@/components/client/platinayearly.vue'
 
@@ -121,6 +122,11 @@ export default new Router({
                             component: platinavip,
                         },
                     ]
+                },
+                {
+                    path: 'orderHistory',      //设置跳转
+                    name: 'orderHistory',
+                    component: orderHistory,
                 }
 
             ]

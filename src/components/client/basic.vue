@@ -1,4 +1,10 @@
 <style>
+#basic h3 {
+  border-bottom: 1px solid #dddddd;
+  color: #999999;
+  line-height: 40px;
+  padding-bottom: 6px;
+}
 /*右侧*/
 .pd-con-head-right {
   width: 1000px;
@@ -11,6 +17,7 @@
 
 .head-right-top {
   width: 100%;
+  /* height: 213px; */
   border-bottom: 1px dashed #dedede;
 }
 
@@ -22,6 +29,7 @@
 .head-right-top .right-top-acctype {
   margin-top: 16px;
   margin-bottom: 16px;
+  color: #444;
 }
 
 .head-right-top .right-top-acctype a {
@@ -37,8 +45,8 @@
   height: 60px;
   background-color: #fcfce2;
   border-bottom: 1px solid #e2e2e2;
+  padding: 0 10px 0 0;
   margin-bottom: 16px;
-  padding: 0 10px;
 }
 
 .head-right-top .right-top-warn p {
@@ -52,10 +60,6 @@
   margin-top: 10px;
 }
 
-.pd-con-head-right ul {
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
 
 .pd-con-head-right li {
   list-style-type: none;
@@ -63,6 +67,7 @@
   width: 50%;
   height: 30px;
   line-height: 30px;
+  color: #444;
 }
 
 .head-right-middle .right-middle-title {
@@ -71,6 +76,9 @@
   margin-top: 16px;
   margin-bottom: 8px;
 }
+.right-top-ul {
+  margin-bottom: 16px;
+}
 </style>
 
 
@@ -78,38 +86,40 @@
   <div id="basic">
     <div class="pd-con-head-right">
       <div class="head-right-top">
-        <p class="right-top-title">个人信息</p>
+        <!-- <p class="right-top-title">个人信息</p> -->
+        <h3>个人信息</h3>
         <p class="right-top-acctype">
           账户类型:
-          <strong v-if="this.$store.state.vip.succeed == false">普通</strong>
-          <strong v-if="this.$store.state.vip.succeed == true">会员</strong>
+          <strong v-if="this.role != 'vip'">普通</strong>
+          <strong v-if="this.role == 'vip'">会员</strong>
+          <span style="margin-left:24px" v-if="this.role == 'vip'">到期时间:{{this.value.effectiveDate | formatDate}}</span>
 
-          <!-- <span v-if="this.$store.state.vip.succeed == false">
+          <span v-if="this.role != 'vip'">
            （ <router-link to="/personalData/vip">升级</router-link>）
-          </span> -->
+          </span>
         </p>
 
-        <!-- <div class="right-top-warn" v-if="this.$store.state.vip.succeed == false">
+        <div class="right-top-warn" v-if="this.role != 'vip'">
           <p>升级到高级会员获取更多。</p>
           <router-link to="/personalData/vip" style="text-decoration: none;color: #ffffff;">
             <el-button class="warn-button" type="danger">现在升级</el-button>
           </router-link>
-        </div> -->
-        <ul>
+        </div>
+        <ul class="right-top-ul">
           <li>名称:&nbsp;{{this.value.Name}}</li>
-          <li>Q&nbsp;Q:&nbsp;{{this.value.QQ}}</li>
-          <li>手机:&nbsp;{{this.value.Tel}}</li>
           <li>性别:&nbsp;{{this.value.Sex}}</li>
+          <li>手机:&nbsp;{{this.value.Tel}}</li>
+           <li>Q&nbsp;Q:&nbsp;{{this.value.QQ}}</li>
           <li>生日:&nbsp;{{this.value.Birthday | formatDate}}</li>
         </ul>
       </div>
-      <div class="head-right-middle">
+      <!-- <div class="head-right-middle">
         <p class="right-middle-title">文件</p>
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="最近浏览过的文件" name="first">最近浏览过的文件</el-tab-pane>
           <el-tab-pane label="我的上传" name="second">我的上传</el-tab-pane>
         </el-tabs>
-      </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -128,14 +138,15 @@ export default {
         QQ: "",
         Tel: "",
         Sex: "",
-        Birthday: ""
+        Birthday: "",
+        effectiveDate:""
       },
       message: "reply",
       messages: [],
       personreviewsid: "",
       ids: "",
       classinfoid: "",
-      a: []
+      role:""
     };
   },
   created: function() {
@@ -176,7 +187,9 @@ export default {
             _this.value.Tel = res.data.data.tel;
             _this.value.Sex = res.data.data.sex;
             _this.value.Birthday = res.data.data.birthday;
+            _this.value.effectiveDate = res.data.data.effectiveDate;
             _this.personreviewsid = res.data.data.id;
+            _this.role = res.data.data.role;
           })
           .catch(function(error) {
             console.log(error);

@@ -1,11 +1,12 @@
 <style>
 /*右侧*/
 
-#modifiedData h2 {
+#modifiedData h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
   line-height: 40px;
   margin-bottom: 20px;
+  padding-bottom: 6px;
 }
 </style>
 
@@ -13,7 +14,7 @@
 <template>
   <div id="modifiedData">
     <div class="pd-con-head-right">
-      <h2>修改资料</h2>
+      <h3>修改资料</h3>
       <el-form ref="modifiedDatas" :model="modifiedDatas" label-width="80px">
         <el-form-item label="昵称">
           <el-col :span="11">
@@ -123,39 +124,38 @@ export default {
         }
       })
         .then(function(res) {
-          if (localStorage.getItem("token")) {
-            _this
-              .axios({
-                method: "get",
-                url: `http://192.168.1.27:8088/api/Client/GetClient`,
-                async: false,
-                xhrFields: {
-                  withCredentials: true
-                },
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-              })
-              .then(function(res) {
-                _this.$store.state.modified.Name = res.data.data.name;
-                _this.$message({
-                  message: "修改资料成功",
-                  type: "success"
-                });
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else {
-          }
+          _this.GetClient();
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    abv: function() {
+    GetClient: function() {
       var _this = this;
-      console.log(_this.modifiedDatas);
+      if (localStorage.getItem("token")) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.$store.state.modified.Name = res.data.data.name;
+            _this.$message({
+              message: "修改资料成功",
+              type: "success"
+            });
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
   }
 };

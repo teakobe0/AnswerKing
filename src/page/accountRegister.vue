@@ -63,7 +63,7 @@
 
 
 <template>
-  <div class="register" v-title data-title="注册-AnswerWang">
+  <div class="register" v-title data-title="注册-CourseWhale">
     <!--<Nav msg="登录/注册"></Nav>-->
     <div class="regi-emp">
       <div class="regi-cc">
@@ -107,7 +107,7 @@
                 
               </el-form-item>
               <el-form-item style="margin-left: -50px;text-align: center">
-                <el-button type="primary" id="regi" @click="register('ruleForm')">注册</el-button>
+                <el-button type="primary" id="regi" @click="register('ruleForm')" :loading="loadings">注册</el-button>
               </el-form-item>
             </el-form>
             <p class="termsOfService">注册即代表同意 <router-link to="/termsOfService">《AnswerWang服务条款》</router-link> </p>
@@ -157,6 +157,7 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
+      loadings:false,
       ruleForm: {
         Email: "",
         //Name:'',
@@ -209,6 +210,7 @@ export default {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
+          _this.loadings = true;
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/Register`,
@@ -231,6 +233,12 @@ export default {
                 _this.$store.state.logo.show = false;
                 _this.$store.state.logo.hide = true;
                 _this.$router.push({ path: "/login" });
+              }else {
+                _this.loadings = false;
+                _this.$message({
+                  message: res.data.msg,
+                  type: "success"
+                });
               }
             })
             .catch(function(error) {

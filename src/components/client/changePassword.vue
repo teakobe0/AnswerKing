@@ -8,11 +8,12 @@
   overflow: hidden;
 }
 
-#changePassword h2 {
+#changePassword h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
   line-height: 40px;
   margin-bottom: 20px;
+  padding-bottom: 6px;
 }
 </style>
 
@@ -20,7 +21,7 @@
 <template>
   <div id="changePassword">
     <div class="pd-con-head-right">
-      <h2>修改密码</h2>
+      <h3>修改密码</h3>
       <el-form ref="changePasswords" :model="changePasswords" label-width="80px">
         <el-form-item label="新密码">
           <el-col :span="11">

@@ -3,8 +3,8 @@
   /* padding: 5px 0px 0px 0px; */
 }
 .login-cc {
-    height: 800px;
-    overflow: hidden;
+  height: 800px;
+  overflow: hidden;
 }
 .login-lo {
   background-image: url(../assets/021716cbsvz0og66o07s20.jpg);
@@ -17,7 +17,7 @@
   position: fixed;
   overflow: hidden;
   text-align: center;
-} 
+}
 
 .login-con {
   margin: 0 auto;
@@ -82,21 +82,21 @@
   line-height: 22px;
 }
 .forgetpassword a {
-    text-decoration: none;
-    color: #707070
+  text-decoration: none;
+  color: #707070;
 }
 </style>
 
 
 <template>
-  <div class="login" v-title data-title="登录-AnswerWang">
+  <div class="login" v-title data-title="登录-CourseWhale">
     <!--<Nav msg="登录"></Nav>-->
     <div class="login-lo">
       <div class="login-cc">
         <div class="login-con">
           <div class="login-con-top">
             <p class="brand">
-              <img src="../assets/logo2.png" alt="">
+              <img src="../assets/logo2.png" alt>
             </p>
             <!--<p class="slogan">登录答题王,打开通往知识的大门</p>-->
             <el-form
@@ -124,11 +124,16 @@
               </el-form-item>
               <!-- <div class="forgetpassword">
                 <router-link to="/forgetPassword">忘记密码？</router-link>
-                </div> -->
+              </div>-->
 
               <el-form-item style="margin-left: -50px;">
                 <!-- <el-button id="submit" type="primary" @click="submitForm('ruleForm')" v-if="loadings == true">登录</el-button> -->
-                <el-button id="submit" type="primary" @click="submitForm('ruleForm')">登录</el-button>
+                <el-button
+                  id="submit"
+                  type="primary"
+                  @click="submitForm('ruleForm')"
+                  :loading="loadings"
+                >登录</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -147,7 +152,7 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import Footer from "@/components/public/footer.vue";
-import { truncate } from 'fs';
+import { truncate } from "fs";
 export default {
   name: "login",
   components: {
@@ -164,9 +169,10 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
+      loadings: false,
       ruleForm: {
         Email: "",
-        Password: "",
+        Password: ""
       },
       //rules是Element的表单验证规则
       rules: {
@@ -185,6 +191,7 @@ export default {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
+          _this.loadings = true;
           this.axios({
             method: "POST",
             url: `http://192.168.1.27:8088/api/client/login`,
@@ -200,9 +207,8 @@ export default {
             .then(function(res) {
               localStorage.token = res.data.data.token;
               console.log(res);
-               
               if (res.data.status == 1) {
-                
+                // _this.loadings = false;
                 _this.$message({
                   message: "登陆成功",
                   type: "success"
@@ -214,10 +220,11 @@ export default {
             })
             .catch(function(error) {
               console.log(error);
+              _this.loadings = false;
               _this.$message({
-                  message: "密码或账号错误",
-                  type: "success"
-                });
+                message: "账号或密码错误",
+                type: "success"
+              });
             });
         } else {
           console.log("error submit!!");

@@ -162,7 +162,7 @@
 
     /*}*/
     .member-join-con div:nth-of-type(1){
-        margin-top: 85px;
+        margin-top: 125px;
         margin-left: 250px;
         width: 700px;
         height: 150px;
@@ -210,17 +210,15 @@
         background-color: #ff9f32;
         border-radius: 2px;
     }
-    .member-join-con .purchase a {
+    .member-join-con .purchase p {
         text-align: center;
         color: #fff;
-        text-decoration: none;
         font-size: 35px;
         width: 700px;
         height: 150px;
-        display: inline-block;
     }
-    .member-join-con .purchase a:hover {
-        background: #ffa33a
+    .member-join-con .purchase p:hover {
+        background: #fb9119;
     }
 </style>
 <template>
@@ -309,16 +307,10 @@
             </div>
             <div class="member-join">
                 <div class="member-join-con">
-                    <!--<div>-->
-                        <!--如何成为会员-->
-                    <!--</div>-->
                     <div class="purchase">
-                        <router-link to="/personalData/vip">
-                            立即加入会员!
-                        </router-link>
-                        
+                        <p @click="joinMember">立即加入会员!</p>
                     </div>
-                    <div class="weixin">
+                    <!-- <div class="weixin">
                         <img src="../assets/微信.png" alt=""/>
                         <p style="margin-left: 10px;margin-top: 2px;">微信</p>
                     </div>
@@ -326,12 +318,12 @@
                         <img src="../assets/支付宝.png" alt=""/>
                         <p style="margin-left: 2px;margin-top: 2px;">支付宝</p>
 
-                    </div>
-                    <div class="paypal">
+                    </div> -->
+                    <!-- <div class="paypal">
                         <img src="../assets/paypal-pay.svg" alt=""/>
                         <p style="margin-left: 1px;margin-top: 2px;">Paypal</p>
 
-                    </div>
+                    </div> -->
 
                 </div>
             </div>
@@ -360,7 +352,16 @@
             var _this = this;
             document.documentElement.scrollTop = 0;
         },
-        methods: {},
+        methods: {
+            joinMember:function(){
+                var _this = this;
+                if(localStorage.token){
+                    _this.$router.push({ path: "/personalData/vip" });
+                }else {
+                    _this.$router.push({ path: "/login" });
+                }
+            }
+        },
         mounted() {
 
         }
