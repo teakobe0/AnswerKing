@@ -38,6 +38,9 @@
   color: #136bd3;
   margin: 0 auto;
 }
+.popContainer-wrap {
+ 
+}
 .popContainer {
   position: fixed;
   top: 0;
@@ -46,6 +49,8 @@
   bottom: 0;
   background: rgba(0, 0, 0, 0.9);
   z-index: 9999;
+  overflow-y: hidden;
+  overflow-x: hidden;
 }
 .blur {
   filter: blur(5px);
@@ -66,24 +71,24 @@
   margin: 0 auto;
   text-align: center;
   line-height: 50px;
-  color: #000;
+  color: #fff;
   margin-top: 30px;
 }
 .popContainer .closeshade {
-  width: 60px;
-  height: 30px;
   cursor: pointer;
-  background-color: #ffffff;
   border-radius: 2px;
   margin: 0 auto;
   text-align: center;
   line-height: 30px;
   margin-top: 30px;
-  font-size: 14px;
-  color: #272727;
+  font-size: 40px;
+  color: rgb(177, 177, 177);
+  position: absolute;
+  right: 10px;
+  top: -13px;
 }
 .popContainer .closeshade:hover {
-  background-color: #dadada;
+  color: #fff;
 }
 </style>
 
@@ -109,17 +114,19 @@
         @hide="handleHide"
       ></VueEasyLightbox>
     </div>
-    <div class="popContainer" v-show="shade==true">
-      <p class="time">{{content}}</p>
-      <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
-      <div
-        class="closeshade"
-        @click="Closemask"
-        element-loading-text="拼命加载中"
-        element-loading-spinner="el-icon-loading"
-        element-loading-background="rgba(0, 0, 0, 0.8)"
-        v-loading.fullscreen.lock="fullscreenLoading"
-      >关闭</div>
+    <div class="popContainer-wrap">
+      <div class="popContainer" v-show="shade==true">
+        <p class="time">{{content}}</p>
+        <router-link to="/personalData/vip" class="purchase" @click="joim">成为会员免除等待!</router-link>
+        <div
+          class="closeshade el-icon-close"
+          @click="Closemask"
+          element-loading-text="拼命加载中"
+          element-loading-spinner="el-icon-loading"
+          element-loading-background="rgba(0, 0, 0, 0.8)"
+          v-loading.fullscreen.lock="fullscreenLoading"
+        ></div>
+      </div>
     </div>
   </div>
 </template>
@@ -150,7 +157,6 @@ export default {
   },
   created: function() {
     var _this = this;
-    // _this.Answer = _this.$store.state.answer.answer;
   },
   methods: {
     onMouseOver: function() {
@@ -189,6 +195,7 @@ export default {
     //点击答案显示遮罩方法
     handleanwer: function(index) {
       var _this = this;
+      event.preventDefault();
       if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
         _this.shade = false;
         // 控制图片查看器的打开

@@ -370,16 +370,19 @@
 }
 .homeClassText div {
   width: 210px;
-  display: inline-block;
+  float: left;
   color: #ffffff;
   background-color: #3c4b9173;
-  margin-right: 5px;
-  margin-left: 5px;
   margin-top: 32px;
+  margin-right: 25px;
   padding: 20px;
+}
+.homeClassText div:nth-last-of-type(1){
+  margin-right: 0px;
 }
 .homeClassText div .homeClassText-1{
   font-size: 32px;
+  
 }
 .homeClassText div .homeClassText-2{
   font-size: 16px;
