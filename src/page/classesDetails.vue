@@ -146,10 +146,10 @@
                         <div >
                             <h2>{{value.name}}</h2>
         
-                            <p>School:<router-link :to="{path:'/serchDetailsUniversity',query: {id: this.universityId}}">{{value.university}}</router-link><span>Teach:{{value.professor}}</span>
+                            <p>学校:<router-link :to="{path:'/serchDetailsUniversity',query: {id: this.universityId}}">{{value.university}}</router-link><span>教授:{{value.professor}}</span>
                             </p>
 
-                            <p>Remarks:{{value.memo}}</p>
+                            <p>备注:{{value.memo}}</p>
                         </div>
 
                     </div>

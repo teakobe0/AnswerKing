@@ -112,7 +112,14 @@
     <div class="popContainer" v-show="shade==true">
       <p class="time">{{content}}</p>
       <router-link to="/personalData/vip" class="purchase" @click="joim">立即加入我们!</router-link>
-      <div class="closeshade" @click="Closemask">关闭</div>
+      <div
+        class="closeshade"
+        @click="Closemask"
+        element-loading-text="拼命加载中"
+        element-loading-spinner="el-icon-loading"
+        element-loading-background="rgba(0, 0, 0, 0.8)"
+        v-loading.fullscreen.lock="fullscreenLoading"
+      >关闭</div>
     </div>
   </div>
 </template>
@@ -136,7 +143,9 @@ export default {
       shade: false,
       content: "请购买会员！",
       countdownClock: null,
-      totalTime: 30
+      totalTime: 30,
+      // 控制全屏遮罩的打开
+      fullscreenLoading: false
     };
   },
   created: function() {
@@ -159,12 +168,14 @@ export default {
     handleHide() {
       let _this = this;
       _this.visible = false;
+      _this.fullscreenLoading = false;
     },
     joim: function() {
       var _this = this;
     },
     clockTick: function() {
       let _this = this;
+
       return setTimeout(() => {
         if (_this.totalTime > 0) {
           _this.totalTime--;
@@ -219,6 +230,7 @@ export default {
     // 关闭遮罩
     Closemask: function() {
       var _this = this;
+      _this.fullscreenLoading = true;
       _this.countdownClock = null;
       _this.shade = false;
       _this.totalTime = 0;

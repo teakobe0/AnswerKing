@@ -231,10 +231,9 @@
               <el-select
                 v-model="value1"
                 filterable
-                clearable
                 id="aaa"
                 placeholder="国家"
-                @change="GetUniversitys"
+                @change="handleSelectcountry"
               >
                 <el-option
                   v-for="item in country"
@@ -249,7 +248,6 @@
               <el-select
                 v-model="value2"
                 filterable
-                clearable
                 id="aaa"
                 placeholder="州/省"
                 @change="handleSelectstate"
@@ -317,7 +315,7 @@ export default {
   data() {
     return {
       state1: "",
-      value1: "",
+      value1: "美国",
       value2: "",
       value3: "",
       // 初始容器

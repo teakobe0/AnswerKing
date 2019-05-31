@@ -326,11 +326,11 @@
             <div>
               <h2>{{value.name}}</h2>
               <p>
-                School:
+                学校:
                 <router-link
                   :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
                 >{{value.university}}</router-link>
-                <span>Teach:{{value.professor}}</span>
+                <span>教授:{{value.professor}}</span>
               </p>
               <ul class="content-bookmark">
                 <!-- <li @click="bookmarks">
