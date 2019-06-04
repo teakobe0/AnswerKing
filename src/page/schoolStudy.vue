@@ -248,6 +248,7 @@
               <el-select
                 v-model="value2"
                 filterable
+                clearable
                 id="aaa"
                 placeholder="州/省"
                 @change="handleSelectstate"

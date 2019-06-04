@@ -35,13 +35,22 @@
 }
 
 .brand {
-  color: #1574e5;
-  margin-bottom: 22px;
-  height: 32px;
+  
+  /* height: 50px; */
+}
+.brand span {
+  display: block;
+  font-size: 32px;
+  color: #4458b0;
+  margin-bottom: 20px;
+  vertical-align: middle;
+  
 }
 .brand img {
-  width: 200px;
+  width: 40px;
   height: 32px;
+  vertical-align: middle;
+  margin-right: 5px;
 }
 .slogan {
   padding: 5px 0px;
@@ -96,7 +105,8 @@
         <div class="login-con">
           <div class="login-con-top">
             <p class="brand">
-              <img src="../assets/logo2.png" alt>
+              <!-- <img src="../assets/logo3.png" alt> -->
+              <span>CourseWhale</span>
             </p>
             <!--<p class="slogan">登录答题王,打开通往知识的大门</p>-->
             <el-form

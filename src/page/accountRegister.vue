@@ -70,7 +70,8 @@
         <div class="register-con">
           <div class="register-con-top">
             <p class="brand">
-              <img src="../assets/logo2.png" alt="">
+              <!-- <img src="../assets/logo2.png" alt=""> -->
+              <span>CourseWhale</span>
             </p>
             <el-form
               :model="ruleForm"

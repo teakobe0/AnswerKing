@@ -82,7 +82,7 @@
   line-height: 30px;
   margin-top: 30px;
   font-size: 40px;
-  color: rgb(177, 177, 177);
+  color: rgb(155, 161, 161);
   position: absolute;
   right: 10px;
   top: -13px;

@@ -64,12 +64,14 @@
   text-align: left;
 }
 
-.classes-con-courseSerch ul li:last-of-type {
+.classes-con-courseSerch ul li:first-of-type a:hover{
+  background-color: #f0f0f0;
+  color: #000;
 }
 
 .classes-con-courseSerch ul li a:hover {
   background-color: #08b4e1;
-  color: #000;
+  color: #fff;
   border-radius: 2px;
 }
 
@@ -273,7 +275,7 @@ export default {
           url: `http://192.168.1.27:8088/api/Class/Class`,
           async: false,
           params: {
-            universityid: _this.$route.query.id
+            universityid: _this.$route.query.id,
           },
           xhrFields: {
             withCredentials: true
