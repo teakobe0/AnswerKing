@@ -94,7 +94,10 @@
 
 <template>
   <div id="answer">
-    <div class="tabCon">
+    <div class="tabCon" 
+    v-loading="this.$store.state.answer.loading"
+    element-loading-background="rgba(255, 255, 255)"
+    >
       <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">暂无内容</p>
       <div v-for="(items,index) in this.$store.state.answer.answer">
         <div
@@ -152,11 +155,13 @@ export default {
       countdownClock: null,
       totalTime: 30,
       // 控制全屏遮罩的打开
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      loading:true
     };
   },
   created: function() {
     var _this = this;
+    console.log(11)
   },
   methods: {
     onMouseOver: function() {

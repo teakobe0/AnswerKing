@@ -322,6 +322,7 @@
         },
         created: function () {
             var _this = this;
+            _this.$store.state.answer.answer = null;
             if(localStorage.getItem("token")){
                 this.$store.state.logo.show = false
                 this.$store.state.logo.hide = true

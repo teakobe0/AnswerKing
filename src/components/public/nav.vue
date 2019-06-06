@@ -63,7 +63,7 @@
   <div class="Nav">
     <div class="nav-con">
       <p class="nav-lg">
-        <router-link to="/home">AnswerWang</router-link>
+        <router-link to="/home">CourseWhale</router-link>
       </p>
       <ul class="nav-ul">
         <li>

@@ -40,15 +40,19 @@
   display: block;
   margin-top: 3px;
 }
+.kong {
+  height: 40px;
+}
 </style>
 
 <template>
-  <div class="content-tag-con-right-con-div">
+  <div class="content-tag-con-right-con-div" v-loading="loading">
+    <div class="kong" v-show="kong == true"></div>
     <ul v-for="item in universityClass">
       <li>
         <i class="el-icon-tickets"></i>
         <router-link :to="{ path: 'classesDetails',query: {id: item.cla.id}}">{{item.cla.name}}</router-link>
-        <!-- <span>{{item.cla.university}}</span> -->
+        <span>{{item.cla.university}}</span>
         <span>题库:{{item.order}}</span>
       </li>
     </ul>
@@ -64,7 +68,9 @@ export default {
   data() {
     return {
       // 学校课程
-      universityClass: []
+      universityClass: [],
+      loading:false,
+      kong:true,
     };
   },
   created: function() {
@@ -75,6 +81,7 @@ export default {
     // 通过学校ID查询所有课程并展示题库数量多的
     universityidClass: function() {
       var _this = this;
+      _this.loading = true;
       _this
         .axios({
           method: "get",
@@ -88,6 +95,8 @@ export default {
           }
         })
         .then(function(res) {
+          _this.loading = false;
+          _this.kong = false;
           // _this.classes = res.data.data;
           // _this.classeslength = _this.classes.length;
           // _this.universityClass = res.data.data;

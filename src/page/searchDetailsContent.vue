@@ -296,8 +296,7 @@
 <template>
   <div id="serchDetailsContent">
     <homeNav></homeNav>
-    <div v-if="titleShow==true" v-title :data-title="value.name+'-CourseWhale'">
-        </div>
+    <div v-if="titleShow==true" v-title :data-title="value.name+'-CourseWhale'"></div>
     <div class="serchDetailsContent-con">
       <div class="Content-con-img">
         <div class="crumbs">
@@ -382,6 +381,7 @@
                   v-for="(item,index) in tabs"
                   :class="{tabsType:index == numnum}"
                   @click="tab(index,item.id)"
+                  v-loading.fullscreen.lock="fullscreenLoading"
                 >
                   {{item.contentType}}(
                   <span style="color: #136bd3;">{{item.grade}}</span>分)
@@ -465,12 +465,14 @@ export default {
       use: false,
       noUse: false,
       UseRecords: {},
-      titleShow:false,
+      titleShow: false,
+      fullscreenLoading: false
     };
   },
   created: function() {
     var _this = this;
     _this.Id = _this.$route.query.id;
+
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -479,6 +481,13 @@ export default {
     _this.Classinfos();
   },
   methods: {
+    openFullScreen() {
+      var _this = this;
+      _this.fullscreenLoading = true;
+      // setTimeout(() => {
+      //   this.fullscreenLoading = false;
+      // }, 2000);
+    },
     handleScroll() {
       var scrollTop =
         window.pageYOffset ||
@@ -515,6 +524,7 @@ export default {
     //根据课程资料id检索每周
     ClassWeeks: function() {
       var _this = this;
+      
       _this
         .axios({
           method: "get",
@@ -572,11 +582,11 @@ export default {
               })
               .then(function(res) {
                 _this.Answer = res.data.data;
-
                 if (_this.Answer.length == 0) {
                   _this.$store.state.answer.tabconwu = true;
                 } else {
                   _this.$store.state.answer.tabconwu = false;
+
                 }
                 for (var i = 0; i < _this.Answer.length; i++) {
                   if (
@@ -696,6 +706,7 @@ export default {
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       var _this = this;
+      _this.$store.state.answer.loading = true;
       _this.numnum = index;
       _this
         .axios({
@@ -711,6 +722,7 @@ export default {
         })
         .then(function(res) {
           _this.Answer = res.data.data;
+          _this.$store.state.answer.loading = false;
           if (_this.Answer.length == 0) {
             _this.$store.state.answer.tabconwu = true;
           } else {
@@ -733,7 +745,6 @@ export default {
           }
           _this.$store.state.answer.answer = _this.Answer;
           _this.$store.state.answer.imgss = _this.imgss;
-          console.log(_this.$store.state.answer.answer);
         })
         .catch(function(error) {
           console.log(error);
@@ -752,6 +763,7 @@ export default {
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       var _this = this;
+      _this.$store.state.answer.loading = true;
       _this
         .axios({
           method: "get",
@@ -766,6 +778,7 @@ export default {
         })
         .then(function(res) {
           _this.Answer = res.data.data;
+          _this.$store.state.answer.loading = false;
           _this.numnum = 0;
           if (_this.Answer.length == 0) {
             _this.$store.state.answer.tabconwu = true;
@@ -801,7 +814,7 @@ export default {
     },
     beOfUses: function() {
       var _this = this;
-      if(localStorage.token){
+      if (localStorage.token) {
         _this.useOnuse.Id = Number(this.$route.query.classInfoId);
         if (_this.use == false || _this.noUse == true) {
           _this.useOnuse.type = "Y";
@@ -815,18 +828,17 @@ export default {
           _this.use = false;
           _this.ChangeClassInfo();
         }
-      }else {
-         _this.$message({
-              message: "请登录之后在进行操作",
-              type: "warning"
-          });
+      } else {
+        _this.$message({
+          message: "请登录之后在进行操作",
+          type: "warning"
+        });
       }
-      
     },
     noUses: function() {
       var _this = this;
-      if(localStorage.token){
-          _this.useOnuse.Id = Number(this.$route.query.classInfoId);
+      if (localStorage.token) {
+        _this.useOnuse.Id = Number(this.$route.query.classInfoId);
         if (_this.noUse == false || _this.use == true) {
           _this.useOnuse.type = "N";
           _this.useOnuse.check = 1;
@@ -839,13 +851,12 @@ export default {
           _this.noUse = false;
           _this.ChangeClassInfo();
         }
-        }else {
-          _this.$message({
-              message: "请登录之后在进行操作",
-              type: "warning"
-          });
-        }
-      
+      } else {
+        _this.$message({
+          message: "请登录之后在进行操作",
+          type: "warning"
+        });
+      }
     },
     // 更改课程资料的有用没用
     ChangeClassInfo: function() {
@@ -877,47 +888,46 @@ export default {
     // 根据课程资料id检索该课程资料有用、没用
     UseRecord: function() {
       var _this = this;
-      if(localStorage.token){
+      if (localStorage.token) {
         _this
-        .axios({
-          method: "get",
-          url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
-          async: false,
-          params: {
-            classInfoid: Number(_this.$route.query.classInfoId)
-          },
-          xhrFields: {
-            withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        .then(function(res) {
-          _this.Classinfos();
-          _this.UseRecords = res.data.data;
-          if (_this.UseRecords == null || _this.UseRecords.check == -1) {
-            _this.use = false;
-            _this.noUse = false;
-          } else if (
-            _this.UseRecords.check == 1 &&
-            _this.UseRecords.type == "Y"
-          ) {
-            _this.use = true;
-            _this.noUse = false;
-          } else if (
-            _this.UseRecords.check == 1 &&
-            _this.UseRecords.type == "N"
-          ) {
-            _this.use = false;
-            _this.noUse = true;
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
+            async: false,
+            params: {
+              classInfoid: Number(_this.$route.query.classInfoId)
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.Classinfos();
+            _this.UseRecords = res.data.data;
+            if (_this.UseRecords == null || _this.UseRecords.check == -1) {
+              _this.use = false;
+              _this.noUse = false;
+            } else if (
+              _this.UseRecords.check == 1 &&
+              _this.UseRecords.type == "Y"
+            ) {
+              _this.use = true;
+              _this.noUse = false;
+            } else if (
+              _this.UseRecords.check == 1 &&
+              _this.UseRecords.type == "N"
+            ) {
+              _this.use = false;
+              _this.noUse = true;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
-      
     }
   }
 };
