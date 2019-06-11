@@ -472,7 +472,6 @@ export default {
   created: function() {
     var _this = this;
     _this.Id = _this.$route.query.id;
-
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -586,7 +585,6 @@ export default {
                   _this.$store.state.answer.tabconwu = true;
                 } else {
                   _this.$store.state.answer.tabconwu = false;
-
                 }
                 for (var i = 0; i < _this.Answer.length; i++) {
                   if (

@@ -64,7 +64,7 @@
   text-align: left;
 }
 
-.classes-con-courseSerch ul li:first-of-type a:hover{
+.classes-con-courseSerch ul li:first-of-type a:hover {
   background-color: #f0f0f0;
   color: #000;
 }
@@ -89,6 +89,7 @@
   padding-bottom: 10px;
   /*border: 1px dashed #a3a3a3;*/
   overflow: hidden;
+  position: relative;
 }
 
 .classes-con-course div:nth-last-child(2n + 0) {
@@ -97,10 +98,14 @@
 }
 
 .classes-con-course div a {
+  display: block;
   color: #5b9dfd;
   text-decoration: none;
   font-size: 16px;
   white-space: nowrap;
+  width: 603px;
+  overflow: hidden;
+  text-overflow:ellipsis;
   /*border-bottom: 1px dashed #a2a2a2;*/
 }
 
@@ -113,7 +118,13 @@
   font-size: 14px;
   /*float: right;*/
 }
-
+.classes-con-course div i {
+  position: absolute;
+  right: 0px;
+  top: 10px;
+  cursor: pointer;
+  color: #979797
+}
 /*/!*文件*!/*/
 /*.file-con {*/
 /*width: 1300px;*/
@@ -205,21 +216,33 @@
         </ul>
       </div>
       <div class="classes-con-course">
-        <div v-for="item in classes">
+        <div v-for="(item,index) in classes">
           <router-link
             :to="{path:'/classesDetails',query:{id:item.cla.id}}"
             href="javascript:void(0);"
           >{{item.cla.name}}</router-link>
           <p>题库集:{{item.order}}</p>
+          <i
+            class="el-icon-star-off"
+            @click="attention(item,index)"
+            v-show="item.attentions == false"
+          ></i>
+          <i
+            class="el-icon-star-on"
+            style="color:red;"
+            @click="attention(item,index)"
+            v-show="item.attentions == true"
+          ></i>
         </div>
       </div>
       <!-- <div class="block" >
         <el-pagination layout="prev, pager, next" :total="50" background></el-pagination>
-      </div> -->
+      </div>-->
     </div>
   </div>
 </template>
 <script type="es6">
+import { constants } from "crypto";
 export default {
   name: "schoolall",
   components: {},
@@ -275,16 +298,18 @@ export default {
           url: `http://192.168.1.27:8088/api/Class/Class`,
           async: false,
           params: {
-            universityid: _this.$route.query.id,
+            universityid: _this.$route.query.id
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.classes = res.data.data;
           _this.classeslength = _this.classes.length;
+          for (var i = 0; i < _this.classes.length; i++) {
+            _this.$set(_this.classes[i], "attentions", false);
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -355,6 +380,21 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    },
+    attention: function(item, index) {
+      var _this = this;
+      item.attentions = !item.attentions;
+      if (item.attentions == true) {
+        this.$message({
+          message: "关注成功",
+          type: "success"
+        });
+      } else {
+        this.$message({
+          message: "取消关注",
+          type: "success"
+        });
+      }
     }
   }
 };

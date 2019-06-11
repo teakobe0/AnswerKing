@@ -39,7 +39,6 @@
   margin: 0 auto;
 }
 .popContainer-wrap {
- 
 }
 .popContainer {
   position: fixed;
@@ -61,7 +60,6 @@
   margin-top: 400px;
 }
 .popContainer .purchase {
-  text-decoration: none;
   display: block;
   width: 200px;
   height: 50px;
@@ -94,9 +92,10 @@
 
 <template>
   <div id="answer">
-    <div class="tabCon" 
-    v-loading="this.$store.state.answer.loading"
-    element-loading-background="rgba(255, 255, 255)"
+    <div
+      class="tabCon"
+      v-loading="this.$store.state.answer.loading"
+      element-loading-background="rgba(255, 255, 255)"
     >
       <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">暂无内容</p>
       <div v-for="(items,index) in this.$store.state.answer.answer">
@@ -120,7 +119,7 @@
     <div class="popContainer-wrap">
       <div class="popContainer" v-show="shade==true">
         <p class="time">{{content}}</p>
-        <router-link to="/personalData/vip" class="purchase" @click="joim">成为会员免除等待!</router-link>
+        <p class="purchase" @click="joim">成为会员免除等待!</p>
         <div
           class="closeshade el-icon-close"
           @click="Closemask"
@@ -156,12 +155,11 @@ export default {
       totalTime: 30,
       // 控制全屏遮罩的打开
       fullscreenLoading: false,
-      loading:true
+      loading: true
     };
   },
   created: function() {
     var _this = this;
-    console.log(11)
   },
   methods: {
     onMouseOver: function() {
@@ -183,6 +181,37 @@ export default {
     },
     joim: function() {
       var _this = this;
+      if (localStorage.token) {
+        _this.$router.push({ path: "/personalData/vip" });
+      } else {
+        _this.visible = false;
+        _this.fullscreenLoading = false;
+        _this.shade = false;
+        this.$confirm("您还未登录!请先登录!", "登录", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(() => {
+            _this.$router.push({
+              path: "/login",
+              query: {
+                type: "skip"
+              }
+            });
+          })
+          .catch(() => {
+            _this.shade = true;
+            if(_this.totalTime == 30){
+              _this.shade = false;
+              _this.fullscreenLoading = false;
+              _this.visible = false;
+            }
+            // _this.shade = false;
+            // _this.totalTime = 0;
+            // _this.visible = false;
+          });
+      }
     },
     clockTick: function() {
       let _this = this;

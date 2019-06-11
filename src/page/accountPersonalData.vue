@@ -1,189 +1,320 @@
 <style>
-    #personalData {
-        width: 100%;
-        height: 100%;
-        position: relative;
-        padding-bottom: 276px;
-    }
+#personalData {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  padding-bottom: 276px;
+}
 
-    .personalData-con {
-        width: 1300px;
-        margin: 0 auto;
-        margin-top: 80px;
-        overflow: hidden;
-    }
+.personalData-con {
+  width: 1300px;
+  margin: 0 auto;
+  margin-top: 80px;
+  overflow: hidden;
+}
 
-    .pd-con-head {
-        width: 200px;
-        height: 980px;
-        border-left: 1px solid #dcdcdc;
-        border-right: 1px solid #dcdcdc;
-        background-color: #fafafa;
-        float: left;
-        overflow: hidden;
-    }
+.pd-con-head {
+  width: 200px;
+  height: 980px;
+  border-left: 1px solid #dcdcdc;
+  border-right: 1px solid #dcdcdc;
+  background-color: #fafafa;
+  float: left;
+  overflow: hidden;
+}
 
-    .head-img {
-        width: 140px;
-        text-align: center;
-        margin: 0 auto;
-        margin-top: 20px;
-        margin-bottom: 29.5px;
+.head-img {
+  width: 140px;
+  text-align: center;
+  margin: 0 auto;
+  margin-top: 20px;
+  margin-bottom: 29.5px;
+  position: relative;
+}
 
-    }
+.head-img img {
+  width: 140px;
+  height: 140px;
+  border-radius: 2px;
+  z-index: 10;
+}
 
-    .head-img img {
-        width: 140px;
-        height: 140px;
-    }
+.head-img a {
+  display: inline-block;
+  text-decoration: none;
+  margin-top: 2px;
+  font-size: 14px;
+}
 
-    .head-img a {
-        display: inline-block;
-        text-decoration: none;
-        margin-top: 2px;
-        font-size: 14px;
-    }
+.head-img a:hover {
+  color: #d91685;
+}
+.head-img p {
+  line-height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-bottom: 7px;
+}
 
-    .head-img a:hover {
-        color: #d91685;
-    }
-    .head-img p {
-        line-height: 40px;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        margin-bottom: 7px;
-    }
+.fasttrack {
+  width: 100%;
+  height: 40px;
+  background-color: #f2f2f2;
+  font-weight: 700;
+  line-height: 40px;
+  text-indent: 20px;
+  font-size: 15px;
+  border-top: 2px solid #dcdcdc;
+  border-bottom: 2px solid #dcdcdc;
+}
 
-    .fasttrack {
-        width: 100%;
-        height: 40px;
-        background-color: #f2f2f2;
-        font-weight: 700;
-        line-height: 40px;
-        text-indent: 20px;
-        font-size: 15px;
-        border-top: 2px solid #dcdcdc;
-        border-bottom: 2px solid #dcdcdc;
-    }
+.perSet li {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px dashed #dbdbdb;
+}
 
-    .perSet li {
-        width: 100%;
-        height: 50px;
-        border-bottom: 1px dashed #dbdbdb;
-    }
+.perSet li a {
+  width: 100%;
+  height: 50px;
+  display: inline-block;
+  text-decoration: none;
+  text-align: left;
+  /* text-indent: 10px; */
+  line-height: 50px;
+  color: #666666;
+  font-size: 14px;
+}
 
-    .perSet li a {
-        width: 100%;
-        height: 50px;
-        display: inline-block;
-        text-decoration: none;
-        text-align: left;
-        /* text-indent: 10px; */
-        line-height: 50px;
-        color: #666666;
-        font-size: 14px;
-    }
+.perSet li a:hover {
+  background-color: #fff;
+}
 
-    .perSet li a:hover {
-        background-color: #fff;
-    }
-
-    .perSet li a i {
-        display: inline-block;
-        margin-right: 5px;
-        font-size: 16px;
-        color: #5b9dfd;
-    }
-    .perSet li a span {
-        height: 50px;
-        margin-left: 30px;
-    }
-    
-
+.perSet li a i {
+  display: inline-block;
+  margin-right: 5px;
+  font-size: 16px;
+  color: #5b9dfd;
+}
+.perSet li a span {
+  height: 50px;
+  margin-left: 30px;
+}
+/* 上传头像的CSS */
+.avatar-uploader .el-upload {
+  /* border: 1px dashed #d9d9d9; */
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 140px;
+  height: 140px;
+  line-height: 140px !important;
+  text-align: center;
+}
+.avatar {
+  width: 140px;
+  height: 140px;
+  display: block;
+}
+.headShade {
+  width: 140px;
+  height: 140px;
+  background-color: rgba(0, 0, 0, 0.8);
+  z-index: 9999;
+  position: absolute;
+  top: 47px;
+  border-radius: 3px;
+}
 </style>
 
 <template>
-    <div id="personalData" v-title data-title="个人信息-CourseWhale">
-        <homeNav></homeNav>
-        <div class="personalData-con">
-            <div class="pd-con-head">
-                <div class="head-img">
-                    <p>{{this.$store.state.modified.Name}}</p>
-                    <img src="../assets/5.jpg" alt=""/>
-
-                    
-                </div>
-                <div class="fasttrack">
-                    快速通道
-                </div>
-                <ul class="perSet">
-                    <li><router-link to="/personalData/basic"><span><i class="el-icon-info"></i>个人信息</span></router-link></li>
-                    <li><router-link to="/personalData/modifiedData" ><span><i class="el-icon-edit"></i>修改资料</span></router-link></li>
-                    <li><router-link to="/personalData/changePassword"><span><i class="el-icon-setting"></i>修改密码</span></router-link></li>
-                    <li><router-link to="/personalData/inform"><span><i class="el-icon-bell"></i>通知信息<span style="margin-left:0px;" v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span></span></router-link></li>
-                    <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
-                    <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
-                    <li><router-link to="/personalData/vip"><span><i ><img src="../assets/会员1.png" alt="" style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"/></i>成为会员</span></router-link></li>
-                    <li><router-link to="/personalData/orderHistory"><span><i class="el-icon-sold-out"></i>购买记录</span></router-link></li>
-                    <!-- <li><a href="javascript:0"><span><i class="el-icon-service"></i>在线客服</span></a></li> -->
-                </ul>
-            </div>
-            <div>
-                <router-view/>
-            </div>
+  <div id="personalData" v-title data-title="个人信息-CourseWhale">
+    <homeNav></homeNav>
+    <div class="personalData-con">
+      <div class="pd-con-head">
+        <div class="head-img" @mouseenter="imgMouseenter" @mouseleave="imgMouseleave">
+          <p>{{this.$store.state.modified.Name}}</p>
+          <img :src="imageUrl" alt>
+          <div class="headShade" v-show="imageShow == true">
+            <el-upload
+              class="avatar-uploader"
+              :action="imgSite"
+              :headers="myHeaders"
+              :show-file-list="false"
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+            >
+              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+              <i class="el-icon-picture-outline avatar-uploader-icon"></i>
+            </el-upload>
+          </div>
         </div>
-        <homeFooter></homeFooter>
+        <div class="fasttrack">快速通道</div>
+        <ul class="perSet">
+          <li>
+            <router-link to="/personalData/basic">
+              <span>
+                <i class="el-icon-info"></i>个人信息
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/personalData/modifiedData">
+              <span>
+                <i class="el-icon-edit"></i>修改资料
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/personalData/changePassword">
+              <span>
+                <i class="el-icon-setting"></i>修改密码
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/personalData/inform">
+              <span>
+                <i class="el-icon-bell"></i>通知信息
+                <span
+                  style="margin-left:0px;"
+                  v-show="this.$store.state.logo.message>=1"
+                >({{this.$store.state.logo.message}})</span>
+              </span>
+            </router-link>
+          </li>
+          <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
+          <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
+          <li>
+            <router-link to="/personalData/attention">
+              <span>
+                <i class="el-icon-star-off"></i>我的关注
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/personalData/vip">
+              <span>
+                <i>
+                  <img
+                    src="../assets/会员1.png"
+                    alt
+                    style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"
+                  >
+                </i>成为会员
+              </span>
+            </router-link>
+          </li>
+          <li>
+            <router-link to="/personalData/orderHistory">
+              <span>
+                <i class="el-icon-sold-out"></i>购买记录
+              </span>
+            </router-link>
+          </li>
+        </ul>
+      </div>
+      <div>
+        <router-view/>
+      </div>
     </div>
+    <homeFooter></homeFooter>
+  </div>
 </template>
 
 <script type="es6">
-    import homeNav from '@/components/public/homeNav.vue'
-    import homeFooter from '@/components/public/homeFooter.vue'
-
-    export default {
-        name: 'personalData',
-        components: {
-            homeNav,
-            homeFooter
-        },
-        data(){
-            return {
-                activeName: 'first',
-                value:[
-
-                ],
-                names:''
-            };
-        },
-        created: function () {
-            if (localStorage.getItem("token")) {
-                var _this = this;
-                _this.axios({
-                    method: "get",
-                    url: `http://192.168.1.27:8088/api/Client/GetClient`,
-                    async: false,
-                    xhrFields: {
-                        withCredentials: true
-                    },
-                    headers: {
-                        Authorization: `Bearer ${localStorage.getItem("token")}`
-                    }
-                }).then(function (res) {
-                    _this.$store.state.modified.Name = res.data.data.name;
-                }).catch(function (error) {
-                    console.log(error);
-                });
-
-            } else {
-
-            }
-            document.documentElement.scrollTop = 0;
-            
-        },
-        methods: {
-            
-        },
-
+import homeNav from "@/components/public/homeNav.vue";
+import homeFooter from "@/components/public/homeFooter.vue";
+import bluerightimg from "@/assets/5.jpg";
+export default {
+  name: "personalData",
+  components: {
+    homeNav,
+    homeFooter,
+    bluerightimg
+  },
+  data() {
+    return {
+      activeName: "first",
+      value: [],
+      names: "",
+      imageUrl: bluerightimg,
+      imageShow: false,
+      imgSite: "https://jsonplaceholder.typicode.com/posts/",
+      myHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    };
+  },
+  created: function() {
+    if (localStorage.getItem("token")) {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/Client/GetClient`,
+          async: false,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          _this.$store.state.modified.Name = res.data.data.name;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    } else {
     }
+    document.documentElement.scrollTop = 0;
+  },
+  methods: {
+    //鼠标移入
+    imgMouseenter: function() {
+      var _this = this;
+      _this.imageShow = true;
+    },
+    // 鼠标移出
+    imgMouseleave: function() {
+      var _this = this;
+      _this.imageShow = false;
+    },
+    // 上传成功
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+      console.log(res);
+
+      console.log(file);
+    },
+    // 上传之前
+    beforeAvatarUpload(file) {
+      console.log(file);
+
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      //   const isJPG = file.type === "image/jpeg";
+      //   const isPNG = file.type === 'image/png';
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    }
+  }
+};
 </script>

@@ -66,14 +66,14 @@
 
 .reg-bottom {
   background-color: #f5f5f5;
-  height: 40px;
+  height: 59px;
   margin-top: 22px;
-  border-top: 1px solid #dddddd;
+  border-top: 1px solid #ebebeb;
 }
 
 .login-resi {
   text-decoration: none;
-  line-height: 40px;
+  line-height: 59px;
   color: #1b5299;
 }
 
@@ -85,8 +85,8 @@
   width: 100%;
   height: 22px;
   text-align: right;
-  margin-bottom: 8px;
-  margin-top: 8px;
+  margin-bottom: 10px;
+  margin-top: -12px;
   font-size: 14px;
   line-height: 22px;
 }
@@ -132,9 +132,9 @@
                   @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
-              <!-- <div class="forgetpassword">
+              <div class="forgetpassword">
                 <router-link to="/forgetPassword">忘记密码？</router-link>
-              </div>-->
+              </div>
 
               <el-form-item style="margin-left: -50px;">
                 <!-- <el-button id="submit" type="primary" @click="submitForm('ruleForm')" v-if="loadings == true">登录</el-button> -->
@@ -182,12 +182,18 @@ export default {
       loadings: false,
       ruleForm: {
         Email: "",
-        Password: ""
+        Password: "",
+        Username:""
       },
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          { required: true, message: "请输入用户名", trigger: "blur" }
+          { required: true, message: "请输入用户名", trigger: "blur" },
+          {
+            type: "email",
+            message: "请输入正确的邮箱地址",
+            trigger: ["blur", "change"]
+          }
         ],
         Password: [{ required: true, validator: validatePass, trigger: "blur" }]
       }
@@ -220,12 +226,18 @@ export default {
               if (res.data.status == 1) {
                 // _this.loadings = false;
                 _this.$message({
-                  message: "登陆成功",
+                  message: "登录成功",
                   type: "success"
                 });
                 //_this.$store.state.logo.show = false;
                 //_this.$store.state.logo.hide = true;
-                _this.$router.push({ path: "/home" });
+                if (_this.$route.query.type == "skip") {
+                  _this.$router.push({
+                    path: "/personalData/vip",
+                  });
+                }else {
+                  _this.$router.push({ path: "/home" });
+                }
               }
             })
             .catch(function(error) {

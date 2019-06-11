@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import login from '@/page/accountLogin.vue'
 import register from '@/page/accountRegister.vue'
 import forgetPassword from '@/page/accountForgetPassword.vue'
+import accountChangePassword from '@/page/accountChangePassword.vue'
 import personalData from '@/page/accountPersonalData.vue'
 import home from '@/page/Home.vue'
 import serch from '@/page/search.vue'
@@ -26,6 +27,7 @@ import vip from '@/components/client/vip.vue'
 import orderHistory from '@/components/client/orderHistory.vue'
 import inform from '@/components/client/inform.vue'
 import platinavip from '@/components/client/platinayearly.vue'
+import attention from '@/components/client/attention.vue'
 
 
 
@@ -50,6 +52,11 @@ export default new Router({
             path: '/register',      //设置跳转
             name: 'register',
             component: register
+        },
+        {
+            path: '/accountChangePassword',      //设置跳转
+            name: 'accountChangePassword',
+            component: accountChangePassword
         },
         {
             path: '/home',      //设置跳转
@@ -127,6 +134,11 @@ export default new Router({
                     path: 'orderHistory',      //设置跳转
                     name: 'orderHistory',
                     component: orderHistory,
+                },
+                {
+                    path: 'attention',      //设置跳转
+                    name: 'attention',
+                    component: attention,
                 }
 
             ]

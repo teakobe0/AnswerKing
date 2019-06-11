@@ -495,6 +495,7 @@
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
+    <!-- <complain></complain> -->
     <homeNav msg="登录/注册"/>
     <div class="home-con">
       <div class="home-ser">
@@ -632,12 +633,14 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import complain from "@/components/public/complain.vue";
 
 export default {
   name: "home",
   components: {
     homeNav,
-    homeFooter
+    homeFooter,
+    complain
   },
   data() {
     return {
@@ -654,10 +657,13 @@ export default {
   created: function() {
     var _this = this;
     document.documentElement.scrollTop = 0;
+    
+    
   },
   methods: {
     querySearch(queryString, cb) {
-			var _this = this;
+      var _this = this;
+      console.log(_this.$route.params.path)
 			if(queryString.length >= 3){
 			_this.inputLoad = true;
 			_this.state2 = queryString;

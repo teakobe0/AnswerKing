@@ -36,19 +36,6 @@
   width: 100%;
 }
 
-.reg-bottom {
-  background-color: #f5f5f5;
-  height: 40px;
-  margin-top: 22px;
-  border-top: 1px solid #dddddd;
-  text-align: center;
-}
-
-.login-resi {
-  text-decoration: none;
-  line-height: 40px;
-  color: #1b5299;
-}
 .termsOfService {
   text-align: left;
   color: #8590a6;
@@ -57,7 +44,6 @@
 .termsOfService a {
   text-decoration: none;
   color: #8590a6;
-
 }
 </style>
 
@@ -81,11 +67,7 @@
               class="demo-ruleForm"
             >
               <el-form-item style="margin-left: -50px;" label prop="Email">
-                <el-input
-                  prefix-icon="el-icon-edit"
-                  v-model="ruleForm.Email"
-                  placeholder="输入邮箱地址"
-                ></el-input>
+                <el-input prefix-icon="el-icon-edit" v-model="ruleForm.Email" placeholder="输入邮箱地址"></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -50px;" label prop="Password">
                 <el-input
@@ -105,14 +87,20 @@
                   autocomplete="off"
                   @keyup.enter.native="register('ruleForm')"
                 ></el-input>
-                
               </el-form-item>
               <el-form-item style="margin-left: -50px;text-align: center">
-                <el-button type="primary" id="regi" @click="register('ruleForm')" :loading="loadings">注册</el-button>
+                <el-button
+                  type="primary"
+                  id="regi"
+                  @click="register('ruleForm')"
+                  :loading="loadings"
+                >注册</el-button>
               </el-form-item>
             </el-form>
-            <p class="termsOfService">注册即代表同意 <router-link to="/termsOfService">《CourseWhale服务条款》</router-link> </p>
-
+            <p class="termsOfService">
+              注册即代表同意
+              <router-link to="/termsOfService">《CourseWhale服务条款》</router-link>
+            </p>
           </div>
           <div class="reg-bottom">
             <span>已有账号？</span>
@@ -158,7 +146,7 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
-      loadings:false,
+      loadings: false,
       ruleForm: {
         Email: "",
         //Name:'',
@@ -231,10 +219,12 @@ export default {
                   message: "注册成功",
                   type: "success"
                 });
-                _this.$store.state.logo.show = false;
-                _this.$store.state.logo.hide = true;
+                // _this.$store.state.logo.show = false;
+                // _this.$store.state.logo.hide = true;
+                
                 _this.$router.push({ path: "/login" });
-              }else {
+                
+              } else {
                 _this.loadings = false;
                 _this.$message({
                   message: res.data.msg,
@@ -250,7 +240,7 @@ export default {
           return false;
         }
       });
-    },
+    }
   }
 };
 </script>

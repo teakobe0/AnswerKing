@@ -55,13 +55,13 @@
   margin-left: 0px;
   border-radius: 4px;
   padding: 20px;
-  
+  position: relative;
 }
 .file-con-course a {
   text-decoration: none;
   color: #000;
-
 }
+
 /*.file-course-img {*/
 /*margin: 0;*/
 /*}*/
@@ -73,8 +73,8 @@
   color: #fe2a93;
 }
 .file-course-img img {
-  width: 180px;
-  height: 210px;
+  /* width: 180px;
+  height: 210px; */
   margin-left: 10px;
   margin-top: 10px;
 }
@@ -92,6 +92,13 @@
   font-size: 14px;
   color: #b9b9b9;
 }
+.file-con-course i {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  cursor: pointer;
+  color: #b9b9b9;
+}
 </style>
 
 
@@ -105,8 +112,8 @@
           <div class="file-con-info-trim2"></div>
         </div>
       </div>
-      <div class="file-con-course" >
-        <div v-for="item in value" @click="Information(item)" >
+      <div class="file-con-course">
+        <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
             :to="{path:'/serchDetailsContent',query:{id:item.classId,classInfoId:item.id}}"
             class="file-course-img"
@@ -115,6 +122,17 @@
             <p>Grade:{{item.totalGrade}}</p>
             <span>Time:{{item.createTime | formatDate}}</span>
           </router-link>
+          <i
+            class="el-icon-star-off"
+            @click="attention(item,index)"
+            v-show="item.attentions == false"
+          ></i>
+          <i
+            class="el-icon-star-on"
+            style="color:red;"
+            @click="attention(item,index)"
+            v-show="item.attentions == true"
+          ></i>
         </div>
       </div>
     </div>
@@ -167,6 +185,9 @@ export default {
           console.log(res);
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
+          for (var i = 0; i < _this.value.length; i++) {
+            _this.$set(_this.value[i], "attentions", false);
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -175,6 +196,21 @@ export default {
     Information: function(item) {
       var _this = this;
       // _this.$store.state.information.informations = item;
+    },
+    attention: function(item) {
+      var _this = this;
+      item.attentions = !item.attentions;
+      if (item.attentions == true) {
+        this.$message({
+          message: "关注成功",
+          type: "success"
+        });
+      }else {
+        this.$message({
+          message: "取消关注",
+          type: "success"
+        });
+      }
     }
   }
 };
