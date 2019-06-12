@@ -16,7 +16,7 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
-  background-color: #4458b0;
+  /* background-color: #4458b0; */
 }
 .headPortrait p {
   width: 50px;
@@ -24,6 +24,11 @@
   text-align: center;
   line-height: 50px;
   color: #fff;
+}
+.headPortrait img {
+  width: 51px;
+  height: 51px;
+  border-radius: 26px;
 }
 .retext {
   float: left;
@@ -234,7 +239,7 @@
   overflow: hidden;
   width: 50px;
   height: 50px;
-  background-color: #4458b0;
+  /* background-color: #4458b0; */
 }
 .openheadPortrait p {
   width: 50px;
@@ -242,6 +247,10 @@
   text-align: center;
   line-height: 50px;
   color: #fff;
+}
+.openheadPortrait img {
+  width: 51px;
+  height: 51px;
 }
 </style>
 
@@ -251,12 +260,20 @@
       <!-- 本人的评论框 -->
       <div style="overflow:hidden;width:953px">
         <div class="headPortrait">
-          <!-- <img src="../../assets/5.jpg" alt> -->
-          <p>AW</p>
+          <img :src="imageUrl" alt v-if="headShowLogin == true">
+          <img src="../../assets/头像.jpg" alt v-if="headShowLogin == false">
+          <!-- <p>AW</p> -->
         </div>
         <div class="retext">
           <p>{{personreviews.name}}</p>
-          <el-input type="textarea" :rows="2" v-model="retext" resize="none" style="width:893px" :placeholder="placeholder"></el-input>
+          <el-input
+            type="textarea"
+            :rows="2"
+            v-model="retext"
+            resize="none"
+            style="width:893px"
+            :placeholder="placeholder"
+          ></el-input>
           <div style="height:28px;margin-top:8px">
             <!-- <div class="face">
               <img src="../../assets/笑脸.svg" alt>
@@ -270,8 +287,9 @@
       <!-- 评论内容 -->
       <div class="statereview" v-for="(item,index) in comment">
         <div class="headPortrait">
-          <p>AW</p>
-          <!-- <img src="../../assets/5.jpg" alt> -->
+          <!-- <p>AW</p> -->
+          <img :src="'http://192.168.1.27:8088'+item.img" alt v-if="item.headShow == true">
+          <img src="../../assets/头像.jpg" alt v-if="item.headShow == false">
         </div>
         <div class="staterretext">
           <p>
@@ -296,8 +314,13 @@
           <div>
             <div class="openstatereview" v-for="(openitem,openindex) in item.replies">
               <div class="openheadPortrait">
-                <p>AW</p>
-                <!-- <img src="../../assets/5.jpg" alt> -->
+                <!-- <p>AW</p> -->
+                <img
+                  :src="'http://192.168.1.27:8088'+openitem.replyimg"
+                  alt
+                  v-if="openitem.headShowTwo == true"
+                >
+                <img src="../../assets/头像.jpg" alt v-if="openitem.headShowTwo == false">
               </div>
               <div class="openstaterretext">
                 <p>
@@ -333,8 +356,8 @@
             style="background:rgb(252, 252, 252);overflow:hidden;padding:8px;"
           >
             <div class="headPortrait">
-              <p>AW</p>
-              <!-- <img src="../../assets/5.jpg" alt> -->
+              <!-- <p>AW</p> -->
+              <img :src="imageUrl" alt>
             </div>
             <div class="openretext">
               <p>{{personreviews.name}}</p>
@@ -390,17 +413,19 @@ export default {
       //登录人信息
       personreviews: [],
       personreviewsid: "",
-      placeholder:""
+      placeholder: "",
+      imageUrl: "",
+      headShowLogin: false
     };
   },
   created: function() {
     var _this = this;
     //获取个人信息
     _this.personal();
-    if(localStorage.token){
-      _this.placeholder = "请输入评论内容:"
-    }else {
-      _this.placeholder = "请登录之后进行评论!"
+    if (localStorage.token) {
+      _this.placeholder = "请输入评论内容:";
+    } else {
+      _this.placeholder = "请登录之后进行评论!";
     }
   },
   filters: {
@@ -413,36 +438,45 @@ export default {
     //获取登录人的个人信息
     personal: function() {
       var _this = this;
-      if (_this.$store.state.loginPerson.loginPerson.id) {
-        _this.personreviews = _this.$store.state.loginPerson.loginPerson;
-        _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
-        _this.searching();
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.personreviews = res.data.data;
+            _this.personreviewsid = res.data.data.id;
+            _this.imageUrl = "http://192.168.1.27:8088" + res.data.data.image;
+            _this.headShowLogin = true;
+            _this.searching();
+            console.log(res);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       } else {
-        if (localStorage.token) {
-          _this
-            .axios({
-              method: "get",
-              url: `http://192.168.1.27:8088/api/Client/GetClient`,
-              async: false,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              _this.personreviews = res.data.data;
-              _this.personreviewsid = res.data.data.id;
-              _this.searching();
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-        } else {
-          _this.searching();
-        }
+        _this.headShow = false;
+        _this.searching();
       }
+      // if (_this.$store.state.loginPerson.loginPerson.id) {
+      //   _this.personreviews = _this.$store.state.loginPerson.loginPerson;
+      //   _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
+      //   _this.imageUrl =
+      //     "http://192.168.1.27:8088" +
+      //     _this.$store.state.loginPerson.loginPerson.image;
+      //     _this.headShowLogin = true;
+      //   _this.searching();
+      // } else {
+
+      // }
     },
     //检索评论
     searching: function() {
@@ -461,14 +495,24 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res);
           _this.reviews = res.data.data;
-
+          if (res.data.data.length == 0) {
+            _this.comment = [];
+          }
           for (var i = 0; i < _this.reviews.length; i++) {
             _this.$set(_this.reviews[i], "openreply", false);
             _this.$set(_this.reviews[i], "deleteshow", false);
             _this.$set(_this.reviews[i], "model", "");
             _this.$set(_this.reviews[i], "replies", []);
-
+            _this.$set(_this.reviews[i], "headShow", false);
+            _this.$set(_this.reviews[i], "headShowTwo", false);
+            if (_this.reviews[i].img) {
+              _this.$set(_this.reviews[i], "headShow", true);
+            }
+            if(_this.reviews[i].replyimg){
+               _this.$set(_this.reviews[i], "headShowTwo", true);
+            }
             if (_this.reviews[i].clientId == _this.personreviewsid) {
               _this.reviews[i].deleteshow = true;
             } else {
@@ -498,83 +542,100 @@ export default {
     //新增评论
     addComment: function() {
       var _this = this;
-      if(localStorage.token){
-      _this.addComments.parentId = 0;
-      _this.addComments.contents = _this.retext;
-      _this.addComments.classInfoId = _this.$route.query.classInfoId;
-      _this.addComments.clientid = _this.personreviewsid;
-      _this
-        .axios({
-          method: "POST",
-          url: `http://192.168.1.27:8088/api/Comment/Add`,
-          async: false,
-          data: _this.addComments,
-          xhrFields: {
-            withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        .then(function(res) {
-          _this.retext = "";
+      console.log(pvalue);
+      if (localStorage.token) {
+        var patt = /^[\s]*$/;
+        var pvalue = patt.test(_this.retext);
+        if (pvalue) {
           _this.$message({
-            message: "评论成功",
-            type: "success"
-          });
-          _this.searching();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      }else {
-        _this.$message({
-            message: "请登录之后在进行评论",
+            message: "请输入内容",
             type: "warning"
+          });
+        } else {
+          _this.addComments.parentId = 0;
+          _this.addComments.contents = _this.retext;
+          _this.addComments.classInfoId = _this.$route.query.classInfoId;
+          _this.addComments.clientid = _this.personreviewsid;
+          _this
+            .axios({
+              method: "POST",
+              url: `http://192.168.1.27:8088/api/Comment/Add`,
+              async: false,
+              data: _this.addComments,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.retext = "";
+              _this.$message({
+                message: "评论成功",
+                type: "success"
+              });
+              _this.searching();
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      } else {
+        _this.$message({
+          message: "请登录并且成为会员才能评论",
+          type: "warning"
         });
       }
-      
     },
     // 新增2级评论
     submitReview: function(model) {
       var _this = this;
-      if(localStorage.token){
-      _this.addComments.parentId = _this.replyOneTwoid;
-      _this.addComments.contents = model;
-      _this.addComments.classInfoId = _this.$route.query.classInfoId;
-      _this.addComments.clientid = _this.personreviewsid;
-      _this.addComments.contenturl =
-        model +
-        "," +
-        _this.$route.query.id +
-        "," +
-        _this.$route.query.classInfoId;
-      _this
-        .axios({
-          method: "POST",
-          url: `http://192.168.1.27:8088/api/Comment/Add`,
-          async: false,
-          data: _this.addComments,
-          xhrFields: {
-            withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        .then(function(res) {
-          _this.searching();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-      }else {
-        _this.$message({
-            message: "请登录之后在进行评论",
+      if (localStorage.token) {
+        var patt = /^[\s]*$/;
+        var pvalue = patt.test(model);
+        if (pvalue) {
+          _this.$message({
+            message: "请输入内容",
             type: "warning"
+          });
+        } else {
+          _this.addComments.parentId = _this.replyOneTwoid;
+          _this.addComments.contents = model;
+          _this.addComments.classInfoId = _this.$route.query.classInfoId;
+          _this.addComments.clientid = _this.personreviewsid;
+          _this.addComments.contenturl =
+            model +
+            "," +
+            _this.$route.query.id +
+            "," +
+            _this.$route.query.classInfoId;
+          _this
+            .axios({
+              method: "POST",
+              url: `http://192.168.1.27:8088/api/Comment/Add`,
+              async: false,
+              data: _this.addComments,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.searching();
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      } else {
+        _this.$message({
+          message: "请登录之后在进行评论",
+          type: "warning"
         });
       }
-      
     },
     // 删除本人评论
     deletecom: function(ids) {
@@ -595,11 +656,11 @@ export default {
           }
         })
         .then(function(res) {
+          _this.searching();
           _this.$message({
             message: "删除成功",
             type: "success"
           });
-          _this.searching();
         })
         .catch(function(error) {
           console.log(error);

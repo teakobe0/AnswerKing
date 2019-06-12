@@ -356,7 +356,6 @@ export default {
       .then(function(res) {
         console.log(res);
         _this.country = res.data.data;
-
         console.log("国家");
       })
       .catch(function(error) {
