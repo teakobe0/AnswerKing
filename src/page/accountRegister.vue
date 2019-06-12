@@ -213,8 +213,10 @@ export default {
             }
           })
             .then(function(res) {
+              console.log(res)
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
+                
                 _this.$message({
                   message: "注册成功",
                   type: "success"
@@ -223,8 +225,8 @@ export default {
                 // _this.$store.state.logo.hide = true;
                 
                 _this.$router.push({ path: "/login" });
-                
-              } else {
+              } else if(res.data.status == 2) {
+                console.log(2222)
                 _this.loadings = false;
                 _this.$message({
                   message: res.data.msg,

@@ -288,7 +288,7 @@
       <div class="statereview" v-for="(item,index) in comment">
         <div class="headPortrait">
           <!-- <p>AW</p> -->
-          <img :src="'http://192.168.1.27:8088'+item.img" alt v-if="item.headShow == true">
+          <img :src="item.img" alt v-if="item.headShow == true">
           <img src="../../assets/头像.jpg" alt v-if="item.headShow == false">
         </div>
         <div class="staterretext">
@@ -316,7 +316,7 @@
               <div class="openheadPortrait">
                 <!-- <p>AW</p> -->
                 <img
-                  :src="'http://192.168.1.27:8088'+openitem.replyimg"
+                  :src="openitem.replyimg"
                   alt
                   v-if="openitem.headShowTwo == true"
                 >
@@ -508,9 +508,11 @@ export default {
             _this.$set(_this.reviews[i], "headShow", false);
             _this.$set(_this.reviews[i], "headShowTwo", false);
             if (_this.reviews[i].img) {
+              _this.reviews[i].img = 'http://192.168.1.27:8088'+_this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
             if(_this.reviews[i].replyimg){
+              _this.reviews[i].replyimg = 'http://192.168.1.27:8088'+_this.reviews[i].replyimg;
                _this.$set(_this.reviews[i], "headShowTwo", true);
             }
             if (_this.reviews[i].clientId == _this.personreviewsid) {
@@ -542,7 +544,6 @@ export default {
     //新增评论
     addComment: function() {
       var _this = this;
-      console.log(pvalue);
       if (localStorage.token) {
         var patt = /^[\s]*$/;
         var pvalue = patt.test(_this.retext);
@@ -570,6 +571,7 @@ export default {
               }
             })
             .then(function(res) {
+              console.log(res)
               _this.retext = "";
               _this.$message({
                 message: "评论成功",

@@ -25,12 +25,12 @@
       <el-form ref="changePasswords" :model="changePasswords" label-width="80px">
         <el-form-item label="新密码">
           <el-col :span="11">
-            <el-input v-model="changePasswords.NewPassword"></el-input>
+            <el-input type="Password" v-model="changePasswords.NewPassword"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item label="确认密码">
           <el-col :span="11">
-            <el-input v-model="changePasswords.RepeatPwd" @keyup.enter.native="StorageChgPassword"></el-input>
+            <el-input type="Password" v-model="changePasswords.RepeatPwd" @keyup.enter.native="StorageChgPassword"></el-input>
           </el-col>
         </el-form-item>
         <el-form-item>

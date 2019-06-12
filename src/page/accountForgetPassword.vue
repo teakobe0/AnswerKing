@@ -79,16 +79,14 @@
                   placeholder="请输入邮箱"
                 ></el-input>
               </el-form-item>
-              <!-- <el-form-item style="margin-left: -50px;" label="" prop="Password">
-                            <el-input style="margin-bottom: 6px" prefix-icon="el-icon-goods" type="Password"
-                                      v-model="ruleForm.Password"
-                                      placeholder="输入密码"
-                                      @keyup.enter.native="submitForm('ruleForm')">
-                            </el-input>
-              </el-form-item>-->
 
               <el-form-item style="margin-left: -50px;">
-                <el-button id="submit" type="primary" @click="submitForm('ruleForm')">下一步</el-button>
+                <el-button
+                  id="submit"
+                  type="primary"
+                  @click="submitForm('ruleForm')"
+                  :loading="loadings"
+                >下一步</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -123,8 +121,9 @@ export default {
     };
     //在ES6中添加数据是在return{}中
     return {
+      loadings: false,
       ruleForm: {
-        Username: "",
+        Username: ""
       },
       //rules是Element的表单验证规则
       rules: {
@@ -135,7 +134,7 @@ export default {
             message: "请输入正确的邮箱地址",
             trigger: ["blur", "change"]
           }
-        ],
+        ]
       }
     };
   },
@@ -145,7 +144,46 @@ export default {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
           var _this = this;
-          
+          _this.loadings = true;
+          _this
+            .axios({
+              method: "get",
+              url: `http://192.168.1.27:8088/api/Client/ForgetPwd`,
+              async: false,
+              params: {
+                email: _this.ruleForm.Username
+              },
+              xhrFields: {
+                withCredentials: true
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              _this.loadings = false;
+              if (res.data.status == 1) {
+                _this.$alert(
+                  "已向您的邮箱发了一封邮件，请打开邮件进行下一步操作重置密码。",
+                  "CourseWhale",
+                  {
+                    confirmButtonText: "确定",
+                    callback: action => {
+                      _this.$message({
+                        type: "success",
+                        message: `即将返回首页!`
+                      });
+                      setTimeout(function() {
+                        _this.$router.push({
+                          path: "/home"
+                        });
+                      }, 2000);
+                    }
+                  }
+                );
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
         } else {
           console.log("error submit!!");
           return false;

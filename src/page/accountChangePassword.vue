@@ -1,6 +1,6 @@
 <style>
 .login-con-tops {
-    padding: 30px 40px 8px 40px;
+  padding: 30px 40px 8px 40px;
 }
 </style>
 
@@ -13,11 +13,9 @@
         <div class="login-con">
           <div class="login-con-tops">
             <p class="brand">
-              <!-- <img src="../assets/logo3.png" alt> -->
               <span>CourseWhale</span>
             </p>
-            <!--<p class="slogan">登录答题王,打开通往知识的大门</p>-->
-             <el-form
+            <el-form
               :model="changePasswords"
               ref="ruleForm"
               label-width="50px"
@@ -26,6 +24,7 @@
               <el-form-item style="margin-left: -50px;" label prop="Username">
                 <el-input
                   prefix-icon="el-icon-edit"
+                  type="Password"
                   v-model="changePasswords.NewPassword"
                   placeholder="输入新密码"
                 ></el-input>
@@ -41,7 +40,6 @@
               </el-form-item>
 
               <el-form-item style="margin-left: -50px;">
-                <!-- <el-button id="submit" type="primary" @click="submitForm('ruleForm')" v-if="loadings == true">登录</el-button> -->
                 <el-button
                   id="submit"
                   type="primary"
@@ -51,10 +49,6 @@
               </el-form-item>
             </el-form>
           </div>
-          <!-- <div class="reg-bottom">
-            <span>没有账号？</span>
-            <router-link class="login-resi" to="/register">注册</router-link>
-          </div> -->
         </div>
       </div>
       <div class="login-footer">
@@ -74,37 +68,73 @@ export default {
         NewPassword: "",
         RepeatPwd: ""
       },
-      loadings:false
+      loadings: false
     };
+  },
+  created: function() {
+    var _this = this;
   },
   //页面的方法还是写在methods{}中
   methods: {
-    StorageChgPassword: function() {
-    var _this = this;
-      this.axios({
-        method: "put",
-        url: `http://192.168.1.27:8088/api/client/ChangePwd`,
-        async: false,
-        params: {
-          NewPassword: this.changePasswords.NewPassword,
-          RepeatPwd: this.changePasswords.RepeatPwd
-        },
-        xhrFields: {
-          withCredentials: true
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-      })
-        .then(function(res) {
-          _this.$message({
-            message: "修改密码成功",
-            type: "success"
-          });
-        })
-        .catch(function(error) {
-          console.log(error);
+    submitForm: function() {
+      var _this = this;
+      
+      var patt = /^[\s]*$/;
+      var pvalue = patt.test(_this.changePasswords.NewPassword);
+      var pvalues = patt.test(_this.changePasswords.RepeatPwd);
+      if (pvalue || pvalues) {
+        _this.$message({
+          type: "warning",
+          message: `请填写内容!`
         });
+      } else {
+        _this.loadings = true;
+        _this
+          .axios({
+            method: "put",
+            url: `http://192.168.1.27:8088/api/client/ResetPwd`,
+            async: false,
+            params: {
+              param: _this.$route.query.k,
+              NewPassword: _this.changePasswords.NewPassword,
+              RepeatPwd: _this.changePasswords.RepeatPwd
+            },
+            xhrFields: {
+              withCredentials: true
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            _this.loadings = false;
+            if (res.data.status == 1) {
+              _this.$alert("重置密码成功!", "CourseWhale", {
+                confirmButtonText: "确定",
+                callback: action => {
+                  _this.$message({
+                    type: "success",
+                    message: `即将返回首页!`
+                  });
+                  setTimeout(function() {
+                    _this.$router.push({
+                      path: "/home"
+                    });
+                  }, 2000);
+                }
+              });
+            } else if (res.data.status == 2) {
+              _this.$message.error(res.data.msg);
+              _this.changePasswords.NewPassword = "";
+              _this.changePasswords.RepeatPwd = "";
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+            _this.$message({
+              type: "success",
+              message: `密码重复!`
+            });
+          });
+      }
     }
   }
 };

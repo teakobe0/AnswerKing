@@ -29,7 +29,6 @@
   margin: 0 auto;
   margin-top: 20px;
   margin-bottom: 29.5px;
-  position: relative;
 }
 
 .head-img img {
@@ -125,15 +124,20 @@
   height: 140px;
   display: block;
 }
+.head-imgs {
+  position: relative;
+}
 .headShade {
   width: 140px;
   height: 140px;
   background-color: rgba(0, 0, 0, 0.8);
   z-index: 9999;
   position: absolute;
-  top: 47px;
+  top: 0px;
   border-radius: 3px;
 }
+
+
 </style>
 
 <template>
@@ -143,12 +147,10 @@
       <div class="pd-con-head">
         <div class="head-img" @mouseenter="imgMouseenter" @mouseleave="imgMouseleave">
           <p>{{this.$store.state.modified.Name}}</p>
-          <img :src="imageUrl" alt v-if="headShow == true">
-          <img src="../assets/头像.jpg" alt="" v-if="headShow == false">
-          <div>
-
-          </div>
-          <div class="headShade" v-show="imageShow == true">
+          <div class="head-imgs">
+            <img :src="imageUrl" alt v-if="headShow == true">
+            <img src="../assets/头像.jpg" alt v-if="headShow == false">
+            <div class="headShade" v-show="imageShow == true">
             <el-upload
               class="avatar-uploader"
               :action="imgSite"
@@ -161,6 +163,8 @@
               <i class="el-icon-picture-outline avatar-uploader-icon"></i>
             </el-upload>
           </div>
+          </div>
+          
         </div>
         <div class="fasttrack">快速通道</div>
         <ul class="perSet">
@@ -249,7 +253,7 @@ export default {
   },
   data() {
     return {
-      headShow:false,
+      headShow: false,
       activeName: "first",
       value: [],
       names: "",
@@ -278,10 +282,10 @@ export default {
         })
         .then(function(res) {
           _this.$store.state.modified.Name = res.data.data.name;
-          if(res.data.data.image){
+          if (res.data.data.image) {
             _this.imageUrl = "http://192.168.1.27:8088" + res.data.data.image;
             _this.headShow = true;
-          }else {
+          } else {
             _this.headShow = false;
           }
         })
