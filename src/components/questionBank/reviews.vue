@@ -315,11 +315,7 @@
             <div class="openstatereview" v-for="(openitem,openindex) in item.replies">
               <div class="openheadPortrait">
                 <!-- <p>AW</p> -->
-                <img
-                  :src="openitem.replyimg"
-                  alt
-                  v-if="openitem.headShowTwo == true"
-                >
+                <img :src="openitem.replyimg" alt v-if="openitem.headShowTwo == true">
                 <img src="../../assets/头像.jpg" alt v-if="openitem.headShowTwo == false">
               </div>
               <div class="openstaterretext">
@@ -457,7 +453,6 @@ export default {
             _this.imageUrl = "http://192.168.1.27:8088" + res.data.data.image;
             _this.headShowLogin = true;
             _this.searching();
-            console.log(res);
           })
           .catch(function(error) {
             console.log(error);
@@ -508,12 +503,14 @@ export default {
             _this.$set(_this.reviews[i], "headShow", false);
             _this.$set(_this.reviews[i], "headShowTwo", false);
             if (_this.reviews[i].img) {
-              _this.reviews[i].img = 'http://192.168.1.27:8088'+_this.reviews[i].img;
+              _this.reviews[i].img =
+                "http://192.168.1.27:8088" + _this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
-            if(_this.reviews[i].replyimg){
-              _this.reviews[i].replyimg = 'http://192.168.1.27:8088'+_this.reviews[i].replyimg;
-               _this.$set(_this.reviews[i], "headShowTwo", true);
+            if (_this.reviews[i].replyimg) {
+              _this.reviews[i].replyimg =
+                "http://192.168.1.27:8088" + _this.reviews[i].replyimg;
+              _this.$set(_this.reviews[i], "headShowTwo", true);
             }
             if (_this.reviews[i].clientId == _this.personreviewsid) {
               _this.reviews[i].deleteshow = true;
@@ -527,11 +524,16 @@ export default {
 
             for (var j = 0; j < _this.comment.length; j++) {
               var arr = _this.reviews[i].parentId.split(",");
-              if (_this.comment[j].id == arr[0]) {
-                _this.comment[j].replies.push(_this.reviews[i]);
-              } else if (arr.length >= 2) {
+              // if (_this.comment[j].id == arr[0]) {
+              //   // _this.comment[j].replies.push(_this.reviews[i]);
+              //   console.log(2);
+              // }
+              if (arr.length >= 2) {
                 if (_this.comment[j].id == arr[1]) {
                   _this.comment[j].replies.push(_this.reviews[i]);
+                  // if (_this.comment[j].replies.length > 2) {
+                  //   console.log(1);
+                  // }
                 }
               }
             }
@@ -571,7 +573,6 @@ export default {
               }
             })
             .then(function(res) {
-              console.log(res)
               _this.retext = "";
               _this.$message({
                 message: "评论成功",
@@ -675,7 +676,6 @@ export default {
     },
     openLike: function(like) {
       var _this = this;
-      console.log(like);
     },
     // 2级评论的回复方法
     replyTwolevel: function(index, oneid, twoid, name) {
@@ -686,7 +686,6 @@ export default {
       _this.comment[index].openreply = true;
       _this.comment[index].model = "回复 " + name + ":";
       _this.replyOneTwoid = oneid + "," + twoid;
-      console.log("2级评论回复方法");
       // console.log(window.location.pathname);
       // console.log(_this.replyOneTwoid);
       // console.log(oneid);

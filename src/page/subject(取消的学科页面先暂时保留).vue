@@ -281,22 +281,7 @@
         },
         created: function () {
             var _this = this;
-            //this.axios({
-            //    method: "get",
-            //    url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
-            //    async: false,
-            //    params: {
-            //        name: ''
-            //    },
-            //    xhrFields: {
-            //        withCredentials: true
-            //    }
-            //}).then(function (res) {
-            //    console.log(res);
-            //    _this.maths = res.data.data.classes
-            //}).catch(function (error) {
-            //    console.log(error);
-            //});
+            
         },
         methods: {}
     }

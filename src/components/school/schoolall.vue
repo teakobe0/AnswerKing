@@ -16,11 +16,11 @@
   overflow: hidden;
   margin-bottom: 16px;
 }
+
 .classes-con-info p {
   font-size: 18px;
-  line-height: 40px;
-  float: left;
 }
+
 
 .classes-con-info i {
   display: block;
@@ -32,8 +32,8 @@
 }
 
 .serchinput {
-  width: 300px;
-  float: right;
+  width: 100%;
+  /* float: right; */
 }
 
 .classes-con-courseSerch {
@@ -105,7 +105,7 @@
   white-space: nowrap;
   width: 603px;
   overflow: hidden;
-  text-overflow:ellipsis;
+  text-overflow: ellipsis;
   /*border-bottom: 1px dashed #a2a2a2;*/
 }
 
@@ -123,7 +123,7 @@
   right: 0px;
   top: 10px;
   cursor: pointer;
-  color: #979797
+  color: #979797;
 }
 /*/!*文件*!/*/
 /*.file-con {*/
@@ -197,7 +197,7 @@
     <!-- 所有课程 -->
     <div class="classes-con">
       <div class="classes-con-info">
-        <div style="width: 995px;float: left;height: 40px;">
+        <div style="margin-bottom:16px;">
           <p>所有课程({{classeslength}})</p>
           <!--<i>找到你的课程</i>-->
         </div>
@@ -280,12 +280,17 @@ export default {
         { name: "X" },
         { name: "Y" },
         { name: "Z" }
-      ]
+      ],
+      attentions: {
+        Name: "",
+        TypeId: "",
+        Type: ""
+      },
+      delAttention: ""
     };
   },
   created: function() {
     var _this = this;
-    console.log(this);
     _this.universityidClass();
   },
   methods: {
@@ -310,6 +315,7 @@ export default {
           for (var i = 0; i < _this.classes.length; i++) {
             _this.$set(_this.classes[i], "attentions", false);
           }
+          _this.retrieveAttention();
         })
         .catch(function(error) {
           console.log(error);
@@ -333,6 +339,10 @@ export default {
           .then(function(res) {
             _this.classes = res.data.data;
             _this.classeslength = _this.classes.length;
+            for (var i = 0; i < _this.classes.length; i++) {
+              _this.$set(_this.classes[i], "attentions", false);
+            }
+            _this.retrieveAttention();
           })
           .catch(function(error) {
             console.log(error);
@@ -353,6 +363,10 @@ export default {
           })
           .then(function(res) {
             _this.classes = res.data.data;
+            for (var i = 0; i < _this.classes.length; i++) {
+              _this.$set(_this.classes[i], "attentions", false);
+            }
+            _this.retrieveAttention();
           })
           .catch(function(error) {
             console.log(error);
@@ -376,6 +390,10 @@ export default {
         })
         .then(function(res) {
           _this.classes = res.data.data;
+          for (var i = 0; i < _this.classes.length; i++) {
+            _this.$set(_this.classes[i], "attentions", false);
+          }
+          _this.retrieveAttention();
         })
         .catch(function(error) {
           console.log(error);
@@ -383,17 +401,99 @@ export default {
     },
     attention: function(item, index) {
       var _this = this;
-      item.attentions = !item.attentions;
-      if (item.attentions == true) {
-        this.$message({
-          message: "关注成功",
-          type: "success"
-        });
+      if (localStorage.token) {
+        item.attentions = !item.attentions;
+        if (item.attentions == true) {
+          _this.attentions.Name = item.cla.name.toString();
+          _this.attentions.TypeId = item.cla.id;
+          _this.attentions.Type = 1;
+          _this
+            .axios({
+              method: "post",
+              url: `http://192.168.1.27:8088/api/Focus/Add`,
+              async: false,
+              data: _this.attentions,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.retrieveAttention();
+              _this.$message({
+                message: "关注成功",
+                type: "success"
+              });
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else if (item.attentions == false) {
+          _this
+            .axios({
+              method: "delete",
+              url: `http://192.168.1.27:8088/api/Focus/Cancel`,
+              async: false,
+              params: {
+                typeid: item.cla.id.toString()
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.$message({
+                message: "取消关注",
+                type: "success"
+              });
+              _this.retrieveAttention();
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
       } else {
-        this.$message({
-          message: "取消关注",
-          type: "success"
+        _this.$message({
+          message: "请登录之后进行操作!",
+          type: "warning"
         });
+      }
+    },
+    // 检索关注
+    retrieveAttention: function() {
+      var _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            for (var i = 0; i < res.data.data.length; i++) {
+              if (res.data.data[i].type == 1) {
+                for (var j = 0; j < _this.classes.length; j++) {
+                  if (res.data.data[i].typeId == _this.classes[j].cla.id) {
+                    _this.classes[j].attentions = true;
+                  }
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     }
   }

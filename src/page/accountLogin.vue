@@ -243,10 +243,7 @@ export default {
             .catch(function(error) {
               console.log(error);
               _this.loadings = false;
-              _this.$message({
-                message: "账号或密码错误",
-                type: "success"
-              });
+              _this.$message.error('账号或密码错误');
             });
         } else {
           console.log("error submit!!");

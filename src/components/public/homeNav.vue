@@ -221,6 +221,7 @@
 
 <template>
     <div class="nav">
+        <complain></complain>
         <div :class="searchBarFixed == true ? 'navcolor' :''">
             <div class="homenav-con">
                 <div class="nav-logo">
@@ -299,8 +300,12 @@
 </template>
 
 <script type="es6">
+import complain from "@/components/public/complain.vue";
     export default {
         name: 'Nav',
+        components:{
+            complain
+        },
         props: {
             msg: String
         },

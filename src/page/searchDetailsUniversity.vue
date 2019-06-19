@@ -192,7 +192,6 @@
                         withCredentials: true
                     }
                 }).then(function (res) {
-                    console.log(res);
                     _this.value = res.data.data
                     _this.titleShow = true;
 

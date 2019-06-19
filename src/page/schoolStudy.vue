@@ -354,9 +354,7 @@ export default {
         }
       })
       .then(function(res) {
-        console.log(res);
         _this.country = res.data.data;
-        console.log("国家");
       })
       .catch(function(error) {
         console.log(error);
@@ -441,7 +439,6 @@ export default {
         }
       })
         .then(function(res) {
-          console.log(res);
           //学校
           if (item.class == "university") {
             //学校
@@ -512,11 +509,9 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.state = res.data.data;
           _this.value2 = "";
           _this.value3 = "";
-          console.log("州");
           _this.GetUniversitys();
         })
         .catch(function(error) {

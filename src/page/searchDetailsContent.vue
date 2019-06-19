@@ -42,8 +42,8 @@
 .serchDetailsContent-top-info {
   float: left;
   width: 100%;
+  position: relative;
 }
-
 .serchDetailsContent-top-info h2 {
   color: #3b3b3b;
   margin-top: 24px;
@@ -59,6 +59,7 @@
 
 .content-bookmark {
   list-style-type: none;
+  /* margin-right: 66px; */
 }
 
 .content-bookmark li {
@@ -291,6 +292,21 @@
 /*from {background: #a2a2a2;}*/
 /*to {background: #838383;}*/
 /*}*/
+.ConAtten {
+  position: absolute;
+  right: 0px;
+  bottom: 55px;
+  padding: 4px 15px !important;
+}
+.ConAttens {
+  position: absolute;
+  right: 0px;
+  bottom: 55px;
+  padding: 4px 15px !important;
+
+  /* background: red !important; */
+  /* color: #fff !important; */
+}
 </style>
 
 <template>
@@ -348,6 +364,19 @@
                   <span>有用({{informations.use}})</span>
                 </li>
               </ul>
+              <el-button
+                class="ConAtten"
+                size="mini"
+                v-if="value.attentions == false"
+                @click="attention()"
+              >关注</el-button>
+              <el-button
+                class="ConAttens"
+                type="danger"
+                size="mini"
+                v-if="value.attentions == true"
+                @click="attention()"
+              >取消关注</el-button>
             </div>
           </div>
         </div>
@@ -466,7 +495,13 @@ export default {
       noUse: false,
       UseRecords: {},
       titleShow: false,
-      fullscreenLoading: false
+      fullscreenLoading: false,
+      // 关注
+      attentions: {
+        Name: "",
+        TypeId: "",
+        Type: ""
+      }
     };
   },
   created: function() {
@@ -510,11 +545,14 @@ export default {
         })
         .then(function(res) {
           _this.value = res.data.data;
+          _this.$set(_this.value, "attentions", false);
+
           _this.titleShow = true;
           _this.$store.state.recommendClass.skipuniversityId =
             res.data.data.universityId;
           document.documentElement.scrollTop = 0;
           _this.UseRecord();
+          _this.retrieveAttention();
         })
         .catch(function(error) {
           console.log(error);
@@ -523,7 +561,7 @@ export default {
     //根据课程资料id检索每周
     ClassWeeks: function() {
       var _this = this;
-      
+
       _this
         .axios({
           method: "get",
@@ -719,6 +757,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res);
           _this.Answer = res.data.data;
           _this.$store.state.answer.loading = false;
           if (_this.Answer.length == 0) {
@@ -730,15 +769,13 @@ export default {
             if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
               _this.Answer[i].conurl = false;
               _this.Answer[i].context = true;
-              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              console.log("URL空");
+              // _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              // _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             } else {
               _this.Answer[i].conurl = true;
               _this.Answer[i].context = false;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
               _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              console.log("content空");
             }
           }
           _this.$store.state.answer.answer = _this.Answer;
@@ -791,12 +828,10 @@ export default {
             ) {
               _this.Answer[i].conurl = false;
               _this.Answer[i].context = true;
-              console.log("URL空");
             } else {
               _this.Answer[i].conurl = true;
               _this.Answer[i].context = false;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-              console.log("content空");
             }
           }
           _this.$store.state.answer.answer = _this.Answer;
@@ -925,6 +960,106 @@ export default {
           .catch(function(error) {
             console.log(error);
           });
+      }
+    },
+    // 检索关注
+    retrieveAttention: function() {
+      var _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            for (var i = 0; i < res.data.data.length; i++) {
+              if (res.data.data[i].type == 2) {
+                var v = [];
+                v = res.data.data[i].typeId.split(",");
+                if (v[1] == _this.informations.id) {
+                  _this.value.attentions = true;
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    // 关注
+    attention: function() {
+      var _this = this;
+      if (localStorage.token) {
+        _this.value.attentions = !_this.value.attentions;
+        if (_this.value.attentions == true) {
+          _this.attentions.Name = _this.value.name;
+          _this.attentions.TypeId =
+            _this.value.id + "," + _this.informations.id;
+          _this.attentions.Type = 2;
+          _this
+            .axios({
+              method: "post",
+              url: `http://192.168.1.27:8088/api/Focus/Add`,
+              async: false,
+              data: _this.attentions,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.retrieveAttention();
+              _this.$message({
+                message: "关注成功",
+                type: "success"
+              });
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else if (_this.value.attentions == false) {
+          _this
+            .axios({
+              method: "delete",
+              url: `http://192.168.1.27:8088/api/Focus/Cancel`,
+              async: false,
+              params: {
+                typeid: _this.value.id + "," + _this.informations.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.$message({
+                message: "取消关注",
+                type: "success"
+              });
+              _this.retrieveAttention();
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      } else {
+        _this.$message({
+          message: "请登录之后进行操作!",
+          type: "warning"
+        });
       }
     }
   }

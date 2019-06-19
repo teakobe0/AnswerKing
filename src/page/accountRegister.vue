@@ -149,11 +149,6 @@ export default {
       loadings: false,
       ruleForm: {
         Email: "",
-        //Name:'',
-        //QQ:'',
-        //Tel:'',
-        //Sex:'',
-        //Birthday:'',
         Password: "",
         Passwords: ""
       },
@@ -173,21 +168,6 @@ export default {
         Passwords: [
           { required: true, validator: validatePass2, trigger: "blur" }
         ]
-        //Name: [
-        //    { required: true, message: '请输入昵称', trigger: 'blur' }
-        //],
-        //QQ: [
-        //    { required: true, message: '请输入QQ', trigger: 'blur' }
-        //],
-        //Tel: [
-        //    { required: true, message: '请输入手机号码', trigger: 'blur' }
-        //],
-        //Sex: [
-        //    { required: true, message: '请输入性别', trigger: 'blur' }
-        //],
-        //Birthday: [
-        //    { required: true, message: '请输入生日', trigger: 'blur' }
-        //],
       }
     };
   },
@@ -214,9 +194,9 @@ export default {
           })
             .then(function(res) {
               console.log(res)
-              localStorage.token = res.data.data.token;
+              // 注册成功保存TOKEN相当于自动登录，不让它自动登录
+              // localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
-                
                 _this.$message({
                   message: "注册成功",
                   type: "success"

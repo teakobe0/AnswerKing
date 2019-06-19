@@ -126,12 +126,14 @@
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
+            title="全部内容"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
+            title="全部内容"
           ></i>
         </div>
       </div>
@@ -150,9 +152,15 @@ export default {
       input1: "",
       value: [],
       classesvalue: [],
-      Id: 0
+      Id: 0,
+      attentions: {
+        Name: "",
+        TypeId: "",
+        Type: ""
+      }
     };
   },
+  props: ["Names"],
   created: function() {
     var _this = this;
     _this.Classinfos();
@@ -181,13 +189,12 @@ export default {
           }
         })
         .then(function(res) {
-          console.log("据课程id检索课程资料");
-          console.log(res);
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
           for (var i = 0; i < _this.value.length; i++) {
             _this.$set(_this.value[i], "attentions", false);
           }
+          _this.retrieveAttention();
         })
         .catch(function(error) {
           console.log(error);
@@ -197,19 +204,104 @@ export default {
       var _this = this;
       // _this.$store.state.information.informations = item;
     },
-    attention: function(item) {
+    attention: function(item, index) {
       var _this = this;
-      item.attentions = !item.attentions;
-      if (item.attentions == true) {
-        this.$message({
-          message: "关注成功",
-          type: "success"
+      if (localStorage.token) {
+        item.attentions = !item.attentions;
+        if (item.attentions == true) {
+          _this.attentions.Name = _this.Names;
+          _this.attentions.TypeId = _this.$route.query.id + "," + item.id;
+          _this.attentions.Type = 2;
+          _this
+            .axios({
+              method: "post",
+              url: `http://192.168.1.27:8088/api/Focus/Add`,
+              async: false,
+              data: _this.attentions,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.retrieveAttention();
+              _this.$message({
+                message: "关注成功",
+                type: "success"
+              });
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        } else {
+          _this
+            .axios({
+              method: "delete",
+              url: `http://192.168.1.27:8088/api/Focus/Cancel`,
+              async: false,
+              params: {
+                typeid: _this.$route.query.id + "," + item.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              _this.$message({
+                message: "取消关注",
+                type: "success"
+              });
+              _this.retrieveAttention();
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      } else {
+        _this.$message({
+          message: "请登录之后进行操作!",
+          type: "warning"
         });
-      }else {
-        this.$message({
-          message: "取消关注",
-          type: "success"
-        });
+      }
+    },
+    // 检索关注
+    retrieveAttention: function() {
+      var _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            for (var i = 0; i < res.data.data.length; i++) {
+              if (res.data.data[i].type == 2) {
+                for (var j = 0; j < _this.value.length; j++) {
+                  var v = [];
+                  v = res.data.data[i].typeId.split(",");
+                  if (v[1] == _this.value[j].id) {
+                    _this.value[j].attentions = true;
+                  }
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       }
     }
   }

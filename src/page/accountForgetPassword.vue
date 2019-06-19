@@ -71,12 +71,14 @@
               ref="ruleForm"
               label-width="50px"
               class="demo-ruleForm"
+              @submit.native.prevent
             >
               <el-form-item style="margin-left: -50px;" label prop="Username">
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Username"
                   placeholder="请输入邮箱"
+                  @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
 
@@ -179,6 +181,11 @@ export default {
                     }
                   }
                 );
+              } else {
+                _this.$message({
+                  type: "success",
+                  message: res.data.msg
+                });
               }
             })
             .catch(function(error) {

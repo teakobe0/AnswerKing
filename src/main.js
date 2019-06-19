@@ -7,8 +7,8 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 // 引入vue-easy-lightbox（图片放大工具）
-import Lightbox from 'vue-easy-lightbox'
-Vue.use(Lightbox)
+// import Lightbox from 'vue-easy-lightbox'
+// Vue.use(Lightbox)
 // 引入icon第三方
 import './icon/iconfont.css'
 

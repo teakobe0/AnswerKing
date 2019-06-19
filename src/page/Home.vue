@@ -495,7 +495,6 @@
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
-    <!-- <complain></complain> -->
     <homeNav msg="登录/注册"/>
     <div class="home-con">
       <div class="home-ser">
@@ -633,14 +632,13 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-import complain from "@/components/public/complain.vue";
+
 
 export default {
   name: "home",
   components: {
     homeNav,
     homeFooter,
-    complain
   },
   data() {
     return {
@@ -662,8 +660,10 @@ export default {
   },
   methods: {
     querySearch(queryString, cb) {
+      // console.log(queryString)
+      var a = queryString.split(",").join("");
+      console.log(a)
       var _this = this;
-      console.log(_this.$route.params.path)
 			if(queryString.length >= 3){
 			_this.inputLoad = true;
 			_this.state2 = queryString;
@@ -684,23 +684,23 @@ export default {
         }
       })
         .then(function(res) {
-          // if (
-					// 	res.data.data.classes != null && 
-					// 	res.data.data.classes.length > 0
-          // ) {
-          //   for (var i = 0; i < 3; i++) {
-          //     if (res.data.data.classes[i]) {
-          //       results.push({
-          //         value: res.data.data.classes[i].name,
-          //         type: res.data.data.classes[i].university,
-          //         class: "classes",
-          //         num: i
-          //       });
-          //     }
-          //   }
-          // } else {
-          //   results.push({ value: "没有找到对应的课程" });
-          // }
+          if (
+						res.data.data.classes != null && 
+						res.data.data.classes.length > 0
+          ) {
+            for (var i = 0; i < 3; i++) {
+              if (res.data.data.classes[i]) {
+                results.push({
+                  value: res.data.data.classes[i].name,
+                  type: res.data.data.classes[i].university,
+                  class: "classes",
+                  num: i
+                });
+              }
+            }
+          } else {
+            results.push({ value: "没有找到对应的课程" });
+          }
 
           // if (
           //   res.data.data.classes != null &&

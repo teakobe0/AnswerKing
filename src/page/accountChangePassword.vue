@@ -73,6 +73,7 @@ export default {
   },
   created: function() {
     var _this = this;
+    console.log(_this.$route.query.k)
   },
   //页面的方法还是写在methods{}中
   methods: {

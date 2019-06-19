@@ -26,8 +26,9 @@
 }
 
 .tabCon div img {
-  width: 100%;
-  height: 100%;
+  /* width: 150px;
+  height: 180px; */
+  
 }
 
 .tabCon-wu {
@@ -98,7 +99,7 @@
       element-loading-background="rgba(255, 255, 255)"
     >
       <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">暂无内容</p>
-      <div v-for="(items,index) in this.$store.state.answer.answer">
+      <div oncontextmenu="return false;" ondragstart="return false;" v-for="(items,index) in this.$store.state.answer.answer">
         <div
           class="cover"
           v-for="(item,indexs) in items.Imgs"
@@ -106,7 +107,7 @@
           @mouseleave="onMouseout"
           @click="() => handleanwer(indexs)"
         >
-          <img v-if="item.conurl == true" :src="item.contentUrl" :alt="items.contents">
+          <img style="width:100%;height:100%" v-if="item.conurl == true" :src="item.contentUrl" :alt="items.contents">
         </div>
       </div>
       <VueEasyLightbox
@@ -120,21 +121,21 @@
       <div class="popContainer" v-show="shade==true">
         <p class="time">{{content}}</p>
         <p class="purchase" @click="joim">成为会员免除等待!</p>
-        <div
+        <!-- <div
           class="closeshade el-icon-close"
           @click="Closemask"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)"
           v-loading.fullscreen.lock="fullscreenLoading"
-        ></div>
+        ></div> -->
       </div>
     </div>
   </div>
 </template>
-
 <script type="es6">
 import VueEasyLightbox from "vue-easy-lightbox";
+
 export default {
   name: "answer",
   components: {

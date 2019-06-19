@@ -1,18 +1,32 @@
 <style>
-#orderHistory h3 {
+#attention h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
   line-height: 40px;
   padding-bottom: 6px;
   margin-bottom: 20px;
 }
-.indent div {
-  overflow: hidden;
+.MyAttention div {
   word-wrap: break-word;
   line-height: 28px;
 }
 .indent p {
   display: inline;
+}
+.MyAttention a {
+  text-decoration: none;
+  color: #000;
+  display: inline-block;
+  margin-top: 5px;
+}
+.MyAttention a:hover {
+  color: rgb(36, 119, 228);
+}
+.MyAttention span {
+  float: right;
+}
+.MyAttention button {
+  float: right;
 }
 .el-table,
 .el-table__expanded-cell {
@@ -26,18 +40,32 @@
 
 
 <template>
-  <div id="orderHistory">
+  <div id="attention">
     <div class="pd-con-head-right">
       <h3>我的关注</h3>
-      <div class="indent">
-        <template>
-          <el-table :data="messages" style="width: 100%">
-            <el-table-column prop="payTime" label="我的关注" width="900"></el-table-column>
-            <el-table-column prop="name" label="关注类型" width="100"></el-table-column>
-            <!-- <el-table-column prop="price" label="购买金额" width="250"></el-table-column> -->
-            <!-- <el-table-column prop="currency" label="货币类型" width="250"></el-table-column> -->
-          </el-table>
-        </template>
+      <div class="MyAttention">
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="关注的课程" name="first">
+            <div v-for="item in classAtt">
+              <router-link :to="{path:'/classesDetails',query:{id:item.typeId}}">{{item.name}}</router-link>
+              <!-- <span>{{item.createTime | formatDate}}</span> -->
+              <el-button size="mini" @click="delAttention(item.typeId)">取消关注</el-button>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="关注的题库" name="second">
+            <div v-for="item in questionAtt">
+              <router-link
+                :to="{path:'/serchDetailsContent',query:{id:item.typeIds[0],classInfoId:item.typeIds[1]}}"
+              >{{item.name}}</router-link>
+              <!-- <span>{{item.createTime | formatDate}}</span> -->
+              <el-button size="mini" @click="delAttention(item.typeId)">取消关注</el-button>
+            </div>
+          </el-tab-pane>
+        </el-tabs>
+      </div>
+    </div>
+  </div>
+</template>
       </div>
     </div>
   </div>
@@ -46,31 +74,39 @@
 import { formatDate } from "@/common/js/date.js";
 
 export default {
-  name: "orderHistory",
+  name: "attention",
   components: {},
   data() {
     //在ES6中添加数据是在return{}中
     return {
-      messages: []
+      activeName: "first",
+      messages: [],
+      classAtt: [],
+      questionAtt: []
     };
   },
   created: function() {
     var _this = this;
-    _this.gainmessage();
+    _this.retrieveAttention();
   },
-  methods: {
+  filters: {
     formatDate: function(time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
-    },
-    // 检索购买记录
-    gainmessage: function() {
+    }
+  },
+  methods: {
+    handleClick: function() {},
+    delAttention: function(item) {
       var _this = this;
       _this
         .axios({
-          method: "get",
-          url: `http://192.168.1.27:8088/api/Order/GetOrder`,
+          method: "delete",
+          url: `http://192.168.1.27:8088/api/Focus/Cancel`,
           async: false,
+          params: {
+            typeid: item
+          },
           xhrFields: {
             withCredentials: true
           },
@@ -79,17 +115,50 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
-          _this.messages = res.data.data;
-          for (var i = 0; i < _this.messages.length; i++) {
-            _this.messages[i].payTime = _this.formatDate(
-              _this.messages[i].payTime
-            );
-          }
+          _this.$message({
+            message: "取消关注",
+            type: "success"
+          });
+          _this.retrieveAttention();
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    // 检索关注
+    retrieveAttention: function() {
+      var _this = this;
+      _this.classAtt.length = 0;
+      _this.questionAtt.length = 0;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            for (var i = 0; i < res.data.data.length; i++) {
+              _this.$set(res.data.data[i], "typeIds", []);
+              if (res.data.data[i].type == 1) {
+                _this.classAtt.push(res.data.data[i]);
+              } else {
+                var v = res.data.data[i].typeId.split(",");
+                res.data.data[i].typeIds = v;
+                _this.questionAtt.push(res.data.data[i]);
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
   }
 };
