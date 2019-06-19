@@ -263,7 +263,6 @@
   color: #383838;
 }
 
-
 .con-left-middle {
   width: 408px;
   height: 544px;
@@ -377,25 +376,24 @@
   margin-right: 25px;
   padding: 20px;
 }
-.homeClassText div:nth-last-of-type(1){
+.homeClassText div:nth-last-of-type(1) {
   margin-right: 0px;
 }
-.homeClassText div .homeClassText-1{
+.homeClassText div .homeClassText-1 {
   font-size: 32px;
-  
 }
-.homeClassText div .homeClassText-2{
+.homeClassText div .homeClassText-2 {
   font-size: 16px;
   margin-bottom: 8px;
 }
-.homeClassText div .homeClassText-3{
+.homeClassText div .homeClassText-3 {
   font-size: 16px;
 }
 .homeUniversity {
   width: 800px;
   margin: 0 auto;
 }
-.homeUniversity .homeUniv-button{
+.homeUniversity .homeUniv-button {
   display: inline-block;
   text-decoration: none;
   margin: 0 auto;
@@ -492,6 +490,9 @@
     padding-bottom: 370px;
   }
 }
+.el-autocomplete-suggestion__wrap {
+  max-height: 600px !important;
+}
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
@@ -516,35 +517,38 @@
                   prefix-icon="el-icon-tickets"
                   :trigger-on-focus="inputLoad"
                 >
-                  <template slot-scope="{ item }">
+                  <!-- 包含搜索答案的 -->
+                  <!-- <template slot-scope="{ item }">
                     <span>{{item.value}}</span>
                     <span style="font-weight: 700;color: #08b4e1">{{item.queryString}}</span>
-                    <span>{{item.queryStringRight}}</span>
-                    -
-                    <span style="color:#878787;">{{item.type}}</span>
+                    <span>{{item.queryStringRight}} - </span>
+                    <span style="color:#878787;float:right;">{{item.type}}</span>
+                  </template>-->
+                  <template slot-scope="{ item }">
+                    <span>{{item.value}} -</span>
+                    <span style="color:#878787;float:right;">{{item.type}}</span>
                   </template>
                 </el-autocomplete>
               </div>
               <div class="homeClassText">
-                  <div>
-                      <p class="homeClassText-1">761</p>
-                      <p class="homeClassText-2">课程</p>
-                      <p class="homeClassText-3">Academy of Art University</p>
-                  </div>
-                  <div>
-                      <p class="homeClassText-1">2035</p>
-                      <p class="homeClassText-2">题库集</p>
-                      <p class="homeClassText-3">HISTORY OF ECONIMIC</p>
-                  </div>
-                  <div>
-                      <p class="homeClassText-1">120</p>
-                      <p class="homeClassText-2">贡献者</p>
-                      <p class="homeClassText-3">TEAKOBE</p>
-                  </div>
+                <div>
+                  <p class="homeClassText-1">761</p>
+                  <p class="homeClassText-2">课程</p>
+                  <p class="homeClassText-3">Academy of Art University</p>
+                </div>
+                <div>
+                  <p class="homeClassText-1">2035</p>
+                  <p class="homeClassText-2">题库集</p>
+                  <p class="homeClassText-3">HISTORY OF ECONIMIC</p>
+                </div>
+                <div>
+                  <p class="homeClassText-1">120</p>
+                  <p class="homeClassText-2">贡献者</p>
+                  <p class="homeClassText-3">TEAKOBE</p>
+                </div>
               </div>
               <div class="homeUniversity">
-                <router-link to='/schoolStudy' class="homeUniv-button">查看162所全部学校资源</router-link>
-
+                <router-link to="/schoolStudy" class="homeUniv-button">查看162所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home2.png" alt class="home-ser-img-1">
@@ -633,12 +637,11 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 
-
 export default {
   name: "home",
   components: {
     homeNav,
-    homeFooter,
+    homeFooter
   },
   data() {
     return {
@@ -648,112 +651,122 @@ export default {
       homeSerchHide: true,
       queryString: "",
       restaurants: [],
-			timeout: null,
-			inputLoad:false
+      timeout: null,
+      inputLoad: false,
+      timeout: null
     };
   },
   created: function() {
     var _this = this;
     document.documentElement.scrollTop = 0;
-    
-    
   },
   methods: {
     querySearch(queryString, cb) {
-      // console.log(queryString)
-      var a = queryString.split(",").join("");
-      console.log(a)
       var _this = this;
-			if(queryString.length >= 3){
-			_this.inputLoad = true;
-			_this.state2 = queryString;
-      _this.queryString = queryString;
-      var restaurants = this.restaurants;
-      var results = queryString
-        ? restaurants.filter(this.createFilter(queryString))
-        : restaurants;
-      this.axios({
-        method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
-        async: false,
-        params: {
-          name: queryString
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-        .then(function(res) {
-          if (
-						res.data.data.classes != null && 
-						res.data.data.classes.length > 0
-          ) {
-            for (var i = 0; i < 3; i++) {
-              if (res.data.data.classes[i]) {
-                results.push({
-                  value: res.data.data.classes[i].name,
-                  type: res.data.data.classes[i].university,
-                  class: "classes",
-                  num: i
-                });
-              }
-            }
-          } else {
-            results.push({ value: "没有找到对应的课程" });
-          }
+      var valuestr = queryString.trim();
+      var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
+      clearTimeout(_this.timeout);
+      // console.log(valuestr);
+      if (valuestr.length == 0) {
+        console.log("空格");
+      } else {
+        _this.timeout = setTimeout(() => {
+          if (queryString.length >= 3) {
+            _this.inputLoad = true;
+            _this.state2 = queryString;
+            _this.queryString = queryString;
+            var restaurants = _this.restaurants;
+            var results = queryString
+              ? restaurants.filter(_this.createFilter(queryString))
+              : restaurants;
+            _this
+              .axios({
+                method: "get",
+                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                async: false,
+                params: {
+                  name: valuestr
+                },
+                xhrFields: {
+                  withCredentials: true
+                }
+              })
+              .then(function(res) {
+                console.log(2);
 
-          // if (
-          //   res.data.data.classes != null &&
-          //   res.data.data.content.length > 0
-          // ) {
-          //   for (var i = 0; i < 3; i++) {
-          //     if (res.data.data.content[i]) {
-          //       var aa;
-          //       aa = res.data.data.content[i].contents.indexOf(_this.state2);
-          //       results.push({
-          //         value: res.data.data.content[i].contents.substring(
-          //           aa - 10,
-          //           aa
-          //         ),
-          //         queryString: res.data.data.content[i].contents.substr(
-          //           aa,
-          //           queryString.length
-          //         ),
-          //         queryStringRight: res.data.data.content[i].contents.substring(
-          //           aa + queryString.length,
-          //           aa + queryString.length + 10
-          //         ),
-          //         type: "课程内容",
-          //         class: "content",
-          //         num: i
-          //       });
-          //     }
-          //   }
-          // } else {
-          //   results.push({ value: "没有找到对应的课程内容" });
-          // }
+                if (
+                  res.data.data.classes != null &&
+                  res.data.data.classes.length > 0
+                ) {
+                  for (var i = 0; i < 10; i++) {
+                    if (res.data.data.classes[i]) {
+                      results.push({
+                        value: res.data.data.classes[i].name,
+                        type: res.data.data.classes[i].university,
+                        class: "classes",
+                        num: i,
+                        id: res.data.data.classes[i].id
+                      });
+                    }
+                  }
+                } else {
+                  results.push({ value: "没有找到对应的课程" });
+                }
 
-          if (res.data.data.ls != null && res.data.data.ls.length > 0) {
-            for (var i = 0; i < 10; i++) {
-              if (res.data.data.ls[i]) {
-                results.push({
-                  value: res.data.data.ls[i].university.name,
-                  type: "大学",
-                  class: "university",
-                  num: i
-                });
-              }
-            }
-          } else {
-            results.push({ value: "没有找到对应的大学" });
+                if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+                  for (var i = 0; i < 10; i++) {
+                    if (res.data.data.ls[i]) {
+                      results.push({
+                        value: res.data.data.ls[i].university.name,
+                        type: "大学",
+                        class: "university",
+                        num: i,
+                        id: res.data.data.ls[i].university.id
+                      });
+                    }
+                  }
+                } else {
+                  results.push({ value: "没有找到对应的大学" });
+                }
+                // if (
+                //   res.data.data.classes != null &&
+                //   res.data.data.content.length > 0
+                // ) {
+                //   for (var i = 0; i < 3; i++) {
+                //     if (res.data.data.content[i]) {
+                //       var aa;
+                //       aa = res.data.data.content[i].contents.indexOf(_this.state2);
+                //       results.push({
+                //         value: res.data.data.content[i].contents.substring(
+                //           aa - 10,
+                //           aa
+                //         ),
+                //         queryString: res.data.data.content[i].contents.substr(
+                //           aa,
+                //           queryString.length
+                //         ),
+                //         queryStringRight: res.data.data.content[i].contents.substring(
+                //           aa + queryString.length,
+                //           aa + queryString.length + 10
+                //         ),
+                //         type: "课程内容",
+                //         class: "content",
+                //         num: i
+                //       });
+                //     }
+                //   }
+                // } else {
+                //   results.push({ value: "没有找到对应的课程内容" });
+                // }
+
+                cb(results);
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
           }
-          cb(results);
-        })
-        .catch(function(error) {
-          console.log(error);
-        });			
-			}
-      
+        }, 2000 * Math.random());
+      }
     },
     createFilter(queryString) {
       return restaurant => {
@@ -765,6 +778,7 @@ export default {
     },
     handleSelect(item) {
       var _this = this;
+      console.log(item);
       this.axios({
         method: "get",
         url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
@@ -782,27 +796,29 @@ export default {
             _this.$router.push({
               path: "/classesDetails",
               query: {
-                id: res.data.data.classes[item.num].id
+                id: item.id
               }
             });
-          } else if (item.class == "content") {
-            //课程内容
-            _this.$router.push({
-              path: "/serchDetailsContent",
-              query: {
-                id: res.data.data.content[item.num].classId,
-                classInfoId: res.data.data.content[item.num].classInfoId
-              }
-            });
-          } else if (item.class == "university") {
+          }
+          if (item.class == "university") {
             //学校
             _this.$router.push({
               path: "/serchDetailsUniversity",
               query: {
-                id: res.data.data.ls[item.num].university.id
+                id: item.id
               }
             });
           }
+          // else if (item.class == "content") {
+          //   //课程内容
+          //   _this.$router.push({
+          //     path: "/serchDetailsContent",
+          //     query: {
+          //       id: res.data.data.content[item.num].classId,
+          //       classInfoId: res.data.data.content[item.num].classInfoId
+          //     }
+          //   });
+          // }
         })
         .catch(function(error) {
           console.log(error);
@@ -829,7 +845,7 @@ export default {
       //       serchName: _this.state1
       //     }
       //   });
-			// }
+      // }
     },
     handle: function() {
       this.homeSerchHide = false;
@@ -840,6 +856,6 @@ export default {
       this.homeSerchShow = false;
     }
   },
-  mounted() {}
+  mounted(item) {}
 };
 </script>
