@@ -390,6 +390,8 @@ import complain from "@/components/public/complain.vue";
                 .catch(function(error) {
                     console.log(error);
                     console.log("获取token失败")
+                    localStorage.removeItem("token");
+                    window.location.reload();
                 });
             } else {
             }

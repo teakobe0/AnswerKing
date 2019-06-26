@@ -78,13 +78,31 @@
   position: absolute;
   right: 0px;
   bottom: 24px;
+  background-color: #fb9119 !important;
+  border: 1px solid #ff9f32 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+.attention i {
+  font-size: 14px !important;
+}
+.attention:hover {
+  background-color: #ff9f32 !important;
 }
 .attentions {
   position: absolute;
   right: 0px;
   bottom: 24px;
-  /* background: red !important; */
-  /* color: #fff !important; */
+  background-color: #f74526 !important;
+  border: 1px solid #ff9f32 !important;
+  color: #fff !important;
+  font-size: 12px !important;
+}
+.attentions i {
+  font-size: 14px !important;
+}
+.attentions:hover {
+  background-color: #ff5e41 !important;
 }
 .classesDetails-tag-con {
   width: 1300px;
@@ -169,17 +187,22 @@
             </div>
             <el-button
               class="attention"
-              size="small"
+              size="medium"
               v-if="value.attentions == false"
               @click="attention()"
-            >关注</el-button>
+            >
+              <i class="el-icon-star-off" v-if="value.attentions == false"></i>
+              关注
+            </el-button>
             <el-button
-              type="danger"
               class="attentions"
-              size="small"
+              size="medium"
               v-if="value.attentions == true"
               @click="attention()"
-            >取消关注</el-button>
+            >
+              <i class="el-icon-star-on" v-if="value.attentions == true" style="color:#fff"></i>
+              取消关注
+            </el-button>
           </div>
         </div>
       </div>

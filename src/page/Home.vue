@@ -56,16 +56,17 @@
 }
 
 .home-ser-con {
-  width: 1300px;
+  width: 100%;
   height: 860px;
-  margin: 0 auto;
+  /* margin: 0 auto; */
 }
 
 .ser-con-left {
-  width: 1200px;
+  /* width: 1300px; */
   height: 860px;
   margin-left: 50px;
   overflow: hidden;
+  margin: 0 auto;
 }
 
 .ser-left-deta {
@@ -511,7 +512,7 @@
                   class="inline-input"
                   v-model="state1"
                   :fetch-suggestions="querySearch"
-                  placeholder="查询你的学校，例如University of California"
+                  placeholder="查询你的课程或者学校，例如University of California"
                   @select="handleSelect"
                   @keyup.enter.native="handleEnter(state1)"
                   prefix-icon="el-icon-tickets"
@@ -525,8 +526,9 @@
                     <span style="color:#878787;float:right;">{{item.type}}</span>
                   </template>-->
                   <template slot-scope="{ item }">
-                    <span>{{item.value}} -</span>
+                    <span>{{item.value}}</span>
                     <span style="color:#878787;float:right;">{{item.type}}</span>
+                    <div v-if="item.solid == true" style="border-bottom:1px solid rgb(230, 230, 230);margin-top:5px;margin-bottom:5px;"></div>
                   </template>
                 </el-autocomplete>
               </div>
@@ -548,7 +550,7 @@
                 </div>
               </div>
               <div class="homeUniversity">
-                <router-link to="/schoolStudy" class="homeUniv-button">查看162所全部学校资源</router-link>
+                <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home2.png" alt class="home-ser-img-1">
@@ -666,7 +668,6 @@ export default {
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
       clearTimeout(_this.timeout);
-      // console.log(valuestr);
       if (valuestr.length == 0) {
         console.log("空格");
       } else {
@@ -692,7 +693,7 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(2);
+                var s = res.data.data.classes.length;
 
                 if (
                   res.data.data.classes != null &&
@@ -705,14 +706,17 @@ export default {
                         type: res.data.data.classes[i].university,
                         class: "classes",
                         num: i,
-                        id: res.data.data.classes[i].id
+                        id: res.data.data.classes[i].id,
+                        solid:false
                       });
+                      
                     }
                   }
+                  results[s-1].solid = true;
                 } else {
-                  results.push({ value: "没有找到对应的课程" });
+                  results.push({ value: "没有找到对应的课程", solid: true });
                 }
-
+                console.log(results);
                 if (res.data.data.ls != null && res.data.data.ls.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data.ls[i]) {
@@ -765,7 +769,7 @@ export default {
                 console.log(error);
               });
           }
-        }, 2000 * Math.random());
+        }, 1000 * Math.random());
       }
     },
     createFilter(queryString) {

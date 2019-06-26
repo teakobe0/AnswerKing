@@ -58,6 +58,9 @@
 }
 
 .content-bookmark {
+  position: absolute;
+  right: 0px;
+  bottom: 21px;
   list-style-type: none;
   /* margin-right: 66px; */
 }
@@ -66,19 +69,17 @@
   float: right;
   overflow: hidden;
   margin-left: 8px;
+  position: relative;
 }
 
 .content-bookmark i {
-  margin-left: 3px;
-  font-size: 16px;
-  color: #464646;
+  font-size: 14px;
+  /* color: #464646; */
 }
 
 .content-bookmark span {
-  margin-left: 3px;
-  line-height: 21px;
-  color: #464646;
-  font-size: 16px;
+  /* color: #464646; */
+  font-size: 12px;
 }
 
 .content-bookmark:hover {
@@ -293,19 +294,21 @@
 /*to {background: #838383;}*/
 /*}*/
 .ConAtten {
-  position: absolute;
-  right: 0px;
-  bottom: 55px;
-  padding: 4px 15px !important;
+  background-color: #fb9119 !important;
+  border: 1px solid #ff9f32 !important;
+}
+.ConAtten{
+
+}
+.ConAtten:hover {
+  background-color: #ff9f32 !important;
 }
 .ConAttens {
-  position: absolute;
-  right: 0px;
-  bottom: 55px;
-  padding: 4px 15px !important;
-
-  /* background: red !important; */
-  /* color: #fff !important; */
+  background-color: #f74526 !important;
+  border: 1px solid #ff9f32 !important;
+}
+.ConAttens:hover{
+  background-color: #ff5e41 !important;
 }
 </style>
 
@@ -338,46 +341,60 @@
         </div>
         <div class="serchDetailsContent-top">
           <div class="serchDetailsContent-top-info">
-            <div>
-              <h2>{{value.name}}</h2>
-              <p>
-                学校:
-                <router-link
-                  :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
-                >{{value.university}}</router-link>
-                <span>教授:{{value.professor}}</span>
-              </p>
-              <ul class="content-bookmark">
-                <!-- <li @click="bookmarks">
+            <h2>{{value.name}}</h2>
+            <p>
+              学校:
+              <router-link
+                :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
+              >{{value.university}}</router-link>
+              <span>教授:{{value.professor}}</span>
+            </p>
+            <ul class="content-bookmark">
+              <!-- <li @click="bookmarks">
                   <i class="el-icon-star-off" v-if="bookmark == false"></i>
                   <i class="el-icon-star-on" v-if="bookmark == true"></i>
                   <span>收藏</span>
-                </li>-->
-                <li @click="noUses">
-                  <i class="el-icon-thirdcai" v-if="noUse == false"></i>
-                  <i class="el-icon-thirdxia" v-if="noUse == true"></i>
-                  <span>没用({{informations.noUse}})</span>
-                </li>
-                <li @click="beOfUses">
-                  <i class="el-icon-thirdqinziAPPtubiao-" v-if="use == false"></i>
-                  <i class="el-icon-thirddianzan1" v-if="use == true" style="color:#f52424"></i>
-                  <span>有用({{informations.use}})</span>
-                </li>
-              </ul>
-              <el-button
-                class="ConAtten"
-                size="mini"
-                v-if="value.attentions == false"
-                @click="attention()"
-              >关注</el-button>
-              <el-button
-                class="ConAttens"
-                type="danger"
-                size="mini"
-                v-if="value.attentions == true"
-                @click="attention()"
-              >取消关注</el-button>
-            </div>
+              </li>-->
+              <li>
+                <el-button
+                  type="primary"
+                  class="ConAtten"
+                  size="medium"
+                  v-if="value.attentions == false"
+                  @click="attention()"
+                >
+                  <i class="el-icon-star-off" v-if="value.attentions == false"></i>
+                  关注
+                </el-button>
+                <el-button
+                  type="primary"
+                  class="ConAttens"
+                  size="medium"
+                  v-if="value.attentions == true"
+                  @click="attention()"
+                >
+                  <i class="el-icon-star-on" v-if="value.attentions == true" style="color:#fff"></i>
+                  取消关注
+                </el-button>
+              </li>
+              <li
+                style="line-height:35px;margin-left:10px;margin-right:2px;color:rgb(206, 206, 206)"
+              >|</li>
+              <li>
+                <el-button size="medium" @click="noUses">
+                  <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
+                  <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
+                  没用({{informations.noUse}})
+                </el-button>
+              </li>
+              <li>
+                <el-button size="medium" @click="beOfUses">
+                  <i class="el-icon-thirddianzan4" v-if="use == false"></i>
+                  <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
+                  有用({{informations.use}})
+                </el-button>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
