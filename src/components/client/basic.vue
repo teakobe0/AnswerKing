@@ -40,7 +40,6 @@
 .head-right-top .right-top-acctype a:hover {
   color: #d91685;
 }
-
 .head-right-top .right-top-warn {
   height: 60px;
   background-color: #fcfce2;
@@ -79,6 +78,12 @@
 .right-top-ul {
   margin-bottom: 16px;
 }
+.acctypeEmail {
+  line-height: 30px;
+}
+.acctypeVip {
+  line-height: 30px;
+}
 </style>
 
 
@@ -89,6 +94,8 @@
         <!-- <p class="right-top-title">个人信息</p> -->
         <h3>个人信息</h3>
         <p class="right-top-acctype">
+          <p class="acctypeEmail">用户名:{{this.value.Email}}</p>
+          <p class="acctypeVip">
           账户类型:
           <strong v-if="this.role != 'vip'">普通</strong>
           <strong v-if="this.role == 'vip'">会员</strong>
@@ -97,6 +104,8 @@
           <span v-if="this.role != 'vip'">
            （ <router-link to="/personalData/vip">升级</router-link>）
           </span>
+          </p>
+          
         </p>
 
         <div class="right-top-warn" v-if="this.role != 'vip'">
@@ -139,7 +148,8 @@ export default {
         Tel: "",
         Sex: "",
         Birthday: "",
-        effectiveDate:""
+        effectiveDate:"",
+        Email:""
       },
       message: "reply",
       messages: [],
@@ -166,7 +176,6 @@ export default {
     // 获取个人信息
     gainpersonal: function() {
       var _this = this;
-      console.log(_this.$store.state.loginPerson.loginPerson)
 
       if (localStorage.getItem("token")) {
         _this
@@ -182,6 +191,7 @@ export default {
             }
           })
           .then(function(res) {
+            console.log(res)
             _this.value.Name = res.data.data.name;
             _this.value.QQ = res.data.data.qq;
             _this.value.Tel = res.data.data.tel;
@@ -190,6 +200,7 @@ export default {
             _this.value.effectiveDate = res.data.data.effectiveDate;
             _this.personreviewsid = res.data.data.id;
             _this.role = res.data.data.role;
+            _this.value.Email = res.data.data.email;
           })
           .catch(function(error) {
             console.log(error);

@@ -21,7 +21,7 @@
 }
 .message .sendname {
   color: #5b9dfd;
-  vertical-align: auto
+  vertical-align: auto;
 }
 </style>
 
@@ -187,6 +187,10 @@ export default {
           }
         })
         .then(function(res) {
+          _this.$message({
+            message: "删除成功",
+            type: "success"
+          });
           _this.gainmessage();
         })
         .catch(function(error) {

@@ -260,6 +260,23 @@
                             <!--</tr>-->
                         <!--</table>-->
                     </li>
+                    <li>
+                        <router-link to='/classesStudy' :class="searchBarFixed == true ? 'navcolora:hover' :''">课程资源</router-link>
+                        <!--<table cellpadding="0" cellspacing="0">-->
+                            <!--<tr>-->
+                                <!--<td>-->
+                                    <!--<ul>-->
+                                        <!--<li>-->
+                                            <!--<router-link to='/schoolStudy'>学校</router-link>-->
+                                        <!--</li>-->
+                                        <!--<li>-->
+                                            <!--<router-link to='/subject'>学科</router-link>-->
+                                        <!--</li>-->
+                                    <!--</ul>-->
+                                <!--</td>-->
+                            <!--</tr>-->
+                        <!--</table>-->
+                    </li>
                     <!-- <li>
                         <a href="#">贡献获取</a>
                         <ul>

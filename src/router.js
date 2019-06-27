@@ -8,6 +8,7 @@ import personalData from '@/page/accountPersonalData.vue'
 import home from '@/page/Home.vue'
 import serch from '@/page/search.vue'
 import schoolStudy from '@/page/schoolStudy.vue'
+import classesStudy from '@/page/classesStudy.vue'
 import serchDetails from '@/page/searchDetails.vue'
 import serchDetailsContent from '@/page/searchDetailsContent.vue'
 import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'
@@ -72,6 +73,11 @@ export default new Router({
             path: '/schoolStudy',      //设置跳转
             name: 'schoolStudy',
             component: schoolStudy
+        },
+        {
+            path: '/classesStudy',      //设置跳转
+            name: 'classesStudy',
+            component: classesStudy
         },
         {
             path: '/serchDetails',      //设置跳转

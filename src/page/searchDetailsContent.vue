@@ -297,8 +297,7 @@
   background-color: #fb9119 !important;
   border: 1px solid #ff9f32 !important;
 }
-.ConAtten{
-
+.ConAtten {
 }
 .ConAtten:hover {
   background-color: #ff9f32 !important;
@@ -307,7 +306,7 @@
   background-color: #f74526 !important;
   border: 1px solid #ff9f32 !important;
 }
-.ConAttens:hover{
+.ConAttens:hover {
   background-color: #ff5e41 !important;
 }
 </style>
@@ -593,6 +592,7 @@ export default {
         })
         .then(function(res) {
           _this.valueWeek = res.data.data;
+          console.log(_this.valueWeek);
           if (
             _this.$route.query.classWeekId &&
             _this.$route.query.classweektypeid
@@ -611,7 +611,11 @@ export default {
               })
               .then(function(res) {
                 _this.value1 = Number(_this.$route.query.classWeekId);
-                _this.tabs = res.data.data;
+                // _this.tabs = res.data.data;
+                _this.tabs[0] = res.data.data[2];
+                _this.tabs[1] = res.data.data[3];
+                _this.tabs[2] = res.data.data[0];
+                _this.tabs[3] = res.data.data[1];
                 for (var i = 0; i < _this.tabs.length; i++) {
                   var cwtParentId = Number(_this.$route.query.cwtParentId);
                   if (_this.tabs[i].refId === cwtParentId) {
@@ -678,8 +682,11 @@ export default {
                 }
               })
               .then(function(res) {
-                _this.tabs = res.data.data;
-
+                _this.tabs[0] = res.data.data[2];
+                _this.tabs[1] = res.data.data[3];
+                _this.tabs[2] = res.data.data[0];
+                _this.tabs[3] = res.data.data[1];
+                // _this.tabs = res.data.data;
                 _this.value1 = Number(_this.valueWeek[0].id);
                 _this.RetrieveTheTnswer(_this.tabs[0].id);
               })
@@ -749,7 +756,11 @@ export default {
           }
         })
         .then(function(res) {
-          _this.tabs = res.data.data;
+          // _this.tabs = res.data.data;
+          _this.tabs[0] = res.data.data[2];
+          _this.tabs[1] = res.data.data[3];
+          _this.tabs[2] = res.data.data[0];
+          _this.tabs[3] = res.data.data[1];
           _this.RetrieveTheTnswer(_this.tabs[0].id);
         })
         .catch(function(error) {
