@@ -18,8 +18,7 @@
   width: 100%;
   height: 50px;
   /*border-top: 1px solid #d4d4d4;*/
-  border-bottom: 1px solid #b9b9b9;
-  background-color: #fcfcfc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .classesDetails-top-img {
@@ -36,13 +35,15 @@
 .classesDetails-top-info {
   float: left;
   width: 100%;
-  padding: 24px 0px;
+  padding: 37px 0px;
   overflow: hidden;
   position: relative;
 }
 
 .classesDetails-top-info h2 {
   color: #3b3b3b;
+  float: left;
+  margin-right: 20px;
 }
 
 .classesDetails-top-info p {
@@ -75,34 +76,42 @@
   margin-left: 30px;
 }
 .attention {
-  position: absolute;
+  /* position: absolute;
   right: 0px;
-  bottom: 24px;
-  background-color: #fb9119 !important;
-  border: 1px solid #ff9f32 !important;
+  bottom: 24px; */
+  background-color: #58bce4 !important;
+  border: 1px solid #58bce4 !important;
   color: #fff !important;
   font-size: 12px !important;
+  padding: 7px 20px !important;
 }
 .attention i {
   font-size: 14px !important;
 }
 .attention:hover {
-  background-color: #ff9f32 !important;
+  background-color: #77c6e6 !important;
+}
+.attention:active {
+  border: 1px solid #007fb1 !important;
 }
 .attentions {
-  position: absolute;
+  /* position: absolute;
   right: 0px;
-  bottom: 24px;
-  background-color: #f74526 !important;
-  border: 1px solid #ff9f32 !important;
+  bottom: 24px; */
+  background-color: #58bce4 !important;
+  border: 1px solid #58bce4 !important;
   color: #fff !important;
   font-size: 12px !important;
+  padding: 6px 20px !important;
 }
 .attentions i {
   font-size: 14px !important;
 }
 .attentions:hover {
-  background-color: #ff5e41 !important;
+  background-color: #77c6e6 !important;
+}
+.attentions:active {
+  border: 1px solid #007fb1 !important;
 }
 .classesDetails-tag-con {
   width: 1300px;
@@ -141,6 +150,7 @@
   /*background-image: url("../assets/paper-1990111_1920.jpg");*/
   /*background-repeat: no-repeat;*/
   /*background-position: center;*/
+  /* border-bottom: 1px solid rgba(0, 0, 0, 0.15); */
 }
 
 .classesTag {
@@ -149,6 +159,24 @@
 }
 .file-con-info {
   overflow: hidden;
+}
+.crumb {
+  color: #fff;
+}
+.crumb:hover {
+  color: rgb(40, 174, 252);
+}
+.crumbs {
+  width: 100%;
+  overflow: hidden;
+  background-color: #4d60b3;
+}
+.crumbs .crumbs-con {
+  width: 1300px;
+  margin: 0 auto;
+}
+.crumbs span {
+  line-height: 38px;
 }
 </style>
 
@@ -159,13 +187,21 @@
     <div class="classesDetails-con">
       <div class="con-img">
         <div class="crumbs">
-          <el-breadcrumb separator-class="el-icon-arrow-right" style="margin-top: 24px;">
-            <el-breadcrumb-item :to="{ path: '/' }">首页</el-breadcrumb-item>
-            <el-breadcrumb-item
-              :to="{ path: 'serchDetailsUniversity',query: {id: this.universityId}}"
-            >学校</el-breadcrumb-item>
-            <el-breadcrumb-item>课程</el-breadcrumb-item>
-          </el-breadcrumb>
+          <div class="crumbs-con">
+            <el-breadcrumb separator-class="el-icon-arrow-right" style>
+              <el-breadcrumb-item :to="{ path: 'schoolStudy' }">
+                <span class="crumb">全部学校</span>
+              </el-breadcrumb-item>
+              <el-breadcrumb-item
+                :to="{ path: 'serchDetailsUniversity',query: {id: this.universityId}}"
+              >
+                <span class="crumb">该校课程</span>
+              </el-breadcrumb-item>
+              <el-breadcrumb-item>
+                <span style="color:rgb(228, 228, 228);">当前课程</span>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
         </div>
         <div class="classesDetails-top">
           <!--<div class="classesDetails-top-img">-->
@@ -173,7 +209,27 @@
           <!--</div>-->
           <div class="classesDetails-top-info">
             <div>
-              <h2>{{value.name}}</h2>
+              <div>
+                <h2>{{value.name}}</h2>
+                <el-button
+                  class="attention"
+                  size="medium"
+                  v-if="value.attentions == false"
+                  @click="attention()"
+                >
+                  <i class="el-icon-star-off" v-if="value.attentions == false"></i>
+                  关注
+                </el-button>
+                <el-button
+                  class="attentions"
+                  size="medium"
+                  v-if="value.attentions == true"
+                  @click="attention()"
+                >
+                  <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
+                  关注
+                </el-button>
+              </div>
 
               <p>
                 学校:
@@ -185,24 +241,6 @@
 
               <p>备注:{{value.memo}}</p>
             </div>
-            <el-button
-              class="attention"
-              size="medium"
-              v-if="value.attentions == false"
-              @click="attention()"
-            >
-              <i class="el-icon-star-off" v-if="value.attentions == false"></i>
-              关注
-            </el-button>
-            <el-button
-              class="attentions"
-              size="medium"
-              v-if="value.attentions == true"
-              @click="attention()"
-            >
-              <i class="el-icon-star-on" v-if="value.attentions == true" style="color:#fff"></i>
-              取消关注
-            </el-button>
           </div>
         </div>
       </div>
@@ -219,7 +257,7 @@
         </div>
       </div>
       <div>
-        <router-view :Names="className"/>
+        <router-view :Names="this.value"/>
       </div>
     </div>
     <homeFooter></homeFooter>
@@ -245,6 +283,7 @@ export default {
       tab01Text: "tab01",
       tab02Text: "tab02",
       className: "",
+      univerName: "",
       titleShow: false,
       NameMsg: "",
       attentions: {
@@ -279,6 +318,7 @@ export default {
           _this.value = res.data.data;
           _this.$set(_this.value, "attentions", false);
           _this.className = res.data.data.name;
+          _this.univerName = res.data.data.university;
           _this.titleShow = true;
           _this.universityId = res.data.data.universityId;
           _this.retrieveAttention();

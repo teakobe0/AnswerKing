@@ -77,7 +77,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.messages = res.data.data;
           for (var i = 0; i < _this.messages.length; i++) {
             _this.messages[i].payTime = _this.formatDate(

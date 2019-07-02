@@ -59,8 +59,8 @@
             <ul class="footer-1">
                 <li class="footer-title">功能</li>
                 <li><router-link to='/home'>CourseWhale</router-link></li>
-                <li><a href="#">图表</a></li>
-                <li><a href="#">单词卡</a></li>
+                <li><router-link to='/schoolStudy'>学校资源</router-link></li>
+                <li><router-link to='/classesStudy'>课程资源</router-link></li>
             </ul>
             <ul class="footer-2">
                 <li class="footer-title">帮助</li>

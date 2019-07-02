@@ -94,32 +94,33 @@
         <!-- <p class="right-top-title">个人信息</p> -->
         <h3>个人信息</h3>
         <p class="right-top-acctype">
-          <p class="acctypeEmail">用户名:{{this.value.Email}}</p>
+          <p class="acctypeEmail">邮箱:{{this.value.email}}</p>
           <p class="acctypeVip">
           账户类型:
-          <strong v-if="this.role != 'vip'">普通</strong>
-          <strong v-if="this.role == 'vip'">会员</strong>
-          <span style="margin-left:24px" v-if="this.role == 'vip'">到期时间:{{this.value.effectiveDate | formatDate}}</span>
+          <strong v-if="this.value.role != 'vip'">普通</strong>
+          <strong v-if="this.value.role == 'vip'">会员</strong>
+          <span style="margin-left:24px" v-if="this.value.role == 'vip'">到期时间:{{this.value.effectiveDate | formatDate}}</span>
 
-          <span v-if="this.role != 'vip'">
+          <span v-if="this.value.role != 'vip'">
            （ <router-link to="/personalData/vip">升级</router-link>）
           </span>
           </p>
           
         </p>
 
-        <div class="right-top-warn" v-if="this.role != 'vip'">
+        <div class="right-top-warn" v-if="this.value.role != 'vip'">
           <p>升级到高级会员获取更多。</p>
           <router-link to="/personalData/vip" style="text-decoration: none;color: #ffffff;">
             <el-button class="warn-button" type="danger">现在升级</el-button>
           </router-link>
         </div>
         <ul class="right-top-ul">
-          <li>名称:&nbsp;{{this.value.Name}}</li>
-          <li>性别:&nbsp;{{this.value.Sex}}</li>
-          <li>手机:&nbsp;{{this.value.Tel}}</li>
-           <li>Q&nbsp;Q:&nbsp;{{this.value.QQ}}</li>
-          <li>生日:&nbsp;{{this.value.Birthday | formatDate}}</li>
+          <li>名称:&nbsp;{{this.value.name}}</li>
+          <li>性别:&nbsp;{{this.value.sex}}</li>
+          <li>手机:&nbsp;{{this.value.tel}}</li>
+          <li>学校:&nbsp;{{this.value.school}}</li>
+          <li>Q&nbsp;Q:&nbsp;{{this.value.qq}}</li>
+          <li>生日:&nbsp;{{this.value.birthday | formatDate}}</li>
         </ul>
       </div>
       <!-- <div class="head-right-middle">
@@ -142,20 +143,7 @@ export default {
     //在ES6中添加数据是在return{}中
     return {
       activeName: "first",
-      value: {
-        Name: "",
-        QQ: "",
-        Tel: "",
-        Sex: "",
-        Birthday: "",
-        effectiveDate:"",
-        Email:""
-      },
-      message: "reply",
-      messages: [],
-      personreviewsid: "",
-      ids: "",
-      classinfoid: "",
+      value: {},
       role:""
     };
   },
@@ -176,7 +164,6 @@ export default {
     // 获取个人信息
     gainpersonal: function() {
       var _this = this;
-
       if (localStorage.getItem("token")) {
         _this
           .axios({
@@ -191,16 +178,7 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res)
-            _this.value.Name = res.data.data.name;
-            _this.value.QQ = res.data.data.qq;
-            _this.value.Tel = res.data.data.tel;
-            _this.value.Sex = res.data.data.sex;
-            _this.value.Birthday = res.data.data.birthday;
-            _this.value.effectiveDate = res.data.data.effectiveDate;
-            _this.personreviewsid = res.data.data.id;
-            _this.role = res.data.data.role;
-            _this.value.Email = res.data.data.email;
+            _this.value = res.data.data;
           })
           .catch(function(error) {
             console.log(error);

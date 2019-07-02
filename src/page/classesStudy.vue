@@ -1,5 +1,5 @@
 <style>
-.schoolStydy {
+.classesStudy {
   width: 100%;
   height: 100%;
   position: relative;
@@ -26,11 +26,11 @@
   margin-top: 80px;
 }
 
-.school-query {
+.class-query {
   width: 100%;
   height: 400px;
   background-color: #f2f2f2;
-  background-image: url("../assets/学校5.jpg");
+  background-image: url("../assets/classImg.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -94,7 +94,9 @@
 .find-classes {
   width: 1200px;
   margin: 0 auto;
-  border: 1px solid #dbdee5;
+  border-left: 1px solid #dbdee5;
+  border-right: 1px solid #dbdee5;
+  border-bottom: 1px solid #dbdee5;
   border-radius: 5px;
 }
 
@@ -146,17 +148,18 @@
 }
 
 .find-class-bootom li {
-  width: 545px;
+  width: 555px;
   display: inline-block;
   list-style-type: none;
   margin-top: 10px;
   margin-bottom: 10px;
 
-  margin-left: 10px;
   font-size: 0;
 }
 .find-class-bootom li:nth-child(odd) {
   margin-right: 30px;
+}
+.find-class-bootom li:nth-child(even) {
 }
 .find-class-bootom li a {
   display: block;
@@ -179,7 +182,7 @@
   font-size: 16px;
   font-weight: 700;
   display: block;
-  width: 490px;
+  width: 500px;
   height: 18px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -198,14 +201,25 @@
   right: 0px;
   bottom: 0px;
 }
+.find-serchinput {
+  width: 100%;
+  height: 60px;
+}
+.find-serchinput span:nth-child(2) {
+  left: 25px;
+}
+.find-serchinput .el-input--prefix .el-input__inner {
+  padding-left: 50px;
+  height: 60px;
+}
 </style>
 
 <template>
-  <div class="schoolStydy clearfix">
+  <div class="classesStudy clearfix">
     <homeNav></homeNav>
-    <div v-title data-title="学校资源-CourseWhale"></div>
+    <div v-title data-title="课程资源-CourseWhale"></div>
     <div class="school-con">
-      <div class="school-query">
+      <div class="class-query">
         <div class="query-con">
           <h1 class="query-con-h1">按课程查找学习资源</h1>
 
@@ -217,7 +231,7 @@
               v-model="state1"
               :fetch-suggestions="querySearch"
               @select="handleSelectauto"
-              placeholder="请输入需要查询的课程名称"
+              placeholder="请输入您需要查询的课程名称"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
@@ -235,6 +249,16 @@
         <p class="find-school-describe">从我们的课程列表中选择，以找到您需要的学习资源。</p>
 
         <div class="find-classes">
+          <div class="find-serchinput">
+            <el-input
+              placeholder="请输入需要查询的课程(回车确认)"
+              v-model="input1"
+              @change="GetClasses"
+              clearable
+            >
+              <i slot="prefix" class="el-input__icon el-icon-search"></i>
+            </el-input>
+          </div>
           <div class="find-class-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in classesAll">
@@ -271,7 +295,7 @@ import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 
 export default {
-  name: "schoolStydy",
+  name: "classesStudy",
   components: {
     homeNav,
     homeFooter
@@ -304,7 +328,9 @@ export default {
       loading: true,
       currentPage4: 1,
       pageTotal: 0,
-      classesPagings: false
+      classesPagings: false,
+      // 搜索课程
+      input1: ""
     };
   },
   created: function() {
@@ -412,7 +438,7 @@ export default {
           url: `http://192.168.1.27:8088/api/Class/ClassPage`,
           async: false,
           params: {
-            name: "",
+            name: _this.input1,
             pagenum: 1,
             pagesize: 40
           },
@@ -431,7 +457,6 @@ export default {
         });
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
       var _this = this;
       _this
         .axios({
@@ -439,7 +464,7 @@ export default {
           url: `http://192.168.1.27:8088/api/Class/ClassPage`,
           async: false,
           params: {
-            name: "",
+            name: _this.input1,
             pagenum: val,
             pagesize: 40
           },
@@ -448,7 +473,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.classesAll = res.data.data.data;
           _this.loading = false;
         })

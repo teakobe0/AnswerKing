@@ -255,7 +255,6 @@ export default {
   },
   created: function() {
     var _this = this;
-    console.log(123);
     // this.$router.go(0)
     _this.gainpersonal();
     // _this.openFullScreen();
@@ -343,7 +342,6 @@ export default {
                   }
                 })
                 .then(function(res) {
-                  console.log(res);
                   loading.close();
                   if (res.data.data.msg != null) {
                     _this.defeatedOpen();

@@ -448,10 +448,17 @@ export default {
             }
           })
           .then(function(res) {
+            console.log(res);
             _this.personreviews = res.data.data;
             _this.personreviewsid = res.data.data.id;
-            _this.imageUrl = "http://192.168.1.27:8088" + res.data.data.image;
-            _this.headShowLogin = true;
+            if (res.data.data.image != null) {
+              _this.imageUrl =
+                "http://192.168.1.27:8088" + res.data.data.image;
+              _this.headShowLogin = true;
+            }else {
+              _this.headShowLogin = false;
+            }
+
             _this.searching();
           })
           .catch(function(error) {
@@ -490,8 +497,9 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.reviews = res.data.data;
+          console.log(res);
+          console.log(123);
           if (res.data.data.length == 0) {
             _this.comment = [];
           }
@@ -573,6 +581,7 @@ export default {
               }
             })
             .then(function(res) {
+              console.log(res)
               _this.retext = "";
               _this.$message({
                 message: "评论成功",

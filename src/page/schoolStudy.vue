@@ -154,17 +154,17 @@
 }
 
 .find-select-bootom li {
-  width: 545px;
+  width: 555px;
   display: inline-block;
   list-style-type: none;
   margin-top: 10px;
   margin-bottom: 10px;
-  margin-left: 10px;
   font-size: 0;
 }
 .find-select-bootom li:nth-child(odd) {
   margin-right: 30px;
 }
+
 
 .find-select-bootom li a {
   display: block;
@@ -489,7 +489,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.alluniversitys = res.data.data;
           _this.loading = false;
           _this.viewMores = true;

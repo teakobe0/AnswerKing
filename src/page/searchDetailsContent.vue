@@ -13,12 +13,13 @@
 .Content-con-img {
   overflow: hidden;
   background-color: #ebf5f424;
-  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
+  /* box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15); */
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 .con-img {
   overflow: hidden;
-  background-color: #ebf5f424;
+  /* background-color: #ebf5f424; */
 }
 
 .serchDetailsContent-top {
@@ -60,7 +61,7 @@
 .content-bookmark {
   position: absolute;
   right: 0px;
-  bottom: 21px;
+  bottom: 34.5px;
   list-style-type: none;
   /* margin-right: 66px; */
 }
@@ -181,7 +182,12 @@
 .serchDetailsContent-tag-right ul li:hover {
   border-right: 3px solid #136bd3;
 }
-
+.serchDetailsContent-tag-right .underReview {
+  text-align: center;
+  color: #136bd3; 
+  font-size: 20px;
+  line-height: 212px;
+}
 .content-tag-con-left {
   width: 974px;
   float: left;
@@ -294,20 +300,26 @@
 /*to {background: #838383;}*/
 /*}*/
 .ConAtten {
-  background-color: #fb9119 !important;
-  border: 1px solid #ff9f32 !important;
+  background-color: #58bce4 !important;
+  border: 1px solid #58bce4 !important;
 }
 .ConAtten {
 }
 .ConAtten:hover {
-  background-color: #ff9f32 !important;
+  background-color: #77c6e6 !important;
+}
+.ConAtten:active {
+  border: 1px solid #007fb1 !important;
 }
 .ConAttens {
-  background-color: #f74526 !important;
-  border: 1px solid #ff9f32 !important;
+  background-color: #58bce4 !important;
+  border: 1px solid #58bce4 !important;
 }
 .ConAttens:hover {
-  background-color: #ff5e41 !important;
+  background-color: #77c6e6 !important;
+}
+.ConAttens:active {
+  border: 1px solid #007fb1 !important;
 }
 </style>
 
@@ -318,25 +330,24 @@
     <div class="serchDetailsContent-con">
       <div class="Content-con-img">
         <div class="crumbs">
-          <el-breadcrumb
-            separator-class="el-icon-arrow-right"
-            style="margin-top: 24px;color: #777;"
-          >
-            <el-breadcrumb-item :to="{ path: '/' }">
-              <span style="color: #606266;">首页</span>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item
-              :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
-            >
-              <span style="color: #606266;">学校</span>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item :to="{ path: 'classesDetails',query: {id: this.Id}}">
-              <span style="color: #606266;">课程</span>
-            </el-breadcrumb-item>
-            <el-breadcrumb-item>
-              <span style="color: #606266;">题库</span>
-            </el-breadcrumb-item>
-          </el-breadcrumb>
+          <div class="crumbs-con">
+            <el-breadcrumb separator-class="el-icon-arrow-right">
+              <el-breadcrumb-item :to="{ path: 'schoolStudy' }">
+                <span class="crumb">全部学校</span>
+              </el-breadcrumb-item>
+              <el-breadcrumb-item
+                :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
+              >
+                <span class="crumb">该校课程</span>
+              </el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: 'classesDetails',query: {id: this.Id}}">
+                <span class="crumb">该课题库</span>
+              </el-breadcrumb-item>
+              <el-breadcrumb-item>
+                <span style="color:rgb(228, 228, 228);">当前题库</span>
+              </el-breadcrumb-item>
+            </el-breadcrumb>
+          </div>
         </div>
         <div class="serchDetailsContent-top">
           <div class="serchDetailsContent-top-info">
@@ -372,22 +383,22 @@
                   v-if="value.attentions == true"
                   @click="attention()"
                 >
-                  <i class="el-icon-star-on" v-if="value.attentions == true" style="color:#fff"></i>
-                  取消关注
+                  <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
+                  关注
                 </el-button>
               </li>
               <li
                 style="line-height:35px;margin-left:10px;margin-right:2px;color:rgb(206, 206, 206)"
               >|</li>
               <li>
-                <el-button size="medium" @click="noUses">
+                <el-button size="medium" @click="noUses" :disabled=disableds>
                   <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                   <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
                   没用({{informations.noUse}})
                 </el-button>
               </li>
               <li>
-                <el-button size="medium" @click="beOfUses">
+                <el-button size="medium" @click="beOfUses" :disabled=disableds>
                   <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                   <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
                   有用({{informations.use}})
@@ -401,7 +412,7 @@
       <div class="serchDetailsContent-tag clearfix">
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
-            <div class="serchDetailsContent-tag-left">
+            <div class="serchDetailsContent-tag-left" v-if="classShow == true">
               <el-select
                 v-model="value1"
                 style="width: 953px;"
@@ -421,6 +432,7 @@
               </el-select>
             </div>
             <div class="serchDetailsContent-tag-right">
+              <p class="underReview" v-if="auditText == true">该题库正在审核中</p>
               <ul>
                 <li
                   v-for="(item,index) in tabs"
@@ -517,7 +529,13 @@ export default {
         Name: "",
         TypeId: "",
         Type: ""
-      }
+      },
+      // 审核文字
+      auditText: false,
+      // 周显示隐藏
+      classShow: true,
+      // 按钮禁用
+      disableds:false
     };
   },
   created: function() {
@@ -592,82 +610,86 @@ export default {
         })
         .then(function(res) {
           _this.valueWeek = res.data.data;
-          console.log(_this.valueWeek);
+          if (res.data.data.length == 0) {
+            _this.$store.state.answer.tabconwu = false;
+            _this.auditText = true;
+            _this.classShow = false;
+          }
           if (
             _this.$route.query.classWeekId &&
             _this.$route.query.classweektypeid
           ) {
-            _this
-              .axios({
-                method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.$route.query.classWeekId
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                _this.value1 = Number(_this.$route.query.classWeekId);
-                // _this.tabs = res.data.data;
-                _this.tabs[0] = res.data.data[2];
-                _this.tabs[1] = res.data.data[3];
-                _this.tabs[2] = res.data.data[0];
-                _this.tabs[3] = res.data.data[1];
-                for (var i = 0; i < _this.tabs.length; i++) {
-                  var cwtParentId = Number(_this.$route.query.cwtParentId);
-                  if (_this.tabs[i].refId === cwtParentId) {
-                    _this.numnum = i;
-                  }
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-            _this
-              .axios({
-                method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
-                async: false,
-                params: {
-                  classweektypeid: _this.$route.query.classweektypeid
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                _this.Answer = res.data.data;
-                if (_this.Answer.length == 0) {
-                  _this.$store.state.answer.tabconwu = true;
-                } else {
-                  _this.$store.state.answer.tabconwu = false;
-                }
-                for (var i = 0; i < _this.Answer.length; i++) {
-                  if (
-                    _this.Answer[i].url == null ||
-                    _this.Answer[i].url == "" ||
-                    _this.Answer[i].url == ""
-                  ) {
-                    _this.Answer[i].conurl = false;
-                    _this.Answer[i].context = true;
-                    _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                    _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                  } else {
-                    _this.Answer[i].conurl = true;
-                    _this.Answer[i].context = false;
-                    _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                    _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                  }
-                }
-                _this.$store.state.answer.answer = _this.Answer;
-                _this.$store.state.answer.imgss = _this.imgss;
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
+            // _this
+            //   .axios({
+            //     method: "get",
+            //     url: `http://192.168.1.27:8088/api/ClassInfoContent/ClassWeekTypes`,
+            //     async: false,
+            //     params: {
+            //       classweekid: _this.$route.query.classWeekId
+            //     },
+            //     xhrFields: {
+            //       withCredentials: true
+            //     }
+            //   })
+            //   .then(function(res) {
+            //     _this.value1 = Number(_this.$route.query.classWeekId);
+            //     _this.tabs = [];
+            //     _this.tabs[0] = res.data.data[2];
+            //     _this.tabs[1] = res.data.data[3];
+            //     _this.tabs[2] = res.data.data[0];
+            //     _this.tabs[3] = res.data.data[1];
+            //     for (var i = 0; i < _this.tabs.length; i++) {
+            //       var cwtParentId = Number(_this.$route.query.cwtParentId);
+            //       if (_this.tabs[i].refId === cwtParentId) {
+            //         _this.numnum = i;
+            //       }
+            //     }
+            //   })
+            //   .catch(function(error) {
+            //     console.log(error);
+            //   });
+            // _this
+            //   .axios({
+            //     method: "get",
+            //     url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
+            //     async: false,
+            //     params: {
+            //       classweektypeid: _this.$route.query.classweektypeid
+            //     },
+            //     xhrFields: {
+            //       withCredentials: true
+            //     }
+            //   })
+            //   .then(function(res) {
+            //     _this.Answer = res.data.data;
+            //     if (_this.Answer.length == 0) {
+            //       _this.$store.state.answer.tabconwu = true;
+            //     } else {
+            //       _this.$store.state.answer.tabconwu = false;
+            //     }
+            //     for (var i = 0; i < _this.Answer.length; i++) {
+            //       if (
+            //         _this.Answer[i].url == null ||
+            //         _this.Answer[i].url == "" ||
+            //         _this.Answer[i].url == ""
+            //       ) {
+            //         _this.Answer[i].conurl = false;
+            //         _this.Answer[i].context = true;
+            //         _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+            //         _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+            //       } else {
+            //         _this.Answer[i].conurl = true;
+            //         _this.Answer[i].context = false;
+            //         _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+            //         _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+            //       }
+            //     }
+            //     _this.$store.state.answer.answer = _this.Answer;
+            //     _this.$store.state.answer.imgss = _this.imgss;
+            //   })
+            //   .catch(function(error) {
+            //     console.log(error);
+            //   });
           } else {
             _this
               .axios({
@@ -682,12 +704,13 @@ export default {
                 }
               })
               .then(function(res) {
+                _this.tabs = [];
                 _this.tabs[0] = res.data.data[2];
                 _this.tabs[1] = res.data.data[3];
                 _this.tabs[2] = res.data.data[0];
                 _this.tabs[3] = res.data.data[1];
-                // _this.tabs = res.data.data;
                 _this.value1 = Number(_this.valueWeek[0].id);
+
                 _this.RetrieveTheTnswer(_this.tabs[0].id);
               })
               .catch(function(error) {
@@ -711,6 +734,16 @@ export default {
           context: rawList.context,
           conurl: rawList.conurl
         });
+      }
+      return outputList;
+    },
+    //将图片的ID和路径保存到outputList的方法
+    getUrlListCover: function(rawList) {
+      var _this = this;
+      var imgUrlArray = rawList.url.split("|");
+      var outputList = [];
+      for (var i = 0; i < imgUrlArray.length; i++) {
+        outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
       }
       return outputList;
     },
@@ -743,6 +776,7 @@ export default {
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
       var _this = this;
+
       _this
         .axios({
           method: "get",
@@ -756,7 +790,7 @@ export default {
           }
         })
         .then(function(res) {
-          // _this.tabs = res.data.data;
+          _this.tabs = [];
           _this.tabs[0] = res.data.data[2];
           _this.tabs[1] = res.data.data[3];
           _this.tabs[2] = res.data.data[0];
@@ -785,7 +819,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.Answer = res.data.data;
           _this.$store.state.answer.loading = false;
           if (_this.Answer.length == 0) {
@@ -797,6 +830,7 @@ export default {
             if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
               _this.Answer[i].conurl = false;
               _this.Answer[i].context = true;
+              _this.$store.state.answer.tabconwu = true;
               // _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
               // _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             } else {
@@ -812,16 +846,6 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlListCover: function(rawList) {
-      var _this = this;
-      var imgUrlArray = rawList.url.split("|");
-      var outputList = [];
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
-      }
-      return outputList;
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
@@ -860,6 +884,7 @@ export default {
               _this.Answer[i].conurl = true;
               _this.Answer[i].context = false;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             }
           }
           _this.$store.state.answer.answer = _this.Answer;
@@ -882,11 +907,13 @@ export default {
           _this.useOnuse.check = 1;
           _this.use = true;
           _this.noUse = false;
+          _this.disableds = true;
           _this.ChangeClassInfo();
         } else if (_this.use == true && _this.noUse == false) {
           _this.useOnuse.type = "Y";
           _this.useOnuse.check = -1;
           _this.use = false;
+          _this.disableds = true;
           _this.ChangeClassInfo();
         }
       } else {
@@ -905,11 +932,13 @@ export default {
           _this.useOnuse.check = 1;
           _this.noUse = true;
           _this.use = false;
+          _this.disableds = true;
           _this.ChangeClassInfo();
         } else if (_this.noUse == true && _this.use == false) {
           _this.useOnuse.type = "N";
           _this.useOnuse.check = -1;
           _this.noUse = false;
+          _this.disableds = true;
           _this.ChangeClassInfo();
         }
       } else {
@@ -940,6 +969,7 @@ export default {
           }
         })
         .then(function(res) {
+          _this.disableds = false;
           _this.UseRecord();
         })
         .catch(function(error) {
@@ -1007,7 +1037,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 2) {
                 var v = [];

@@ -31,6 +31,11 @@
             <el-input v-model="modifiedDatas.Tel"></el-input>
           </el-col>
         </el-form-item>
+        <el-form-item label="学校">
+          <el-col :span="11">
+            <el-input v-model="modifiedDatas.School"></el-input>
+          </el-col>
+        </el-form-item>
         <el-form-item label="性别">
           <el-radio-group v-model="modifiedDatas.Sex">
             <el-radio label="男"></el-radio>
@@ -68,6 +73,7 @@ export default {
         Name: "",
         QQ: "",
         Tel: "",
+        School:"",
         Sex: "",
         Birthday: ""
       }
@@ -89,12 +95,13 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
+          console.log(res)
           _this.modifiedDatas.Name = res.data.data.name;
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
           _this.modifiedDatas.Birthday = res.data.data.birthday;
+          _this.modifiedDatas.School = res.data.data.school;
         })
         .catch(function(error) {
           console.log(error);
@@ -111,7 +118,7 @@ export default {
   methods: {
     onSubmit() {
       var _this = this;
-      this.axios({
+      _this.axios({
         method: "put",
         url: `http://192.168.1.27:8088/api/client/clients`,
         async: false,

@@ -125,6 +125,9 @@
   cursor: pointer;
   color: #979797;
 }
+.classes-con-course div i:hover {
+  color: red;
+}
 /*/!*文件*!/*/
 /*.file-con {*/
 /*width: 1300px;*/
@@ -219,19 +222,20 @@
         <div v-for="(item,index) in classes">
           <router-link
             :to="{path:'/classesDetails',query:{id:item.cla.id}}"
-            href="javascript:void(0);"
           >{{item.cla.name}}</router-link>
           <p>题库集:{{item.order}}</p>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
+            title="关注课程"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
+            title="取消关注课程"
           ></i>
         </div>
       </div>

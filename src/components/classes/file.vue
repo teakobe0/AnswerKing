@@ -1,15 +1,14 @@
 <style>
 #file {
-  background-color: #f4f4f7;
+  /* background-color: #ebf5f424; */
   overflow: hidden;
 }
 
 .file-con {
   width: 1300px;
   margin: 0 auto;
-  overflow: hidden;
-  margin-top: 32px;
-  margin-bottom: 32px;
+  /* margin-top: 32px;
+  margin-bottom: 32px; */
 }
 .file-con-info-title {
   width: 100%;
@@ -32,7 +31,7 @@
   left: 0px;
   width: 44%;
   height: 2px;
-  background-color: #a1a1a1;
+  background-color: #d4d4d4;
 }
 .file-con-info-trim2 {
   position: absolute;
@@ -40,7 +39,7 @@
   right: 0px;
   width: 44%;
   height: 2px;
-  background-color: #a1a1a1;
+  background-color: #d4d4d4;
 }
 .file-con-course {
   margin-top: 50px;
@@ -48,14 +47,25 @@
 }
 .file-con-course div {
   width: 200px;
-  background-color: #fffffb;
-  margin-bottom: 20px;
+  /* height: 200px; */
+  background-color: #f5f6f7;
+  margin-top: 10px;
+  margin-bottom: 10px;
   display: inline-block;
-  margin-right: 20px;
-  margin-left: 0px;
+  margin-right: 13px;
+  margin-left: 12px;
   border-radius: 4px;
   padding: 20px;
   position: relative;
+}
+.file-con-course div:nth-child(5n + 1) {
+  margin-left: 0px;
+}
+.file-con-course div:nth-child(5n + 5) {
+  margin-right: 0px;
+}
+.file-con-course div:hover {
+  box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15);
 }
 .file-con-course a {
   text-decoration: none;
@@ -69,8 +79,8 @@
         margin-right: 0px;
         float: right;
     } */
-.file-course-img:hover {
-  color: #fe2a93;
+.file-course-img:hover .course-goal {
+  color: #ff2994;
 }
 .file-course-img img {
   /* width: 180px;
@@ -78,26 +88,43 @@
   margin-left: 10px;
   margin-top: 10px;
 }
-.file-course-img p {
+.file-course-img p:nth-child(1) {
   width: 200px;
-  border-bottom: 1px dashed #d6d6d6;
-  /*background-color: #eaeaea;*/
-  /*text-align: center;*/
-  /*border-radius: 0px 0px 4px 4px;*/
-  margin-bottom: 5px;
-  padding-bottom: 5px;
+  font-size: 20px;
 }
-.file-course-img span {
+.file-course-img p:nth-child(2) {
+  width: 200px;
+  font-size: 14px;
+  margin-top: 13px;
+  color: #202020;
+}
+.file-course-img p:nth-child(3) {
+  width: 200px;
+  font-size: 14px;
+  margin-top: 13px;
+  color: #202020;
+}
+.file-course-img p span:last-of-type {
+  display: inline-block;
+  margin-top: 5px;
+}
+.file-course-img .course-time {
   display: block;
   font-size: 14px;
   color: #b9b9b9;
+  border-top: 1px dashed #d6d6d6;
+  margin-top: 13px;
+  padding-top: 5px;
 }
 .file-con-course i {
   position: absolute;
-  right: 20px;
-  bottom: 20px;
+  right: 10px;
+  top: 10px;
   cursor: pointer;
   color: #b9b9b9;
+}
+.file-con-course i:hover {
+  color: red;
 }
 </style>
 
@@ -105,13 +132,13 @@
 <template>
   <div id="file">
     <div class="file-con">
-      <div class="file-con-info">
+      <!-- <div class="file-con-info">
         <div class="file-con-info-title">
           <div class="file-con-info-trim1"></div>
           <p>题库集({{input1}})</p>
           <div class="file-con-info-trim2"></div>
         </div>
-      </div>
+      </div> -->
       <div class="file-con-course">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
@@ -119,21 +146,34 @@
             class="file-course-img"
           >
             <!--<img src="../../assets/1.jpg" alt=""/>-->
-            <p>Grade:{{item.totalGrade}}</p>
-            <span>Time:{{item.createTime | formatDate}}</span>
+            <p class="course-goal">
+              题库集得分:
+              <b>{{item.totalGrade}}</b>
+            </p>
+            <p>
+              <span>课程名称:</span>
+              <br>
+              <span>{{Names.name}}</span>
+            </p>
+            <p>
+              <span>学校名称:</span>
+              <br>
+              <span>{{Names.university}}</span>
+            </p>
+            <span class="course-time">创建时间:{{item.createTime | formatDate}}</span>
           </router-link>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
-            title="全部内容"
+            title="关注题库集"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
-            title="全部内容"
+            title="取消关注题库集"
           ></i>
         </div>
       </div>
@@ -189,6 +229,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(_this.Names);
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
           for (var i = 0; i < _this.value.length; i++) {
@@ -209,7 +250,7 @@ export default {
       if (localStorage.token) {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
-          _this.attentions.Name = _this.Names;
+          _this.attentions.Name = _this.Names.name;
           _this.attentions.TypeId = _this.$route.query.id + "," + item.id;
           _this.attentions.Type = 2;
           _this
@@ -286,7 +327,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 2) {
                 for (var j = 0; j < _this.value.length; j++) {
