@@ -13,8 +13,11 @@
     .member-title {
         width: 100%;
         height: 400px;
-        background-color: #e25b5b;
+        background-color: #5ab2d6;
         overflow: hidden;
+        background-image: url("../assets/member2.jpg");
+        background-position:center;
+        background-repeat: no-repeat;
     }
 
     .member-title p:nth-of-type(1) {
@@ -94,10 +97,13 @@
     .member-recruiting {
         width: 100%;
         height: 400px;
-        background-color: #3c81c6;
+        background-color: #ec7777;
         overflow: hidden;
-        color: #ffffff;
+        color: #fff;
         text-align: center;
+        background-image: url("../assets/member1.jpg");
+        background-position:center;
+        background-repeat: no-repeat;
     }
 
     .member-recruiting p:nth-of-type(1) {
@@ -110,7 +116,7 @@
         font-size: 20px;
     }
     .member-recruiting div {
-        width: 300px;
+        width: 117px;
         height: 90px;
         margin: 0 auto;
         border-top: 1px solid #ffffff;

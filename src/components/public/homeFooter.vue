@@ -65,15 +65,16 @@
             <ul class="footer-2">
                 <li class="footer-title">帮助</li>
                 <li><router-link class="homenav-resi" to='/register'>注册</router-link></li>
-                <li><a href="#">帮助中心</a></li>
-                <li><a href="#">行为准则</a></li>
+                <li><router-link to='/faq'>帮助中心</router-link></li>
+                <li><router-link to='/standardBehavior'>行为准则</router-link></li>
+                <li><router-link to="/termsOfService">条款</router-link></li>
             </ul>
             <ul class="footer-3">
                 <li class="footer-title">简介</li>
-                <li><a href="#">公司</a></li>
-                <li><a href="#">新闻</a></li>
-                <li><a href="#">职位</a></li>
-                <li><router-link to="/termsOfService">条款</router-link></li>
+                <li><router-link to='/company'>关于我们</router-link></li>
+                <li><router-link to='/news'>新闻</router-link></li>
+                <li><router-link to='/position'>职位</router-link></li>
+                
             </ul>
             <ul class="footer-4">
                 <li class="footer-title">CourseWhale</li>

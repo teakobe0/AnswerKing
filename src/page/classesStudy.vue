@@ -30,7 +30,7 @@
   width: 100%;
   height: 400px;
   background-color: #f2f2f2;
-  background-image: url("../assets/classImg.jpg");
+  background-image: url("../assets/学校9.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;

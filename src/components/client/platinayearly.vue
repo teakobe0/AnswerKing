@@ -53,7 +53,7 @@
         </div>
         <div class="pay">
             <div class="pay-left">
-                <img src="../../assets/6.png" alt=""/>
+                <!-- <img src="../../assets/6.png" alt=""/> -->
             </div>
             <div class="pay-right">
                 <p>应付金额: <span style="color: #ff9f32;font-size: 25px;">139</span> 元</p>

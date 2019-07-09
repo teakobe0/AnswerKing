@@ -82,6 +82,13 @@
 .file-course-img:hover .course-goal {
   color: #ff2994;
 }
+.course-goal b {
+  font-size: 50px;
+  position: absolute;
+  top:20px;
+  right:28px;
+  font-style: italic;
+}
 .file-course-img img {
   /* width: 180px;
   height: 210px; */
@@ -91,6 +98,7 @@
 .file-course-img p:nth-child(1) {
   width: 200px;
   font-size: 20px;
+  margin-top: 10px;
 }
 .file-course-img p:nth-child(2) {
   width: 200px;
@@ -126,6 +134,13 @@
 .file-con-course i:hover {
   color: red;
 }
+.infoShows {
+  font-size: 20px;
+  text-align: center;
+  color: #136bd3;
+  margin-top: 160px;
+  margin-bottom: 160px;
+}
 </style>
 
 
@@ -139,7 +154,9 @@
           <div class="file-con-info-trim2"></div>
         </div>
       </div> -->
+      <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
       <div class="file-con-course">
+        
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
             :to="{path:'/serchDetailsContent',query:{id:item.classId,classInfoId:item.id}}"
@@ -197,7 +214,8 @@ export default {
         Name: "",
         TypeId: "",
         Type: ""
-      }
+      },
+      infoShow:false,
     };
   },
   props: ["Names"],
@@ -229,9 +247,12 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(_this.Names);
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
+          console.log(_this.value)
+          if(_this.value.length == 0){
+            _this.infoShow = true;
+          }
           for (var i = 0; i < _this.value.length; i++) {
             _this.$set(_this.value[i], "attentions", false);
           }

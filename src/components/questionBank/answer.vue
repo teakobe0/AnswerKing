@@ -14,6 +14,7 @@
   padding: 10px;
   overflow: hidden;
   cursor: pointer;
+  
 }
 
 .tabCon .cover:hover {
@@ -26,13 +27,11 @@
 }
 
 .tabCon div img {
-  /* width: 150px;
-  height: 180px; */
   
 }
 
 .tabCon-wu {
-  width: 100px;
+  /* width: 100px; */
   line-height: 212px;
   text-align: center;
   font-size: 20px;
@@ -98,7 +97,7 @@
       v-loading="this.$store.state.answer.loading"
       element-loading-background="rgba(255, 255, 255)"
     >
-      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">暂无内容</p>
+      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">本周此项目无内容,去别处转转</p>
       <div oncontextmenu="return false;" ondragstart="return false;" v-for="(items,index) in this.$store.state.answer.answer">
         <div
           class="cover"
@@ -107,7 +106,7 @@
           @mouseleave="onMouseout"
           @click="() => handleanwer(indexs)"
         >
-          <img style="width:100%;height:100%" v-if="item.conurl == true" :src="item.contentUrl" :alt="items.contents">
+          <img style="width:100%;height:100%;filter: blur(1px);" :src="item.contentUrl" :alt="items.contents">
         </div>
       </div>
       <VueEasyLightbox

@@ -18,8 +18,8 @@
   width: 100%;
   height: 50px;
   /*border-top: 1px solid #d4d4d4;*/
-  border-bottom: 1px solid #b9b9b9;
-  background-color: #fcfcfc;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+  /* background-color: #fcfcfc; */
 }
 
 .un-top-img {
@@ -106,7 +106,7 @@
         </div>
         <div class="university-top">
           <div class="un-top-img">
-            <img src="../assets/serHead.jpg" alt>
+            <img src="../assets/schoolAll.png" alt>
           </div>
           <div class="un-top-info">
             <h2>{{value.name}}</h2>

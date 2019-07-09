@@ -12,7 +12,7 @@
 
 .Content-con-img {
   overflow: hidden;
-  background-color: #ebf5f424;
+  /* background-color: #ebf5f424; */
   /* box-shadow: 0 0 5px 0 rgba(0, 0, 0, 0.15); */
   border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
@@ -153,17 +153,20 @@
 .serchDetailsContent-tag-left {
   width: 100%;
   margin-top: 24px;
+  overflow: hidden;
+  position: relative;
 }
 
 .serchDetailsContent-tag-right {
   width: 100%;
-  margin-top: 10px;
+  margin-top: 5px;
   overflow: hidden;
 }
 
 .serchDetailsContent-tag-right ul {
   width: 211px;
   float: left;
+  margin-top: 10px;
 }
 
 .serchDetailsContent-tag-right ul li {
@@ -184,7 +187,7 @@
 }
 .serchDetailsContent-tag-right .underReview {
   text-align: center;
-  color: #136bd3; 
+  color: #136bd3;
   font-size: 20px;
   line-height: 212px;
 }
@@ -321,6 +324,20 @@
 .ConAttens:active {
   border: 1px solid #007fb1 !important;
 }
+.currentWeek {
+  float: left;
+  color: #181818;
+  line-height: 40px;
+}
+.currentWeek span {
+  display: inline-block;
+  width: 64px;
+  height: 5px;
+  border-bottom: 1px solid #181818;
+  position: absolute;
+  top: 14px;
+  left: 109px;
+}
 </style>
 
 <template>
@@ -391,14 +408,14 @@
                 style="line-height:35px;margin-left:10px;margin-right:2px;color:rgb(206, 206, 206)"
               >|</li>
               <li>
-                <el-button size="medium" @click="noUses" :disabled=disableds>
+                <el-button size="medium" @click="noUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                   <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
                   没用({{informations.noUse}})
                 </el-button>
               </li>
               <li>
-                <el-button size="medium" @click="beOfUses" :disabled=disableds>
+                <el-button size="medium" @click="beOfUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                   <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
                   有用({{informations.use}})
@@ -413,9 +430,13 @@
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
             <div class="serchDetailsContent-tag-left" v-if="classShow == true">
+              <div class="currentWeek" v-if="currentWeekShow == true">
+                {{'Week'+ currentWeek.no + '('+ currentWeek.grade + '分' + ')'}}
+                <span></span>
+              </div>
               <el-select
                 v-model="value1"
-                style="width: 953px;"
+                style="width: 743px;float:right;margin-right:20px;"
                 id="serchDetailsContent-tag-con-ul"
                 @change="handleWeeks"
                 placeholder="请选择周"
@@ -438,7 +459,6 @@
                   v-for="(item,index) in tabs"
                   :class="{tabsType:index == numnum}"
                   @click="tab(index,item.id)"
-                  v-loading.fullscreen.lock="fullscreenLoading"
                 >
                   {{item.contentType}}(
                   <span style="color: #136bd3;">{{item.grade}}</span>分)
@@ -523,7 +543,6 @@ export default {
       noUse: false,
       UseRecords: {},
       titleShow: false,
-      fullscreenLoading: false,
       // 关注
       attentions: {
         Name: "",
@@ -535,7 +554,10 @@ export default {
       // 周显示隐藏
       classShow: true,
       // 按钮禁用
-      disableds:false
+      disableds: false,
+      // 当前周
+      currentWeek: [],
+      currentWeekShow: false
     };
   },
   created: function() {
@@ -549,19 +571,6 @@ export default {
     _this.Classinfos();
   },
   methods: {
-    openFullScreen() {
-      var _this = this;
-      _this.fullscreenLoading = true;
-      // setTimeout(() => {
-      //   this.fullscreenLoading = false;
-      // }, 2000);
-    },
-    handleScroll() {
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-    },
     //根据课程id检索
     Getclass: function() {
       var _this = this;
@@ -595,7 +604,6 @@ export default {
     //根据课程资料id检索每周
     ClassWeeks: function() {
       var _this = this;
-
       _this
         .axios({
           method: "get",
@@ -610,6 +618,8 @@ export default {
         })
         .then(function(res) {
           _this.valueWeek = res.data.data;
+          _this.currentWeek = _this.valueWeek[0];
+          _this.currentWeekShow = true;
           if (res.data.data.length == 0) {
             _this.$store.state.answer.tabconwu = false;
             _this.auditText = true;
@@ -673,10 +683,7 @@ export default {
             //         _this.Answer[i].url == "" ||
             //         _this.Answer[i].url == ""
             //       ) {
-            //         _this.Answer[i].conurl = false;
-            //         _this.Answer[i].context = true;
-            //         _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-            //         _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+            //         
             //       } else {
             //         _this.Answer[i].conurl = true;
             //         _this.Answer[i].context = false;
@@ -727,14 +734,16 @@ export default {
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
-        outputList.push({
-          id: rawList.id,
-          contentUrl: "http://192.168.1.27:8086" + imgUrlArray[i],
-          contents: rawList.contents,
-          context: rawList.context,
-          conurl: rawList.conurl
-        });
+        if (imgUrlArray[i].length != 0) {
+          outputList.push({
+            id: rawList.id,
+            contentUrl: "http://192.168.1.27:8086" + imgUrlArray[i],
+            contents: rawList.contents,
+            // conurl: rawList.conurl
+          });
+        }
       }
+
       return outputList;
     },
     //将图片的ID和路径保存到outputList的方法
@@ -743,7 +752,9 @@ export default {
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
-        outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
+        if (imgUrlArray[i].length != 0) {
+          outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
+        }
       }
       return outputList;
     },
@@ -776,7 +787,11 @@ export default {
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
       var _this = this;
-
+      for (var i = 0; i < _this.valueWeek.length; i++) {
+        if (classWeekId == _this.valueWeek[i].id) {
+          _this.currentWeek = _this.valueWeek[i];
+        }
+      }
       _this
         .axios({
           method: "get",
@@ -828,14 +843,10 @@ export default {
           }
           for (var i = 0; i < _this.Answer.length; i++) {
             if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              _this.Answer[i].conurl = false;
-              _this.Answer[i].context = true;
+              // _this.Answer[i].conurl = false;
               _this.$store.state.answer.tabconwu = true;
-              // _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-              // _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             } else {
-              _this.Answer[i].conurl = true;
-              _this.Answer[i].context = false;
+              // _this.Answer[i].conurl = true;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
               _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             }
@@ -878,11 +889,8 @@ export default {
               _this.Answer[i].url == "" ||
               _this.Answer[i].url == ""
             ) {
-              _this.Answer[i].conurl = false;
-              _this.Answer[i].context = true;
+              _this.$store.state.answer.tabconwu = true;
             } else {
-              _this.Answer[i].conurl = true;
-              _this.Answer[i].context = false;
               _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
               _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             }
@@ -918,7 +926,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后在进行操作",
+          message: "请登录之后进行操作",
           type: "warning"
         });
       }
@@ -943,7 +951,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后在进行操作",
+          message: "请登录之后进行操作",
           type: "warning"
         });
       }

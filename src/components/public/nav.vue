@@ -78,6 +78,9 @@
         <li>
           <router-link to="/schoolStudy">学校资源</router-link>
         </li>
+        <li>
+          <router-link to="/classesStudy">课程资源</router-link>
+        </li>
         <!-- <li><a href="#">通过贡献</a></li> -->
         <!-- <li>
           <router-link to="/member">成为会员</router-link>

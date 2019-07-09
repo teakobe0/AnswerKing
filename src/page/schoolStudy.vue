@@ -30,7 +30,7 @@
   width: 100%;
   height: 400px;
   background-color: #f2f2f2;
-  background-image: url("../assets/学校5.jpg");
+  background-image: url("../assets/学校14.jpg");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
@@ -212,7 +212,7 @@
               v-model="state1"
               :fetch-suggestions="querySearch"
               @select="handleSelectauto"
-              placeholder="请输入需要查询的学校名称"
+              placeholder="请输入您需要查询的学校名称"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >

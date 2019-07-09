@@ -576,7 +576,7 @@
             <h3 class="text-center">通过关键字直接定位课程，全程高度匹配，给你想要的答案</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home3.png">
+            <img class="img-fluid" src="../assets/home3.jpg">
           </div>
         </div>
         <div class="divider_line"></div>
@@ -586,7 +586,7 @@
             <h3 class="text-center" style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home4.png">
+            <img class="img-fluid" src="../assets/home5.jpg">
           </div>
         </div>
         <div class="divider_line"></div>
@@ -596,7 +596,7 @@
             <h3 class="text-center">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home5.png">
+            <img class="img-fluid" src="../assets/home4.jpg">
           </div>
         </div>
         <div class="divider_line"></div>
@@ -619,7 +619,7 @@
             </div>
             <div class="pub-con-right">
               <div class="con-right-top">
-                <img src="../assets/4.jpg" alt>
+                <img style="width:400px;height:544px;" src="../assets/4.jpg" alt>
               </div>
               <div class="con-right-middle">
                 <h1>更贴心</h1>

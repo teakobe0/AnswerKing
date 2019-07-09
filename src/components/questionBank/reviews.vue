@@ -3,7 +3,7 @@
   width: 953px;
   overflow: hidden;
   border-top: 1px dashed #e1e1e1;
-  margin-top: 42px;
+  margin-top: 24px;
 }
 .review-con {
   width: 1300px;
@@ -448,7 +448,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             _this.personreviews = res.data.data;
             _this.personreviewsid = res.data.data.id;
             if (res.data.data.image != null) {
@@ -498,8 +497,6 @@ export default {
         })
         .then(function(res) {
           _this.reviews = res.data.data;
-          console.log(res);
-          console.log(123);
           if (res.data.data.length == 0) {
             _this.comment = [];
           }
@@ -595,7 +592,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录并且成为会员才能评论",
+          message: "请登录之后评论",
           type: "warning"
         });
       }

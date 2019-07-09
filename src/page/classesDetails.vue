@@ -102,7 +102,7 @@
   border: 1px solid #58bce4 !important;
   color: #fff !important;
   font-size: 12px !important;
-  padding: 6px 20px !important;
+  padding: 7px 20px !important;
 }
 .attentions i {
   font-size: 14px !important;
@@ -117,6 +117,7 @@
   width: 1300px;
   height: 50px;
   margin: 0 auto;
+  position: relative;
 }
 
 .classesDetails-tag-con ul {
@@ -145,7 +146,12 @@
   height: 46px;
   border-bottom: 4px solid #507adc;
 }
-
+.classesDetails-tag-con div{
+  position: absolute;
+  left:130px;
+  top: 12.5px;
+  color: #777;
+}
 .con-img {
   /*background-image: url("../assets/paper-1990111_1920.jpg");*/
   /*background-repeat: no-repeat;*/
@@ -254,6 +260,7 @@
                             <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">题库集</router-link>
             </li>-->
           </ul>
+          <div>题库集是由各校童鞋友情分享!</div>
         </div>
       </div>
       <div>

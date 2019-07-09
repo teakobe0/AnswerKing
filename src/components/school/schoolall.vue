@@ -1,6 +1,6 @@
 <style>
 #schoolall {
-  background-color: #f0f0f0;
+  /* background-color: #f0f0f0; */
   overflow: hidden;
 }
 
@@ -54,19 +54,25 @@
   line-height: 40px;
   color: #000;
   text-decoration: none;
-  width: 48px;
+  width: 48.14px;
   text-align: center;
   display: inline-block;
   color: #5b9dfd;
 }
 
 .classes-con-courseSerch ul li:first-of-type a {
+  
   text-align: left;
 }
 
+
 .classes-con-courseSerch ul li:first-of-type a:hover {
-  background-color: #f0f0f0;
+  background-color: #fff;
   color: #000;
+}
+
+.classes-con-courseSerch ul li:first-of-type a:active {
+  color: rgb(173, 173, 173);
 }
 
 .classes-con-courseSerch ul li a:hover {
@@ -74,7 +80,9 @@
   color: #fff;
   border-radius: 2px;
 }
-
+.classes-con-courseSerch ul li a:active {
+  background-color: #38bfe0;
+}
 .classes-con-course {
 }
 

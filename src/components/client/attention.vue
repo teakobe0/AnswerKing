@@ -36,6 +36,10 @@
 .el-table tr {
   background-color: #fafafa !important;
 }
+.attentionNull {
+  text-align: center;
+  color: #136bd3;
+}
 </style>
 
 
@@ -46,6 +50,7 @@
       <div class="MyAttention">
         <el-tabs v-model="activeName" @tab-click="handleClick">
           <el-tab-pane label="关注的课程" name="first">
+            <div class="attentionNull" v-if="attNull1 == false">暂无关注的课程</div>
             <div v-for="item in classAtt">
               <router-link :to="{path:'/classesDetails',query:{id:item.typeId}}">{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
@@ -53,6 +58,7 @@
             </div>
           </el-tab-pane>
           <el-tab-pane label="关注的题库" name="second">
+            <div class="attentionNull" v-if="attNull2 == false">暂无关注的题库集</div>
             <div v-for="item in questionAtt">
               <router-link
                 :to="{path:'/serchDetailsContent',query:{id:item.typeIds[0],classInfoId:item.typeIds[1]}}"
@@ -82,7 +88,9 @@ export default {
       activeName: "first",
       messages: [],
       classAtt: [],
-      questionAtt: []
+      questionAtt: [],
+      attNull1: false,
+      attNull2: false
     };
   },
   created: function() {
@@ -128,8 +136,8 @@ export default {
     // 检索关注
     retrieveAttention: function() {
       var _this = this;
-      _this.classAtt.length = 0;
-      _this.questionAtt.length = 0;
+      _this.classAtt = [];
+      _this.questionAtt = [];
       if (localStorage.token) {
         _this
           .axios({
@@ -144,14 +152,17 @@ export default {
             }
           })
           .then(function(res) {
+            console.log(res);
             for (var i = 0; i < res.data.data.length; i++) {
               _this.$set(res.data.data[i], "typeIds", []);
               if (res.data.data[i].type == 1) {
                 _this.classAtt.push(res.data.data[i]);
+                _this.attNull1 = true;
               } else {
                 var v = res.data.data[i].typeId.split(",");
                 res.data.data[i].typeIds = v;
                 _this.questionAtt.push(res.data.data[i]);
+                _this.attNull2 = true;
               }
             }
           })

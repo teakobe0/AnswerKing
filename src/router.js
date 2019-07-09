@@ -1,34 +1,44 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import login from '@/page/accountLogin.vue'
-import register from '@/page/accountRegister.vue'
-import forgetPassword from '@/page/accountForgetPassword.vue'
-import accountChangePassword from '@/page/accountChangePassword.vue'
-import personalData from '@/page/accountPersonalData.vue'
-import home from '@/page/Home.vue'
-import serch from '@/page/search.vue'
-import schoolStudy from '@/page/schoolStudy.vue'
-import classesStudy from '@/page/classesStudy.vue'
-import serchDetails from '@/page/searchDetails.vue'
-import serchDetailsContent from '@/page/searchDetailsContent.vue'
-import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'
-import classesDetails from '@/page/classesDetails.vue'
-import member from '@/page/member.vue'
-import termsOfService from '@/page/termsOfService.vue'
+import login from '@/page/accountLogin.vue'  //登录
+import register from '@/page/accountRegister.vue'  //注册
+import forgetPassword from '@/page/accountForgetPassword.vue'  //忘记密码
+import accountChangePassword from '@/page/accountChangePassword.vue'  //忘记密码之后的修改密码
+import personalData from '@/page/accountPersonalData.vue'  //个人信息
+import home from '@/page/Home.vue'  //首页
+import serch from '@/page/search.vue'  //搜索结果
+import schoolStudy from '@/page/schoolStudy.vue'  //学校资源
+import classesStudy from '@/page/classesStudy.vue'  //课程资源
+import serchDetails from '@/page/searchDetails.vue'  //搜索详情
+import serchDetailsContent from '@/page/searchDetailsContent.vue'  //答案页面
+import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'  //学校详情页面
+import classesDetails from '@/page/classesDetails.vue'  //课程详情页面
+import member from '@/page/member.vue'  //会员
+// Footer里的页面
+import termsOfService from '@/page/footerView/termsOfService.vue' //条款
+import company from '@/page/footerView/company.vue' //公司
+import news from '@/page/footerView/news.vue'   //新闻
+import position from '@/page/footerView/position.vue'   //职位
+import standardBehavior from '@/page/footerView/standardBehavior.vue'     //帮助中心
+import faq from '@/page/footerView/faq.vue'     //行为准则
 //子组件
-import basic from '@/components/client/basic.vue'
-import modifiedData from '@/components/client/modifiedData.vue'
-import changePassword from '@/components/client/changePassword.vue'
-import award from '@/components/client/award.vue'
-import schoolall from '@/components/school/schoolall.vue'
+import basic from '@/components/client/basic.vue'  //个人信息
+import modifiedData from '@/components/client/modifiedData.vue'  //修改资料
+import changePassword from '@/components/client/changePassword.vue'  //修改密码
+import inform from '@/components/client/inform.vue'  //通知信息
+import attention from '@/components/client/attention.vue'  //我的关注
+import vip from '@/components/client/vip.vue'  //购买会员
+import orderHistory from '@/components/client/orderHistory.vue'  //购买会员记录
+import award from '@/components/client/award.vue'  //上传奖励
+import schoolall from '@/components/school/schoolall.vue'  //当前学校全部课程
 import schoolClasses from '@/components/school/schoolClasses.vue'
-import file from '@/components/classes/file.vue'
+import file from '@/components/classes/file.vue'  //当前课程全部题库文件
 import schoolFile from '@/components/school/schoolFile.vue'
-import vip from '@/components/client/vip.vue'
-import orderHistory from '@/components/client/orderHistory.vue'
-import inform from '@/components/client/inform.vue'
+
+
+
 import platinavip from '@/components/client/platinayearly.vue'
-import attention from '@/components/client/attention.vue'
+
 
 
 
@@ -40,58 +50,47 @@ export default new Router({
     routes: [
         {
             path: '/',
-            name: 'home',
             component: home,
             
         },
         {
             path: '/login',      //设置跳转
-            name: 'login',
             component: login
         },
         {
             path: '/register',      //设置跳转
-            name: 'register',
             component: register
         },
         {
             path: '/accountChangePassword',      //设置跳转
-            name: 'accountChangePassword',
             component: accountChangePassword
         },
         {
             path: '/home',      //设置跳转
-            name: 'home',
             component: home
         },
         {
             path: '/serch',      //设置跳转
-            name: 'serch',
             component: serch
         },
         {
             path: '/schoolStudy',      //设置跳转
-            name: 'schoolStudy',
             component: schoolStudy
         },
         {
             path: '/classesStudy',      //设置跳转
-            name: 'classesStudy',
             component: classesStudy
         },
         {
             path: '/serchDetails',      //设置跳转
-            name: 'serchDetails',
             component: serchDetails
         },
         {
             path: '/personalData',      //设置跳转
-            name: 'personalData',
             component: personalData,
             children:[
                 {
-                    path: '',      //设置跳转
-                    name: 'basic',
+                    path: '/',      //设置跳转
                     component: basic,
                 },
                 {
@@ -123,18 +122,17 @@ export default new Router({
                     path: 'vip',      //设置跳转
                     name: 'vip',
                     component: vip,
-                    children:[
-                        {
-                            path: '',      //设置跳转
-                            name: 'platinavip',
-                            component: platinavip,
-                        },
-                        {
-                            path: 'platinavip',      //设置跳转
-                            name: 'platinavip',
-                            component: platinavip,
-                        },
-                    ]
+                    // children:[
+                    //     {
+                    //         path: '/',      //设置跳转
+                    //         component: platinavip,
+                    //     },
+                    //     {
+                    //         path: 'platinavip',      //设置跳转
+                    //         name: 'platinavip',
+                    //         component: platinavip,
+                    //     },
+                    // ]
                 },
                 {
                     path: 'orderHistory',      //设置跳转
@@ -151,18 +149,14 @@ export default new Router({
         },
         {
             path: '/serchDetailsContent',      //设置跳转
-            name: 'serchDetailsContent',
             component: serchDetailsContent,
-            
         },
         {
             path: '/serchDetailsUniversity',      //设置跳转
-            name: 'serchDetailsUniversity',
             component: serchDetailsUniversity,
             children:[
                 {
-                    path: '',      //设置跳转
-                    name: 'schoolall',
+                    path: '/',      //设置跳转
                     component: schoolall,
                 },
                 {
@@ -185,12 +179,10 @@ export default new Router({
         },
         {
             path: '/classesDetails',      //设置跳转
-            name: 'classesDetails',
             component: classesDetails,
             children:[
                 {
-                    path: '',      //设置跳转
-                    name: 'file',
+                    path: '/',      //设置跳转
                     component: file,
                 },
                 {
@@ -203,18 +195,35 @@ export default new Router({
         },
         {
             path: '/member',      //设置跳转
-            name: 'member',
             component: member
         },
         {
             path: '/forgetPassword',      //设置跳转
-            name: 'forgetPassword',
             component: forgetPassword
         },
         {
             path: '/termsOfService',      //设置跳转
-            name: 'termsOfService',
             component: termsOfService
+        },
+        {
+            path: '/company',      //设置跳转
+            component: company
+        },
+        {
+            path: '/news',      //设置跳转
+            component: news
+        },
+        {
+            path: '/position',      //设置跳转
+            component: position
+        },
+        {
+            path: '/faq',      //设置跳转
+            component: faq
+        },
+        {
+            path: '/standardBehavior',      //设置跳转
+            component: standardBehavior
         },
 
 
