@@ -120,14 +120,14 @@
       <div class="popContainer" v-show="shade==true">
         <p class="time">{{content}}</p>
         <p class="purchase" @click="joim">成为会员免除等待!</p>
-        <!-- <div
+        <div
           class="closeshade el-icon-close"
           @click="Closemask"
           element-loading-text="拼命加载中"
           element-loading-spinner="el-icon-loading"
           element-loading-background="rgba(0, 0, 0, 0.8)"
           v-loading.fullscreen.lock="fullscreenLoading"
-        ></div> -->
+        ></div>
       </div>
     </div>
   </div>
@@ -155,7 +155,8 @@ export default {
       totalTime: 30,
       // 控制全屏遮罩的打开
       fullscreenLoading: false,
-      loading: true
+      loading: true,
+      clock:null,
     };
   },
   created: function() {
@@ -229,6 +230,7 @@ export default {
     //点击答案显示遮罩方法
     handleanwer: function(index) {
       var _this = this;
+      
       event.preventDefault();
       if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
         _this.shade = false;
@@ -236,11 +238,12 @@ export default {
         _this.index = index;
         _this.shows();
       } else {
+        
         _this.shade = true;
         _this.totalTime = 30;
         _this.content = _this.totalTime + "s后可观看答案";
 
-        let clock = window.setInterval(() => {
+        _this.clock = window.setInterval(() => {
           _this.totalTime--;
           _this.content = _this.totalTime + "s后可观看答案";
           if (_this.totalTime < 1) {
@@ -251,7 +254,7 @@ export default {
             _this.index = index;
             _this.shows();
             //当倒计时小于0时清除定时器
-            window.clearInterval(clock); //清除定时器
+            window.clearInterval(_this.clock); //清除定时器
           }
         }, 1000);
       }
@@ -271,11 +274,12 @@ export default {
     // 关闭遮罩
     Closemask: function() {
       var _this = this;
-      _this.fullscreenLoading = true;
       _this.countdownClock = null;
       _this.shade = false;
       _this.totalTime = 0;
-      _this.imageShow = true;
+      window.clearInterval(_this.clock); //清除定时器
+      // _this.imageShow = true;
+      _this.handleHide();
     }
   },
   // 监听路由变化

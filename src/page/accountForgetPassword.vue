@@ -4,9 +4,10 @@
   overflow: hidden;
 }
 .forgetPassword-lo {
-  background-image: url(../assets/021716cbsvz0og66o07s20.jpg);
+  background-image: url(../assets/347985.jpg);
   background-color: #dfdfdf;
   background-repeat: no-repeat;
+  background-position:left center;
   background-size: cover;
   margin: 0 auto;
   width: 100%;
@@ -150,7 +151,7 @@ export default {
           _this
             .axios({
               method: "get",
-              url: `http://192.168.1.27:8088/api/Client/ForgetPwd`,
+              url: `http://47.254.29.164:8088/api/Client/ForgetPwd`,
               async: false,
               params: {
                 email: _this.ruleForm.Username

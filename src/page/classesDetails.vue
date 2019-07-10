@@ -147,10 +147,11 @@
   border-bottom: 4px solid #507adc;
 }
 .classesDetails-tag-con div{
+  font-size: 14px;
   position: absolute;
   left:130px;
-  top: 12.5px;
-  color: #777;
+  top: 13.5px;
+  color: rgb(185, 185, 185);
 }
 .con-img {
   /*background-image: url("../assets/paper-1990111_1920.jpg");*/
@@ -312,7 +313,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/Getclass`,
+          url: `http://47.254.29.164:8088/api/Class/Getclass`,
           async: false,
           params: {
             id: _this.$route.query.id
@@ -349,7 +350,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            url: `http://47.254.29.164:8088/api/Focus/Focus`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -383,7 +384,7 @@ export default {
           _this
             .axios({
               method: "post",
-              url: `http://192.168.1.27:8088/api/Focus/Add`,
+              url: `http://47.254.29.164:8088/api/Focus/Add`,
               async: false,
               data: _this.attentions,
               xhrFields: {
@@ -407,7 +408,7 @@ export default {
           _this
             .axios({
               method: "delete",
-              url: `http://192.168.1.27:8088/api/Focus/Cancel`,
+              url: `http://47.254.29.164:8088/api/Focus/Cancel`,
               async: false,
               params: {
                 typeid: _this.value.id.toString()

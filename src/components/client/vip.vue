@@ -268,7 +268,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://192.168.1.27:8088/api/Order/GetGoods`,
+            url: `http://47.254.29.164:8088/api/Order/GetGoods`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -328,7 +328,7 @@ export default {
               return _this
                 .axios({
                   method: "POST",
-                  url: `http://192.168.1.27:8088/api/Order/SaveOrder`,
+                  url: `http://47.254.29.164:8088/api/Order/SaveOrder`,
                   async: false,
                   params: {
                     orderId: data.orderID

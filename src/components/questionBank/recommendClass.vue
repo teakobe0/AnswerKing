@@ -85,7 +85,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/Class`,
+          url: `http://47.254.29.164:8088/api/Class/Class`,
           async: false,
           params: {
             universityid: _this.$store.state.recommendClass.skipuniversityId

@@ -3,7 +3,20 @@
   width: 100%;
   height: 100%;
   position: relative;
-  padding-bottom: 276px;
+  /* padding-bottom: 276px; */
+  background-color: #2a4864;
+}
+.company-con {
+  width: 1300px;
+  height: 937px;
+  margin: 0 auto;
+
+}
+.company-con img {
+  width: 1100px;
+  height: 700px;
+  margin-left: 100px;
+  margin-top: 100px;
 }
 .company-title {
   width: 100%;
@@ -24,14 +37,16 @@
   width: 970px;
   margin: 0 auto;
 }
+
 </style>
 
 <template>
   <div class="company">
-    <Nav></Nav>
+    <!-- <Nav></Nav> -->
     <div v-title data-title="关于我们-CourseWhale"></div>
     <div class="company-con">
-      <div class="company-title">
+      <img src="../../assets/construction.jpg" alt />
+      <!-- <div class="company-title">
         <div class="company-1">
           <p>我们所做的</p>
           <h2>我们是一个针对特定课程的学习资源的在线学习平台</h2>
@@ -51,9 +66,9 @@
           <p>我们的身影</p>
           <p>每个月有超过5000万学生和教师使用CourseWhale网站。CourseWhale可用于CourseWhale Live课堂学习，可作为家庭学习课程的一部分，并可供从拼写测试到大学水平科学课程、再到专业证书的学习者使用。</p>
         </div>
-      </div>
+      </div> -->
     </div>
-    <homeFooter></homeFooter>
+    <!-- <homeFooter></homeFooter> -->
   </div>
 </template>
 

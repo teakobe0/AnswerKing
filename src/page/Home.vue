@@ -655,7 +655,6 @@ export default {
       restaurants: [],
       timeout: null,
       inputLoad: false,
-      timeout: null
     };
   },
   created: function() {
@@ -683,7 +682,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                url: `http://47.254.29.164:8088/api/ClassInfoContent/Search`,
                 async: false,
                 params: {
                   name: valuestr
@@ -785,7 +784,7 @@ export default {
       console.log(item);
       this.axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+        url: `http://47.254.29.164:8088/api/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.queryString

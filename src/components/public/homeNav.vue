@@ -362,7 +362,7 @@ import complain from "@/components/public/complain.vue";
             _this
                 .axios({
                 method: "get",
-                url: `http://192.168.1.27:8088/api/Notice/Notices`,
+                url: `http://47.254.29.164:8088/api/Notice/Notices`,
                 async: false,
                 xhrFields: {
                     withCredentials: true
@@ -390,7 +390,7 @@ import complain from "@/components/public/complain.vue";
                 _this
                 .axios({
                     method: "get",
-                    url: `http://192.168.1.27:8088/api/Client/GetClient`,
+                    url: `http://47.254.29.164:8088/api/Client/GetClient`,
                     async: false,
                     xhrFields: {
                     withCredentials: true

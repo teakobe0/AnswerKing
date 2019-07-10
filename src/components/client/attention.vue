@@ -110,7 +110,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `http://192.168.1.27:8088/api/Focus/Cancel`,
+          url: `http://47.254.29.164:8088/api/Focus/Cancel`,
           async: false,
           params: {
             typeid: item
@@ -142,7 +142,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://192.168.1.27:8088/api/Focus/Focus`,
+            url: `http://47.254.29.164:8088/api/Focus/Focus`,
             async: false,
             xhrFields: {
               withCredentials: true

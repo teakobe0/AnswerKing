@@ -19,6 +19,7 @@
         margin-left: 100px;
     }
     .H-footer ul li {
+        width: 90px;
         list-style-type: none;
         font-size: 20px;
         color: #fff;
@@ -58,7 +59,7 @@
         <div class="H-footer">
             <ul class="footer-1">
                 <li class="footer-title">功能</li>
-                <li><router-link to='/home'>CourseWhale</router-link></li>
+                <li><router-link to='/home'>首页</router-link></li>
                 <li><router-link to='/schoolStudy'>学校资源</router-link></li>
                 <li><router-link to='/classesStudy'>课程资源</router-link></li>
             </ul>

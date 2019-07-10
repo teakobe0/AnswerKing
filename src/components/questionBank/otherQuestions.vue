@@ -52,7 +52,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Classinfo/Classinfos`,
+          url: `http://47.254.29.164:8088/api/Classinfo/Classinfos`,
           async: false,
           params: {
             classid: _this.$route.query.id
@@ -89,7 +89,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/Getclass`,
+          url: `http://47.254.29.164:8088/api/Class/Getclass`,
           async: false,
           params: {
             id: _this.$route.query.id

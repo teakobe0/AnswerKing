@@ -116,7 +116,7 @@
         font-size: 20px;
     }
     .member-recruiting div {
-        width: 117px;
+        width: 285px;
         height: 90px;
         margin: 0 auto;
         border-top: 1px solid #ffffff;

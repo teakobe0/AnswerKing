@@ -89,7 +89,7 @@
               什么是CourseWhale？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>CourseWhale是一个在线教育学习平台，在CourseWhale你可以访问数以万计的由我们的贡献者贡献的学习资源。但不同于其他类似网站的繁杂，coursewhale主要专注于quiz的解题方法和简答题解题思路。
+              <i class="el-icon-thirdA"></i>CourseWhale是一个在线教育题库学习平台，在CourseWhale你可以访问数以万计的由我们的贡献者贡献的学习资源。但不同于其他类似网站的繁杂，coursewhale主要专注于quiz的解题方法和简答题解题思路。
               在course whale上，你可以轻而易举地找到你所学课程的相关测试题，简单题。通过这些学习资源，你能够掌控每一次测试。在CourseWhale的帮助下，相信你可以更好的适应留学时段的学习和生活。
             </div>
           </el-collapse-item>
@@ -205,76 +205,6 @@
             <div>联系邮箱：CourseWhale2000@gmail.com</div>
           </el-collapse-item>
         </el-collapse>
-        <!-- <ul class="quizCon-question">
-          <li>
-            <div>什么是CourseWhale？</div>
-            <p>
-              CourseWhale是一个在线教育学习平台，在CourseWhale你可以访问数以万计的由我们的贡献者贡献的学习资源。但不同于其他类似网站的繁杂，coursewhale主要专注于quiz的解题方法和简答题解题思路。
-              在course whale上，你可以轻而易举地找到你所学课程的相关测试题，简单题。通过这些学习资源，你能够掌控每一次测试。在CourseWhale的帮助下，相信你可以更好的适应留学时段的学习和生活。
-            </p>
-          </li>
-          <li>
-            <div>为什么选择CourseWhale？</div>
-            <p>CourseWhale为北美学子提供分享知识的平台。高质量，高效率，高匹配，是CourseWhale分享学习资源的核心。在CourseWhale上，你不用浪费多余的时间去浏览，简单易操作的流畅帮助你直接找到你想要的学习资源。</p>
-          </li>
-          <li>
-            <div>CourseWhale提供什么样的学习资源？</div>
-            <p>目前，CourseWhale主要提供北美各高校的quiz测验相关资源，以及部分课程，考试的简答题。</p>
-          </li>
-          <li>
-            <div>如何找到想要的学习资源？</div>
-            <p>
-              打开我们的网址coursewhale.com，就可以看到coursewhale简介的页面，在中间搜索框搜索您的学校（如：University of California, Irvine），到结果搜索页面之后，你可以看到该学校下面的全部课程，点击想要找的课程之后就可以看到相关学习资源。另，每一周的更新情况都会不同，因此个别周的资料可能会缺失。
-              另外，我们建议你收藏coursewhale网站，并成为注册会员。成为注册会员后，coursewhale能够保留你的浏览记录，收藏的课程。在下一次登陆的时候就可以直接看到收藏的课程，学校以及浏览历史内容，留言回复等。
-            </p>
-          </li>
-          <li>
-            <div>什么是CourseWhale会员？</div>
-            <p>
-              course whale会员包含两种会员：注册会员和付费会员。
-              注册会员仅判定为注册过CourseWhale网站的活跃用户；付费会员为在注册会员的基础之上，付费使用CourseWhale相关内容的会员。
-            </p>
-          </li>
-          <li>
-            <div>注册会员与付费会员的区别？</div>
-            <p>注册会员仅有7天的全网免费使用权限；而付费会员则根据付费的期限而享受该期限内的全网学习资源使用权限。</p>
-          </li>
-          <li>
-            <div>注册邮件可以更改吗？</div>
-            <p>不能。</p>
-          </li>
-          <li>
-            <div>忘记邮箱怎么办？</div>
-            <p>忘记邮箱可以通过问题14的联系方式联系我们，提供你的付款记录，以及账号相关信息，在一定时间内可以通过人工方式找回。</p>
-          </li>
-          <li>
-            <div>忘记密码怎么办？</div>
-            <p>忘记密码可以通过注册时的邮箱找回密码，因此请一定确保你的邮箱可以正常使用。</p>
-          </li>
-          <li>
-            <div>如何更改密码？</div>
-            <p>忘记密码可以通过注册时的邮箱找回密码，因此请一定确保你的邮箱可以正常使用。</p>
-          </li>
-          <li>
-            <div>如何更改密码？</div>
-            <p>注册会员后，在会员页面左侧选择密码修改，直接输入新密码点击保存就可以了。</p>
-          </li>
-          <li>
-            <div>出现无法无法登陆的情况应当如何处理？</div>
-            <p>出现无法登陆的原因可能有：我们正在进行后台升级，一般情况下我们会在升级前在网站首页提醒用户；浏览器不支持，可更换浏览器尝试；3，网络问题，请检查自己的网络；4，其他问题，如果非上述问题，请截图并提交给我们，我们会在24小时之内回复。</p>
-          </li>
-          <li>
-            <div>如何注销我的账户？</div>
-            <p>账户不可以注销。</p>
-          </li>
-          <li>
-            <div>如何联系我们？</div>
-            <p>
-              如对我们的网站，服务，或者技术方面有任何的意见和建议，或者涉及到侵权问题，请通过下面的邮箱联系我们，我们会在24小时之内回复你。
-              联系邮箱：CourseWhale2000@gmail.com
-            </p>
-          </li>
-        </ul>-->
       </div>
     </div>
     <homeFooter></homeFooter>
@@ -303,7 +233,7 @@ export default {
   },
   methods: {
     handleChange(val) {
-      console.log(val);
+      // console.log(val);
     }
   }
 };
