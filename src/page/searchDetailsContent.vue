@@ -425,7 +425,6 @@
           </div>
         </div>
       </div>
-
       <div class="serchDetailsContent-tag clearfix">
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
@@ -577,7 +576,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/Class/Getclass`,
+          url: `http://192.168.1.27:8088/api/Class/Getclass`,
           async: false,
           params: {
             id: _this.$route.query.id
@@ -607,7 +606,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/ClassWeek/ClassWeeks`,
+          url: `http://192.168.1.27:8088/api/ClassWeek/ClassWeeks`,
           async: false,
           params: {
             classinfoid: _this.$route.query.classInfoId
@@ -632,7 +631,7 @@ export default {
             // _this
             //   .axios({
             //     method: "get",
-            //     url: `http://47.254.29.164:8088/api/ClassInfoContent/ClassWeekTypes`,
+            //     url: `http://192.168.1.27:8088/api/ClassInfoContent/ClassWeekTypes`,
             //     async: false,
             //     params: {
             //       classweekid: _this.$route.query.classWeekId
@@ -661,7 +660,7 @@ export default {
             // _this
             //   .axios({
             //     method: "get",
-            //     url: `http://47.254.29.164:8088/api/ClassInfoContent/Contentls`,
+            //     url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
             //     async: false,
             //     params: {
             //       classweektypeid: _this.$route.query.classweektypeid
@@ -701,7 +700,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://47.254.29.164:8088/api/ClassInfoContent/ClassWeekTypes`,
+                url: `http://192.168.1.27:8088/api/ClassInfoContent/ClassWeekTypes`,
                 async: false,
                 params: {
                   classweekid: _this.valueWeek[0].id
@@ -737,7 +736,7 @@ export default {
         if (imgUrlArray[i].length != 0) {
           outputList.push({
             id: rawList.id,
-            contentUrl: "http://47.254.29.164:8088" + imgUrlArray[i],
+            contentUrl: "http://192.168.1.27:8086" + imgUrlArray[i],
             contents: rawList.contents,
             // conurl: rawList.conurl
           });
@@ -753,7 +752,7 @@ export default {
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
         if (imgUrlArray[i].length != 0) {
-          outputList.push("http://47.254.29.164:8088" + imgUrlArray[i]);
+          outputList.push("http://192.168.1.27:8086" + imgUrlArray[i]);
         }
       }
       return outputList;
@@ -764,7 +763,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/Classinfo/Classinfos`,
+          url: `http://192.168.1.27:8088/api/Classinfo/Classinfos`,
           async: false,
           params: {
             classid: _this.$route.query.id
@@ -795,7 +794,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/ClassInfoContent/ClassWeekTypes`,
+          url: `http://192.168.1.27:8088/api/ClassInfoContent/ClassWeekTypes`,
           async: false,
           params: {
             classweekid: classWeekId
@@ -824,7 +823,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/ClassInfoContent/Contentls`,
+          url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
           async: false,
           params: {
             classweektypeid: classWeekTypeId
@@ -865,7 +864,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/ClassInfoContent/Contentls`,
+          url: `http://192.168.1.27:8088/api/ClassInfoContent/Contentls`,
           async: false,
           params: {
             classweektypeid: classWeekTypeId
@@ -962,7 +961,7 @@ export default {
       _this
         .axios({
           method: "put",
-          url: `http://47.254.29.164:8088/api/Classinfo/ChangeClassInfo`,
+          url: `http://192.168.1.27:8088/api/Classinfo/ChangeClassInfo`,
           async: false,
           params: {
             classInfoid: Number(_this.$route.query.classInfoId),
@@ -991,7 +990,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://47.254.29.164:8088/api/Classinfo/UseRecords`,
+            url: `http://192.168.1.27:8088/api/Classinfo/UseRecords`,
             async: false,
             params: {
               classInfoid: Number(_this.$route.query.classInfoId)
@@ -1035,7 +1034,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://47.254.29.164:8088/api/Focus/Focus`,
+            url: `http://192.168.1.27:8088/api/Focus/Focus`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -1073,7 +1072,7 @@ export default {
           _this
             .axios({
               method: "post",
-              url: `http://47.254.29.164:8088/api/Focus/Add`,
+              url: `http://192.168.1.27:8088/api/Focus/Add`,
               async: false,
               data: _this.attentions,
               xhrFields: {
@@ -1097,7 +1096,7 @@ export default {
           _this
             .axios({
               method: "delete",
-              url: `http://47.254.29.164:8088/api/Focus/Cancel`,
+              url: `http://192.168.1.27:8088/api/Focus/Cancel`,
               async: false,
               params: {
                 typeid: _this.value.id + "," + _this.informations.id

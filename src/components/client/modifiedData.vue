@@ -85,7 +85,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/Client/GetClient`,
+          url: `http://192.168.1.27:8088/api/Client/GetClient`,
           async: false,
           xhrFields: {
             withCredentials: true
@@ -120,7 +120,7 @@ export default {
       var _this = this;
       _this.axios({
         method: "put",
-        url: `http://47.254.29.164:8088/api/client/clients`,
+        url: `http://192.168.1.27:8088/api/client/clients`,
         async: false,
         data: _this.modifiedDatas,
         xhrFields: {
@@ -143,7 +143,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://47.254.29.164:8088/api/Client/GetClient`,
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
             async: false,
             xhrFields: {
               withCredentials: true

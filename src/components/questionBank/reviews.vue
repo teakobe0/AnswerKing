@@ -438,7 +438,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://47.254.29.164:8088/api/Client/GetClient`,
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -452,7 +452,7 @@ export default {
             _this.personreviewsid = res.data.data.id;
             if (res.data.data.image != null) {
               _this.imageUrl =
-                "http://47.254.29.164:8088" + res.data.data.image;
+                "http://192.168.1.27:8088" + res.data.data.image;
               _this.headShowLogin = true;
             }else {
               _this.headShowLogin = false;
@@ -471,7 +471,7 @@ export default {
       //   _this.personreviews = _this.$store.state.loginPerson.loginPerson;
       //   _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
       //   _this.imageUrl =
-      //     "http://47.254.29.164:8088" +
+      //     "http://192.168.1.27:8088" +
       //     _this.$store.state.loginPerson.loginPerson.image;
       //     _this.headShowLogin = true;
       //   _this.searching();
@@ -486,7 +486,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://47.254.29.164:8088/api/Comment/Comments`,
+          url: `http://192.168.1.27:8088/api/Comment/Comments`,
           async: false,
           params: {
             classinfoid: _this.$route.query.classInfoId
@@ -509,12 +509,12 @@ export default {
             _this.$set(_this.reviews[i], "headShowTwo", false);
             if (_this.reviews[i].img) {
               _this.reviews[i].img =
-                "http://47.254.29.164:8088" + _this.reviews[i].img;
+                "http://192.168.1.27:8088" + _this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
             if (_this.reviews[i].replyimg) {
               _this.reviews[i].replyimg =
-                "http://47.254.29.164:8088" + _this.reviews[i].replyimg;
+                "http://192.168.1.27:8088" + _this.reviews[i].replyimg;
               _this.$set(_this.reviews[i], "headShowTwo", true);
             }
             if (_this.reviews[i].clientId == _this.personreviewsid) {
@@ -567,7 +567,7 @@ export default {
           _this
             .axios({
               method: "POST",
-              url: `http://47.254.29.164:8088/api/Comment/Add`,
+              url: `http://192.168.1.27:8088/api/Comment/Add`,
               async: false,
               data: _this.addComments,
               xhrFields: {
@@ -622,7 +622,7 @@ export default {
           _this
             .axios({
               method: "POST",
-              url: `http://47.254.29.164:8088/api/Comment/Add`,
+              url: `http://192.168.1.27:8088/api/Comment/Add`,
               async: false,
               data: _this.addComments,
               xhrFields: {
@@ -652,7 +652,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `http://47.254.29.164:8088/api/Comment/Del`,
+          url: `http://192.168.1.27:8088/api/Comment/Del`,
           async: false,
           params: {
             id: ids

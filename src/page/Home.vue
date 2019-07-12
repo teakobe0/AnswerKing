@@ -368,7 +368,9 @@
   width: 800px;
   margin: 0 auto;
 }
-.homeClassText div {
+.homeClassText a {
+  text-decoration: none;
+  display: block;
   width: 210px;
   float: left;
   color: #ffffff;
@@ -377,19 +379,53 @@
   margin-right: 25px;
   padding: 20px;
 }
-.homeClassText div:nth-last-of-type(1) {
-  margin-right: 0px;
+.homeClassText a:hover {
+ background-color: #24399473;
 }
-.homeClassText div .homeClassText-1 {
+.homeClassText a:active {
+ background-color: #07219673;
+}
+.homeClassText a:nth-last-of-type(1) {
+  /* margin-right: 0px; */
+}
+.homeClassText a .homeClassText-1 {
   font-size: 32px;
 }
-.homeClassText div .homeClassText-2 {
+.homeClassText a .homeClassText-2 {
   font-size: 16px;
   margin-bottom: 8px;
 }
-.homeClassText div .homeClassText-3 {
+.homeClassText a .homeClassText-3 {
   font-size: 16px;
+  height: 18px;
+  overflow: hidden;
 }
+
+/* 暂时用于贡献者的CSS */
+.homeClassText .contribution {
+  text-decoration: none;
+  display: block;
+  width: 210px;
+  float: left;
+  color: #ffffff;
+  background-color: #3c4b9173;
+  margin-top: 32px;
+  margin-right: 0px;
+  padding: 20px;
+}
+.homeClassText .contribution .homeClassText-1 {
+  font-size: 32px;
+}
+.homeClassText .contribution .homeClassText-2 {
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+.homeClassText .contribution .homeClassText-3 {
+  font-size: 16px;
+  height: 18px;
+  overflow: hidden;
+}
+/* 暂时用于贡献者的CSS */
 .homeUniversity {
   width: 800px;
   margin: 0 auto;
@@ -497,7 +533,7 @@
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
-    <homeNav msg="登录/注册"/>
+    <homeNav msg="登录/注册" />
     <div class="home-con">
       <div class="home-ser">
         <div class="home-ser-con">
@@ -528,35 +564,40 @@
                   <template slot-scope="{ item }">
                     <span>{{item.value}}</span>
                     <span style="color:#878787;float:right;">{{item.type}}</span>
-                    <div v-if="item.solid == true" style="border-bottom:1px solid rgb(230, 230, 230);margin-top:5px;margin-bottom:5px;"></div>
+                    <div
+                      v-if="item.solid == true"
+                      style="border-bottom:1px solid rgb(230, 230, 230);margin-top:5px;margin-bottom:5px;"
+                    ></div>
                   </template>
                 </el-autocomplete>
               </div>
               <div class="homeClassText">
-                <div>
-                  <p class="homeClassText-1">761</p>
+                <router-link :to="{ path: 'serchDetailsUniversity',query: {id: classShow.id}}">
+                  <p class="homeClassText-1">{{classShow.num}}</p>
                   <p class="homeClassText-2">课程</p>
-                  <p class="homeClassText-3">Academy of Art University</p>
-                </div>
-                <div>
-                  <p class="homeClassText-1">2035</p>
+                  <p class="homeClassText-3">{{classShow.name}}</p>
+                </router-link>
+                <router-link :to="{ path: 'classesDetails',query: {id: questionShow.id}}">
+                  <p class="homeClassText-1">{{questionShow.num}}</p>
                   <p class="homeClassText-2">题库集</p>
-                  <p class="homeClassText-3">HISTORY OF ECONIMIC</p>
-                </div>
-                <div>
-                  <p class="homeClassText-1">120</p>
+                  <p class="homeClassText-3">{{questionShow.name}}</p>
+                </router-link>
+                <div class="contribution">
+                  <!-- <router-link :to="{ path: 'serchDetailsUniversity',query: {id: classShow.id}}"> -->
+                  <p class="homeClassText-1">{{contributeShow.num}}</p>
                   <p class="homeClassText-2">贡献者</p>
-                  <p class="homeClassText-3">TEAKOBE</p>
+                  <p class="homeClassText-3">{{contributeShow.name}}</p>
+                  <!-- </router-link> -->
                 </div>
               </div>
               <div class="homeUniversity">
                 <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
-                <img src="../assets/home2.png" alt class="home-ser-img-1">
+                <img src="../assets/home2.png" alt class="home-ser-img-1" />
               </div>
               <div class="home-ser-img2">
-                <img src="../assets/home1.png" alt class="home-ser-img-2">
+                <img src="../assets/home1.png" alt class="home-ser-img-2" />
               </div>
             </div>
           </div>
@@ -576,7 +617,7 @@
             <h3 class="text-center">通过关键字直接定位课程，全程高度匹配，给你想要的答案</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home3.jpg">
+            <img class="img-fluid" src="../assets/home3.jpg" />
           </div>
         </div>
         <div class="divider_line"></div>
@@ -586,7 +627,7 @@
             <h3 class="text-center" style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home5.jpg">
+            <img class="img-fluid" src="../assets/home5.jpg" />
           </div>
         </div>
         <div class="divider_line"></div>
@@ -596,7 +637,7 @@
             <h3 class="text-center">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home4.jpg">
+            <img class="img-fluid" src="../assets/home4.jpg" />
           </div>
         </div>
         <div class="divider_line"></div>
@@ -611,7 +652,7 @@
                 <h3 style="text-align:right">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
               </div>
               <div class="con-left-middle">
-                <img src="../assets/3.jpg" alt>
+                <img src="../assets/3.jpg" alt />
               </div>
               <div class="con-left-bottom">
                 <h2>我们的使命是帮助学生练习和掌握任何学习内容。</h2>
@@ -619,7 +660,7 @@
             </div>
             <div class="pub-con-right">
               <div class="con-right-top">
-                <img style="width:400px;height:544px;" src="../assets/4.jpg" alt>
+                <img style="width:400px;height:544px;" src="../assets/4.jpg" alt />
               </div>
               <div class="con-right-middle">
                 <h1>更贴心</h1>
@@ -638,6 +679,7 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import { constants } from "crypto";
 
 export default {
   name: "home",
@@ -655,15 +697,104 @@ export default {
       restaurants: [],
       timeout: null,
       inputLoad: false,
+      classShow: {
+        id: 137,
+        name: "Academy of Art University",
+        num: 141
+      },
+      questionShow: {
+        id: 28,
+        name: "U.S. History",
+        num: 3
+      },
+      contributeShow: {
+        id: 28,
+        name: "TEAKOBE",
+        num: 3
+      },
+      classVessel: [
+        {
+          id: 137,
+          name: "Academy of Art University",
+          num: 141
+        },
+        {
+          id: 116,
+          name: "Foothill-De Anza Community College District (FHDA)",
+          num: 105
+        },
+        {
+          id: 124,
+          name: "University of California, Irvine (UCI)",
+          num: 83
+        },
+        {
+          id: 6,
+          name: "California State University, Northridge (CSUN)",
+          num: 61
+        }
+      ],
+      questionVessel: [
+        {
+          id: 26,
+          name: "Art History through the 15th Century",
+          num: 1
+        },
+        {
+          id: 28,
+          name: "U.S. History",
+          num: 3
+        },
+        {
+          id: 32,
+          name: "Popular Topics in Health, Nutrition, & Physiology",
+          num: 1
+        },
+        {
+          id: 47,
+          name: "Topics in World Art ",
+          num: 1
+        }
+      ],
+      contributeVessel: [
+        {
+          id: 28,
+          name: "TEAKOBE",
+          num: 28
+        },
+        {
+          id: 28,
+          name: "EMMA",
+          num: 11
+        },
+        {
+          id: 28,
+          name: "HOYCE",
+          num: 20
+        },
+        {
+          id: 28,
+          name: "HAILEY",
+          num: 32
+        },
+      ]
     };
   },
   created: function() {
     var _this = this;
+    function random(min, max) {
+      return Math.floor(Math.random() * (max - min)) + min;
+    }
+    _this.classShow = _this.classVessel[random(0, 4)];
+    _this.questionShow = _this.questionVessel[random(0, 4)];
+    _this.contributeShow = _this.contributeVessel[random(0, 4)];
     document.documentElement.scrollTop = 0;
   },
   methods: {
     querySearch(queryString, cb) {
       var _this = this;
+      console.log(Math.floor(Math.random() * 3 + 1));
+
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
       clearTimeout(_this.timeout);
@@ -682,7 +813,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://47.254.29.164:8088/api/ClassInfoContent/Search`,
+                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
                 async: false,
                 params: {
                   name: valuestr
@@ -706,12 +837,11 @@ export default {
                         class: "classes",
                         num: i,
                         id: res.data.data.classes[i].id,
-                        solid:false
+                        solid: false
                       });
-                      
                     }
                   }
-                  results[s-1].solid = true;
+                  results[s - 1].solid = true;
                 } else {
                   results.push({ value: "没有找到对应的课程", solid: true });
                 }
@@ -784,7 +914,7 @@ export default {
       console.log(item);
       this.axios({
         method: "get",
-        url: `http://47.254.29.164:8088/api/ClassInfoContent/Search`,
+        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.queryString

@@ -93,7 +93,7 @@ export default {
         _this
           .axios({
             method: "put",
-            url: `http://47.254.29.164:8088/api/client/ResetPwd`,
+            url: `http://192.168.1.27:8088/api/client/ResetPwd`,
             async: false,
             params: {
               param: _this.$route.query.k,

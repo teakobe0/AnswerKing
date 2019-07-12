@@ -211,7 +211,7 @@ export default {
           _this.loadings = true;
           this.axios({
             method: "POST",
-            url: `http://47.254.29.164:8088/api/client/login`,
+            url: `http://192.168.1.27:8088/api/client/login`,
             async: false,
             data: this.ruleForm,
             xhrFields: {

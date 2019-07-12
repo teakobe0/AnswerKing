@@ -86,7 +86,7 @@
           <el-collapse-item title name="1">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              什么是CourseWhale？
+              1.&nbsp;&nbsp;什么是CourseWhale？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>CourseWhale是一个在线教育题库学习平台，在CourseWhale你可以访问数以万计的由我们的贡献者贡献的学习资源。但不同于其他类似网站的繁杂，coursewhale主要专注于quiz的解题方法和简答题解题思路。
@@ -96,7 +96,7 @@
           <el-collapse-item name="2">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              为什么选择CourseWhale？
+              2.&nbsp;&nbsp;为什么选择CourseWhale？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>CourseWhale为北美学子提供分享知识的平台。高质量，高效率，高匹配，是CourseWhale分享学习资源的核心。在CourseWhale上，你不用浪费多余的时间去浏览，简单易操作的流畅帮助你直接找到你想要的学习资源。
@@ -105,16 +105,17 @@
           <el-collapse-item name="3">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              CourseWhale提供什么样的学习资源？
+              3.&nbsp;&nbsp;CourseWhale提供什么样的学习资源？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>目前，CourseWhale主要提供北美各高校的quiz测验相关资源，以及部分课程，考试的简答题。
+              <i class="el-icon-thirdA"></i>目前，CourseWhale主要提供北美各高校的课程学习资料，例题题库等众多资源。
+
             </div>
           </el-collapse-item>
           <el-collapse-item name="4">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              如何找到想要的学习资源？
+              4.&nbsp;&nbsp;如何找到想要的学习资源？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>打开我们的网址coursewhale.com，就可以看到coursewhale简介的页面，在中间搜索框搜索您的学校（如：University of California, Irvine），到结果搜索页面之后，你可以看到该学校下面的全部课程，点击想要找的课程之后就可以看到相关学习资源。另，每一周的更新情况都会不同，因此个别周的资料可能会缺失。
@@ -124,7 +125,7 @@
           <el-collapse-item name="5">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              什么是CourseWhale会员？
+              5.&nbsp;&nbsp;什么是CourseWhale会员？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>course whale会员包含两种会员：注册会员和付费会员。
@@ -134,7 +135,7 @@
           <el-collapse-item name="6">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              注册会员与付费会员的区别？
+              6.&nbsp;&nbsp;注册会员与付费会员的区别？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>注册会员仅有7天的全网免费使用权限；而付费会员则根据付费的期限而享受该期限内的全网学习资源使用权限。
@@ -143,7 +144,7 @@
           <el-collapse-item name="7">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              注册邮件可以更改吗？
+              7.&nbsp;&nbsp;注册邮件可以更改吗？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>不能。
@@ -152,16 +153,16 @@
           <el-collapse-item name="8">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              忘记邮箱怎么办？
+              8.&nbsp;&nbsp;忘记邮箱怎么办？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>忘记邮箱可以通过问题12的联系方式联系我们，提供你的付款记录，以及账号相关信息，在一定时间内可以通过人工方式找回。
+              <i class="el-icon-thirdA"></i>忘记邮箱可以通过问题19的联系方式联系我们，提供你的付款记录，以及账号相关信息，在一定时间内可以通过人工方式找回。
             </div>
           </el-collapse-item>
           <el-collapse-item name="9">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              忘记密码怎么办？
+              9.&nbsp;&nbsp;忘记密码怎么办？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>忘记密码可以通过注册时的邮箱找回密码，因此请一定确保你的邮箱可以正常使用。
@@ -170,7 +171,7 @@
           <el-collapse-item name="10">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              如何更改密码？
+              10.&nbsp;&nbsp;如何更改密码？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>注册会员后，在会员页面左侧选择密码修改，直接输入新密码点击保存就可以了。
@@ -179,7 +180,7 @@
           <el-collapse-item name="11">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              出现无法无法登陆的情况应当如何处理？
+              11.&nbsp;&nbsp;出现无法无法登陆的情况应当如何处理？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>出现无法登陆的原因可能有：我们正在进行后台升级，一般情况下我们会在升级前在网站首页提醒用户；浏览器不支持，可更换浏览器尝试；3，网络问题，请检查自己的网络；4，其他问题，如果非上述问题，请截图并提交给我们，我们会在24小时之内回复。
@@ -188,16 +189,71 @@
           <el-collapse-item name="12">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              如何注销我的账户？
+              12.&nbsp;&nbsp;如何注销我的账户？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>账户不可以注销。
             </div>
           </el-collapse-item>
+          
           <el-collapse-item name="13">
             <template slot="title">
               <i class="el-icon-thirdQ"></i>
-              如何联系我们？
+              13.&nbsp;&nbsp;CourseWhale里面的内容从哪里来？
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>CourseWhale里面的内容都是由北美各高校的学生上传，在此之前我们会先审核他们的身份，资质等信息，以确保其上传的内容是有价值的。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="14">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              14.&nbsp;&nbsp;我可以上传相关学习资源至CourseWhale吗？
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>CourseWhale目前正在建设完整的在线内容上传模块。在该模块上线之前，如果您有意与我们合作，请通过邮箱联系我们，我们会尽快与您沟通。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="155">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              15.&nbsp;&nbsp;如果我成了CourseWhale的合作者，我能获得什么？
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>如果您通过了我们的资质审核，你在上传有价值的内容之后，将对应地获得CourseWhale其他所有内容的免费试用权限。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="16">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              16.&nbsp;&nbsp;如果我看到某些服务侵犯了我的版权怎么办?
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>我们尊重他人的知识产权，并保留删除或禁用涉嫌侵权内容的权利，并有权终止重复涉嫌侵权者的帐户。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="17">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              17.&nbsp;&nbsp;CourseWhale课程是否需要付费?
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>CourseWhale提供免费访问和付费访问服务。我们为新注册会员提供一段时期的免费试用时间，但过了免费试用阶段就需要付费试用。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="18">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              18.&nbsp;&nbsp;如果我想停止使用CourseWhale，费用可以退还吗？
+            </template>
+            <div>
+              <i class="el-icon-thirdA"></i>CourseWhale的费用无法退还。因此请您根据自己的需求购买内容试用权限。
+            </div>
+          </el-collapse-item>
+          <el-collapse-item name="19">
+            <template slot="title">
+              <i class="el-icon-thirdQ"></i>
+              19.&nbsp;&nbsp;如何联系我们？
             </template>
             <div>
               <i class="el-icon-thirdA"></i>如对我们的网站，服务，或者技术方面有任何的意见和建议，或者涉及到侵权问题，请通过下面的邮箱联系我们，我们会在24小时之内回复你。

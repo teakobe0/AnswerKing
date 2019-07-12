@@ -79,7 +79,7 @@
                 //通过学校ID查询拥有的课程
                 _this.axios({
                     method: "get",
-                    url: `http://47.254.29.164:8088/api/Class/Class`,
+                    url: `http://192.168.1.27:8088/api/Class/Class`,
                     async: false,
                     params: {
                         universityid: _this.$route.query.id
@@ -101,7 +101,7 @@
                 if(alifs == 'All'){
                     _this.axios({
                         method: "get",
-                        url: `http://47.254.29.164:8088/api/Class/Class`,
+                        url: `http://192.168.1.27:8088/api/Class/Class`,
                         async: false,
                         params: {
                             universityid: _this.$route.query.id
@@ -119,7 +119,7 @@
                 }else {
                     _this.axios({
                         method: "get",
-                        url: `http://47.254.29.164:8088/api/Class/Class`,
+                        url: `http://192.168.1.27:8088/api/Class/Class`,
                         async: false,
                         params: {
                             universityid: _this.$route.query.id,
@@ -141,7 +141,7 @@
                 var _this = this;
                 _this.axios({
                     method: "get",
-                    url: `http://47.254.29.164:8088/api/Class/Class`,
+                    url: `http://192.168.1.27:8088/api/Class/Class`,
                     async: false,
                     params: {
                         universityid: _this.$route.query.id,

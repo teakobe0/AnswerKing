@@ -168,7 +168,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://47.254.29.164:8088/api/Client/GetClient`,
+            url: `http://192.168.1.27:8088/api/Client/GetClient`,
             async: false,
             xhrFields: {
               withCredentials: true

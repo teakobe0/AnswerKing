@@ -151,7 +151,7 @@ export default {
           _this
             .axios({
               method: "get",
-              url: `http://47.254.29.164:8088/api/Client/ForgetPwd`,
+              url: `http://192.168.1.27:8088/api/Client/ForgetPwd`,
               async: false,
               params: {
                 email: _this.ruleForm.Username
