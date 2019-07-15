@@ -368,50 +368,32 @@
   width: 800px;
   margin: 0 auto;
 }
-.homeClassText a {
+.homeClassText .contribution {
   text-decoration: none;
   display: block;
   width: 210px;
+  height: 84px;
   float: left;
   color: #ffffff;
   background-color: #3c4b9173;
   margin-top: 32px;
   margin-right: 25px;
   padding: 20px;
-}
-.homeClassText a:hover {
- background-color: #24399473;
-}
-.homeClassText a:active {
- background-color: #07219673;
-}
-.homeClassText a:nth-last-of-type(1) {
-  /* margin-right: 0px; */
-}
-.homeClassText a .homeClassText-1 {
-  font-size: 32px;
-}
-.homeClassText a .homeClassText-2 {
-  font-size: 16px;
-  margin-bottom: 8px;
-}
-.homeClassText a .homeClassText-3 {
-  font-size: 16px;
-  height: 18px;
+  position: relative;
   overflow: hidden;
 }
 
-/* 暂时用于贡献者的CSS */
-.homeClassText .contribution {
-  text-decoration: none;
-  display: block;
-  width: 210px;
-  float: left;
-  color: #ffffff;
-  background-color: #3c4b9173;
-  margin-top: 32px;
+.homeClassText .contribution:hover {
+  background-color: #24399473;
+}
+.homeClassText .contribution:hover .warp a  {
+  color: #ff2994;
+}
+.homeClassText .contribution:active {
+  background-color: #07219673;
+}
+.homeClassText .contribution:nth-last-of-type(1) {
   margin-right: 0px;
-  padding: 20px;
 }
 .homeClassText .contribution .homeClassText-1 {
   font-size: 32px;
@@ -423,9 +405,14 @@
 .homeClassText .contribution .homeClassText-3 {
   font-size: 16px;
   height: 18px;
+  margin-top: 10px;
   overflow: hidden;
+  /* position: absolute;
+  bottom:10px;
+  left: 50%;
+  margin-left: -52px; */
 }
-/* 暂时用于贡献者的CSS */
+
 .homeUniversity {
   width: 800px;
   margin: 0 auto;
@@ -530,6 +517,33 @@
 .el-autocomplete-suggestion__wrap {
   max-height: 600px !important;
 }
+.warp {
+  height: 30px;
+  width: 100%;
+  overflow: hidden;
+}
+.warp ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto;
+}
+.warp li {
+  height: 30px;
+  line-height: 30px;
+  /* display: flex; */
+  justify-content: space-between;
+  font-size: 15px;
+  
+}
+.warp a {
+  display: block;
+  text-align: center;
+  text-decoration: none;
+  color: #fff;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
@@ -571,24 +585,69 @@
                   </template>
                 </el-autocomplete>
               </div>
+
               <div class="homeClassText">
-                <router-link :to="{ path: 'serchDetailsUniversity',query: {id: classShow.id}}">
-                  <p class="homeClassText-1">{{classShow.num}}</p>
-                  <p class="homeClassText-2">课程</p>
-                  <p class="homeClassText-3">{{classShow.name}}</p>
-                </router-link>
-                <router-link :to="{ path: 'classesDetails',query: {id: questionShow.id}}">
-                  <p class="homeClassText-1">{{questionShow.num}}</p>
-                  <p class="homeClassText-2">题库集</p>
-                  <p class="homeClassText-3">{{questionShow.name}}</p>
-                </router-link>
                 <div class="contribution">
-                  <!-- <router-link :to="{ path: 'serchDetailsUniversity',query: {id: classShow.id}}"> -->
-                  <p class="homeClassText-1">{{contributeShow.num}}</p>
-                  <p class="homeClassText-2">贡献者</p>
-                  <p class="homeClassText-3">{{contributeShow.name}}</p>
-                  <!-- </router-link> -->
+                  <p class="homeClassText-1">{{this.classNum}}</p>
+                  <p class="homeClassText-2">课程</p>
+                  <vue-seamless
+                    :data="classVessel"
+                    :class-option="classOption"
+                    class="warp"
+                    @ScrollEnd="handScrollEnd"
+                  >
+                    <ul class="item">
+                      <li v-for="(item,index) in classVessel" :key="index">
+                        <router-link
+                          :to="{ path: 'serchDetailsUniversity',query: {id: item.university_id}}"
+                        >{{item.university_name}}</router-link>
+                      </li>
+                    </ul>
+                  </vue-seamless>
                 </div>
+
+                <div class="contribution">
+                  <p class="homeClassText-1">{{this.classinfoNum}}</p>
+                  <p class="homeClassText-2">题库集</p>
+                  <vue-seamless
+                    :data="classVessel"
+                    :class-option="classOption"
+                    class="warp"
+                    @ScrollEnd="handScrollEnd"
+                  >
+                    <ul class="item">
+                      <li v-for="(item,index) in classVessel" :key="index">
+                        <router-link
+                          :to="{ path: 'classesDetails',query: {id: item.class_id}}"
+                        >{{item.class_name}}</router-link>
+                      </li>
+                    </ul>
+                  </vue-seamless>
+                </div>
+
+                <div class="contribution">
+                  <p class="homeClassText-1">{{this.clientNum}}</p>
+                  <p class="homeClassText-2">贡献者</p>
+                  <vue-seamless
+                    :data="classVessel"
+                    :class-option="classOption"
+                    class="warp"
+                    @ScrollEnd="handScrollEnd"
+                  >
+                    <ul class="item">
+                      <li v-for="(item,index) in classVessel" :key="index">
+                        <!-- <router-link onclick="return false;"
+                          :to="{ path: 'serchDetailsUniversity',query: {id: item.class_id}}"
+                        >TOKEN</router-link> -->
+                        <a href="#" onclick="return false;">
+                          TOKEN
+                        </a>
+                      </li>
+                    </ul>
+                  </vue-seamless>
+                </div>
+
+
               </div>
               <div class="homeUniversity">
                 <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
@@ -680,15 +739,18 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { constants } from "crypto";
+import vueSeamless from "vue-seamless-scroll";
 
 export default {
   name: "home",
   components: {
     homeNav,
-    homeFooter
+    homeFooter,
+    vueSeamless
   },
   data() {
     return {
+      yourText: "这个标题非常的长非常的长，必需要横向滚动起来了",
       state1: "",
       state2: "",
       homeSerchShow: true,
@@ -698,64 +760,26 @@ export default {
       timeout: null,
       inputLoad: false,
       classShow: {
-        id: 137,
-        name: "Academy of Art University",
-        num: 141
+        number: 10,
+        university: {
+          id: 94,
+          name: "San Diego State University (SDSU)"
+        }
       },
       questionShow: {
-        id: 28,
-        name: "U.S. History",
-        num: 3
+        order: 1,
+        cla: {
+          id: 577,
+          name: "Fine Art Photography"
+        }
       },
       contributeShow: {
         id: 28,
         name: "TEAKOBE",
         num: 3
       },
-      classVessel: [
-        {
-          id: 137,
-          name: "Academy of Art University",
-          num: 141
-        },
-        {
-          id: 116,
-          name: "Foothill-De Anza Community College District (FHDA)",
-          num: 105
-        },
-        {
-          id: 124,
-          name: "University of California, Irvine (UCI)",
-          num: 83
-        },
-        {
-          id: 6,
-          name: "California State University, Northridge (CSUN)",
-          num: 61
-        }
-      ],
-      questionVessel: [
-        {
-          id: 26,
-          name: "Art History through the 15th Century",
-          num: 1
-        },
-        {
-          id: 28,
-          name: "U.S. History",
-          num: 3
-        },
-        {
-          id: 32,
-          name: "Popular Topics in Health, Nutrition, & Physiology",
-          num: 1
-        },
-        {
-          id: 47,
-          name: "Topics in World Art ",
-          num: 1
-        }
-      ],
+      classVessel: [],
+      questionVessel: [],
       contributeVessel: [
         {
           id: 28,
@@ -776,24 +800,61 @@ export default {
           id: 28,
           name: "HAILEY",
           num: 32
-        },
-      ]
+        }
+      ],
+      id: 11,
+      univerNum: "",
+      classNum: "",
+      classinfoNum: "",
+      clientNum:"",
     };
+  },
+  computed: {
+    classOption: function() {
+      return {
+        step: 0.5, //步长 越大滚动速度越快
+        limitMoveNum: 1, //启动无缝滚动最小数据量 this.dataList.length
+        hoverStop: true, //是否启用鼠标hover控制
+        direction: 1, //1 往上 0 往下
+        waitTime: 2000, //单步停止等待时间
+        singleHeight: 30
+      };
+    }
   },
   created: function() {
     var _this = this;
-    function random(min, max) {
-      return Math.floor(Math.random() * (max - min)) + min;
-    }
-    _this.classShow = _this.classVessel[random(0, 4)];
-    _this.questionShow = _this.questionVessel[random(0, 4)];
-    _this.contributeShow = _this.contributeVessel[random(0, 4)];
+    _this.GetClassinfo();
     document.documentElement.scrollTop = 0;
   },
   methods: {
+    handScrollEnd: function(val) {
+      var _this = this;
+      
+    },
+    // 获取所有课程，题库集，贡献者信息
+    GetClassinfo: function(index) {
+      var _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `http://192.168.1.27:8088/api/classinfo/classinfo`,
+          async: false,
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.classVessel = res.data.data;
+          _this.classNum = _this.classVessel[0].class_num;
+          _this.classinfoNum = _this.classVessel[0].classinfo_num;
+          _this.clientNum = _this.classVessel[0].client_num;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     querySearch(queryString, cb) {
       var _this = this;
-      console.log(Math.floor(Math.random() * 3 + 1));
 
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
@@ -845,7 +906,6 @@ export default {
                 } else {
                   results.push({ value: "没有找到对应的课程", solid: true });
                 }
-                console.log(results);
                 if (res.data.data.ls != null && res.data.data.ls.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data.ls[i]) {
@@ -911,7 +971,6 @@ export default {
     },
     handleSelect(item) {
       var _this = this;
-      console.log(item);
       this.axios({
         method: "get",
         url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,

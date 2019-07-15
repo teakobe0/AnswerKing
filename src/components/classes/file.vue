@@ -249,7 +249,6 @@ export default {
         .then(function(res) {
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
-          console.log(_this.value)
           if(_this.value.length == 0){
             _this.infoShow = true;
           }

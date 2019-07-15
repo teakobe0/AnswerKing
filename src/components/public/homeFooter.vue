@@ -58,7 +58,7 @@
   left: -5px; */
 }
 .footer-4 p {
-  margin-top: 20px;
+  margin-top: 10px;
   color: #fff;
   font-size: 12px;
   font-weight: 700;
@@ -110,10 +110,10 @@
       <ul class="footer-4">
         <li class="footer-title">CourseWhale</li>
         <li>
-          <a href="https://twitter.com/coursewhale" title="Twitter">
+          <a href="https://twitter.com/coursewhale" title="Twitter" target="_blank">
             <img src="../../assets/twitter.svg" alt />
           </a>
-          <a href="https://www.facebook.com/coursewhale.orange.7" title="Facebook">
+          <a href="https://www.facebook.com/coursewhale.orange.7" title="Facebook" target="_blank">
             <img src="../../assets/facebook.svg" alt />
           </a>
         </li>
