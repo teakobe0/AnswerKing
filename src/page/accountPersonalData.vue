@@ -267,7 +267,7 @@ export default {
   },
   created: function() {
     if (localStorage.getItem("token")) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -299,18 +299,18 @@ export default {
   methods: {
     //鼠标移入
     imgMouseenter: function() {
-      var _this = this;
+      const _this = this;
       _this.imageShow = true;
     },
     // 鼠标移出
     imgMouseleave: function() {
-      var _this = this;
+      const _this = this;
       _this.imageShow = false;
     },
     // 上传成功
     handleAvatarSuccess(res, file) {
       //   this.imageUrl = URL.createObjectURL(file.raw);
-      var _this = this;
+      const _this = this;
       _this.imageUrl = "http://192.168.1.27:8088" + res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
       _this.headShow = true;

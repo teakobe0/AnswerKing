@@ -69,13 +69,13 @@
             };
         },
         created: function () {
-            var _this = this;
+            const _this = this;
             console.log(this)
             _this.universityidClass();
         },
         methods: {
             universityidClass: function () {
-                var _this = this;
+                const _this = this;
                 //通过学校ID查询拥有的课程
                 _this.axios({
                     method: "get",
@@ -97,7 +97,7 @@
                 });
             },
             queryClass:function(alifs){
-                var _this = this;
+                const _this = this;
                 if(alifs == 'All'){
                     _this.axios({
                         method: "get",
@@ -138,7 +138,7 @@
 
             },
             queryname:function(names){
-                var _this = this;
+                const _this = this;
                 _this.axios({
                     method: "get",
                     url: `http://192.168.1.27:8088/api/Class/Class`,

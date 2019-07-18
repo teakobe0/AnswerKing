@@ -302,14 +302,14 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.Id = _this.$route.query.id;
     _this.Getclass();
   },
   methods: {
     //根据课程id检索
     Getclass: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -336,7 +336,7 @@ export default {
         });
     },
     tab: function(tab) {
-      var _this = this;
+      const _this = this;
       if (tab == "tab01") {
         _this.num = 0;
       } else if (tab == "tab02") {
@@ -345,7 +345,7 @@ export default {
     },
     // 检索关注
     retrieveAttention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({
@@ -374,7 +374,7 @@ export default {
       }
     },
     attention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
         if (_this.value.attentions == true) {

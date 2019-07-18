@@ -111,7 +111,7 @@
         <li class="footer-title">CourseWhale</li>
         <li>
           <a href="https://twitter.com/coursewhale" title="Twitter" target="_blank">
-            <img src="../../assets/twitter.svg" alt />
+            <img src="../../assets/twitter3.svg" alt />
           </a>
           <a href="https://www.facebook.com/coursewhale.orange.7" title="Facebook" target="_blank">
             <img src="../../assets/facebook.svg" alt />

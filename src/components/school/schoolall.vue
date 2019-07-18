@@ -302,12 +302,12 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.universityidClass();
   },
   methods: {
     universityidClass: function() {
-      var _this = this;
+      const _this = this;
       //通过学校ID查询拥有的课程
       _this
         .axios({
@@ -334,7 +334,7 @@ export default {
         });
     },
     queryClass: function(alifs) {
-      var _this = this;
+      const _this = this;
       if (alifs == "All") {
         _this
           .axios({
@@ -386,7 +386,7 @@ export default {
       }
     },
     queryname: function(names) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -412,7 +412,7 @@ export default {
         });
     },
     attention: function(item, index) {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
@@ -478,7 +478,7 @@ export default {
     },
     // 检索关注
     retrieveAttention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({

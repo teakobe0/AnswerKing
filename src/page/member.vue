@@ -355,12 +355,12 @@
             return {};
         },
         created: function () {
-            var _this = this;
+            const _this = this;
             document.documentElement.scrollTop = 0;
         },
         methods: {
             joinMember:function(){
-                var _this = this;
+                const _this = this;
                 if(localStorage.token){
                     _this.$router.push({ path: "/personalData/vip" });
                 }else {

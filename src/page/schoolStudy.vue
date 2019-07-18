@@ -347,7 +347,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this
       .axios({
         method: "get",
@@ -369,7 +369,7 @@ export default {
   },
   methods: {
     viewMore: function() {
-      var _this = this;
+      const _this = this;
       _this.universitys = _this.alluniversitys.slice(
         0,
         _this.universitys.length + _this.pageSize
@@ -385,7 +385,7 @@ export default {
       }
     },
     querySearch(queryString, cb) {
-      var _this = this;
+      const _this = this;
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
       clearTimeout(_this.timeout);
@@ -437,7 +437,7 @@ export default {
       }
     },
     handleSelectauto(item) {
-      var _this = this;
+      const _this = this;
       _this.loading = this.$loading({
         lock: true,
         text: "加载中",
@@ -474,7 +474,7 @@ export default {
     },
     //根据国家 州/省份检索学校
     GetUniversitys: function(index) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -508,11 +508,11 @@ export default {
         });
     },
     sort: function() {
-      var _this = this;
+      const _this = this;
       _this.universitys = _this.alluniversitys.slice(0, _this.pageSize);
     },
     handleSelectcountry: function(item) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -536,12 +536,12 @@ export default {
         });
     },
     handleSelectstate: function() {
-      var _this = this;
+      const _this = this;
       _this.value3 = "";
       _this.GetUniversitys();
     },
     handleSelectcity: function() {
-      var _this = this;
+      const _this = this;
     }
   }
 };

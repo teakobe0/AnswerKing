@@ -185,7 +185,7 @@
             <p>
               <s>原价${{item.original}}</s>
             </p>
-            <img src="../../assets/对勾.png" alt v-show="num==index">
+            <img src="../../assets/对勾.png" alt v-show="num==index" />
           </li>
         </ul>
       </div>
@@ -254,7 +254,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     // this.$router.go(0)
     _this.gainpersonal();
     // _this.openFullScreen();
@@ -263,7 +263,7 @@ export default {
   //页面的方法还是写在methods{}中
   methods: {
     gainpersonal: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.getItem("token")) {
         _this
           .axios({
@@ -293,7 +293,7 @@ export default {
       }
     },
     paypal: function() {
-      var _this = this;
+      const _this = this;
       paypal
         .Buttons({
           // Set up the transaction
@@ -320,11 +320,12 @@ export default {
             // alert("Transaction completed by ");
             return actions.order.capture().then(function(details) {
               // 向买家展示成功的信息
-              // alert(
-              //   "Transaction completed by " +
-              //     details.payer.name.given_name +
-              //     "!"
-              // );
+              alert(
+                "Transaction completed by " +
+                  details.payer.name.given_name +
+                  "!"
+              );
+              
               return _this
                 .axios({
                   method: "POST",
@@ -387,16 +388,16 @@ export default {
       loading.close();
     },
     tabdredge: function(tab, money) {
-      var _this = this;
+      const _this = this;
       _this.num = tab;
       _this.money = money;
     },
     payplatform: function(tab, platform) {
-      var _this = this;
+      const _this = this;
       _this.pay = tab;
     },
     dredgePay: function() {
-      var _this = this;
+      const _this = this;
       _this.$store.state.vip.succeed = true;
       console.log(_this.money);
       _this.$message({

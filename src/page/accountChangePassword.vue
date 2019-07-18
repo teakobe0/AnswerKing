@@ -72,13 +72,13 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     console.log(_this.$route.query.k)
   },
   //页面的方法还是写在methods{}中
   methods: {
     submitForm: function() {
-      var _this = this;
+      const _this = this;
       
       var patt = /^[\s]*$/;
       var pvalue = patt.test(_this.changePasswords.NewPassword);

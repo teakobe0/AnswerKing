@@ -81,7 +81,7 @@ export default {
   },
   created: function() {
     if (localStorage.getItem("token")) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -95,7 +95,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           _this.modifiedDatas.Name = res.data.data.name;
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
@@ -117,7 +116,7 @@ export default {
   },
   methods: {
     onSubmit() {
-      var _this = this;
+      const _this = this;
       _this.axios({
         method: "put",
         url: `http://192.168.1.27:8088/api/client/clients`,
@@ -138,7 +137,7 @@ export default {
         });
     },
     GetClient: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.getItem("token")) {
         _this
           .axios({

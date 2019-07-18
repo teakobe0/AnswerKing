@@ -29,6 +29,10 @@
   color: #4b4b4b;
   cursor: pointer;
   text-decoration: none;
+  width: 230px;
+  overflow: hidden;
+  display: block;
+  word-wrap: break-word;
 }
 .content-tag-con-right-con-div ul a:hover {
   font-size: 16px;
@@ -39,6 +43,9 @@
   color: #838383;
   display: block;
   margin-top: 3px;
+  width: 230px;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 .kong {
   height: 40px;
@@ -69,18 +76,18 @@ export default {
     return {
       // 学校课程
       universityClass: [],
-      loading:false,
-      kong:true,
+      loading: false,
+      kong: true
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.universityidClass();
   },
   methods: {
     // 通过学校ID查询所有课程并展示题库数量多的
     universityidClass: function() {
-      var _this = this;
+      const _this = this;
       _this.loading = true;
       _this
         .axios({

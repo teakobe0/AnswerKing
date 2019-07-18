@@ -148,7 +148,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.gainpersonal();
   },
   filters: {
@@ -163,7 +163,7 @@ export default {
     },
     // 获取个人信息
     gainpersonal: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.getItem("token")) {
         _this
           .axios({

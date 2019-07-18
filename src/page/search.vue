@@ -516,7 +516,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.openFullScreen2();
   },
   filters: {
@@ -526,7 +526,7 @@ export default {
     }
   },
   mounted() {
-    var _this = this;
+    const _this = this;
     window.addEventListener("scroll", _this.handleScroll);
     //window.addEventListener('scroll', function () {
     //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
@@ -535,7 +535,7 @@ export default {
   },
   methods: {
     openFullScreen2() {
-      var _this = this;
+      const _this = this;
       _this.loading = this.$loading({
         lock: true,
         text: "加载中",
@@ -545,7 +545,7 @@ export default {
       _this.gettingdata();
     },
     handleScroll() {
-      var _this = this;
+      const _this = this;
       var scrollTop =
         window.pageYOffset ||
         document.documentElement.scrollTop ||
@@ -565,12 +565,12 @@ export default {
       }
     },
     pageTop: function() {
-      var _this = this;
+      const _this = this;
       window.scroll(0, 0);
     },
     //获取页面数据
     gettingdata: function() {
-      var _this = this;
+      const _this = this;
       this.axios({
         method: "get",
         url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
@@ -656,7 +656,7 @@ export default {
     },
     // 查看更多方法
     viewMmore: function(name) {
-      var _this = this;
+      const _this = this;
       if (name == "clessChange") {
         if (_this.value1.length != 0) {
           _this.value1 = _this.allClasses.slice(
@@ -691,7 +691,7 @@ export default {
     },
     // 点击控制搜索结果的打开关闭
     searchResultShow: function(name) {
-      var _this = this;
+      const _this = this;
       if (name == "clessShow") {
         _this.clessShow = !_this.clessShow;
         _this.clessicondownShow = !_this.clessicondownShow;
@@ -707,12 +707,12 @@ export default {
       }
     },
     Switch: function() {
-      var _this = this;
+      const _this = this;
       _this.isserchTextSwitch = !_this.isserchTextSwitch;
     },
     // 顶部开关控制搜索结果的打开关闭
     searchResultSwitch: function(val, name) {
-      var _this = this;
+      const _this = this;
       if (name == "clessShow") {
         if (_this.clessShow == true) {
           _this.clessicondownShow = true;

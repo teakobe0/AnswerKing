@@ -560,7 +560,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.Id = _this.$route.query.id;
     // 获取课程信息
     _this.Getclass();
@@ -572,7 +572,7 @@ export default {
   methods: {
     //根据课程id检索
     Getclass: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -602,7 +602,7 @@ export default {
     },
     //根据课程资料id检索每周
     ClassWeeks: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -747,7 +747,7 @@ export default {
     },
     //将图片的ID和路径保存到outputList的方法
     getUrlListCover: function(rawList) {
-      var _this = this;
+      const _this = this;
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
@@ -759,7 +759,7 @@ export default {
     },
     //根据课程id检索课程订单
     Classinfos: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -785,7 +785,7 @@ export default {
     },
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
-      var _this = this;
+      const _this = this;
       for (var i = 0; i < _this.valueWeek.length; i++) {
         if (classWeekId == _this.valueWeek[i].id) {
           _this.currentWeek = _this.valueWeek[i];
@@ -817,7 +817,7 @@ export default {
     },
     //点击类型获取答案
     tab(index, classWeekTypeId) {
-      var _this = this;
+      const _this = this;
       _this.$store.state.answer.loading = true;
       _this.numnum = index;
       _this
@@ -859,7 +859,7 @@ export default {
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
-      var _this = this;
+      const _this = this;
       _this.$store.state.answer.loading = true;
       _this
         .axios({
@@ -902,11 +902,11 @@ export default {
         });
     },
     bookmarks: function() {
-      var _this = this;
+      const _this = this;
       _this.bookmark = !_this.bookmark;
     },
     beOfUses: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this.useOnuse.Id = Number(this.$route.query.classInfoId);
         if (_this.use == false || _this.noUse == true) {
@@ -931,7 +931,7 @@ export default {
       }
     },
     noUses: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this.useOnuse.Id = Number(this.$route.query.classInfoId);
         if (_this.noUse == false || _this.use == true) {
@@ -957,7 +957,7 @@ export default {
     },
     // 更改课程资料的有用没用
     ChangeClassInfo: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "put",
@@ -985,7 +985,7 @@ export default {
     },
     // 根据课程资料id检索该课程资料有用、没用
     UseRecord: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({
@@ -1029,7 +1029,7 @@ export default {
     },
     // 检索关注
     retrieveAttention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({
@@ -1061,7 +1061,7 @@ export default {
     },
     // 关注
     attention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
         if (_this.value.attentions == true) {

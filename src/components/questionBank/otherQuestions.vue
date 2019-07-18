@@ -40,7 +40,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     // 根据课程ID检索课程题库
     _this.Classinfos();
     _this.Getclass();
@@ -48,7 +48,7 @@ export default {
   methods: {
     //根据课程id检索课程订单
     Classinfos: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -76,7 +76,7 @@ export default {
         });
     },
     skipclass: function(classId, id) {
-      var _this = this;
+      const _this = this;
       // window.location.reload();
       _this.$router.push({
         path: "/serchDetailsContent",
@@ -85,7 +85,7 @@ export default {
     },
     //根据课程id检索
     Getclass: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",

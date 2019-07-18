@@ -99,7 +99,7 @@
         //页面的方法还是写在methods{}中
         methods: {
             tab(index) {
-                var _this = this
+                const _this = this
                 console.log(index)
                 _this.num = index;
             }

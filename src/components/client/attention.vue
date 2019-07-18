@@ -94,7 +94,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.retrieveAttention();
   },
   filters: {
@@ -106,7 +106,7 @@ export default {
   methods: {
     handleClick: function() {},
     delAttention: function(item) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "delete",
@@ -135,7 +135,7 @@ export default {
     },
     // 检索关注
     retrieveAttention: function() {
-      var _this = this;
+      const _this = this;
       _this.classAtt = [];
       _this.questionAtt = [];
       if (localStorage.token) {
@@ -152,7 +152,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             for (var i = 0; i < res.data.data.length; i++) {
               _this.$set(res.data.data[i], "typeIds", []);
               if (res.data.data[i].type == 1) {

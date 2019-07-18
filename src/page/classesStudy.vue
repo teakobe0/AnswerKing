@@ -334,13 +334,13 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.GetClasses();
     document.documentElement.scrollTop = 0;
   },
   methods: {
     querySearch(queryString, cb) {
-      var _this = this;
+      const _this = this;
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
       clearTimeout(_this.timeout);
@@ -395,7 +395,7 @@ export default {
       }
     },
     handleSelectauto(item) {
-      var _this = this;
+      const _this = this;
       _this.loading = this.$loading({
         lock: true,
         text: "加载中",
@@ -431,7 +431,7 @@ export default {
     },
     //根据课程名称检索 分页
     GetClasses: function(index) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -457,7 +457,7 @@ export default {
         });
     },
     handleCurrentChange(val) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",

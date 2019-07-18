@@ -207,7 +207,7 @@ export default {
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
-          var _this = this;
+          const _this = this;
           _this.loadings = true;
           this.axios({
             method: "POST",
@@ -223,7 +223,6 @@ export default {
           })
             .then(function(res) {
               localStorage.token = res.data.data.token;
-              console.log(res);
               if (res.data.status == 1) {
                 // _this.loadings = false;
                 _this.$message({
@@ -232,10 +231,11 @@ export default {
                 });
                 //_this.$store.state.logo.show = false;
                 //_this.$store.state.logo.hide = true;
-                if (_this.$route.query.type == "skip") {
+                if (localStorage.SkipPath) {
                   _this.$router.push({
-                    path: "/personalData/vip",
+                    path: localStorage.SkipPath,
                   });
+                  localStorage.removeItem("SkipPath");
                 }else {
                   _this.$router.push({ path: "/home" });
                 }

@@ -53,7 +53,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.gainmessage();
   },
   methods: {
@@ -63,7 +63,7 @@ export default {
     },
     // 检索购买记录
     gainmessage: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",

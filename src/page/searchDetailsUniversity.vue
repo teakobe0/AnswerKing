@@ -159,14 +159,14 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.Id = _this.$route.query.id;
     _this.University();
   },
   methods: {
     //根据学校id检索
     University: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -188,7 +188,7 @@ export default {
         });
     },
     tab: function(tab) {
-      var _this = this;
+      const _this = this;
       if (tab == "tab01") {
         _this.num = 0;
       } else if (tab == "tab02") {

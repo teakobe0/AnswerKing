@@ -100,7 +100,7 @@ export default {
     submitForm(changePasswords) {
       this.$refs[changePasswords].validate(valid => {
         if (valid) {
-          var _this = this;
+          const _this = this;
           _this
             .axios({
               method: "put",

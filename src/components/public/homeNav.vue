@@ -343,7 +343,9 @@ import complain from "@/components/public/complain.vue";
             };
         },
         created: function () {
-            var _this = this;
+            const _this = this;
+                localStorage.SkipPath = _this.$route.fullPath;
+                
             _this.$store.state.answer.answer = null;
             if(localStorage.getItem("token")){
                 this.$store.state.logo.show = false
@@ -358,7 +360,7 @@ import complain from "@/components/public/complain.vue";
         },
         methods: {
             gainmessage: function() {
-            var _this = this;
+            const _this = this;
             _this
                 .axios({
                 method: "get",
@@ -385,7 +387,7 @@ import complain from "@/components/public/complain.vue";
             },
             // 获取个人信息
             gainpersonal: function() {
-            var _this = this;
+            const _this = this;
             if (localStorage.getItem("token")) {
                 _this
                 .axios({
@@ -426,19 +428,23 @@ import complain from "@/components/public/complain.vue";
                 this.vanishs = false;
             },
             logout:function(){
-                var _this = this;
+                const _this = this;
                 if(localStorage.getItem("token")){
                     localStorage.removeItem("token");
                 } else {
                     console.log('没有TOKEN')
                 }
-                _this.$router.push({
-                    path: '/home',
-                })
+                if (localStorage.SkipPath) {
+                  _this.$router.push({
+                    path: localStorage.SkipPath,
+                  });
+                }else {
+                  _this.$router.push({ path: "/home" });
+                }
                 window.location.reload()
             },
             handleEnter:function(){
-                var _this = this;
+                const _this = this;
                 _this.$router.push({
                     path: '/serch',
                     query:{
@@ -448,7 +454,7 @@ import complain from "@/components/public/complain.vue";
                 window.location.reload();
             },
             handleScroll () {
-                var _this = this;
+                const _this = this;
                 var scrollTop = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop
 
             },

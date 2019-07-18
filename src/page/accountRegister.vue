@@ -7,7 +7,7 @@
   background-image: url(../assets/347985.jpg);
   background-color: #dfdfdf;
   background-repeat: no-repeat;
-  background-position:left center;
+  background-position: left center;
   background-size: cover;
   margin: 0 auto;
   width: 100%;
@@ -179,7 +179,7 @@ export default {
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
-          var _this = this;
+          const _this = this;
           _this.loadings = true;
           this.axios({
             method: "POST",
@@ -194,7 +194,7 @@ export default {
             }
           })
             .then(function(res) {
-              console.log(res)
+              console.log(res);
               // 注册成功保存TOKEN相当于自动登录，不让它自动登录
               // localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
@@ -204,15 +204,23 @@ export default {
                 });
                 // _this.$store.state.logo.show = false;
                 // _this.$store.state.logo.hide = true;
-                
+
                 _this.$router.push({ path: "/login" });
-              } else if(res.data.status == 2) {
-                console.log(2222)
+              } else if (res.data.status == 2) {
+                console.log(2222);
                 _this.loadings = false;
                 _this.$message({
                   message: res.data.msg,
                   type: "success"
                 });
+              }
+              if (localStorage.SkipPath) {
+                _this.$router.push({
+                  path: localStorage.SkipPath
+                });
+                localStorage.removeItem("SkipPath");
+              } else {
+                _this.$router.push({ path: "/home" });
               }
             })
             .catch(function(error) {

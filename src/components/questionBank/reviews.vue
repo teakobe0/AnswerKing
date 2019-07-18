@@ -415,7 +415,7 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     //获取个人信息
     _this.personal();
     if (localStorage.token) {
@@ -433,7 +433,7 @@ export default {
   methods: {
     //获取登录人的个人信息
     personal: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({
@@ -481,7 +481,7 @@ export default {
     },
     //检索评论
     searching: function() {
-      var _this = this;
+      const _this = this;
       _this.comment.length = 0;
       _this
         .axios({
@@ -550,7 +550,7 @@ export default {
     },
     //新增评论
     addComment: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         var patt = /^[\s]*$/;
         var pvalue = patt.test(_this.retext);
@@ -599,7 +599,7 @@ export default {
     },
     // 新增2级评论
     submitReview: function(model) {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         var patt = /^[\s]*$/;
         var pvalue = patt.test(model);
@@ -648,7 +648,7 @@ export default {
     },
     // 删除本人评论
     deletecom: function(ids) {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "delete",
@@ -678,14 +678,14 @@ export default {
 
     //向reviews评论数组中添加控制打开关闭的openreply属性，动态显示ipnut值得model属性
     openreview: function() {
-      var _this = this;
+      const _this = this;
     },
     openLike: function(like) {
-      var _this = this;
+      const _this = this;
     },
     // 2级评论的回复方法
     replyTwolevel: function(index, oneid, twoid, name) {
-      var _this = this;
+      const _this = this;
       _this.replyTwolevelname = name;
       _this.replyOnelevelid = oneid.toString();
       _this.replyTwolevelid = twoid.toString();
@@ -700,14 +700,14 @@ export default {
     },
     //留言的方法
     opencontrol: function(indexs, id) {
-      var _this = this;
+      const _this = this;
       _this.comment[indexs].openreply = !_this.comment[indexs].openreply;
       _this.comment[indexs].model = "";
       _this.replyOneTwoid = "," + id;
     },
     // 关闭评论框的方法
     cancel: function(indexs) {
-      var _this = this;
+      const _this = this;
       _this.comment[indexs].openreply = false;
     }
   },

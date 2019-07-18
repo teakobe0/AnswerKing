@@ -85,8 +85,8 @@
 .course-goal b {
   font-size: 50px;
   position: absolute;
-  top:20px;
-  right:28px;
+  top: 20px;
+  right: 28px;
   font-style: italic;
 }
 .file-course-img img {
@@ -109,12 +109,15 @@
 .file-course-img p:nth-child(3) {
   width: 200px;
   font-size: 14px;
-  margin-top: 13px;
+  margin-top: 12px;
   color: #202020;
 }
 .file-course-img p span:last-of-type {
   display: inline-block;
   margin-top: 5px;
+  width: 200px;
+  overflow: hidden;
+  word-wrap: break-word;
 }
 .file-course-img .course-time {
   display: block;
@@ -153,10 +156,9 @@
           <p>题库集({{input1}})</p>
           <div class="file-con-info-trim2"></div>
         </div>
-      </div> -->
+      </div>-->
       <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
       <div class="file-con-course">
-        
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
             :to="{path:'/serchDetailsContent',query:{id:item.classId,classInfoId:item.id}}"
@@ -169,12 +171,12 @@
             </p>
             <p>
               <span>课程名称:</span>
-              <br>
+              <br />
               <span>{{Names.name}}</span>
             </p>
             <p>
               <span>学校名称:</span>
-              <br>
+              <br />
               <span>{{Names.university}}</span>
             </p>
             <span class="course-time">创建时间:{{item.createTime | formatDate}}</span>
@@ -215,12 +217,12 @@ export default {
         TypeId: "",
         Type: ""
       },
-      infoShow:false,
+      infoShow: false
     };
   },
   props: ["Names"],
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.Classinfos();
     _this.Id = _this.$route.query.id;
   },
@@ -233,7 +235,7 @@ export default {
   methods: {
     //根据课程id检索课程订单
     Classinfos: function() {
-      var _this = this;
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -249,7 +251,7 @@ export default {
         .then(function(res) {
           _this.value = res.data.data;
           _this.input1 = _this.value.length;
-          if(_this.value.length == 0){
+          if (_this.value.length == 0) {
             _this.infoShow = true;
           }
           for (var i = 0; i < _this.value.length; i++) {
@@ -262,11 +264,11 @@ export default {
         });
     },
     Information: function(item) {
-      var _this = this;
+      const _this = this;
       // _this.$store.state.information.informations = item;
     },
     attention: function(item, index) {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
@@ -332,7 +334,7 @@ export default {
     },
     // 检索关注
     retrieveAttention: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this
           .axios({

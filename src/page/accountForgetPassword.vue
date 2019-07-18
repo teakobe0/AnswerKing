@@ -146,7 +146,7 @@ export default {
     submitForm(ruleForm) {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
-          var _this = this;
+          const _this = this;
           _this.loadings = true;
           _this
             .axios({

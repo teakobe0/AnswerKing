@@ -86,7 +86,7 @@ export default {
     return {};
   },
   created: function() {
-    var _this = this;
+    const _this = this;
 
     document.documentElement.scrollTop = 0;
   },

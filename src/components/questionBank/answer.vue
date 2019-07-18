@@ -160,15 +160,15 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
   },
   methods: {
     onMouseOver: function() {
-      var _this = this;
+      const _this = this;
       _this.MouseOver = true;
     },
     onMouseout: function() {
-      var _this = this;
+      const _this = this;
       _this.MouseOver = false;
     },
     shows() {
@@ -181,7 +181,7 @@ export default {
       _this.fullscreenLoading = false;
     },
     joim: function() {
-      var _this = this;
+      const _this = this;
       if (localStorage.token) {
         _this.$router.push({ path: "/personalData/vip" });
       } else {
@@ -229,7 +229,7 @@ export default {
     },
     //点击答案显示遮罩方法
     handleanwer: function(index) {
-      var _this = this;
+      const _this = this;
       
       event.preventDefault();
       if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
@@ -273,7 +273,7 @@ export default {
     },
     // 关闭遮罩
     Closemask: function() {
-      var _this = this;
+      const _this = this;
       _this.countdownClock = null;
       _this.shade = false;
       _this.totalTime = 0;

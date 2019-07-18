@@ -16,7 +16,7 @@
 
 .home-ser {
   width: 100%;
-  height: 960px;
+  height: 857px;
   background-color: #4458b0;
   position: relative;
 }
@@ -35,7 +35,7 @@
   width: 100%;
   max-width: 1000px;
   position: relative;
-  bottom: -3px;
+  bottom: 0px;
 }
 
 .home-ser-img2 {
@@ -52,7 +52,7 @@
   width: 100%;
   max-width: 1100px;
   position: relative;
-  bottom: -10px;
+  bottom: -1px;
 }
 
 .home-ser-con {
@@ -67,13 +67,14 @@
   margin-left: 50px;
   overflow: hidden;
   margin: 0 auto;
+  position: relative;
 }
 
 .ser-left-deta {
   width: 1200px;
   height: 350px;
   margin: 0 auto;
-  margin-top: 80px;
+  margin-top: 10px;
   text-align: center;
 }
 
@@ -386,7 +387,7 @@
 .homeClassText .contribution:hover {
   background-color: #24399473;
 }
-.homeClassText .contribution:hover .warp a  {
+.homeClassText .contribution:hover .warp a {
   color: #ff2994;
 }
 .homeClassText .contribution:active {
@@ -533,7 +534,6 @@
   /* display: flex; */
   justify-content: space-between;
   font-size: 15px;
-  
 }
 .warp a {
   display: block;
@@ -544,6 +544,58 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.nextPage {
+  font-size: 24px;
+  color: #313a6a;
+  position: absolute;
+  left: 50%;
+  bottom: 60px;
+  margin-left: -90px;
+  cursor: pointer;
+}
+.rightan {
+  -webkit-animation: rightan 3s infinite;
+  -webkit-animation-fill-mode: both;
+}
+.rightan img {
+  width: 50px;
+  position: absolute;
+  bottom: -50px;
+  left: 50%;
+  margin-left: -25px;
+  /* width: 0;
+  height: 0;
+  border-left: 10px solid transparent;
+  border-right: 10px solid transparent;
+  border-bottom: 10px solid #217aff; */
+}
+@-webkit-keyframes rightan {
+  25% {
+    transform: translateY(-3px);
+  }
+  50% {
+    transform: translateY(0);
+  }
+  75% {
+    transform: translateY(3px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+
+/* @keyframes ripple {
+  0% {
+    opacity: 0.35;
+    width: 190px;
+    height: 190px;
+  }
+  100% {
+    opacity: 0.2;
+    width: 250px;
+    height: 250px;
+  }
+} */
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
@@ -557,7 +609,7 @@
                 <p>找到属于你的学校与课程,为你</p>
                 <h1 class="home-heading">轻松获得准确、高效的QUIZ解答</h1>
               </div>
-              <div class="homeserch" v-if="homeSerchShow">
+              <div class="homeserch">
                 <el-autocomplete
                   class="inline-input"
                   v-model="state1"
@@ -624,7 +676,6 @@
                     </ul>
                   </vue-seamless>
                 </div>
-
                 <div class="contribution">
                   <p class="homeClassText-1">{{this.clientNum}}</p>
                   <p class="homeClassText-2">贡献者</p>
@@ -635,19 +686,15 @@
                     @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
-                      <li v-for="(item,index) in classVessel" :key="index">
+                      <li v-for="(item,index) in contributeVessel" :key="index">
                         <!-- <router-link onclick="return false;"
                           :to="{ path: 'serchDetailsUniversity',query: {id: item.class_id}}"
-                        >TOKEN</router-link> -->
-                        <a href="#" onclick="return false;">
-                          TOKEN
-                        </a>
+                        >TOKEN</router-link>-->
+                        <a href="#" onclick="return false;">{{item.name}}</a>
                       </li>
                     </ul>
                   </vue-seamless>
                 </div>
-
-
               </div>
               <div class="homeUniversity">
                 <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
@@ -657,6 +704,13 @@
               </div>
               <div class="home-ser-img2">
                 <img src="../assets/home1.png" alt class="home-ser-img-2" />
+              </div>
+              <div class="nextPage" @click="nextPageFn">
+                <p>快速了解</p>
+                <p>COURSEWHALE</p>
+                <div class="rightan">
+                  <img src="../assets/017-大下箭头.png" alt />
+                </div>
               </div>
             </div>
           </div>
@@ -750,7 +804,6 @@ export default {
   },
   data() {
     return {
-      yourText: "这个标题非常的长非常的长，必需要横向滚动起来了",
       state1: "",
       state2: "",
       homeSerchShow: true,
@@ -803,10 +856,9 @@ export default {
         }
       ],
       id: 11,
-      univerNum: "",
       classNum: "",
       classinfoNum: "",
-      clientNum:"",
+      clientNum: ""
     };
   },
   computed: {
@@ -822,18 +874,17 @@ export default {
     }
   },
   created: function() {
-    var _this = this;
+    const _this = this;
     _this.GetClassinfo();
     document.documentElement.scrollTop = 0;
   },
   methods: {
-    handScrollEnd: function(val) {
-      var _this = this;
-      
+    handScrollEnd: function() {
+      // const _this = this;
     },
     // 获取所有课程，题库集，贡献者信息
-    GetClassinfo: function(index) {
-      var _this = this;
+    GetClassinfo(index) {
+      const _this = this;
       _this
         .axios({
           method: "get",
@@ -854,8 +905,7 @@ export default {
         });
     },
     querySearch(queryString, cb) {
-      var _this = this;
-
+      const _this = this;
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
       clearTimeout(_this.timeout);
@@ -970,7 +1020,7 @@ export default {
       };
     },
     handleSelect(item) {
-      var _this = this;
+      const _this = this;
       this.axios({
         method: "get",
         url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
@@ -1017,7 +1067,7 @@ export default {
         });
     },
     handleEnter(item) {
-      // var _this = this;
+      // const _this = this;
       // var patt = /^[\s]*$/;
       // var pvalue = patt.test(_this.state1);
       // if (pvalue) {
@@ -1039,13 +1089,36 @@ export default {
       //   });
       // }
     },
-    handle: function() {
+    handle() {
       this.homeSerchHide = false;
       this.homeSerchShow = true;
     },
-    homeLoseFocus: function() {
+    homeLoseFocus() {
       this.homeSerchHide = true;
       this.homeSerchShow = false;
+    },
+    nextPageFn() {
+      const _this = this;
+      const ScrollTop = (number = 0, time) => {
+        if (!time) {
+          document.body.scrollTop = document.documentElement.scrollTop = number;
+          return number;
+        }
+        const spacingTime = 20; // 设置循环的间隔时间  值越小消耗性能越高
+        let spacingInex = time / spacingTime; // 计算循环的次数
+        let nowTop =
+          document.body.scrollTop + document.documentElement.scrollTop; // 获取当前滚动条位置
+        let everTop = (number - nowTop) / spacingInex; // 计算每次滑动的距离
+        let scrollTimer = setInterval(() => {
+          if (spacingInex > 0) {
+            spacingInex--;
+            ScrollTop((nowTop += everTop));
+          } else {
+            clearInterval(scrollTimer); // 清除计时器
+          }
+        }, spacingTime);
+      };
+      ScrollTop(870, 200);
     }
   },
   mounted(item) {}

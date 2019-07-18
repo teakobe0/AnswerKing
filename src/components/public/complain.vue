@@ -124,17 +124,17 @@ export default {
     };
   },
   created: function() {
-    var _this = this;
+    const _this = this;
   },
   methods: {
     complainClick: function() {
-      var _this = this;
+      const _this = this;
       _this.complainShow = !_this.complainShow;
     },
     submitForm(feedback) {
       this.$refs[feedback].validate(valid => {
         if (valid) {
-          var _this = this;
+          const _this = this;
           _this.feedback.Url = String(_this.$route.fullPath);
           _this
             .axios({
@@ -162,7 +162,7 @@ export default {
       });
     },
     cancelForm: function() {
-      var _this = this;
+      const _this = this;
       _this.complainShow = !_this.complainShow;
     }
   }
