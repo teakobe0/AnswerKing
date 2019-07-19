@@ -183,7 +183,7 @@ export default {
           _this.loadings = true;
           this.axios({
             method: "POST",
-            url: `http://192.168.1.27:8088/api/client/Register`,
+            url: `${_this.URLport.serverPath}/client/Register`,
             async: false,
             data: this.ruleForm,
             xhrFields: {
@@ -194,33 +194,29 @@ export default {
             }
           })
             .then(function(res) {
-              console.log(res);
-              // 注册成功保存TOKEN相当于自动登录，不让它自动登录
-              // localStorage.token = res.data.data.token;
+              // 注册成功保存TOKEN相当于自动登录
+              localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 _this.$message({
                   message: "注册成功",
                   type: "success"
                 });
+                if (localStorage.SkipPath) {
+                  _this.$router.push({
+                    path: localStorage.SkipPath
+                  });
+                  localStorage.removeItem("SkipPath");
+                }
                 // _this.$store.state.logo.show = false;
                 // _this.$store.state.logo.hide = true;
 
-                _this.$router.push({ path: "/login" });
+                // _this.$router.push({ path: "/login" });
               } else if (res.data.status == 2) {
-                console.log(2222);
                 _this.loadings = false;
                 _this.$message({
                   message: res.data.msg,
                   type: "success"
                 });
-              }
-              if (localStorage.SkipPath) {
-                _this.$router.push({
-                  path: localStorage.SkipPath
-                });
-                localStorage.removeItem("SkipPath");
-              } else {
-                _this.$router.push({ path: "/home" });
               }
             })
             .catch(function(error) {

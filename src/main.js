@@ -18,8 +18,11 @@ import './icon/iconfont.css'
 import store from './store'
 //引入Axios
 import axios from 'axios'
+Vue.prototype.axios = axios;
 
-Vue.prototype.axios=axios;
+// 统一后台接口地址
+import URLport from './URLport'
+Vue.prototype.URLport = URLport
 
 Vue.config.productionTip = false
 
@@ -33,6 +36,6 @@ new Vue({
   router,
   store,
   render: h => h(App)
-  
+
 }).$mount('#app')
 

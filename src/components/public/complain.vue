@@ -139,7 +139,7 @@ export default {
           _this
             .axios({
               method: "post",
-              url: `http://192.168.1.27:8088/api/Feedback/Add`,
+              url: `${_this.URLport.serverPath}/Feedback/Add`,
               async: false,
               data: _this.feedback,
               xhrFields: {

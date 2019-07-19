@@ -102,7 +102,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://192.168.1.27:8088/api/Client/GetClient`,
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -128,7 +128,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Notice/Notices`,
+          url: `${_this.URLport.serverPath}/Notice/Notices`,
           async: false,
           xhrFields: {
             withCredentials: true
@@ -177,7 +177,7 @@ export default {
       _this
         .axios({
           method: "put",
-          url: `http://192.168.1.27:8088/api/Notice/ChangeStatus`,
+          url: `${_this.URLport.serverPath}/Notice/ChangeStatus`,
           async: false,
           params: {
             id: ids

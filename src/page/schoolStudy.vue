@@ -351,7 +351,7 @@ export default {
     _this
       .axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/University/Countrys`,
+        url: `${_this.URLport.serverPath}/University/Countrys`,
         async: false,
         xhrFields: {
           withCredentials: true
@@ -401,7 +401,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
                 async: false,
                 params: {
                   name: valuestr
@@ -446,7 +446,7 @@ export default {
       });
       this.axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.queryString
@@ -478,7 +478,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/University/GetUniversitys`,
+          url: `${_this.URLport.serverPath}/University/GetUniversitys`,
           async: false,
           params: {
             name: _this.value1,
@@ -516,7 +516,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/University/States`,
+          url: `${_this.URLport.serverPath}/University/States`,
           async: false,
           params: {
             name: _this.value1

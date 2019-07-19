@@ -356,7 +356,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
                 async: false,
                 params: {
                   name: valuestr
@@ -404,7 +404,7 @@ export default {
       });
       this.axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.queryString
@@ -435,7 +435,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/ClassPage`,
+          url: `${_this.URLport.serverPath}/Class/ClassPage`,
           async: false,
           params: {
             name: _this.input1,
@@ -461,7 +461,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/ClassPage`,
+          url: `${_this.URLport.serverPath}/Class/ClassPage`,
           async: false,
           params: {
             name: _this.input1,

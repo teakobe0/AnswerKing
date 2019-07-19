@@ -268,7 +268,7 @@ export default {
         _this
           .axios({
             method: "get",
-            url: `http://192.168.1.27:8088/api/Order/GetGoods`,
+            url: `${_this.URLport.serverPath}/Order/GetGoods`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -279,10 +279,10 @@ export default {
           })
           .then(function(res) {
             _this.moneys = res.data.data;
-            _this.moneys[0].original = 1;
-            _this.moneys[1].original = 2;
-            _this.moneys[2].original = 3;
-            _this.moneys[3].original = 4;
+            _this.moneys[0].original = 15.99;
+            _this.moneys[1].original = 47.97;
+            _this.moneys[2].original = 95.94;
+            _this.moneys[3].original = 191.88;
             _this.paypal();
           })
           .catch(function(error) {
@@ -329,7 +329,7 @@ export default {
               return _this
                 .axios({
                   method: "POST",
-                  url: `http://192.168.1.27:8088/api/Order/SaveOrder`,
+                  url: `${_this.URLport.serverPath}/Order/SaveOrder`,
                   async: false,
                   params: {
                     orderId: data.orderID

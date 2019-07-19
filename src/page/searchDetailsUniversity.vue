@@ -170,7 +170,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/University/GetUniversity`,
+          url: `${_this.URLport.serverPath}/University/GetUniversity`,
           async: false,
           params: {
             id: _this.$route.query.id

@@ -92,7 +92,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/Class/Class`,
+          url: `${_this.URLport.serverPath}/Class/Class`,
           async: false,
           params: {
             universityid: _this.$store.state.recommendClass.skipuniversityId

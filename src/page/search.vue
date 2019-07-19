@@ -573,7 +573,7 @@ export default {
       const _this = this;
       this.axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.$route.query.serchName
@@ -607,7 +607,7 @@ export default {
             //   _this
             //     .axios({
             //       method: "get",
-            //       url: `http://192.168.1.27:8088/api/Class/Getclass`,
+            //       url: `${_this.URLport.serverPath}/Class/Getclass`,
             //       async: false,
             //       params: {
             //         id: _this.value2[i].classId

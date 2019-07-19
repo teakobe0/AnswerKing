@@ -549,20 +549,18 @@
   color: #313a6a;
   position: absolute;
   left: 50%;
-  bottom: 60px;
+  bottom: 10px;
   margin-left: -90px;
   cursor: pointer;
 }
 .rightan {
+  width: 188px;
+  height: 50px;
   -webkit-animation: rightan 3s infinite;
   -webkit-animation-fill-mode: both;
 }
 .rightan img {
   width: 50px;
-  position: absolute;
-  bottom: -50px;
-  left: 50%;
-  margin-left: -25px;
   /* width: 0;
   height: 0;
   border-left: 10px solid transparent;
@@ -583,19 +581,6 @@
     transform: translateY(0);
   }
 }
-
-/* @keyframes ripple {
-  0% {
-    opacity: 0.35;
-    width: 190px;
-    height: 190px;
-  }
-  100% {
-    opacity: 0.2;
-    width: 250px;
-    height: 250px;
-  }
-} */
 </style>
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
@@ -879,6 +864,7 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
+    // 翻转动画的方法
     handScrollEnd: function() {
       // const _this = this;
     },
@@ -888,7 +874,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `http://192.168.1.27:8088/api/classinfo/classinfo`,
+          url: `${_this.URLport.serverPath}/classinfo/classinfo`,
           async: false,
           xhrFields: {
             withCredentials: true
@@ -924,7 +910,7 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
                 async: false,
                 params: {
                   name: valuestr
@@ -1023,7 +1009,7 @@ export default {
       const _this = this;
       this.axios({
         method: "get",
-        url: `http://192.168.1.27:8088/api/ClassInfoContent/Search`,
+        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
         async: false,
         params: {
           name: _this.queryString
@@ -1104,7 +1090,7 @@ export default {
           document.body.scrollTop = document.documentElement.scrollTop = number;
           return number;
         }
-        const spacingTime = 20; // 设置循环的间隔时间  值越小消耗性能越高
+        const spacingTime = 5; // 设置循环的间隔时间  值越小消耗性能越高
         let spacingInex = time / spacingTime; // 计算循环的次数
         let nowTop =
           document.body.scrollTop + document.documentElement.scrollTop; // 获取当前滚动条位置

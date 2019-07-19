@@ -104,7 +104,7 @@ export default {
           _this
             .axios({
               method: "put",
-              url: `http://192.168.1.27:8088/api/client/ChangePwd`,
+              url: `${_this.URLport.serverPath}/client/ChangePwd`,
               async: false,
               params: {
                 NewPassword: _this.changePasswords.NewPassword,
