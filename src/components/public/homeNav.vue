@@ -434,13 +434,16 @@ import complain from "@/components/public/complain.vue";
                 } else {
                     console.log('没有TOKEN')
                 }
-                if (localStorage.SkipPath) {
-                  _this.$router.push({
-                    path: localStorage.SkipPath,
-                  });
+                if(localStorage.SkipPath.indexOf("/personalData") == -1){
+                    if (localStorage.SkipPath) {
+                        _this.$router.push({
+                            path: localStorage.SkipPath,
+                        });
+                    }
                 }else {
-                  _this.$router.push({ path: "/home" });
+                    _this.$router.push({ path: "/home" });
                 }
+                
                 window.location.reload()
             },
             handleEnter:function(){

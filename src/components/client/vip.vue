@@ -181,7 +181,7 @@
             @click="tabdredge(index,item.price)"
           >
             <p>{{item.name}}</p>
-            <p>${{item.price}}</p>
+            <p>${{item.Onprice}}  <span style="color:#a1a1a1;font-size:14px;">/月</span> </p>
             <p>
               <s>原价${{item.original}}</s>
             </p>
@@ -241,7 +241,7 @@ export default {
     return {
       activeName: "first",
       num: 0,
-      money: 0.01,
+      money: 13.99,
       tab0: "0",
       tab1: "1",
       tab2: "2",
@@ -279,10 +279,15 @@ export default {
           })
           .then(function(res) {
             _this.moneys = res.data.data;
-            _this.moneys[0].original = 15.99;
-            _this.moneys[1].original = 47.97;
-            _this.moneys[2].original = 95.94;
-            _this.moneys[3].original = 191.88;
+            console.log(_this.moneys)
+            _this.moneys[0].original = 16.99;
+            _this.moneys[1].original = 50.99;
+            _this.moneys[2].original = 101.99;
+            _this.moneys[3].original = 203.99;
+            _this.moneys[0].Onprice = 13.99;
+            _this.moneys[1].Onprice = 12.99;
+            _this.moneys[2].Onprice = 11.99;
+            _this.moneys[3].Onprice = 10.99;
             _this.paypal();
           })
           .catch(function(error) {
@@ -320,11 +325,11 @@ export default {
             // alert("Transaction completed by ");
             return actions.order.capture().then(function(details) {
               // 向买家展示成功的信息
-              alert(
-                "Transaction completed by " +
-                  details.payer.name.given_name +
-                  "!"
-              );
+              // alert(
+              //   "Transaction completed by " +
+              //     details.payer.name.given_name +
+              //     "!"
+              // );
               
               return _this
                 .axios({

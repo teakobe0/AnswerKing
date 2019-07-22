@@ -16,7 +16,7 @@
 
 .home-ser {
   width: 100%;
-  height: 857px;
+  height: 860px;
   background-color: #4458b0;
   position: relative;
 }
@@ -35,7 +35,7 @@
   width: 100%;
   max-width: 1000px;
   position: relative;
-  bottom: 0px;
+  bottom: -15px;
 }
 
 .home-ser-img2 {
@@ -74,7 +74,7 @@
   width: 1200px;
   height: 350px;
   margin: 0 auto;
-  margin-top: 10px;
+  margin-top: 50px;
   text-align: center;
 }
 
@@ -467,14 +467,14 @@
 
 .conclusion {
   width: 1300px;
-  height: 420px;
+  height: 500px;
   margin: 0 auto;
 }
 
 .conclusion-left {
   width: 600px;
   float: left;
-  margin-top: 150px;
+  margin-top: 200px;
   margin-left: 50px;
 }
 
@@ -496,6 +496,7 @@
 .conclusion-right {
   float: right;
   margin-right: 50px;
+  margin-top: 50px;
 }
 
 .conclusion-right img {
@@ -545,12 +546,13 @@
   white-space: nowrap;
 }
 .nextPage {
-  font-size: 24px;
+  text-align: center;
+  font-size: 18px;
   color: #313a6a;
   position: absolute;
   left: 50%;
   bottom: 10px;
-  margin-left: -90px;
+  margin-left: -94px;
   cursor: pointer;
 }
 .rightan {
@@ -685,11 +687,11 @@
                 <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
-                <img src="../assets/home2.png" alt class="home-ser-img-1" />
+                <img src="../assets/home23.png" alt class="home-ser-img-1" />
               </div>
-              <div class="home-ser-img2">
+              <!-- <div class="home-ser-img2">
                 <img src="../assets/home1.png" alt class="home-ser-img-2" />
-              </div>
+              </div>-->
               <div class="nextPage" @click="nextPageFn">
                 <p>快速了解</p>
                 <p>COURSEWHALE</p>
@@ -710,32 +712,44 @@
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
-          <div class="conclusion-left">
+          <div class="conclusion-left text-fluid1">
             <h1>更直接</h1>
             <h3 class="text-center">通过关键字直接定位课程，全程高度匹配，给你想要的答案</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home3.jpg" />
+            <img
+              :class="{ 'animation fade-in-left': isActive1}"
+              class="img-fluid img-fluid1"
+              src="../assets/home3.jpg"
+            />
           </div>
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
-          <div class="conclusion-left" style="float: right">
+          <div class="conclusion-left text-fluid2" style="float: right">
             <h1 style="text-align:right">更专业</h1>
             <h3 class="text-center" style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home5.jpg" />
+            <img
+              :class="{ 'animation fade-in-right': isActive2 }"
+              class="img-fluid img-fluid2"
+              src="../assets/home5.jpg"
+            />
           </div>
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
-          <div class="conclusion-left">
+          <div class="conclusion-left text-fluid3">
             <h1>更强大</h1>
             <h3 class="text-center">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
           </div>
           <div class="conclusion-right">
-            <img class="img-fluid" src="../assets/home4.jpg" />
+            <img
+              :class="{ 'animation fade-in-left': isActive3 }"
+              class="img-fluid img-fluid3"
+              src="../assets/home4.jpg"
+            />
           </div>
         </div>
         <div class="divider_line"></div>
@@ -745,12 +759,12 @@
         <div class="home-pub">
           <div class="home-pub-con">
             <div class="pub-con-left">
-              <div class="con-left-top">
+              <div class="con-left-top text-fluid4">
                 <h1>更多元</h1>
                 <h3 style="text-align:right">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
               </div>
               <div class="con-left-middle">
-                <img src="../assets/3.jpg" alt />
+                <img class="img-fluid4" src="../assets/3.jpg" alt />
               </div>
               <div class="con-left-bottom">
                 <h2>我们的使命是帮助学生练习和掌握任何学习内容。</h2>
@@ -758,9 +772,9 @@
             </div>
             <div class="pub-con-right">
               <div class="con-right-top">
-                <img style="width:400px;height:544px;" src="../assets/4.jpg" alt />
+                <img style="width:400px;height:544px;" class="img-fluid5" src="../assets/4.jpg" alt />
               </div>
-              <div class="con-right-middle">
+              <div class="con-right-middle text-fluid5">
                 <h1>更贴心</h1>
                 <h3>根据你的专业，学科推送相关内容，省去二次查找的麻烦；定制化服务让你高枕无忧，留学生活更加丰富</h3>
               </div>
@@ -843,7 +857,10 @@ export default {
       id: 11,
       classNum: "",
       classinfoNum: "",
-      clientNum: ""
+      clientNum: "",
+      isActive1: false,
+      isActive2: false,
+      isActive3: false
     };
   },
   computed: {
@@ -1105,8 +1122,42 @@ export default {
         }, spacingTime);
       };
       ScrollTop(870, 200);
+    },
+    handleScroll() {
+      const _this = this;
+      var elPosition1 = $(".img-fluid1").offset().top;
+      var elPosition2 = $(".img-fluid2").offset().top;
+      var elPosition3 = $(".img-fluid3").offset().top;
+      var elPosition4 = $(".img-fluid4").offset().top;
+      var elPosition5 = $(".img-fluid5").offset().top;
+      var windowTop = $(window).scrollTop();
+      var windowHeight = $(window).height();
+      if (elPosition1 < windowTop + windowHeight) {
+        //当元素在屏幕的可视区域时添加 fade-in 动画
+        $(".img-fluid1").addClass("animation fade-in-left");
+        $(".text-fluid1").addClass("animation fade-in-right");
+      }
+      if (elPosition2 < windowTop + windowHeight) {
+        $(".img-fluid2").addClass("animation fade-in-right");
+        $(".text-fluid2").addClass("animation fade-in-left");
+      }
+      if (elPosition3 < windowTop + windowHeight) {
+        $(".img-fluid3").addClass("animation fade-in-left");
+        $(".text-fluid3").addClass("animation fade-in-right");
+      }
+      if (elPosition4 < windowTop + windowHeight) {
+        $(".img-fluid4").addClass("animation fade-in-up");
+        $(".text-fluid4").addClass("animation fade-in-right");
+      }
+      if (elPosition5 < windowTop + windowHeight) {
+        $(".img-fluid5").addClass("animation fade-in-down");
+        $(".text-fluid5").addClass("animation fade-in-left");
+      }
     }
   },
-  mounted(item) {}
+  mounted() {
+    const _this = this;
+    window.addEventListener("scroll", _this.handleScroll);
+  }
 };
 </script>

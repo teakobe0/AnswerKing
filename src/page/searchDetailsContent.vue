@@ -452,8 +452,9 @@
               </el-select>
             </div>
             <div class="serchDetailsContent-tag-right">
+              <p class="underReview" v-if="conShow == false">本周暂无内容，请去其他周看看</p>
               <p class="underReview" v-if="auditText == true">该题库正在审核中</p>
-              <ul>
+              <ul v-if="conShow == true">
                 <li
                   v-for="(item,index) in tabs"
                   :class="{tabsType:index == numnum}"
@@ -556,7 +557,9 @@ export default {
       disableds: false,
       // 当前周
       currentWeek: [],
-      currentWeekShow: false
+      currentWeekShow: false,
+      conShow: true,
+      outputLists:[],
     };
   },
   created: function() {
@@ -682,7 +685,7 @@ export default {
             //         _this.Answer[i].url == "" ||
             //         _this.Answer[i].url == ""
             //       ) {
-            //         
+            //
             //       } else {
             //         _this.Answer[i].conurl = true;
             //         _this.Answer[i].context = false;
@@ -710,14 +713,21 @@ export default {
                 }
               })
               .then(function(res) {
-                _this.tabs = [];
-                _this.tabs[0] = res.data.data[2];
-                _this.tabs[1] = res.data.data[3];
-                _this.tabs[2] = res.data.data[0];
-                _this.tabs[3] = res.data.data[1];
-                _this.value1 = Number(_this.valueWeek[0].id);
-
-                _this.RetrieveTheTnswer(_this.tabs[0].id);
+                if (res.data.data.length == 0) {
+                  _this.conShow = false;
+                  _this.$store.state.answer.tabconwu = false;
+                  _this.$store.state.answer.answer = [];
+                  _this.$store.state.answer.imgss = [];
+                } else {
+                  _this.tabs = [];
+                  _this.conShow = true;
+                  _this.tabs[0] = res.data.data[2];
+                  _this.tabs[1] = res.data.data[3];
+                  _this.tabs[2] = res.data.data[0];
+                  _this.tabs[3] = res.data.data[1];
+                  _this.value1 = Number(_this.valueWeek[0].id);
+                  _this.RetrieveTheTnswer(_this.tabs[0].id);
+                }
               })
               .catch(function(error) {
                 console.log(error);
@@ -731,7 +741,6 @@ export default {
     //将图片的ID和路径保存到outputList的方法
     getUrlList: function(rawList) {
       const _this = this;
-      console.log(_this.URLport.serverPath)
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
@@ -739,7 +748,7 @@ export default {
           outputList.push({
             id: rawList.id,
             contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
-            contents: rawList.contents,
+            contents: rawList.contents
             // conurl: rawList.conurl
           });
         }
@@ -751,13 +760,12 @@ export default {
     getUrlListCover: function(rawList) {
       const _this = this;
       var imgUrlArray = rawList.url.split("|");
-      var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
         if (imgUrlArray[i].length != 0) {
-          outputList.push(_this.URLport.ImgPath + imgUrlArray[i]);
+          _this.outputLists.push(_this.URLport.ImgPath + imgUrlArray[i]);
         }
       }
-      return outputList;
+      return _this.outputLists;
     },
     //根据课程id检索课程订单
     Classinfos: function() {
@@ -788,6 +796,7 @@ export default {
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
       const _this = this;
+
       for (var i = 0; i < _this.valueWeek.length; i++) {
         if (classWeekId == _this.valueWeek[i].id) {
           _this.currentWeek = _this.valueWeek[i];
@@ -806,12 +815,20 @@ export default {
           }
         })
         .then(function(res) {
-          _this.tabs = [];
-          _this.tabs[0] = res.data.data[2];
-          _this.tabs[1] = res.data.data[3];
-          _this.tabs[2] = res.data.data[0];
-          _this.tabs[3] = res.data.data[1];
-          _this.RetrieveTheTnswer(_this.tabs[0].id);
+          if (res.data.data.length == 0) {
+            _this.conShow = false;
+            _this.$store.state.answer.tabconwu = false;
+            _this.$store.state.answer.answer = [];
+            _this.$store.state.answer.imgss = [];
+          } else {
+            _this.tabs = [];
+            _this.conShow = true;
+            _this.tabs[0] = res.data.data[2];
+            _this.tabs[1] = res.data.data[3];
+            _this.tabs[2] = res.data.data[0];
+            _this.tabs[3] = res.data.data[1];
+            _this.RetrieveTheTnswer(_this.tabs[0].id);
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -820,6 +837,7 @@ export default {
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
+      _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this.numnum = index;
       _this
@@ -842,16 +860,34 @@ export default {
           } else {
             _this.$store.state.answer.tabconwu = false;
           }
-          for (var i = 0; i < _this.Answer.length; i++) {
-            if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              // _this.Answer[i].conurl = false;
-              _this.$store.state.answer.tabconwu = true;
-            } else {
-              // _this.Answer[i].conurl = true;
-              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+          if (_this.Answer.length == 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                _this.$store.state.answer.tabconwu = true;
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
             }
           }
+          if (_this.Answer.length > 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
+            }
+            if (
+              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+              (_this.Answer[0].url == null &&
+                _this.Answer[1].url == null &&
+                _this.Answer[2].url == null)
+            ) {
+              _this.$store.state.answer.tabconwu = true;
+            }
+          }
+
           _this.$store.state.answer.answer = _this.Answer;
           _this.$store.state.answer.imgss = _this.imgss;
         })
@@ -862,6 +898,7 @@ export default {
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
+      _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this
         .axios({
@@ -884,16 +921,31 @@ export default {
           } else {
             _this.$store.state.answer.tabconwu = false;
           }
-          for (var i = 0; i < _this.Answer.length; i++) {
+          if (_this.Answer.length == 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                _this.$store.state.answer.tabconwu = true;
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
+            }
+          }
+          if (_this.Answer.length > 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
+            }
             if (
-              _this.Answer[i].url == null ||
-              _this.Answer[i].url == "" ||
-              _this.Answer[i].url == ""
+              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+              (_this.Answer[0].url == null &&
+                _this.Answer[1].url == null &&
+                _this.Answer[2].url == null)
             ) {
               _this.$store.state.answer.tabconwu = true;
-            } else {
-              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-              _this.imgss = _this.getUrlListCover(_this.Answer[i]);
             }
           }
           _this.$store.state.answer.answer = _this.Answer;

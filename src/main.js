@@ -24,6 +24,9 @@ Vue.prototype.axios = axios;
 import URLport from './URLport'
 Vue.prototype.URLport = URLport
 
+// 引入jquery
+import $ from 'jquery'
+
 Vue.config.productionTip = false
 
 Vue.directive('title', {

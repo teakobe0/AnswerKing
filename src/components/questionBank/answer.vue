@@ -161,6 +161,7 @@ export default {
   },
   created: function() {
     const _this = this;
+    
   },
   methods: {
     onMouseOver: function() {
@@ -279,7 +280,8 @@ export default {
       _this.totalTime = 0;
       window.clearInterval(_this.clock); //清除定时器
       // _this.imageShow = true;
-      _this.handleHide();
+      _this.shows();
+      // _this.handleHide();
     }
   },
   // 监听路由变化
