@@ -12,7 +12,8 @@ Vue.use(ElementUI)
 // 引入icon第三方
 import './icon/iconfont.css'
 
-
+// import pay from 'https://www.paypal.com/sdk/js?client-id=AVplzXK74mZi6ltEo8QhoMMUdjc-OxXpinwbbgEtgePr8kT9zBMur4DtdQOOyNV76xUBRlcGm_llrO9o&currency=USD'
+// Vue.prototype.pay = pay;
 
 //引入库
 import store from './store'
@@ -24,8 +25,6 @@ Vue.prototype.axios = axios;
 import URLport from './URLport'
 Vue.prototype.URLport = URLport
 
-// 引入jquery
-import $ from 'jquery'
 
 Vue.config.productionTip = false
 
@@ -41,4 +40,5 @@ new Vue({
   render: h => h(App)
 
 }).$mount('#app')
+
 

@@ -184,7 +184,7 @@
             </div>
             <div class="serchDetails-con-details">
                 <div class="details-img">
-                    <img src="../assets/1.jpg" class="blur"/>
+                    <!-- <img src="../assets/3.jpg" class="blur"/> -->
                 </div>
                 <p class="browse">This is the end of the preview. <a href="javascript:0"><strong>Upgrade</strong></a> to
                     access the rest of the document.</p>
@@ -202,7 +202,7 @@
 
                     <div class="show-file">
                         <ul>
-                            <li>
+                            <!-- <li>
                                 <img src="../assets/2.jpg" alt=""/>
                             </li>
                             <li>
@@ -213,7 +213,7 @@
                             </li>
                             <li>
                                 <img src="../assets/2.jpg" alt=""/>
-                            </li>
+                            </li> -->
                         </ul>
                         <el-button type="primary" class="show-file-butt">更多文档</el-button>
                     </div>

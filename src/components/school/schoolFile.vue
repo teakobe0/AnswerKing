@@ -72,7 +72,7 @@
             </div>
             <div class="file-con-course">
                 <a href="javascript:0" class="file-course-img" v-for="item in file">
-                    <img src="../../assets/1.jpg" alt=""/>
+                    <img src="../../assets/3.jpg" alt=""/>
                     <p>{{item.name}}</p>
                 </a>
             </div>

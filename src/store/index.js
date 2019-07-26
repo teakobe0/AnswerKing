@@ -9,8 +9,6 @@ import modified_store from '../storeComponents/modified_store.js';
 import serch_message from '../storeComponents/serch_message.js';
 // VIP
 import vip_store from '../storeComponents/vip_store.js';
-// 推荐课程
-import recommendClass_store from '../storeComponents/recommendClass.js';
 // 评论
 import review_store from '../storeComponents/review.js';
 // 登录人信息
@@ -24,7 +22,6 @@ export default new vuex.Store({
         modified:modified_store,
         serchMessage:serch_message,
         vip:vip_store,
-        recommendClass:recommendClass_store,
         review:review_store,
         loginPerson:loginPerson_store,
         answer:answer_store,

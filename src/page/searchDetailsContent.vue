@@ -471,9 +471,13 @@
             <reviews></reviews>
           </div>
           <div class="content-tag-con-right">
-            <otherQuestions></otherQuestions>
+            <otherQuestions
+              v-if="otherQuestionsFlag"
+              :className="value.name"
+              :classinfoss="classinfoss"
+            ></otherQuestions>
             <p class="content-tag-con-right-con-p">推荐课程</p>
-            <recommendClass></recommendClass>
+            <recommendClass v-if="recommendClassFlag" :universityId="value.universityId"></recommendClass>
           </div>
         </div>
       </div>
@@ -559,7 +563,13 @@ export default {
       currentWeek: [],
       currentWeekShow: false,
       conShow: true,
-      outputLists:[],
+      outputLists: [],
+      // 推荐课程子组件的显示
+      recommendClassFlag: false,
+      // 其他题库子组件的显示
+      otherQuestionsFlag: false,
+      // 题库集订单传给子组件
+      classinfoss: []
     };
   },
   created: function() {
@@ -593,9 +603,7 @@ export default {
           _this.$set(_this.value, "attentions", false);
 
           _this.titleShow = true;
-          _this.$store.state.recommendClass.skipuniversityId =
-            res.data.data.universityId;
-          document.documentElement.scrollTop = 0;
+          _this.recommendClassFlag = true;
           _this.UseRecord();
           _this.retrieveAttention();
         })
@@ -718,6 +726,7 @@ export default {
                   _this.$store.state.answer.tabconwu = false;
                   _this.$store.state.answer.answer = [];
                   _this.$store.state.answer.imgss = [];
+                  _this.value1 = Number(_this.valueWeek[0].id);
                 } else {
                   _this.tabs = [];
                   _this.conShow = true;
@@ -783,6 +792,8 @@ export default {
           }
         })
         .then(function(res) {
+          _this.classinfoss = res.data.data;
+          _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];

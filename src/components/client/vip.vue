@@ -171,6 +171,9 @@
 
 <template>
   <div id="changePassword">
+    <remotescript
+      src="https://www.paypal.com/sdk/js?client-id=AVplzXK74mZi6ltEo8QhoMMUdjc-OxXpinwbbgEtgePr8kT9zBMur4DtdQOOyNV76xUBRlcGm_llrO9o&currency=USD"
+    ></remotescript>
     <div class="pd-con-head-right">
       <h3>成为会员</h3>
       <div class="dredgevip">
@@ -181,7 +184,10 @@
             @click="tabdredge(index,item.price)"
           >
             <p>{{item.name}}</p>
-            <p>${{item.Onprice}}  <span style="color:#a1a1a1;font-size:14px;">/月</span> </p>
+            <p>
+              ${{item.Onprice}}
+              <span style="color:#a1a1a1;font-size:14px;">/月</span>
+            </p>
             <p>
               <s>原价${{item.original}}</s>
             </p>
@@ -231,11 +237,44 @@
     </div>
   </div>
 </template>
+
 <script type="es6">
 import { constants } from "crypto";
+
 export default {
   name: "changePassword",
-  components: {},
+  components: {
+    remotescript: {
+      render: function(createElement) {
+        var self = this;
+        return createElement("script", {
+          attrs: {
+            type: "text/javascript",
+            src: this.src
+          },
+          on: {
+            load: function(event) {
+              self.$emit("load", event);
+            },
+            error: function(event) {
+              self.$emit("error", event);
+            },
+            readystatechange: function(event) {
+              if (this.readyState == "complete") {
+                self.$emit("load", event);
+              }
+            }
+          }
+        });
+      },
+      props: {
+        src: {
+          type: String,
+          required: true
+        }
+      }
+    }
+  },
   data() {
     //在ES6中添加数据是在return{}中
     return {
@@ -279,7 +318,6 @@ export default {
           })
           .then(function(res) {
             _this.moneys = res.data.data;
-            console.log(_this.moneys)
             _this.moneys[0].original = 16.99;
             _this.moneys[1].original = 50.99;
             _this.moneys[2].original = 101.99;
@@ -330,7 +368,7 @@ export default {
               //     details.payer.name.given_name +
               //     "!"
               // );
-              
+
               return _this
                 .axios({
                   method: "POST",

@@ -1,8 +1,8 @@
 <style>
-* {
+/* * {
   margin: 0;
   padding: 0;
-}
+} */
 
 .home {
   width: 100%;
@@ -445,12 +445,12 @@
 .text-center {
   text-align: center;
   overflow: hidden;
+  letter-spacing:1px;
 }
 
 .features-title {
-  width: 1300px;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 60px;
   padding-bottom: 50px;
 }
 
@@ -458,11 +458,13 @@
   font-size: 50px;
   font-weight: 700;
   color: #3b3b3b;
+  text-align: center;
 }
 
 .features-title-tow {
   font-size: 30px;
   color: #3b3b3b;
+  text-align: center;
 }
 
 .conclusion {
@@ -474,12 +476,12 @@
 .conclusion-left {
   width: 600px;
   float: left;
-  margin-top: 200px;
+  margin-top: 190px;
   margin-left: 50px;
 }
 
 .conclusion-left h1 {
-  width: 400px;
+  width: 450px;
   margin: 0 auto;
   color: #383838;
   text-align: left;
@@ -487,7 +489,7 @@
 }
 
 .conclusion-left h3 {
-  width: 400px;
+  width: 450px;
   margin: 0 auto;
   color: #383838;
   text-align: left;
@@ -506,7 +508,7 @@
 .divider_line {
   width: 200px;
   border-bottom: 2px solid #32a7b8;
-  margin: 2.5rem auto;
+  margin: 2rem auto;
 }
 
 @media screen and (max-width: 1024px) {
@@ -583,7 +585,9 @@
     transform: translateY(0);
   }
 }
+
 </style>
+
 <template>
   <div class="home" v-title data-title="首页-CourseWhale">
     <homeNav msg="登录/注册" />
@@ -704,17 +708,16 @@
         </div>
       </div>
 
-      <div class="features-area text-center">
-        <div class="features-title">
+      <div class="features-area">
+        <div class="features-title" style="padding-top:82px;">
           <p class="features-title-one">快速了解CourseWhale</p>
-
-          <p class="features-title-tow">更直接.更专业.更强大.更多元.更贴心</p>
+          <p class="features-title-tow">一个你不可或缺的学习伙伴</p>
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid1">
-            <h1>更直接</h1>
-            <h3 class="text-center">通过关键字直接定位课程，全程高度匹配，给你想要的答案</h3>
+            <h1>CourseWhale</h1>
+            <h3 class="text-center">一个在线教育题库学习平台，提供北美各高校的学习资料，你可以根据学校或课程名称轻而易举地找到相关内容。</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -724,11 +727,15 @@
             />
           </div>
         </div>
+        <div class="features-title">
+          <p class="features-title-one">为什么选择CourseWhale</p>
+          <p class="features-title-tow">更强大、更多元、更专业、更贴心</p>
+        </div>
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid2" style="float: right">
-            <h1 style="text-align:right">更专业</h1>
-            <h3 class="text-center" style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
+            <h1 style="text-align:right">更强大</h1>
+            <h3 class="text-center" style="text-align:right">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -741,8 +748,8 @@
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid3">
-            <h1>更强大</h1>
-            <h3 class="text-center">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
+            <h1>更多元</h1>
+            <h3 class="text-center">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -760,8 +767,8 @@
           <div class="home-pub-con">
             <div class="pub-con-left">
               <div class="con-left-top text-fluid4">
-                <h1>更多元</h1>
-                <h3 style="text-align:right">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
+                <h1>更专业</h1>
+                <h3 style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
               </div>
               <div class="con-left-middle">
                 <img class="img-fluid4" src="../assets/3.jpg" alt />
@@ -793,13 +800,18 @@ import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { constants } from "crypto";
 import vueSeamless from "vue-seamless-scroll";
+import motionCss from "../../public/css/motion.min.css";
+// 引入jquery
+import JQ from 'jquery'
 
 export default {
   name: "home",
   components: {
     homeNav,
     homeFooter,
-    vueSeamless
+    vueSeamless,
+    motionCss,
+    JQ,
   },
   data() {
     return {
@@ -860,11 +872,12 @@ export default {
       clientNum: "",
       isActive1: false,
       isActive2: false,
-      isActive3: false
+      isActive3: false,
+      money: 1
     };
   },
   computed: {
-    classOption: function() {
+    classOption() {
       return {
         step: 0.5, //步长 越大滚动速度越快
         limitMoveNum: 1, //启动无缝滚动最小数据量 this.dataList.length
@@ -938,7 +951,6 @@ export default {
               })
               .then(function(res) {
                 var s = res.data.data.classes.length;
-
                 if (
                   res.data.data.classes != null &&
                   res.data.data.classes.length > 0
@@ -1125,39 +1137,43 @@ export default {
     },
     handleScroll() {
       const _this = this;
-      var elPosition1 = $(".img-fluid1").offset().top;
-      var elPosition2 = $(".img-fluid2").offset().top;
-      var elPosition3 = $(".img-fluid3").offset().top;
-      var elPosition4 = $(".img-fluid4").offset().top;
-      var elPosition5 = $(".img-fluid5").offset().top;
-      var windowTop = $(window).scrollTop();
-      var windowHeight = $(window).height();
-      if (elPosition1 < windowTop + windowHeight) {
-        //当元素在屏幕的可视区域时添加 fade-in 动画
-        $(".img-fluid1").addClass("animation fade-in-left");
-        $(".text-fluid1").addClass("animation fade-in-right");
-      }
-      if (elPosition2 < windowTop + windowHeight) {
-        $(".img-fluid2").addClass("animation fade-in-right");
-        $(".text-fluid2").addClass("animation fade-in-left");
-      }
-      if (elPosition3 < windowTop + windowHeight) {
-        $(".img-fluid3").addClass("animation fade-in-left");
-        $(".text-fluid3").addClass("animation fade-in-right");
-      }
-      if (elPosition4 < windowTop + windowHeight) {
-        $(".img-fluid4").addClass("animation fade-in-up");
-        $(".text-fluid4").addClass("animation fade-in-right");
-      }
-      if (elPosition5 < windowTop + windowHeight) {
-        $(".img-fluid5").addClass("animation fade-in-down");
-        $(".text-fluid5").addClass("animation fade-in-left");
+      if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
+        var elPosition1 = JQ(".img-fluid1").offset().top;
+        var elPosition2 = JQ(".img-fluid2").offset().top;
+        var elPosition3 = JQ(".img-fluid3").offset().top;
+        var elPosition4 = JQ(".img-fluid4").offset().top;
+        var elPosition5 = JQ(".img-fluid5").offset().top;
+        var windowTop = JQ(window).scrollTop();
+        var windowHeight = JQ(window).height();
+        if (elPosition1 < windowTop + windowHeight) {
+          //当元素在屏幕的可视区域时添加 fade-in 动画
+          JQ(".img-fluid1").addClass("animation fade-in-left");
+          JQ(".text-fluid1").addClass("animation fade-in-right");
+        }
+        if (elPosition2 < windowTop + windowHeight) {
+          JQ(".img-fluid2").addClass("animation fade-in-right");
+          JQ(".text-fluid2").addClass("animation fade-in-left");
+        }
+        if (elPosition3 < windowTop + windowHeight) {
+          JQ(".img-fluid3").addClass("animation fade-in-left");
+          JQ(".text-fluid3").addClass("animation fade-in-right");
+        }
+        if (elPosition4 < windowTop + windowHeight) {
+          JQ(".img-fluid4").addClass("animation fade-in-up");
+          JQ(".text-fluid5").addClass("animation fade-in-left");
+        }
+        if (elPosition5 < windowTop + windowHeight) {
+          JQ(".img-fluid5").addClass("animation fade-in-down");
+          JQ(".text-fluid4").addClass("animation fade-in-right");
+        }
       }
     }
   },
   mounted() {
     const _this = this;
-    window.addEventListener("scroll", _this.handleScroll);
+    if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
+      window.addEventListener("scroll", _this.handleScroll);
+    }
   }
 };
 </script>

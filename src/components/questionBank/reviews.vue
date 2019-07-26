@@ -457,7 +457,6 @@ export default {
             }else {
               _this.headShowLogin = false;
             }
-
             _this.searching();
           })
           .catch(function(error) {

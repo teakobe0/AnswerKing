@@ -164,7 +164,6 @@
             :to="{path:'/serchDetailsContent',query:{id:item.classId,classInfoId:item.id}}"
             class="file-course-img"
           >
-            <!--<img src="../../assets/1.jpg" alt=""/>-->
             <p class="course-goal">
               题库集得分:
               <b>{{item.totalGrade}}</b>
@@ -179,7 +178,9 @@
               <br />
               <span>{{Names.university}}</span>
             </p>
-            <span class="course-time">创建时间:{{item.createTime | formatDate}}</span>
+            <span class="course-time">
+              <!-- 创建时间:{{item.createTime | formatDate}} -->
+            </span>
           </router-link>
           <i
             class="el-icon-star-off"

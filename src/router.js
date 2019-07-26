@@ -1,18 +1,32 @@
 import Vue from 'vue'
 import Router from 'vue-router'
+// const login = () => import('@/page/accountLogin.vue')
 import login from '@/page/accountLogin.vue'  //登录
+// const register = () => import('@/page/accountRegister.vue')
 import register from '@/page/accountRegister.vue'  //注册
+// const forgetPassword = () => import('@/page/accountForgetPassword.vue')
 import forgetPassword from '@/page/accountForgetPassword.vue'  //忘记密码
+// const accountChangePassword = () => import('@/page/accountChangePassword.vue')
 import accountChangePassword from '@/page/accountChangePassword.vue'  //忘记密码之后的修改密码
+// const personalData = () => import('@/page/accountPersonalData.vue')
 import personalData from '@/page/accountPersonalData.vue'  //个人信息
+// const home = () => import('@/page/Home.vue')
 import home from '@/page/Home.vue'  //首页
+// const serch = () => import('@/page/search.vue')
 import serch from '@/page/search.vue'  //搜索结果
+// const schoolStudy = () => import('@/page/schoolStudy.vue')
 import schoolStudy from '@/page/schoolStudy.vue'  //学校资源
+// const classesStudy = () => import('@/page/classesStudy.vue')
 import classesStudy from '@/page/classesStudy.vue'  //课程资源
+// const serchDetails = () => import('@/page/searchDetails.vue')
 import serchDetails from '@/page/searchDetails.vue'  //搜索详情
+// const serchDetailsContent = () => import('@/page/searchDetailsContent.vue')
 import serchDetailsContent from '@/page/searchDetailsContent.vue'  //答案页面
+// const serchDetailsUniversity = () => import('@/page/searchDetailsUniversity.vue')
 import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'  //学校详情页面
+// const classesDetails = () => import('@/page/classesDetails.vue')
 import classesDetails from '@/page/classesDetails.vue'  //课程详情页面
+// const member = () => import('@/page/member.vue')
 import member from '@/page/member.vue'  //会员
 // Footer里的页面
 import termsOfService from '@/page/footerView/termsOfService.vue' //条款

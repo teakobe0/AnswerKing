@@ -113,7 +113,7 @@
                 <p>无论你是在寻找工程实践问题还是商业学习指南——</p>
             </div>
             <div class="subject-con-ico">
-                <a href="javascript:void(0)" class="subject-con-ico-div">
+                <!-- <a href="javascript:void(0)" class="subject-con-ico-div">
                     <img src="../assets/2.jpg" alt=""/>
                     数学
                 </a>
@@ -144,7 +144,7 @@
                 <a href="javascript:void(0)" class="subject-con-ico-div">
                     <img src="../assets/2.jpg" alt=""/>
                     外语
-                </a>
+                </a> -->
             </div>
             <div class="subject-con-math">
                 <div class="math-title">

@@ -90,7 +90,7 @@
             </template>
             <div>
               <i class="el-icon-thirdA"></i>CourseWhale是一个在线教育题库学习平台，在CourseWhale你可以访问数以万计的由我们的贡献者贡献的学习资源。但不同于其他类似网站的繁杂，coursewhale主要专注于quiz的解题方法和简答题解题思路。
-              在course whale上，你可以轻而易举地找到你所学课程的相关测试题，简单题。通过这些学习资源，你能够掌控每一次测试。在CourseWhale的帮助下，相信你可以更好的适应留学时段的学习和生活。
+              在course whale上，你可以轻而易举地找到你所学课程的相关测试题，简答题。通过这些学习资源，你能够掌控每一次测试。在CourseWhale的帮助下，相信你可以更好的适应留学时段的学习和生活。
             </div>
           </el-collapse-item>
           <el-collapse-item name="2">

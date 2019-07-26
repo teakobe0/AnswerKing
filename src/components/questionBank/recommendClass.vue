@@ -69,9 +69,6 @@
 <script type="es6">
 export default {
   name: "recommendClass",
-  props: {
-    skipuniversityId: ""
-  },
   data() {
     return {
       // 学校课程
@@ -80,6 +77,7 @@ export default {
       kong: true
     };
   },
+  props: ["universityId"],
   created: function() {
     const _this = this;
     _this.universityidClass();
@@ -95,13 +93,14 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Class`,
           async: false,
           params: {
-            universityid: _this.$store.state.recommendClass.skipuniversityId
+            universityid: _this.universityId
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
+           
           _this.loading = false;
           _this.kong = false;
           // _this.classes = res.data.data;
