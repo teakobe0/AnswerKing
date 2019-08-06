@@ -1,4 +1,4 @@
-# orange
+# CourseWhale
 
 ## Project setup
 ```
