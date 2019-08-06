@@ -823,27 +823,32 @@ export default {
       restaurants: [],
       timeout: null,
       inputLoad: false,
-      classShow: {
-        number: 10,
-        university: {
-          id: 94,
-          name: "San Diego State University (SDSU)"
-        }
-      },
-      questionShow: {
-        order: 1,
-        cla: {
-          id: 577,
-          name: "Fine Art Photography"
-        }
-      },
-      contributeShow: {
-        id: 28,
-        name: "TEAKOBE",
-        num: 3
-      },
-      classVessel: [],
-      questionVessel: [],
+      classVessel: [
+        {
+          university_id: 137,
+          university_name: "Academy of Art University (AAU)",
+          class_id: 28,
+          class_name: "U.S. History",
+        },
+        {
+          university_id: 124,
+          university_name: "University of California, Irvine (UCI)",
+          class_id: 32,
+          class_name: "Popular Topics in Health, Nutrition, & Physiology",
+        },
+        {
+          university_id: 6,
+          university_name: "California State University, Northridge (CSUN)",
+          class_id: 47,
+          class_name: "Topics in World Art",
+        },
+        {
+          university_id: 1,
+          university_name: "St. Johns University (SJU)",
+          class_id: 58,
+          class_name: "MPT- Film History",
+        },
+      ],
       contributeVessel: [
         {
           id: 28,
@@ -867,9 +872,9 @@ export default {
         }
       ],
       id: 11,
-      classNum: "",
-      classinfoNum: "",
-      clientNum: "",
+      classNum: "760",
+      classinfoNum: "1066",
+      clientNum: "6",
       isActive1: false,
       isActive2: false,
       isActive3: false,

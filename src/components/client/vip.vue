@@ -171,9 +171,9 @@
 
 <template>
   <div id="changePassword">
-    <remotescript
+    <!-- <remotescript
       src="https://www.paypal.com/sdk/js?client-id=AVplzXK74mZi6ltEo8QhoMMUdjc-OxXpinwbbgEtgePr8kT9zBMur4DtdQOOyNV76xUBRlcGm_llrO9o&currency=USD"
-    ></remotescript>
+    ></remotescript> -->
     <div class="pd-con-head-right">
       <h3>成为会员</h3>
       <div class="dredgevip">
@@ -244,36 +244,37 @@ import { constants } from "crypto";
 export default {
   name: "changePassword",
   components: {
-    remotescript: {
-      render: function(createElement) {
-        var self = this;
-        return createElement("script", {
-          attrs: {
-            type: "text/javascript",
-            src: this.src
-          },
-          on: {
-            load: function(event) {
-              self.$emit("load", event);
-            },
-            error: function(event) {
-              self.$emit("error", event);
-            },
-            readystatechange: function(event) {
-              if (this.readyState == "complete") {
-                self.$emit("load", event);
-              }
-            }
-          }
-        });
-      },
-      props: {
-        src: {
-          type: String,
-          required: true
-        }
-      }
-    }
+    // remotescript: {
+    //   render: function(createElement) {
+    //     var _this = this;
+    //     console.log(this);
+    //     return createElement("script", {
+    //       attrs: {
+    //         type: "text/javascript",
+    //         src: this.src
+    //       },
+    //       on: {
+    //         load: function(event) {
+    //           _this.$emit("load", event);
+    //         },
+    //         error: function(event) {
+    //           _this.$emit("error", event);
+    //         },
+    //         readystatechange: function(event) {
+    //           if (this.readyState == "complete") {
+    //             _this.$emit("load", event);
+    //           }
+    //         }
+    //       }
+    //     });
+    //   },
+    //   props: {
+    //     src: {
+    //       type: String,
+    //       required: true,
+    //     }
+    //   }
+    // }
   },
   data() {
     //在ES6中添加数据是在return{}中
@@ -289,15 +290,14 @@ export default {
       tab5: "5",
       pay: 0,
       moneys: [],
-      loadings: []
+      loadings: [],
+      colModel: [],
+      readySize: 0
     };
   },
   created: function() {
     const _this = this;
-    // this.$router.go(0)
     _this.gainpersonal();
-    // _this.openFullScreen();
-    // _this.openFullScreen();
   },
   //页面的方法还是写在methods{}中
   methods: {
@@ -360,15 +360,8 @@ export default {
               spinner: "el-icon-loading",
               background: "rgba(0, 0, 0, 0.7)"
             });
-            // alert("Transaction completed by ");
             return actions.order.capture().then(function(details) {
               // 向买家展示成功的信息
-              // alert(
-              //   "Transaction completed by " +
-              //     details.payer.name.given_name +
-              //     "!"
-              // );
-
               return _this
                 .axios({
                   method: "POST",
@@ -395,7 +388,7 @@ export default {
                 })
                 .catch(function(error) {
                   console.log(error);
-                  console.log("获取token失败");
+                  console.log("获取token失败1");
                 });
             });
           }
@@ -449,6 +442,10 @@ export default {
       });
       this.$router.push({ path: "/personalData/basic" });
     }
+  },
+  mounted: function() {
+    const _this = this;
+    
   }
 };
 </script>
