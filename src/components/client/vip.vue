@@ -171,9 +171,6 @@
 
 <template>
   <div id="changePassword">
-    <!-- <remotescript
-      src="https://www.paypal.com/sdk/js?client-id=AVplzXK74mZi6ltEo8QhoMMUdjc-OxXpinwbbgEtgePr8kT9zBMur4DtdQOOyNV76xUBRlcGm_llrO9o&currency=USD"
-    ></remotescript> -->
     <div class="pd-con-head-right">
       <h3>成为会员</h3>
       <div class="dredgevip">
@@ -244,37 +241,6 @@ import { constants } from "crypto";
 export default {
   name: "changePassword",
   components: {
-    // remotescript: {
-    //   render: function(createElement) {
-    //     var _this = this;
-    //     console.log(this);
-    //     return createElement("script", {
-    //       attrs: {
-    //         type: "text/javascript",
-    //         src: this.src
-    //       },
-    //       on: {
-    //         load: function(event) {
-    //           _this.$emit("load", event);
-    //         },
-    //         error: function(event) {
-    //           _this.$emit("error", event);
-    //         },
-    //         readystatechange: function(event) {
-    //           if (this.readyState == "complete") {
-    //             _this.$emit("load", event);
-    //           }
-    //         }
-    //       }
-    //     });
-    //   },
-    //   props: {
-    //     src: {
-    //       type: String,
-    //       required: true,
-    //     }
-    //   }
-    // }
   },
   data() {
     //在ES6中添加数据是在return{}中
@@ -299,7 +265,6 @@ export default {
     const _this = this;
     _this.gainpersonal();
   },
-  //页面的方法还是写在methods{}中
   methods: {
     gainpersonal: function() {
       const _this = this;
@@ -388,7 +353,6 @@ export default {
                 })
                 .catch(function(error) {
                   console.log(error);
-                  console.log("获取token失败1");
                 });
             });
           }
@@ -445,7 +409,6 @@ export default {
   },
   mounted: function() {
     const _this = this;
-    
   }
 };
 </script>

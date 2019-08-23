@@ -168,7 +168,7 @@ export default {
   name: "login",
   components: {
     Nav,
-    Footer
+    Footer,
   },
   data() {
     //ES6中用箭头函授代替ES5中的function（）

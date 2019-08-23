@@ -3,7 +3,7 @@
   width: 100%;
   height: 100%;
   position: relative;
-  /* padding-bottom: 276px; */
+  padding-bottom: 276px;
   background-color: #2a4864;
 }
 .company-con {
@@ -25,7 +25,6 @@
 .company-1 {
   width: 970px;
   margin: 0 auto;
-  
 }
 
 .company-2 {
@@ -46,11 +45,11 @@
     <div v-title data-title="关于我们-CourseWhale"></div>
     <div class="company-con">
       <img src="../../assets/construction.jpg" alt />
-      <!-- <div class="company-title">
+      <!-- <div class="company-titl e">
         <div class="company-1">
           <p>我们所做的</p>
           <h2>我们是一个针对特定课程的学习资源的在线学习平台</h2>
-          <p>CourseWhale是一个在线学习平台，您可以访问由学生和教育工作者社区提供的超过2500万个课程特定的学习资源。您将找到练习题，学习指南，视频，课堂笔记以及您正在学习的每个科目的逐步解释 - 从经济学到文学，从生物学到历史，从会计学到心理学，以及介于两者之间的一切。我们帮助您快速找到所需内容，以便您可以深入学习。</p>
+          <p>CourseWhale是一个在线学习平台，您可以访问由学生和其他贡献者提供的相关课程的，特定的学习资源。您将找到Quiz，Discussion，Assignment，Exam等特定学习资源以供参考和学习，以及您正在学习的每个科目的逐步解释 - 从经济学到文学，从生物学到历史，会计到心理学，以及介于两者之间的一切。我们帮助您快速找到所需内容，以便您可以深入学习。</p>
         </div>
       </div>
       <div class="company-title" style="background-color:rgb(247, 247, 247);">

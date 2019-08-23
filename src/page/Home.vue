@@ -230,13 +230,14 @@
   width: 100%;
   height: 1200px;
   background-color: #ffffff;
-  overflow: hidden;
+  
 }
 
 .home-pub-con {
   width: 1300px;
   margin: 0 auto;
   margin-top: 100px;
+  overflow: hidden;
 }
 
 .pub-con-left {
@@ -448,6 +449,9 @@
   letter-spacing:1px;
 }
 
+.features-area {
+  overflow: hidden;
+}
 .features-title {
   margin: 0 auto;
   padding-top: 60px;
@@ -471,6 +475,7 @@
   width: 1300px;
   height: 500px;
   margin: 0 auto;
+  
 }
 
 .conclusion-left {
@@ -795,7 +800,6 @@
 </template>
 
 <script type="es6">
-// @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { constants } from "crypto";
@@ -899,12 +903,12 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
-    // 翻转动画的方法
+    // 翻滚一次动画执行的方法
     handScrollEnd: function() {
       // const _this = this;
     },
     // 获取所有课程，题库集，贡献者信息
-    GetClassinfo(index) {
+    GetClassinfo() {
       const _this = this;
       _this
         .axios({
@@ -916,10 +920,10 @@ export default {
           }
         })
         .then(function(res) {
-          _this.classVessel = res.data.data;
-          _this.classNum = _this.classVessel[0].class_num;
-          _this.classinfoNum = _this.classVessel[0].classinfo_num;
-          _this.clientNum = _this.classVessel[0].client_num;
+          // _this.classVessel = res.data.data;
+          // _this.classNum = _this.classVessel[0].class_num;
+          // _this.classinfoNum = _this.classVessel[0].classinfo_num;
+          // _this.clientNum = _this.classVessel[0].client_num;
         })
         .catch(function(error) {
           console.log(error);

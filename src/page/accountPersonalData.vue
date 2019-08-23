@@ -136,8 +136,6 @@
   top: 0px;
   border-radius: 3px;
 }
-
-
 </style>
 
 <template>
@@ -148,23 +146,22 @@
         <div class="head-img" @mouseenter="imgMouseenter" @mouseleave="imgMouseleave">
           <p>{{this.$store.state.modified.Name}}</p>
           <div class="head-imgs">
-            <img :src="imageUrl" alt v-if="headShow == true">
-            <img src="../assets/头像.jpg" alt v-if="headShow == false">
+            <img :src="imageUrl" alt v-if="headShow == true" />
+            <img src="../assets/头像.jpg" alt v-if="headShow == false" />
             <div class="headShade" v-show="imageShow == true">
-            <el-upload
-              class="avatar-uploader"
-              :action="imgSite"
-              :headers="myHeaders"
-              :show-file-list="false"
-              :on-success="handleAvatarSuccess"
-              :before-upload="beforeAvatarUpload"
-            >
-              <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
-              <i class="el-icon-picture-outline avatar-uploader-icon"></i>
-            </el-upload>
+              <el-upload
+                class="avatar-uploader"
+                :action="imgSite"
+                :headers="myHeaders"
+                :show-file-list="false"
+                :on-success="handleAvatarSuccess"
+                :before-upload="beforeAvatarUpload"
+              >
+                <!-- <img v-if="imageUrl" :src="imageUrl" class="avatar"> -->
+                <i class="el-icon-picture-outline avatar-uploader-icon"></i>
+              </el-upload>
+            </div>
           </div>
-          </div>
-          
         </div>
         <div class="fasttrack">快速通道</div>
         <ul class="perSet">
@@ -217,7 +214,7 @@
                     src="../assets/会员1.png"
                     alt
                     style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"
-                  >
+                  />
                 </i>成为会员
               </span>
             </router-link>
@@ -232,7 +229,7 @@
         </ul>
       </div>
       <div>
-        <router-view/>
+        <router-view />
       </div>
     </div>
     <homeFooter></homeFooter>

@@ -7,6 +7,9 @@
 
 //  const serverPath="http://47.254.29.164:8088/api"; //正式库
 //  const ImgPath = "http://47.254.29.164:8088"; //正式库
+
+//  const serverPath="http://localhost:35998/api"; //老大的库
+//  const ImgPath = "http://localhost:35998"; //老大的库
  export default{
   serverPath,
   ImgPath,
