@@ -46,6 +46,7 @@
   position: relative;
 }
 .serchDetailsContent-top-info h2 {
+  width: 900px;
   color: #3b3b3b;
   margin-top: 24px;
   margin-bottom: 8px;
@@ -57,7 +58,35 @@
   margin-bottom: 24px;
   float: left;
 }
-
+.serchDetailsContent-top-info p .ownness-name {
+  display: inline-block;
+  width: 118px;
+  height: 24px;
+  white-space: nowrap;
+  cursor: text;
+  margin-left: 2px;
+}
+.serchDetailsContent-top-info p .ownness-name:hover {
+  color: #777;
+}
+.serchDetailsContent-top-info p .ownness-name div {
+  display: inline;
+  font-size: 14px;
+  color: #3ccfcf;
+  font-weight: 700;
+  cursor: pointer;
+}
+.serchDetailsContent-top-info p .ownness-name div:hover {
+  color: #ffcd1f;
+}
+.serchDetailsContent-top-info p .ownness-name img {
+  width: 24px;
+  height: 24px;
+  border-radius: 12px;
+  margin-right: 6px;
+  vertical-align: -6px;
+  cursor: pointer;
+}
 .content-bookmark {
   position: absolute;
   right: 0px;
@@ -375,13 +404,18 @@
                 :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
               >{{value.university}}</router-link>
               <span>教授:{{value.professor}}</span>
+              <span>贡献者:</span>
+              <router-link
+                :to="{ path: 'ownness',query: {id: contributors.name}}"
+                class="ownness-name"
+                @click="ownness"
+                :title="'访问'+ contributors.name +'的个人资料'"
+              >
+                <img ondragstart="return false;" src="../assets/5.jpg" alt />
+                <div>{{contributors.name}}</div>
+              </router-link>
             </p>
             <ul class="content-bookmark">
-              <!-- <li @click="bookmarks">
-                  <i class="el-icon-star-off" v-if="bookmark == false"></i>
-                  <i class="el-icon-star-on" v-if="bookmark == true"></i>
-                  <span>收藏</span>
-              </li>-->
               <li>
                 <el-button
                   type="primary"
@@ -569,7 +603,11 @@ export default {
       // 其他题库子组件的显示
       otherQuestionsFlag: false,
       // 题库集订单传给子组件
-      classinfoss: []
+      classinfoss: [],
+      // 贡献者
+      contributors: {
+        name: "Monickers"
+      }
     };
   },
   created: function() {
@@ -1190,6 +1228,10 @@ export default {
           type: "warning"
         });
       }
+    },
+    ownness() {
+      const _this = this;
+      console.log(123);
     }
   }
 };

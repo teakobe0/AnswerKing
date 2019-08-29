@@ -89,12 +89,6 @@
   right: 28px;
   font-style: italic;
 }
-.file-course-img img {
-  /* width: 180px;
-  height: 210px; */
-  margin-left: 10px;
-  margin-top: 10px;
-}
 .file-course-img p:nth-child(1) {
   width: 200px;
   font-size: 20px;
@@ -119,13 +113,41 @@
   overflow: hidden;
   word-wrap: break-word;
 }
-.file-course-img .course-time {
+.ownness {
   display: block;
   font-size: 14px;
   color: #b9b9b9;
   border-top: 1px dashed #d6d6d6;
   margin-top: 13px;
-  padding-top: 5px;
+  padding-top: 12px;
+  overflow: hidden;
+}
+.ownness img{
+  width: 24px;
+  height: 24px;
+  border-radius:12px;
+  margin-right: 6px;
+  vertical-align: -6px;
+  
+}
+.ownness .ownness-name{
+  display: inline-block;
+  width: 118px;
+  height: 24px;
+  font-size:14px;
+  color: #3ccfcf;
+  cursor:pointer;
+  overflow: hidden;
+  font-weight: 700;
+  white-space:nowrap;
+}
+.ownness .ownness-name:hover{
+  color: #ffcd1f;
+}
+.ownness .createTime {
+  float: right;
+  margin-top: 5px;
+  /* text-align: right; */
 }
 .file-con-course i {
   position: absolute;
@@ -178,10 +200,18 @@
               <br />
               <span>{{Names.university}}</span>
             </p>
-            <span class="course-time">
-              <!-- 创建时间:{{item.createTime | formatDate}} -->
-            </span>
           </router-link>
+          <span class="ownness">
+              
+              <span class="ownness-name" @click="ownness">
+                <img ondragstart="return false;" src="../../assets/5.jpg" alt="">
+                Monickers
+              </span>
+              <span class="createTime">{{item.createTime | formatDate}}</span>
+              
+              
+
+            </span>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"
@@ -366,6 +396,10 @@ export default {
             console.log(error);
           });
       }
+    },
+    ownness(){
+      const _this = this;
+      console.log(123)
     }
   }
 };

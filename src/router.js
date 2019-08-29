@@ -28,6 +28,8 @@ import serchDetailsUniversity from '@/page/searchDetailsUniversity.vue'  //学�
 import classesDetails from '@/page/classesDetails.vue'  //课程详情页面
 // const member = () => import('@/page/member.vue')
 import member from '@/page/member.vue'  //会员
+
+import ownness from '@/components/client/ownness.vue'  //个人资料
 // Footer里的页面
 import termsOfService from '@/page/footerView/termsOfService.vue' //条款
 import company from '@/page/footerView/company.vue' //公司
@@ -239,7 +241,10 @@ export default new Router({
             path: '/standardBehavior',      //设置跳转
             component: standardBehavior
         },
-
+        {
+            path: '/ownness',      //设置跳转
+            component: ownness
+        },
 
     ]
 })
