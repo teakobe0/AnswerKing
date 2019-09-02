@@ -16,6 +16,7 @@
   line-height: 200px;
   font-size: 32px;
   text-align: center;
+  margin-top: 60px;
 }
 .faq-quiz {
   /* background-color: rgb(211, 211, 211); */
@@ -99,7 +100,7 @@
               2.&nbsp;&nbsp;为什么选择CourseWhale？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>CourseWhale为北美学子提供分享知识的平台。高质量，高效率，高匹配，是CourseWhale分享学习资源的核心。在CourseWhale上，你不用浪费多余的时间去浏览，简单易操作的流畅帮助你直接找到你想要的学习资源。
+              <i class="el-icon-thirdA"></i>CourseWhale为北美学子提供分享知识的平台。高质量，高效率，高匹配，是CourseWhale分享学习资源的核心。在CourseWhale上，你不用花费过多的时间去查询，浏览，甄别；简单的几步操作就可以帮助你直接找到你想要的学习资源。
             </div>
           </el-collapse-item>
           <el-collapse-item name="3">
@@ -120,7 +121,7 @@
             <div>
               <i class="el-icon-thirdA"></i>打开我们的网址coursewhale.com，就可以看到coursewhale简介的页面，在中间搜索框搜索您的学校（如：University of California, Irvine），到结果搜索页面之后，你可以看到该学校下面的全部课程，点击想要找的课程之后就可以看到相关学习资源。另，每一周的更新情况都会不同，因此个别周的资料可能会缺失。
             </div>
-            <div>另外，我们建议你收藏coursewhale网站，并成为注册会员。成为注册会员后，coursewhale能够保留你的浏览记录，收藏的课程。在下一次登陆的时候就可以直接看到收藏的课程，学校以及浏览历史内容，留言回复等。</div>
+            <div><b>另外，我们建议你收藏coursewhale网站，并成为注册会员。成为注册会员后，coursewhale能够保留你的浏览记录，收藏的课程。在下一次登陆的时候就可以直接看到收藏的课程，学校以及浏览历史内容，留言回复等。</b></div>
           </el-collapse-item>
           <el-collapse-item name="5">
             <template slot="title">
@@ -183,7 +184,7 @@
               11.&nbsp;&nbsp;出现无法无法登陆的情况应当如何处理？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>出现无法登陆的原因可能有：我们正在进行后台升级，一般情况下我们会在升级前在网站首页提醒用户；浏览器不支持，可更换浏览器尝试；3，网络问题，请检查自己的网络；4，其他问题，如果非上述问题，请截图并提交给我们，我们会在24小时之内回复。
+              <i class="el-icon-thirdA"></i>出现无法登陆的原因可能是：1，我们正在进行后台升级，一般情况下我们会在升级前在网站首页提醒用户；2，浏览器不支持，可更换浏览器尝试；3，网络问题，请检查自己的网络；4，其他问题，如果非上述问题，请截图并提交给我们，我们会在24小时之内回复。
             </div>
           </el-collapse-item>
           <el-collapse-item name="12">
@@ -220,7 +221,7 @@
               15.&nbsp;&nbsp;如果我成了CourseWhale的合作者，我能获得什么？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>如果您通过了我们的资质审核，你在上传有价值的内容之后，将对应地获得CourseWhale其他所有内容的免费试用权限。
+              <i class="el-icon-thirdA"></i>如果您通过了我们的资质审核，你在上传有价值的内容之后，将对应地获得CourseWhale其他所有内容的免费使用权限。
             </div>
           </el-collapse-item>
           <el-collapse-item name="16">
@@ -238,7 +239,7 @@
               17.&nbsp;&nbsp;CourseWhale课程是否需要付费?
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>CourseWhale提供免费访问和付费访问服务。我们为新注册会员提供一段时期的免费试用时间，但过了免费试用阶段就需要付费试用。
+              <i class="el-icon-thirdA"></i>CourseWhale提供免费访问和付费访问服务。我们为新注册会员提供一段时期的免费试用时间，但过了免费试用阶段就需要付费使用。
             </div>
           </el-collapse-item>
           <el-collapse-item name="18">
@@ -247,7 +248,7 @@
               18.&nbsp;&nbsp;如果我想停止使用CourseWhale，费用可以退还吗？
             </template>
             <div>
-              <i class="el-icon-thirdA"></i>CourseWhale的费用无法退还。因此请您根据自己的需求购买内容试用权限。
+              <i class="el-icon-thirdA"></i>CourseWhale的费用无法退还。因此请您根据自己的需求购买内容使用权限。
             </div>
           </el-collapse-item>
           <el-collapse-item name="19">

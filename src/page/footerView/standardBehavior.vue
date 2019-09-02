@@ -12,6 +12,7 @@
   line-height: 200px;
   color: #fff;
   font-size: 32px;
+  margin-top:60px;
 }
 .standardBehavior-con {
   width: 970px;
@@ -97,7 +98,7 @@
         </li>
       </ul>
 
-      <p class="SB-text">我们希望用户不仅遵循这些规则，同时对违背这些规则的内容或活动进行举报。进一步了解如何举报CourseWhale上特定类型的不当内容和行为。</p>
+      <p class="SB-text">我们希望用户不仅遵循这些规则，同时对违背这些规则的内容或活动进行举报。如需举报，请发送邮件至coursewhale2000@gmail.con，并附截图等相关信息。</p>
       <p class="SB-text">感谢你支持我们的宗旨并保持CourseWhale良好的学习环境！</p>
       <div class="smallText">CourseWhale平台</div>
     </div>

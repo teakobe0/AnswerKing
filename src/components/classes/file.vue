@@ -203,10 +203,10 @@
           </router-link>
           <span class="ownness">
               
-              <span class="ownness-name" @click="ownness">
+              <router-link :to="{ path: 'ownness',query: {id: contributors.name}}" :title="'访问'+ contributors.name +'的个人资料'" class="ownness-name" @click="ownness">
                 <img ondragstart="return false;" src="../../assets/5.jpg" alt="">
                 Monickers
-              </span>
+              </router-link>
               <span class="createTime">{{item.createTime | formatDate}}</span>
               
               
@@ -248,7 +248,11 @@ export default {
         TypeId: "",
         Type: ""
       },
-      infoShow: false
+      infoShow: false,
+      // 贡献者
+      contributors: {
+        name: "Monickers"
+      }
     };
   },
   props: ["Names"],

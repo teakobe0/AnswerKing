@@ -256,7 +256,7 @@ export default {
       names: "",
       imageUrl: "",
       imageShow: false,
-      imgSite: "${_this.URLport.serverPath}/Client/UploadImg",
+      imgSite: this.URLport.serverPath+'/Client/UploadImg',
       myHeaders: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -280,10 +280,12 @@ export default {
         .then(function(res) {
           _this.$store.state.modified.Name = res.data.data.name;
           if (res.data.data.image) {
-            _this.imageUrl = "http://192.168.1.29:8088" + res.data.data.image;
+            _this.imageUrl = _this.URLport.ImgPersonal + res.data.data.image;
+            
             _this.headShow = true;
           } else {
             _this.headShow = false;
+            
           }
         })
         .catch(function(error) {
@@ -308,7 +310,7 @@ export default {
     handleAvatarSuccess(res, file) {
       //   this.imageUrl = URL.createObjectURL(file.raw);
       const _this = this;
-      _this.imageUrl = "http://192.168.1.29:8088" + res.data;
+      _this.imageUrl = _this.URLport.ImgPersonal + res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
       _this.headShow = true;
       _this.$message({

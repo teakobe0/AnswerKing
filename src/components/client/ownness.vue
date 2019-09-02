@@ -40,7 +40,36 @@
 .op-main-con {
   width: 1300px;
   margin: 0 auto;
-  height: 800px;
+  overflow: hidden;
+  padding-bottom: 40px;
+}
+.op-main-state {
+  width: 1000px;
+  margin-top: 40px;
+  
+}
+.DS {
+  margin-top: 40px;
+  position: relative;
+}
+.DSTime {
+  font-size: 14px;
+  font-weight: 700;
+
+}
+.DSWire {
+  width: 880px;
+  /* height: 2px; */
+  border-top: 1px solid #d9d9d9;
+  position: absolute;
+  top: 9px;
+  right: 0px;
+}
+.DSCon {
+  margin-top: 20px;
+  width: 960px;
+  background-color: #ffffff;
+  padding: 20px;
 }
 </style>
 <template>
@@ -55,9 +84,16 @@
       </div>
       <div class="ownnessPage-main">
         <div class="op-main-con">
-            <div>
-                <div>2019年6月</div>
-                <div></div>
+            <div class="op-main-state">
+                <div v-for="item in dynamicState" class="DS">
+                  <div class="DSTime">
+                    {{item.time}}
+                  </div>
+                  <div class="DSWire"></div>
+                  <dir class="DSCon">
+                    {{item.text}}
+                  </dir>
+                </div>
             </div>
         </div>
       </div>
@@ -78,7 +114,38 @@ export default {
     homeFooter
   },
   data() {
-    return {};
+    return {
+      dynamicState:[
+        {
+          time:'2019年9月1日',
+          text:'对"Popular Topics in Health, Nutrition, & Physiology"题库进行了评价。',
+        },
+        {
+          time:'2019年8月10日',
+          text:'对题库进行了点赞',
+        },
+        {
+          time:'2019年8月09日',
+          text:'对题库进行了点赞',
+        },
+        {
+          time:'2019年8月01日',
+          text:'对题库进行了点赞',
+        },
+        {
+          time:'2019年8月01日',
+          text:'对题库进行了点赞',
+        },
+        {
+          time:'2019年8月01日',
+          text:'对题库进行了点赞',
+        },
+        {
+          time:'2019年8月01日',
+          text:'对题库进行了点赞',
+        },
+      ]
+    };
   },
   created: function() {
     const _this = this;

@@ -95,7 +95,6 @@
 
     .nav ul li ul {
         display: none;
-
     }
 
     .nav ul li:hover, .nav ul li a:hover, .nav ul li a:active {
