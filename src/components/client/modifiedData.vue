@@ -99,7 +99,12 @@ export default {
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
-          _this.modifiedDatas.Birthday = res.data.data.birthday;
+          if(res.data.data.birthday == "0001-01-01T00:00:00"){
+            _this.modifiedDatas.Birthday = "";
+          }else {
+            _this.modifiedDatas.Birthday = res.data.data.birthday;
+          }
+          
           _this.modifiedDatas.School = res.data.data.school;
         })
         .catch(function(error) {

@@ -374,6 +374,9 @@ export default {
         0,
         _this.universitys.length + _this.pageSize
       );
+      if(_this.universitys.length-1 == _this.alluniversitys.length-1){
+        _this.viewMores = false;
+      }
       return sortByKey(_this.universitys, "number");
       //数组对象排序
       function sortByKey(array, key) {
@@ -383,6 +386,7 @@ export default {
           return y < x ? -1 : x > y ? 1 : 0;
         });
       }
+      
     },
     querySearch(queryString, cb) {
       const _this = this;

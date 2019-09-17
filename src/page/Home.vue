@@ -920,6 +920,7 @@ export default {
           }
         })
         .then(function(res) {
+          
           // _this.classVessel = res.data.data;
           // _this.classNum = _this.classVessel[0].class_num;
           // _this.classinfoNum = _this.classVessel[0].classinfo_num;
