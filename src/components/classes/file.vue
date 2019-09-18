@@ -140,6 +140,7 @@
   overflow: hidden;
   font-weight: 700;
   white-space:nowrap;
+  text-overflow:ellipsis;
 }
 .ownness .ownness-name:hover{
   color: #ffcd1f;
@@ -183,12 +184,12 @@
       <div class="file-con-course">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
-            :to="{path:'/serchDetailsContent',query:{id:item.classId,classInfoId:item.id}}"
+            :to="{path:'/serchDetailsContent',query:{id:item.classinfo.classId,classInfoId:item.classinfo.id}}"
             class="file-course-img"
           >
             <p class="course-goal">
               题库集得分:
-              <b>{{item.totalGrade}}</b>
+              <b>{{item.classinfo.totalGrade}}</b>
             </p>
             <p>
               <span>课程名称:</span>
@@ -202,15 +203,11 @@
             </p>
           </router-link>
           <span class="ownness">
-              
-              <router-link :to="{ path: 'ownness',query: {id: contributors.name}}" :title="'访问'+ contributors.name +'的个人资料'" class="ownness-name" @click="ownness">
-                <img ondragstart="return false;" src="../../assets/5.jpg" alt="">
-                Monickers
+              <router-link :to="{ path: '/ownness',query: {id: item.classinfo.clientId}}" :title="'访问'+ item.clientname +'的个人资料'" class="ownness-name" @click="ownness">
+                <img ondragstart="return false;" :src="item.clientimg" alt="">
+                {{item.clientname}}
               </router-link>
-              <span class="createTime">{{item.createTime | formatDate}}</span>
-              
-              
-
+              <span class="createTime">{{item.classinfo.createTime | formatDate}}</span>
             </span>
           <i
             class="el-icon-star-off"
@@ -239,7 +236,6 @@ export default {
   data() {
     //在ES6中添加数据是在return{}中
     return {
-      input1: "",
       value: [],
       classesvalue: [],
       Id: 0,
@@ -285,7 +281,9 @@ export default {
         })
         .then(function(res) {
           _this.value = res.data.data;
-          _this.input1 = _this.value.length;
+          if(res.data.status == 2){
+            _this.infoShow = true;
+          }
           if (_this.value.length == 0) {
             _this.infoShow = true;
           }

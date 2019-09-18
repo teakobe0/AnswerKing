@@ -378,15 +378,15 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item :to="{ path: 'schoolStudy' }">
+              <el-breadcrumb-item :to="{ path: '/schoolStudy' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item
-                :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
+                :to="{ path: '/serchDetailsUniversity',query: {id: this.value.universityId}}"
               >
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ path: 'classesDetails',query: {id: this.Id}}">
+              <el-breadcrumb-item :to="{ path: '/classesDetails',query: {id: this.Id}}">
                 <span class="crumb">该课题库</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
@@ -401,21 +401,22 @@
             <p>
               学校:
               <router-link
-                :to="{ path: 'serchDetailsUniversity',query: {id: this.value.universityId}}"
+                :to="{ path: '/serchDetailsUniversity',query: {id: this.value.universityId}}"
               >{{value.university}}</router-link>
               <span>教授:{{value.professor}}</span>
               <span>贡献者:</span>
               <router-link
-                :to="{ path: 'ownness',query: {id: contributors.name}}"
+                :to="{ path: '/ownness',query: {id: informations.classinfo.clientId}}"
                 class="ownness-name"
                 @click="ownness"
-                :title="'访问'+ contributors.name +'的个人资料'"
+                :title="'访问'+ informations.clientname +'的个人资料'"
+                v-if="bookmarkShow == true"
               >
-                <img ondragstart="return false;" src="../assets/5.jpg" alt />
-                <div>{{contributors.name}}</div>
+                <img ondragstart="return false;" :src="informations.clientimg" alt />
+                <div>{{informations.clientname}}</div>
               </router-link>
             </p>
-            <ul class="content-bookmark">
+            <ul class="content-bookmark" v-if="bookmarkShow == true">
               <li>
                 <el-button
                   type="primary"
@@ -445,14 +446,14 @@
                 <el-button size="medium" @click="noUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                   <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
-                  没用({{informations.noUse}})
+                  没用({{informations.classinfo.noUse}})
                 </el-button>
               </li>
               <li>
                 <el-button size="medium" @click="beOfUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                   <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
-                  有用({{informations.use}})
+                  有用({{informations.classinfo.use}})
                 </el-button>
               </li>
             </ul>
@@ -581,6 +582,8 @@ export default {
       noUse: false,
       UseRecords: {},
       titleShow: false,
+      // 有用没用和贡献者显示隐藏(因为需要.clainfo所以导致数据结构的不同如果直接显示会报错)
+      bookmarkShow:false,
       // 关注
       attentions: {
         Name: "",
@@ -607,7 +610,8 @@ export default {
       // 贡献者
       contributors: {
         name: "Monickers"
-      }
+      },
+      
     };
   },
   created: function() {
@@ -833,8 +837,9 @@ export default {
           _this.classinfoss = res.data.data;
           _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {
-            if (res.data.data[i].id == _this.$route.query.classInfoId) {
+            if (res.data.data[i].classinfo.id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];
+              _this.bookmarkShow = true;
             }
           }
         })
@@ -1151,7 +1156,7 @@ export default {
               if (res.data.data[i].type == 2) {
                 var v = [];
                 v = res.data.data[i].typeId.split(",");
-                if (v[1] == _this.informations.id) {
+                if (v[1] == _this.informations.classinfo.id) {
                   _this.value.attentions = true;
                 }
               }
@@ -1170,7 +1175,7 @@ export default {
         if (_this.value.attentions == true) {
           _this.attentions.Name = _this.value.name;
           _this.attentions.TypeId =
-            _this.value.id + "," + _this.informations.id;
+            _this.value.id + "," + _this.informations.classinfo.id;
           _this.attentions.Type = 2;
           _this
             .axios({
@@ -1202,7 +1207,7 @@ export default {
               url: `${_this.URLport.serverPath}/Focus/Cancel`,
               async: false,
               params: {
-                typeid: _this.value.id + "," + _this.informations.id
+                typeid: _this.value.id + "," + _this.informations.classinfo.id
               },
               xhrFields: {
                 withCredentials: true

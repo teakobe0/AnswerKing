@@ -196,11 +196,11 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right" style>
-              <el-breadcrumb-item :to="{ path: 'schoolStudy' }">
+              <el-breadcrumb-item :to="{ path: '/schoolStudy' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item
-                :to="{ path: 'serchDetailsUniversity',query: {id: this.universityId}}"
+                :to="{ path: '/serchDetailsUniversity',query: {id: this.universityId}}"
               >
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
