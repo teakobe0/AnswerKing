@@ -122,27 +122,26 @@
   padding-top: 12px;
   overflow: hidden;
 }
-.ownness img{
+.ownness img {
   width: 24px;
   height: 24px;
-  border-radius:12px;
+  border-radius: 12px;
   margin-right: 6px;
   vertical-align: -6px;
-  
 }
-.ownness .ownness-name{
+.ownness .ownness-name {
   display: inline-block;
   width: 118px;
   height: 24px;
-  font-size:14px;
+  font-size: 14px;
   color: #3ccfcf;
-  cursor:pointer;
+  cursor: pointer;
   overflow: hidden;
   font-weight: 700;
-  white-space:nowrap;
-  text-overflow:ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
 }
-.ownness .ownness-name:hover{
+.ownness .ownness-name:hover {
   color: #ffcd1f;
 }
 .ownness .createTime {
@@ -181,7 +180,7 @@
         </div>
       </div>-->
       <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
-      <div class="file-con-course">
+      <div class="file-con-course" v-if="courseShow == true">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
             :to="{path:'/serchDetailsContent',query:{id:item.classinfo.classId,classInfoId:item.classinfo.id}}"
@@ -203,12 +202,17 @@
             </p>
           </router-link>
           <span class="ownness">
-              <router-link :to="{ path: '/ownness',query: {id: item.classinfo.clientId}}" :title="'访问'+ item.clientname +'的个人资料'" class="ownness-name" @click="ownness">
-                <img ondragstart="return false;" :src="item.clientimg" alt="">
-                {{item.clientname}}
-              </router-link>
-              <span class="createTime">{{item.classinfo.createTime | formatDate}}</span>
-            </span>
+            <router-link
+              :to="{ path: '/ownness',query: {id: item.classinfo.clientId}}"
+              :title="'访问'+ item.clientname +'的个人资料'"
+              class="ownness-name"
+              @click="ownness"
+            >
+              <img ondragstart="return false;" :src="item.clientimg" alt />
+              {{item.clientname}}
+            </router-link>
+            <span class="createTime">{{item.classinfo.createTime | formatDate}}</span>
+          </span>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"
@@ -248,7 +252,8 @@ export default {
       // 贡献者
       contributors: {
         name: "Monickers"
-      }
+      },
+      courseShow: false
     };
   },
   props: ["Names"],
@@ -280,16 +285,21 @@ export default {
           }
         })
         .then(function(res) {
-          _this.value = res.data.data;
-          if(res.data.status == 2){
+          if (res.data.status == 2) {
             _this.infoShow = true;
           }
-          if (_this.value.length == 0) {
-            _this.infoShow = true;
+          for (var i = 0; i < res.data.data.length; i++) {
+            if (res.data.data[i].classinfo.totalGrade != 0) {
+              _this.value.push(res.data.data[i]);
+            }
           }
           for (var i = 0; i < _this.value.length; i++) {
             _this.$set(_this.value[i], "attentions", false);
           }
+          if (_this.value.length == 0) {
+            _this.infoShow = true;
+          }
+          _this.courseShow = true;
           _this.retrieveAttention();
         })
         .catch(function(error) {
@@ -399,9 +409,9 @@ export default {
           });
       }
     },
-    ownness(){
+    ownness() {
       const _this = this;
-      console.log(123)
+      console.log(123);
     }
   }
 };

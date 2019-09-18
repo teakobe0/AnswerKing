@@ -46,7 +46,6 @@
 .op-main-state {
   width: 1000px;
   margin-top: 40px;
-  
 }
 .DS {
   margin-top: 40px;
@@ -55,7 +54,6 @@
 .DSTime {
   font-size: 14px;
   font-weight: 700;
-
 }
 .DSWire {
   width: 880px;
@@ -84,17 +82,16 @@
       </div>
       <div class="ownnessPage-main">
         <div class="op-main-con">
-            <div class="op-main-state">
-                <div v-for="item in dynamicState" class="DS">
-                  <div class="DSTime">
-                    {{item.time}}
-                  </div>
-                  <div class="DSWire"></div>
-                  <dir class="DSCon">
-                    {{item.text}}
-                  </dir>
-                </div>
+          <div class="op-main-state">
+            <div v-for="item in dynamicState" class="DS">
+              <div class="DSTime">{{item.time}}</div>
+              <div class="DSWire"></div>
+              <dir class="DSCon">
+                {{item.text}}
+                <br />
+              </dir>
             </div>
+          </div>
         </div>
       </div>
     </div>
@@ -106,7 +103,7 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-
+import { formatDate } from "@/common/js/date.js";
 export default {
   name: "ownnessPage",
   components: {
@@ -115,42 +112,82 @@ export default {
   },
   data() {
     return {
-      dynamicState:[
+      dynamicState: [
         {
-          time:'2019年9月1日',
-          text:'对"Popular Topics in Health, Nutrition, & Physiology"题库进行了评价。',
+          time: "2019-09-17T15:29:25",
+          text:
+            '对"Popular Topics in Health, Nutrition, & Physiology"题库进行了评价。'
         },
         {
-          time:'2019年8月10日',
-          text:'对题库进行了点赞',
+          time: "2019-09-17T15:29:25",
+          text: "对题库进行了点赞"
         },
         {
-          time:'2019年8月09日',
-          text:'对题库进行了点赞',
-        },
-        {
-          time:'2019年8月01日',
-          text:'对题库进行了点赞',
-        },
-        {
-          time:'2019年8月01日',
-          text:'对题库进行了点赞',
-        },
-        {
-          time:'2019年8月01日',
-          text:'对题库进行了点赞',
-        },
-        {
-          time:'2019年8月01日',
-          text:'对题库进行了点赞',
-        },
-      ]
+          time: "2019-09-17T15:29:25",
+          text: "对题库进行了取消"
+        }
+      ],
+      arr: [],
+      arr1: [],
+      isTrue: true
     };
   },
   created: function() {
     const _this = this;
+    _this.uuu();
   },
-  methods: {},
+  methods: {
+    formatDate: function(time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    },
+    uuu() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Client/Action`,
+          async: false,
+          params: {
+            clientid: _this.$route.query.id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          var abc = res.data.data;
+          for (var i = 0; i <= abc.length; i++) {
+            if (i + 1 < abc.length) {
+              if (
+                _this.formatDate(abc[i].createTime) ==
+                _this.formatDate(abc[i + 1].createTime)
+              ) {
+                _this.isTrue = true;
+              } else {
+                _this.isTrue = false;
+              }
+            } else {
+              _this.isTrue = false;
+            }
+            if (_this.isTrue) {
+              _this.arr1.push(abc[i]);
+            } else {
+              _this.arr.push(arr1);
+              _this.arr1 = [];
+              _this.arr1.push(abc[i]);
+            }
+          }
+          
+          console.log(_this.arr1);
+          return _this.arr;
+          console.log(_this.arr);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
+  },
   mounted() {}
 };
 </script>

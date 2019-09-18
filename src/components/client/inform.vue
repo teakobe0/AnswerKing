@@ -36,30 +36,12 @@
           <span class="sendname">{{item.sendname}}</span>
           回复您：{{item.content}}
           <el-button
-            @click="deletemessage(item.contentsUrl,item.id)"
-            style="float:right;"
-            size="mini"
-          >删除</el-button>
-          <el-button
             @click="gomessage(item.contentsUrl,item.id)"
-            style="float:right;margin-right:8px;"
+            style="float:right;"
             size="mini"
           >查看</el-button>
         </div>
       </div>
-      <!-- <el-tabs v-model="message" @tab-click="handleClick">
-        <el-tab-pane label="回复我的" name="reply">
-         
-        </el-tab-pane>
-        <el-tab-pane label="@提到我的" name="first">@提到我的</el-tab-pane>
-      </el-tabs>-->
-      <!-- <div class="head-right-middle"> -->
-      <!-- <p class="right-middle-title">文件</p> -->
-      <!-- <el-tabs v-model="activeName" @tab-click="handleClick"> -->
-      <!-- <el-tab-pane label="最近浏览过的文件" name="first">最近浏览过的文件</el-tab-pane> -->
-      <!-- <el-tab-pane label="我的上传" name="second">我的上传</el-tab-pane> -->
-      <!-- </el-tabs> -->
-      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -163,17 +145,6 @@ export default {
     // 跳转评论页面
     gomessage: function(url, ids) {
       const _this = this;
-      var a = url.split(",");
-      _this.ids = a[1];
-      _this.classinfoid = a[2];
-      _this.$router.push({
-        path: "/serchDetailsContent",
-        query: { id: a[1], classInfoId: a[2] }
-      });
-    },
-    // 修改通知状态（删除）
-    deletemessage: function(url, ids) {
-      const _this = this;
       _this
         .axios({
           method: "put",
@@ -187,6 +158,13 @@ export default {
           }
         })
         .then(function(res) {
+          var a = url.split(",");
+          _this.ids = a[1];
+          _this.classinfoid = a[2];
+          _this.$router.push({
+            path: "/serchDetailsContent",
+            query: { id: a[1], classInfoId: a[2] }
+          });
           _this.$message({
             message: "删除成功",
             type: "success"
@@ -196,7 +174,7 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
   }
 };
 </script>
