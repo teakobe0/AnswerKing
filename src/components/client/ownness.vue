@@ -44,7 +44,7 @@
   padding-bottom: 40px;
 }
 .op-main-state {
-  width: 1000px;
+  width: 100%;
   margin-top: 40px;
 }
 .DS {
@@ -56,7 +56,7 @@
   font-weight: 700;
 }
 .DSWire {
-  width: 880px;
+  width: 1200px;
   /* height: 2px; */
   border-top: 1px solid #d9d9d9;
   position: absolute;
@@ -65,9 +65,15 @@
 }
 .DSCon {
   margin-top: 20px;
-  width: 960px;
+  width: 100%;
   background-color: #ffffff;
   padding: 20px;
+}
+.DSCon-text {
+  margin-top: 20px;
+}
+.DSCon-text:first-child {
+  margin-top: 0px;
 }
 </style>
 <template>
@@ -76,19 +82,21 @@
     <div class="ownnessPage-con">
       <div class="ownnessPage-title">
         <div class="op-title-con">
-          <img ondragstart="return false;" src="../../assets/5.jpg" alt />
-          <p class="op-title-name">Monickers</p>
+          <img ondragstart="return false;" :src="clientImg" alt />
+          <p class="op-title-name">{{clientName}}</p>
         </div>
       </div>
       <div class="ownnessPage-main">
         <div class="op-main-con">
           <div class="op-main-state">
-            <div v-for="item in dynamicState" class="DS">
-              <div class="DSTime">{{item.time}}</div>
+            <div v-for="(item,index) in dynamicState" class="DS">
+              <div class="DSTime">{{item.createTime | formatDate}}</div>
               <div class="DSWire"></div>
               <dir class="DSCon">
-                {{item.text}}
-                <br />
+                <div
+                  class="DSCon-text"
+                  v-for="(items,itemsindex) in item.goodsList"
+                >{{items.content}}&nbsp;{{items.classname}}</div>
               </dir>
             </div>
           </div>
@@ -112,36 +120,55 @@ export default {
   },
   data() {
     return {
-      dynamicState: [
-        {
-          time: "2019-09-17T15:29:25",
-          text:
-            '对"Popular Topics in Health, Nutrition, & Physiology"题库进行了评价。'
-        },
-        {
-          time: "2019-09-17T15:29:25",
-          text: "对题库进行了点赞"
-        },
-        {
-          time: "2019-09-17T15:29:25",
-          text: "对题库进行了取消"
-        }
-      ],
-      arr: [],
-      arr1: [],
-      isTrue: true
+      dynamicState: [],
+      data: [],
+      clientName: "",
+      clientImg: ""
     };
   },
   created: function() {
     const _this = this;
-    _this.uuu();
+    _this.clientName = localStorage.clientName;
+    _this.clientImg = localStorage.clientImg;
+    _this.action();
+    // _this.uuu();
+  },
+  filters: {
+    formatDate: function(time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd");
+    }
   },
   methods: {
+    uuu() {
+      const _this = this;
+      // _this
+      //   .axios({
+      //     method: "get",
+      //     url: `${_this.URLport.serverPath}/Client/GetClient`,
+      //     async: false,
+      //     params: {
+      //       clientId: 4
+      //     },
+      //     xhrFields: {
+      //       withCredentials: true
+      //     },
+      //     headers: {
+      //       Authorization: `Bearer ${localStorage.getItem("token")}`
+      //     }
+      //   })
+      //   .then(function(res) {
+      //     console.log(res)
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
+    },
     formatDate: function(time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
     },
-    uuu() {
+    action() {
       const _this = this;
       _this
         .axios({
@@ -156,32 +183,29 @@ export default {
           }
         })
         .then(function(res) {
-          var abc = res.data.data;
-          for (var i = 0; i <= abc.length; i++) {
-            if (i + 1 < abc.length) {
-              if (
-                _this.formatDate(abc[i].createTime) ==
-                _this.formatDate(abc[i + 1].createTime)
-              ) {
-                _this.isTrue = true;
-              } else {
-                _this.isTrue = false;
-              }
+          _this.data = res.data.data;
+          const newData = [];
+          _this.data.forEach(item => {
+            const indexFound = newData.findIndex(
+              newItem =>
+                _this.formatDate(newItem.createTime) ===
+                _this.formatDate(item.createTime)
+            );
+            const currentGoods = {
+              classname: item.classname,
+              content: item.content
+            };
+            if (indexFound > -1) {
+              newData[indexFound].goodsList.push(currentGoods);
             } else {
-              _this.isTrue = false;
+              newData.push({
+                createTime: item.createTime,
+                goodsList: [currentGoods]
+              });
             }
-            if (_this.isTrue) {
-              _this.arr1.push(abc[i]);
-            } else {
-              _this.arr.push(arr1);
-              _this.arr1 = [];
-              _this.arr1.push(abc[i]);
-            }
-          }
-          
-          console.log(_this.arr1);
-          return _this.arr;
-          console.log(_this.arr);
+          });
+          _this.dynamicState = newData;
+          return newData;
         })
         .catch(function(error) {
           console.log(error);

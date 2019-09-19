@@ -203,10 +203,10 @@
           </router-link>
           <span class="ownness">
             <router-link
+              @click.native="ownness(item.clientname,item.clientimg)"
               :to="{ path: '/ownness',query: {id: item.classinfo.clientId}}"
               :title="'访问'+ item.clientname +'的个人资料'"
               class="ownness-name"
-              @click="ownness"
             >
               <img ondragstart="return false;" :src="item.clientimg" alt />
               {{item.clientname}}
@@ -409,8 +409,11 @@ export default {
           });
       }
     },
-    ownness() {
+    ownness(name, img) {
       const _this = this;
+      localStorage.clientName = name;
+      localStorage.clientImg = img;
+      // localStorage.removeItem("client");
       console.log(123);
     }
   }
