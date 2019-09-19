@@ -128,10 +128,8 @@ export default {
   },
   created: function() {
     const _this = this;
-    _this.clientName = localStorage.clientName;
-    _this.clientImg = localStorage.clientImg;
     _this.action();
-    // _this.uuu();
+    _this.getclientbyid();
   },
   filters: {
     formatDate: function(time) {
@@ -140,29 +138,31 @@ export default {
     }
   },
   methods: {
-    uuu() {
+    getclientbyid() {
       const _this = this;
-      // _this
-      //   .axios({
-      //     method: "get",
-      //     url: `${_this.URLport.serverPath}/Client/GetClient`,
-      //     async: false,
-      //     params: {
-      //       clientId: 4
-      //     },
-      //     xhrFields: {
-      //       withCredentials: true
-      //     },
-      //     headers: {
-      //       Authorization: `Bearer ${localStorage.getItem("token")}`
-      //     }
-      //   })
-      //   .then(function(res) {
-      //     console.log(res)
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Client/GetClientById`,
+          async: false,
+          params: {
+            id: _this.$route.query.id
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res)
+          _this.clientName = res.data.data.name;
+          _this.clientImg = res.data.data.image;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     formatDate: function(time) {
       let date = new Date(time);

@@ -411,9 +411,7 @@ export default {
     },
     ownness(name, img) {
       const _this = this;
-      localStorage.clientName = name;
-      localStorage.clientImg = img;
-      // localStorage.removeItem("client");
+      
       console.log(123);
     }
   }
