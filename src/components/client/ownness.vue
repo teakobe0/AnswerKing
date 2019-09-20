@@ -150,13 +150,9 @@ export default {
           },
           xhrFields: {
             withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
         .then(function(res) {
-          console.log(res)
           _this.clientName = res.data.data.name;
           _this.clientImg = res.data.data.image;
         })
