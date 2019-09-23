@@ -64,7 +64,7 @@
   height: 24px;
   white-space: nowrap;
   cursor: text;
-  margin-left: 2px;
+  margin-left: 5px;
 }
 .serchDetailsContent-top-info p .ownness-name:hover {
   color: #777;
@@ -81,11 +81,11 @@
 }
 .serchDetailsContent-top-info p .ownness-name img {
   width: 24px;
-  height: 24px;
   border-radius: 12px;
   margin-right: 6px;
   vertical-align: -6px;
   cursor: pointer;
+  /* box-shadow: 0px 0px 5px #455358; */
 }
 .content-bookmark {
   position: absolute;
@@ -839,7 +839,9 @@ export default {
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].classinfo.id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];
-              _this.bookmarkShow = true;
+              if(_this.informations.clientname){
+                  _this.bookmarkShow = true;
+              }
             }
           }
         })

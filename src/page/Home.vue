@@ -230,7 +230,6 @@
   width: 100%;
   height: 1200px;
   background-color: #ffffff;
-  
 }
 
 .home-pub-con {
@@ -446,7 +445,7 @@
 .text-center {
   text-align: center;
   overflow: hidden;
-  letter-spacing:1px;
+  letter-spacing: 1px;
 }
 
 .features-area {
@@ -475,7 +474,6 @@
   width: 1300px;
   height: 500px;
   margin: 0 auto;
-  
 }
 
 .conclusion-left {
@@ -590,7 +588,6 @@
     transform: translateY(0);
   }
 }
-
 </style>
 
 <template>
@@ -806,7 +803,7 @@ import { constants } from "crypto";
 import vueSeamless from "vue-seamless-scroll";
 import motionCss from "../../public/css/motion.min.css";
 // 引入jquery
-import JQ from 'jquery'
+import JQ from "jquery";
 
 export default {
   name: "home",
@@ -815,7 +812,7 @@ export default {
     homeFooter,
     vueSeamless,
     motionCss,
-    JQ,
+    JQ
   },
   data() {
     return {
@@ -828,30 +825,7 @@ export default {
       timeout: null,
       inputLoad: false,
       classVessel: [
-        {
-          university_id: 137,
-          university_name: "Academy of Art University (AAU)",
-          class_id: 28,
-          class_name: "U.S. History",
-        },
-        {
-          university_id: 124,
-          university_name: "University of California, Irvine (UCI)",
-          class_id: 32,
-          class_name: "Popular Topics in Health, Nutrition, & Physiology",
-        },
-        {
-          university_id: 6,
-          university_name: "California State University, Northridge (CSUN)",
-          class_id: 47,
-          class_name: "Topics in World Art",
-        },
-        {
-          university_id: 1,
-          university_name: "St. Johns University (SJU)",
-          class_id: 58,
-          class_name: "MPT- Film History",
-        },
+        
       ],
       contributeVessel: [
         {
@@ -876,9 +850,9 @@ export default {
         }
       ],
       id: 11,
-      classNum: "760",
-      classinfoNum: "1066",
-      clientNum: "6",
+      classNum: "0",
+      classinfoNum: "0",
+      clientNum: "0",
       isActive1: false,
       isActive2: false,
       isActive3: false,
@@ -920,11 +894,10 @@ export default {
           }
         })
         .then(function(res) {
-          
-          // _this.classVessel = res.data.data;
-          // _this.classNum = _this.classVessel[0].class_num;
-          // _this.classinfoNum = _this.classVessel[0].classinfo_num;
-          // _this.clientNum = _this.classVessel[0].client_num;
+          _this.classVessel = res.data.data;
+          _this.classNum = _this.classVessel[0].class_num;
+          _this.classinfoNum = _this.classVessel[0].classinfo_num;
+          _this.clientNum = _this.classVessel[0].client_num;
         })
         .catch(function(error) {
           console.log(error);

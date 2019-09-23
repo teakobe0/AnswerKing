@@ -124,7 +124,6 @@
 }
 .ownness img {
   width: 24px;
-  height: 24px;
   border-radius: 12px;
   margin-right: 6px;
   vertical-align: -6px;

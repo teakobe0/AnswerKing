@@ -54,26 +54,49 @@
 .DSTime {
   font-size: 14px;
   font-weight: 700;
+  cursor: pointer;
+  height: 20px;
+  line-height: 20px;
 }
 .DSWire {
-  width: 1200px;
+  width: 1175px;
   /* height: 2px; */
   border-top: 1px solid #d9d9d9;
   position: absolute;
   top: 9px;
-  right: 0px;
+  left: 94px;
+}
+.DSWire i {
+  position: absolute;
+  top: -10px;
+  right: -34px;
 }
 .DSCon {
   margin-top: 20px;
-  width: 100%;
+  width: 1260px;
   background-color: #ffffff;
   padding: 20px;
+  overflow: hidden;
 }
 .DSCon-text {
   margin-top: 20px;
+  overflow: hidden;
 }
 .DSCon-text:first-child {
   margin-top: 0px;
+}
+.DSCon-text div:first-child {
+  float: left;
+  width: 1180px;
+}
+.DSCon-text div:last-of-type {
+  float: right;
+  color: #999;
+}
+.nullShow {
+  width: 100%;
+  height: 320px;
+  text-align: center;
 }
 </style>
 <template>
@@ -88,16 +111,23 @@
       </div>
       <div class="ownnessPage-main">
         <div class="op-main-con">
-          <div class="op-main-state">
-            <div v-for="(item,index) in dynamicState" class="DS">
-              <div class="DSTime">{{item.createTime | formatDate}}</div>
-              <div class="DSWire"></div>
-              <dir class="DSCon">
-                <div
-                  class="DSCon-text"
-                  v-for="(items,itemsindex) in item.goodsList"
-                >{{items.content}}&nbsp;{{items.classname}}</div>
-              </dir>
+          <div class="op-main-state" v-loading="loading">
+            <div class="nullShow" v-if="nullShow == true">这个家伙比较懒，没有留下一点动态</div>
+
+            <div v-for="(item,index) in dynamicState" class="DS" >
+              <div class="DSTime" @click="fold(item,index)">{{item.createTime | formatDate}}</div>
+              <div class="DSWire" @click="fold(item,index)">
+                <i class="el-icon-caret-bottom" v-show="item.isSubShow == false"></i>
+                <i class="el-icon-caret-top" v-show="item.isSubShow == true"></i>
+              </div>
+              <el-collapse-transition>
+                <dir class="DSCon" v-show="item.isSubShow">
+                  <div class="DSCon-text" v-for="(items,itemsindex) in item.goodsList">
+                    <div>{{items.content}}&nbsp;{{items.classname}}</div>
+                    <div>{{items.createTime | formatDateSS}}</div>
+                  </div>
+                </dir>
+              </el-collapse-transition>
             </div>
           </div>
         </div>
@@ -112,6 +142,8 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { formatDate } from "@/common/js/date.js";
+import { formatDateSS } from "@/common/js/date.js";
+
 export default {
   name: "ownnessPage",
   components: {
@@ -123,7 +155,11 @@ export default {
       dynamicState: [],
       data: [],
       clientName: "",
-      clientImg: ""
+      clientImg: "",
+      nullShow: false,
+      loading: true,
+      activeNames: 0,
+      aaa: false
     };
   },
   created: function() {
@@ -135,6 +171,10 @@ export default {
     formatDate: function(time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
+    },
+    formatDateSS: function(time) {
+      let date = new Date(time);
+      return formatDate(date, "hh:mm:ss");
     }
   },
   methods: {
@@ -180,32 +220,44 @@ export default {
         })
         .then(function(res) {
           _this.data = res.data.data;
-          const newData = [];
-          _this.data.forEach(item => {
-            const indexFound = newData.findIndex(
-              newItem =>
-                _this.formatDate(newItem.createTime) ===
-                _this.formatDate(item.createTime)
-            );
-            const currentGoods = {
-              classname: item.classname,
-              content: item.content
-            };
-            if (indexFound > -1) {
-              newData[indexFound].goodsList.push(currentGoods);
-            } else {
-              newData.push({
-                createTime: item.createTime,
-                goodsList: [currentGoods]
-              });
-            }
-          });
-          _this.dynamicState = newData;
-          return newData;
+          if (_this.data == null) {
+            _this.nullShow = true;
+            _this.loading = false;
+          } else {
+            const newData = [];
+            _this.data.forEach(item => {
+              const indexFound = newData.findIndex(
+                newItem =>
+                  _this.formatDate(newItem.createTime) ===
+                  _this.formatDate(item.createTime)
+              );
+              const currentGoods = {
+                classname: item.classname,
+                content: item.content,
+                createTime: item.createTime
+              };
+              if (indexFound > -1) {
+                newData[indexFound].goodsList.push(currentGoods);
+              } else {
+                newData.push({
+                  isSubShow: true,
+                  createTime: _this.formatDate(item.createTime),
+                  goodsList: [currentGoods]
+                });
+              }
+            });
+            _this.loading = false;
+            _this.dynamicState = newData;
+            return newData;
+          }
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    fold(item, index) {
+      const _this = this;
+      item.isSubShow = !item.isSubShow;
     }
   },
   mounted() {}
