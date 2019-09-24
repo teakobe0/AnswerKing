@@ -1,5 +1,6 @@
 // vue.config.js 配置说明
-// 这里只列一部分，具体配置惨考文档啊
+// 这里只列一部分，具体配置参考文档啊
+const webpack = require('webpack')
 module.exports = {
     // baseUrl  type:{string} default:'/'
     // 将部署应用程序的基本URL
@@ -8,7 +9,21 @@ module.exports = {
     // https://www.my-app.com/。如果应用程序部署在子路径上，则需要使用此选项指定子路径。例如，如果您的应用程序部署在https://www.foobar.com/my-app/，集baseUrl到'/my-app/'.
 
     baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
-
+    productionSourceMap: false,
+    externals: {
+        // "element-ui": "ElementUI",
+        // "vue": "Vue",
+        "jquery": "$",
+    },
+    // css: {
+    //     loaderOptions: {
+    //       sass: {
+    //         data: `
+    //           @import "./home.scss";
+    //         `
+    //       }
+    //     }
+    //   },
     // outputDir: 在npm run build时 生成文件的目录 type:string, default:'dist'
 
     // outputDir: 'dist',
@@ -40,8 +55,8 @@ module.exports = {
     lintOnSave: false,
 
     devServer: {
-        port: 8080, // 端口号
-        host: 'localhost',
+        port: 8081, // 端口号
+        host: '192.168.1.20',
         https: false, // https:{type:Boolean}
         open: true, //配置自动启动浏览器
 

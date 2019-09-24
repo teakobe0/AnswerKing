@@ -6,6 +6,7 @@ import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
+
 // 引入vue-easy-lightbox（图片放大工具）
 // import Lightbox from 'vue-easy-lightbox'
 // Vue.use(Lightbox)

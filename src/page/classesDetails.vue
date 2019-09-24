@@ -243,7 +243,7 @@
                 <router-link
                   :to="{path:'/serchDetailsUniversity',query: {id: this.universityId}}"
                 >{{value.university}}</router-link>
-                <span>教授:{{value.professor}}</span>
+                <span v-if="value.professor">教授:{{value.professor}}</span>
               </p>
 
               <p>备注:{{value.memo}}</p>

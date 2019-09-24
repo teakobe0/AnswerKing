@@ -16,6 +16,7 @@
   width: 1300px;
   height: 200px;
   margin: 0 auto;
+  position: relative;
 }
 .op-title-con img {
   width: 116px;
@@ -32,6 +33,12 @@
   margin-top: 78px;
   margin-left: 40px;
   color: #455358;
+}
+.op-title-attention {
+  position: absolute;
+  top:78px;
+  right: 5px;
+
 }
 .ownnessPage-main {
   width: 100%;
@@ -65,6 +72,7 @@
   position: absolute;
   top: 9px;
   left: 94px;
+  cursor: pointer;
 }
 .DSWire i {
   position: absolute;
@@ -107,6 +115,10 @@
         <div class="op-title-con">
           <img ondragstart="return false;" :src="clientImg" alt />
           <p class="op-title-name">{{clientName}}</p>
+          <div class="op-title-attention">
+            <el-button icon="el-icon-star-off">关注</el-button>
+            <el-button icon="el-icon-chat-line-round">私聊</el-button>
+          </div>
         </div>
       </div>
       <div class="ownnessPage-main">
@@ -114,7 +126,7 @@
           <div class="op-main-state" v-loading="loading">
             <div class="nullShow" v-if="nullShow == true">这个家伙比较懒，没有留下一点动态</div>
 
-            <div v-for="(item,index) in dynamicState" class="DS" >
+            <div v-for="(item,index) in dynamicState" class="DS">
               <div class="DSTime" @click="fold(item,index)">{{item.createTime | formatDate}}</div>
               <div class="DSWire" @click="fold(item,index)">
                 <i class="el-icon-caret-bottom" v-show="item.isSubShow == false"></i>

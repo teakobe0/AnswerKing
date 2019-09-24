@@ -403,14 +403,14 @@
               <router-link
                 :to="{ path: '/serchDetailsUniversity',query: {id: this.value.universityId}}"
               >{{value.university}}</router-link>
-              <span>教授:{{value.professor}}</span>
-              <span>贡献者:</span>
+              <span v-if="value.professor">教授:{{value.professor}}</span>
+              <span v-if="contributor == true">贡献者:</span>
               <router-link
                 :to="{ path: '/ownness',query: {id: informations.classinfo.clientId}}"
                 class="ownness-name"
                 @click="ownness"
                 :title="'访问'+ informations.clientname +'的个人资料'"
-                v-if="bookmarkShow == true"
+                v-if="contributor == true"
               >
                 <img ondragstart="return false;" :src="informations.clientimg" alt />
                 <div>{{informations.clientname}}</div>
@@ -584,6 +584,7 @@ export default {
       titleShow: false,
       // 有用没用和贡献者显示隐藏(因为需要.clainfo所以导致数据结构的不同如果直接显示会报错)
       bookmarkShow:false,
+      contributor:false,
       // 关注
       attentions: {
         Name: "",
@@ -839,8 +840,9 @@ export default {
           for (var i = 0; i < res.data.data.length; i++) {
             if (res.data.data[i].classinfo.id == _this.$route.query.classInfoId) {
               _this.informations = res.data.data[i];
+              _this.bookmarkShow = true;
               if(_this.informations.clientname){
-                  _this.bookmarkShow = true;
+                  _this.contributor = true;
               }
             }
           }

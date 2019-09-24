@@ -803,7 +803,7 @@ import { constants } from "crypto";
 import vueSeamless from "vue-seamless-scroll";
 import motionCss from "../../public/css/motion.min.css";
 // 引入jquery
-import JQ from "jquery";
+// import $ from "jquery";
 
 export default {
   name: "home",
@@ -812,7 +812,7 @@ export default {
     homeFooter,
     vueSeamless,
     motionCss,
-    JQ
+    // $
   },
   data() {
     return {
@@ -1121,33 +1121,33 @@ export default {
     handleScroll() {
       const _this = this;
       if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
-        var elPosition1 = JQ(".img-fluid1").offset().top;
-        var elPosition2 = JQ(".img-fluid2").offset().top;
-        var elPosition3 = JQ(".img-fluid3").offset().top;
-        var elPosition4 = JQ(".img-fluid4").offset().top;
-        var elPosition5 = JQ(".img-fluid5").offset().top;
-        var windowTop = JQ(window).scrollTop();
-        var windowHeight = JQ(window).height();
+        var elPosition1 = $(".img-fluid1").offset().top;
+        var elPosition2 = $(".img-fluid2").offset().top;
+        var elPosition3 = $(".img-fluid3").offset().top;
+        var elPosition4 = $(".img-fluid4").offset().top;
+        var elPosition5 = $(".img-fluid5").offset().top;
+        var windowTop = $(window).scrollTop();
+        var windowHeight = $(window).height();
         if (elPosition1 < windowTop + windowHeight) {
           //当元素在屏幕的可视区域时添加 fade-in 动画
-          JQ(".img-fluid1").addClass("animation fade-in-left");
-          JQ(".text-fluid1").addClass("animation fade-in-right");
+          $(".img-fluid1").addClass("animation fade-in-left");
+          $(".text-fluid1").addClass("animation fade-in-right");
         }
         if (elPosition2 < windowTop + windowHeight) {
-          JQ(".img-fluid2").addClass("animation fade-in-right");
-          JQ(".text-fluid2").addClass("animation fade-in-left");
+          $(".img-fluid2").addClass("animation fade-in-right");
+          $(".text-fluid2").addClass("animation fade-in-left");
         }
         if (elPosition3 < windowTop + windowHeight) {
-          JQ(".img-fluid3").addClass("animation fade-in-left");
-          JQ(".text-fluid3").addClass("animation fade-in-right");
+          $(".img-fluid3").addClass("animation fade-in-left");
+          $(".text-fluid3").addClass("animation fade-in-right");
         }
         if (elPosition4 < windowTop + windowHeight) {
-          JQ(".img-fluid4").addClass("animation fade-in-up");
-          JQ(".text-fluid5").addClass("animation fade-in-left");
+          $(".img-fluid4").addClass("animation fade-in-up");
+          $(".text-fluid5").addClass("animation fade-in-left");
         }
         if (elPosition5 < windowTop + windowHeight) {
-          JQ(".img-fluid5").addClass("animation fade-in-down");
-          JQ(".text-fluid4").addClass("animation fade-in-right");
+          $(".img-fluid5").addClass("animation fade-in-down");
+          $(".text-fluid4").addClass("animation fade-in-right");
         }
       }
     }

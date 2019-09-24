@@ -542,7 +542,6 @@ export default {
               }
             }
           }
-          console.log(_this.comment)
         })
         .catch(function(error) {
           console.log(error);
