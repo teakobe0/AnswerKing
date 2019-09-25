@@ -146,10 +146,10 @@
   height: 46px;
   border-bottom: 4px solid #507adc;
 }
-.classesDetails-tag-con div{
+.classesDetails-tag-con div {
   font-size: 14px;
   position: absolute;
-  left:130px;
+  left: 130px;
   top: 13.5px;
   color: rgb(185, 185, 185);
 }
@@ -223,6 +223,7 @@
                   size="medium"
                   v-if="value.attentions == false"
                   @click="attention()"
+                  :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-off" v-if="value.attentions == false"></i>
                   关注
@@ -232,6 +233,7 @@
                   size="medium"
                   v-if="value.attentions == true"
                   @click="attention()"
+                  :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
                   关注
@@ -265,7 +267,7 @@
         </div>
       </div>
       <div>
-        <router-view :Names="this.value"/>
+        <router-view :Names="this.value" :attCon="this.attentionCon"/>
       </div>
     </div>
     <homeFooter></homeFooter>
@@ -298,7 +300,9 @@ export default {
         Name: "",
         TypeId: "",
         Type: ""
-      }
+      },
+      attenDisabled: false,
+      attentionCon:[],
     };
   },
   created: function() {
@@ -360,10 +364,12 @@ export default {
             }
           })
           .then(function(res) {
+            _this.attentionCon = res.data.data;
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 1) {
                 if (res.data.data[i].typeId == _this.value.id) {
                   _this.value.attentions = true;
+                  _this.value.attentionsId = res.data.data[i].id;
                 }
               }
             }
@@ -375,8 +381,10 @@ export default {
     },
     attention: function() {
       const _this = this;
+      
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
+        _this.attenDisabled = true;
         if (_this.value.attentions == true) {
           _this.attentions.Name = _this.value.name;
           _this.attentions.TypeId = _this.value.id;
@@ -395,6 +403,7 @@ export default {
               }
             })
             .then(function(res) {
+              _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
                 message: "关注成功",
@@ -404,14 +413,14 @@ export default {
             .catch(function(error) {
               console.log(error);
             });
-        } else if (_this.value.attentions == false) {
+        } else {
           _this
             .axios({
               method: "delete",
-              url: `${_this.URLport.serverPath}/Focus/Cancel`,
+              url: `${_this.URLport.serverPath}/Focus/del`,
               async: false,
               params: {
-                typeid: _this.value.id.toString()
+                id: _this.value.attentionsId
               },
               xhrFields: {
                 withCredentials: true
@@ -421,6 +430,7 @@ export default {
               }
             })
             .then(function(res) {
+              _this.attenDisabled = false;
               _this.$message({
                 message: "取消关注",
                 type: "success"

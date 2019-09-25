@@ -54,7 +54,7 @@
             <div v-for="item in classAtt">
               <router-link :to="{path:'/classesDetails',query:{id:item.typeId}}">{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
-              <el-button size="mini" @click="delAttention(item.typeId)">取消关注</el-button>
+              <el-button size="mini" @click="delAttention(item.id)">取消关注</el-button>
             </div>
           </el-tab-pane>
           <el-tab-pane label="关注的题库" name="second">
@@ -64,14 +64,10 @@
                 :to="{path:'/serchDetailsContent',query:{id:item.typeIds[0],classInfoId:item.typeIds[1]}}"
               >{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
-              <el-button size="mini" @click="delAttention(item.typeId)">取消关注</el-button>
+              <el-button size="mini" @click="delAttention(item.id)">取消关注</el-button>
             </div>
           </el-tab-pane>
         </el-tabs>
-      </div>
-    </div>
-  </div>
-</template>
       </div>
     </div>
   </div>
@@ -110,10 +106,10 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `${_this.URLport.serverPath}/Focus/Cancel`,
+          url: `${_this.URLport.serverPath}/Focus/del`,
           async: false,
           params: {
-            typeid: item
+            id: item
           },
           xhrFields: {
             withCredentials: true

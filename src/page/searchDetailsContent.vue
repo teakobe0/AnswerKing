@@ -424,6 +424,7 @@
                   size="medium"
                   v-if="value.attentions == false"
                   @click="attention()"
+                  :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-off" v-if="value.attentions == false"></i>
                   关注
@@ -434,6 +435,7 @@
                   size="medium"
                   v-if="value.attentions == true"
                   @click="attention()"
+                  :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
                   关注
@@ -597,6 +599,7 @@ export default {
       classShow: true,
       // 按钮禁用
       disableds: false,
+      attenDisabled:false,
       // 当前周
       currentWeek: [],
       currentWeekShow: false,
@@ -612,6 +615,7 @@ export default {
       contributors: {
         name: "Monickers"
       },
+      attentionCon:[]
       
     };
   },
@@ -644,7 +648,6 @@ export default {
         .then(function(res) {
           _this.value = res.data.data;
           _this.$set(_this.value, "attentions", false);
-
           _this.titleShow = true;
           _this.recommendClassFlag = true;
           _this.UseRecord();
@@ -1156,6 +1159,7 @@ export default {
             }
           })
           .then(function(res) {
+            _this.attentionCon = res.data.data;
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 2) {
                 var v = [];
@@ -1174,8 +1178,10 @@ export default {
     // 关注
     attention: function() {
       const _this = this;
+      
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
+        _this.attenDisabled = true;
         if (_this.value.attentions == true) {
           _this.attentions.Name = _this.value.name;
           _this.attentions.TypeId =
@@ -1195,6 +1201,7 @@ export default {
               }
             })
             .then(function(res) {
+              _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
                 message: "关注成功",
@@ -1204,14 +1211,22 @@ export default {
             .catch(function(error) {
               console.log(error);
             });
-        } else if (_this.value.attentions == false) {
+        } else {
+          var attentionsId = "";
+          for (var i = 0; i < _this.attentionCon.length; i++) {
+            var v = [];
+            v = _this.attentionCon[i].typeId.split(",");
+            if (_this.informations.classinfo.id == v[1]) {
+              attentionsId = _this.attentionCon[i].id
+            }
+          }
           _this
             .axios({
               method: "delete",
-              url: `${_this.URLport.serverPath}/Focus/Cancel`,
+              url: `${_this.URLport.serverPath}/Focus/del`,
               async: false,
               params: {
-                typeid: _this.value.id + "," + _this.informations.classinfo.id
+                id: attentionsId
               },
               xhrFields: {
                 withCredentials: true
@@ -1221,6 +1236,7 @@ export default {
               }
             })
             .then(function(res) {
+              _this.attenDisabled = false;
               _this.$message({
                 message: "取消关注",
                 type: "success"
@@ -1240,7 +1256,6 @@ export default {
     },
     ownness() {
       const _this = this;
-      console.log(123);
     }
   }
 };

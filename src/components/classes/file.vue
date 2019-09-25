@@ -171,13 +171,6 @@
 <template>
   <div id="file">
     <div class="file-con">
-      <!-- <div class="file-con-info">
-        <div class="file-con-info-title">
-          <div class="file-con-info-trim1"></div>
-          <p>题库集({{input1}})</p>
-          <div class="file-con-info-trim2"></div>
-        </div>
-      </div>-->
       <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
       <div class="file-con-course" v-if="courseShow == true">
         <div v-for="(item,index) in value" @click="Information(item)">
@@ -252,12 +245,14 @@ export default {
       contributors: {
         name: "Monickers"
       },
-      courseShow: false
+      courseShow: false,
+      attentionCon: []
     };
   },
-  props: ["Names"],
+  props: ["Names", "attCon"],
   created: function() {
     const _this = this;
+
     _this.Classinfos();
     _this.Id = _this.$route.query.id;
   },
@@ -315,7 +310,8 @@ export default {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
           _this.attentions.Name = _this.Names.name;
-          _this.attentions.TypeId = _this.$route.query.id + "," + item.id;
+          _this.attentions.TypeId =
+            _this.$route.query.id + "," + item.classinfo.id;
           _this.attentions.Type = 2;
           _this
             .axios({
@@ -341,13 +337,21 @@ export default {
               console.log(error);
             });
         } else {
+          var attentionsId = "";
+          for (var i = 0; i < _this.attentionCon.length; i++) {
+            var v = [];
+            v = _this.attentionCon[i].typeId.split(",");
+            if (item.classinfo.id == v[1]) {
+              attentionsId = _this.attentionCon[i].id;
+            }
+          }
           _this
             .axios({
               method: "delete",
-              url: `${_this.URLport.serverPath}/Focus/Cancel`,
+              url: `${_this.URLport.serverPath}/Focus/del`,
               async: false,
               params: {
-                typeid: _this.$route.query.id + "," + item.id
+                id: attentionsId
               },
               xhrFields: {
                 withCredentials: true
@@ -391,12 +395,13 @@ export default {
             }
           })
           .then(function(res) {
+            _this.attentionCon = res.data.data;
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 2) {
                 for (var j = 0; j < _this.value.length; j++) {
                   var v = [];
                   v = res.data.data[i].typeId.split(",");
-                  if (v[1] == _this.value[j].id) {
+                  if (v[1] == _this.value[j].classinfo.id) {
                     _this.value[j].attentions = true;
                   }
                 }
@@ -410,8 +415,6 @@ export default {
     },
     ownness(name, img) {
       const _this = this;
-      
-      console.log(123);
     }
   }
 };

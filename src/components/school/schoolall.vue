@@ -21,7 +21,6 @@
   font-size: 18px;
 }
 
-
 .classes-con-info i {
   display: block;
   float: right;
@@ -61,10 +60,8 @@
 }
 
 .classes-con-courseSerch ul li:first-of-type a {
-  
   text-align: left;
 }
-
 
 .classes-con-courseSerch ul li:first-of-type a:hover {
   background-color: #fff;
@@ -91,18 +88,16 @@
   list-style-type: none;
   border-bottom: 1px dashed #757575;
   width: 49%;
-  margin-right: 20px;
   margin-bottom: 20px;
   padding-top: 10px;
   padding-bottom: 10px;
-  /*border: 1px dashed #a3a3a3;*/
   overflow: hidden;
   position: relative;
 }
 
 .classes-con-course div:nth-last-child(2n + 0) {
-  float: right;
-  margin-right: 0px;
+  float: left;
+  margin-right: 20px;
 }
 
 .classes-con-course div a {
@@ -136,70 +131,6 @@
 .classes-con-course div i:hover {
   color: red;
 }
-/*/!*文件*!/*/
-/*.file-con {*/
-/*width: 1300px;*/
-/*margin: 0 auto;*/
-/*overflow: hidden;*/
-/*margin-top: 30px;*/
-/*}*/
-
-/*.file-con-info p {*/
-/*font-size: 20px;*/
-/*font-weight: bold;*/
-/*line-height: 40px;*/
-/*float: left;*/
-/*}*/
-
-/*.file-con-info i {*/
-/*display: block;*/
-/*float: right;*/
-/*font-size: 20px;*/
-/*font-weight: bold;*/
-/*font-style: normal;*/
-/*line-height: 40px;*/
-/*}*/
-
-/*.file-con-course {*/
-/*margin-top: 50px;*/
-/*}*/
-
-/*.file-course-img {*/
-/*/!*width: 200px;*!/*/
-/*/!*height: 260px;*!/*/
-/*/!*background-color: #fafafa;*!/*/
-/*/!*color: #000;*!/*/
-/*/!*text-decoration: none;*!/*/
-/*/!*margin-bottom: 20px;*!/*/
-/*/!*display: inline-block;*!/*/
-/*/!*margin-left: 29px;*!/*/
-/*/!*margin-right: 29px;*!/*/
-/*/!*border-radius: 4px;*!/*/
-/*}*/
-
-/*.file-course-img:hover {*/
-/*color: #fe2a93;*/
-/*}*/
-
-/*.file-course-img img {*/
-/*width: 180px;*/
-/*height: 210px;*/
-/*margin-left: 10px;*/
-/*margin-top: 10px;*/
-
-/*}*/
-
-/*.file-course-img p {*/
-/*width: 200px;*/
-/*height: 35px;*/
-/*border-top: 1px solid #d6d6d6;*/
-/*background-color: #eaeaea;*/
-/*text-align: center;*/
-/*border-radius: 0px 0px 4px 4px;*/
-/*}*/
-/* .el-pagination.is-background .btn-next, .el-pagination.is-background .btn-prev, .el-pagination.is-background .el-pager li{
-    background-color: #f0f0f0 !important;
-} */
 </style>
 
 
@@ -228,9 +159,7 @@
       </div>
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
-          <router-link
-            :to="{path:'/classesDetails',query:{id:item.cla.id}}"
-          >{{item.cla.name}}</router-link>
+          <router-link :to="{path:'/classesDetails',query:{id:item.cla.id}}">{{item.cla.name}}</router-link>
           <p>题库集:{{item.order}}</p>
           <i
             class="el-icon-star-off"
@@ -247,9 +176,6 @@
           ></i>
         </div>
       </div>
-      <!-- <div class="block" >
-        <el-pagination layout="prev, pager, next" :total="50" background></el-pagination>
-      </div>-->
     </div>
   </div>
 </template>
@@ -298,7 +224,8 @@ export default {
         TypeId: "",
         Type: ""
       },
-      delAttention: ""
+      delAttention: "",
+      attentionCon: []
     };
   },
   created: function() {
@@ -442,14 +369,21 @@ export default {
             .catch(function(error) {
               console.log(error);
             });
-        } else if (item.attentions == false) {
+        } else {
+          var attentionsId = "";
+          for (var i = 0; i < _this.attentionCon.length; i++) {
+            var v = _this.attentionCon[i].typeId;
+            if (item.cla.id == v) {
+              attentionsId = _this.attentionCon[i].id;
+            }
+          }
           _this
             .axios({
               method: "delete",
-              url: `${_this.URLport.serverPath}/Focus/Cancel`,
+              url: `${_this.URLport.serverPath}/Focus/del`,
               async: false,
               params: {
-                typeid: item.cla.id.toString()
+                id: attentionsId
               },
               xhrFields: {
                 withCredentials: true
@@ -493,6 +427,8 @@ export default {
             }
           })
           .then(function(res) {
+            _this.attentionCon = res.data.data;
+            console.log(_this.attentionCon);
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 1) {
                 for (var j = 0; j < _this.classes.length; j++) {
