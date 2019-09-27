@@ -774,12 +774,12 @@ export default {
                   _this.$store.state.answer.imgss = [];
                   _this.value1 = Number(_this.valueWeek[0].id);
                 } else {
-                  _this.tabs = [];
+                  _this.tabs = res.data.data;
                   _this.conShow = true;
-                  _this.tabs[0] = res.data.data[2];
-                  _this.tabs[1] = res.data.data[3];
-                  _this.tabs[2] = res.data.data[0];
-                  _this.tabs[3] = res.data.data[1];
+                  // _this.tabs[0] = res.data.data[2];
+                  // _this.tabs[1] = res.data.data[3];
+                  // _this.tabs[2] = res.data.data[0];
+                  // _this.tabs[3] = res.data.data[1];
                   _this.value1 = Number(_this.valueWeek[0].id);
                   _this.RetrieveTheTnswer(_this.tabs[0].id);
                 }
@@ -882,12 +882,12 @@ export default {
             _this.$store.state.answer.answer = [];
             _this.$store.state.answer.imgss = [];
           } else {
-            _this.tabs = [];
+            _this.tabs = res.data.data;
             _this.conShow = true;
-            _this.tabs[0] = res.data.data[2];
-            _this.tabs[1] = res.data.data[3];
-            _this.tabs[2] = res.data.data[0];
-            _this.tabs[3] = res.data.data[1];
+            // _this.tabs[0] = res.data.data[2];
+            // _this.tabs[1] = res.data.data[3];
+            // _this.tabs[2] = res.data.data[0];
+            // _this.tabs[3] = res.data.data[1];
             _this.RetrieveTheTnswer(_this.tabs[0].id);
           }
         })

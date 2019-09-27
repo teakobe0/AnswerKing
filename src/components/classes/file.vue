@@ -283,9 +283,7 @@ export default {
             _this.infoShow = true;
           }
           for (var i = 0; i < res.data.data.length; i++) {
-            if (res.data.data[i].classinfo.totalGrade != 0) {
-              _this.value.push(res.data.data[i]);
-            }
+            _this.value.push(res.data.data[i]);
           }
           for (var i = 0; i < _this.value.length; i++) {
             _this.$set(_this.value[i], "attentions", false);

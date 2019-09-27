@@ -428,7 +428,6 @@ export default {
           })
           .then(function(res) {
             _this.attentionCon = res.data.data;
-            console.log(_this.attentionCon);
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 1) {
                 for (var j = 0; j < _this.classes.length; j++) {

@@ -624,7 +624,7 @@
                     <span>{{item.value}}</span>
                     <span style="color:#878787;float:right;">{{item.type}}</span>
                     <div
-                      v-if="item.solid == true"
+                      v-show="item.solid == true"
                       style="border-bottom:1px solid rgb(230, 230, 230);margin-top:5px;margin-bottom:5px;"
                     ></div>
                   </template>
@@ -679,11 +679,10 @@
                     @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
-                      <li v-for="(item,index) in contributeVessel" :key="index">
-                        <!-- <router-link onclick="return false;"
-                          :to="{ path: 'serchDetailsUniversity',query: {id: item.class_id}}"
-                        >TOKEN</router-link>-->
-                        <a href="#" onclick="return false;">{{item.name}}</a>
+                      <li v-for="(item,index) in classVessel" :key="index">
+                        <router-link
+                          :to="{ path: '/ownness',query: {id: item.client_id}}"
+                        >{{item.client_name}}</router-link>
                       </li>
                     </ul>
                   </vue-seamless>
@@ -811,7 +810,7 @@ export default {
     homeNav,
     homeFooter,
     vueSeamless,
-    motionCss,
+    motionCss
     // $
   },
   data() {
@@ -824,9 +823,7 @@ export default {
       restaurants: [],
       timeout: null,
       inputLoad: false,
-      classVessel: [
-        
-      ],
+      classVessel: [],
       contributeVessel: [
         {
           id: 28,

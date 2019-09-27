@@ -138,9 +138,6 @@
         color: #000;
     }
 
-    .homenav-register {
-
-    }
 
     .homenav-register a {
         display: inline-block;
@@ -179,9 +176,6 @@
         font-weight: 700;
     }
 
-    .homenavInput input:focus {
-
-    }
 
     .homenavInput i {
         color: #fff;

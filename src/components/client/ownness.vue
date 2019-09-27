@@ -115,10 +115,10 @@
         <div class="op-title-con">
           <img ondragstart="return false;" :src="clientImg" alt />
           <p class="op-title-name">{{clientName}}</p>
-          <div class="op-title-attention">
+          <!-- <div class="op-title-attention">
             <el-button icon="el-icon-star-off">关注</el-button>
             <el-button icon="el-icon-chat-line-round">私聊</el-button>
-          </div>
+          </div> -->
         </div>
       </div>
       <div class="ownnessPage-main">
