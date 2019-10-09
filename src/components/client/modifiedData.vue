@@ -100,7 +100,7 @@ export default {
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
           if (res.data.data.birthday == "0001-01-01T00:00:00") {
-            _this.modifiedDatas.Birthday = "";
+            _this.modifiedDatas.Birthday = "1901-01-01T00:00:00";
           } else {
             _this.modifiedDatas.Birthday = res.data.data.birthday;
           }
@@ -122,6 +122,7 @@ export default {
   methods: {
     onSubmit() {
       const _this = this;
+
       _this
         .axios({
           method: "put",
@@ -164,7 +165,7 @@ export default {
                 message: "修改资料成功",
                 type: "success"
               });
-            }else {
+            } else {
               _this.$message({
                 message: "修改资料失败",
                 type: "error"

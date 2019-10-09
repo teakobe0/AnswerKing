@@ -281,7 +281,6 @@ export default {
           _this.$store.state.modified.Name = res.data.data.name;
           if (res.data.data.image) {
             _this.imageUrl = _this.URLport.ImgPersonal + res.data.data.image;
-            
             _this.headShow = true;
           } else {
             _this.headShow = false;
@@ -308,7 +307,6 @@ export default {
     },
     // 上传成功
     handleAvatarSuccess(res, file) {
-      //   this.imageUrl = URL.createObjectURL(file.raw);
       const _this = this;
       _this.imageUrl = _this.URLport.ImgPersonal + res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
@@ -332,8 +330,6 @@ export default {
       //       console.log(2)
       //     });
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
-      //   const isJPG = file.type === "image/jpeg";
-      //   const isPNG = file.type === 'image/png';
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
         this.$message.error("上传头像图片只能是 JPG/PNG 格式!");

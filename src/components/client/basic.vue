@@ -120,7 +120,8 @@
           <li>手机:&nbsp;{{this.value.tel}}</li>
           <li>学校:&nbsp;{{this.value.school}}</li>
           <li>Q&nbsp;Q:&nbsp;{{this.value.qq}}</li>
-          <li>生日:&nbsp;{{this.value.birthday | formatDate}}</li>
+          <li v-if="this.value.birthday != '0001-01-01T00:00:00'">生日:&nbsp;{{this.value.birthday | formatDate}}</li>
+          <li v-if="this.value.birthday == '0001-01-01T00:00:00'">生日:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
         </ul>
       </div>
       <!-- <div class="head-right-middle">
