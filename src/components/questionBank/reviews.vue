@@ -452,7 +452,7 @@ export default {
             _this.personreviewsid = res.data.data.id;
             if (res.data.data.image != null) {
               _this.imageUrl =
-                "http://192.168.1.29:8088" + res.data.data.image;
+                _this.URLport.ImgPath + res.data.data.image;
               _this.headShowLogin = true;
             }else {
               _this.headShowLogin = false;
@@ -508,12 +508,12 @@ export default {
             _this.$set(_this.reviews[i], "headShowTwo", false);
             if (_this.reviews[i].img) {
               _this.reviews[i].img =
-                "http://192.168.1.29:8088" + _this.reviews[i].img;
+                _this.URLport.ImgPath + _this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
             if (_this.reviews[i].replyimg) {
               _this.reviews[i].replyimg =
-                "http://192.168.1.29:8088" + _this.reviews[i].replyimg;
+                _this.URLport.ImgPath + _this.reviews[i].replyimg;
               _this.$set(_this.reviews[i], "headShowTwo", true);
             }
             if (_this.reviews[i].clientId == _this.personreviewsid) {

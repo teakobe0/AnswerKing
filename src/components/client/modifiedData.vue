@@ -73,7 +73,7 @@ export default {
         Name: "",
         QQ: "",
         Tel: "",
-        School:"",
+        School: "",
         Sex: "",
         Birthday: ""
       }
@@ -99,12 +99,12 @@ export default {
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
-          if(res.data.data.birthday == "0001-01-01T00:00:00"){
+          if (res.data.data.birthday == "0001-01-01T00:00:00") {
             _this.modifiedDatas.Birthday = "";
-          }else {
+          } else {
             _this.modifiedDatas.Birthday = res.data.data.birthday;
           }
-          
+
           _this.modifiedDatas.School = res.data.data.school;
         })
         .catch(function(error) {
@@ -122,18 +122,19 @@ export default {
   methods: {
     onSubmit() {
       const _this = this;
-      _this.axios({
-        method: "put",
-        url: `${_this.URLport.serverPath}/client/clients`,
-        async: false,
-        data: _this.modifiedDatas,
-        xhrFields: {
-          withCredentials: true
-        },
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`
-        }
-      })
+      _this
+        .axios({
+          method: "put",
+          url: `${_this.URLport.serverPath}/client/clients`,
+          async: false,
+          data: _this.modifiedDatas,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
         .then(function(res) {
           _this.GetClient();
         })
@@ -158,10 +159,17 @@ export default {
           })
           .then(function(res) {
             _this.$store.state.modified.Name = res.data.data.name;
-            _this.$message({
-              message: "修改资料成功",
-              type: "success"
-            });
+            if (res.data.status == 1) {
+              _this.$message({
+                message: "修改资料成功",
+                type: "success"
+              });
+            }else {
+              _this.$message({
+                message: "修改资料失败",
+                type: "error"
+              });
+            }
           })
           .catch(function(error) {
             console.log(error);
