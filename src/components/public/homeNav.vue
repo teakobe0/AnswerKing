@@ -237,13 +237,13 @@
                 </div>
                 <ul >
                     <li>
-                        <router-link to='/schoolStudy' :class="searchBarFixed == true ? 'navcolora:hover' :''">学校资源</router-link>
+                        <router-link to='/schools' :class="searchBarFixed == true ? 'navcolora:hover' :''">学校资源</router-link>
                         <!--<table cellpadding="0" cellspacing="0">-->
                             <!--<tr>-->
                                 <!--<td>-->
                                     <!--<ul>-->
                                         <!--<li>-->
-                                            <!--<router-link to='/schoolStudy'>学校</router-link>-->
+                                            <!--<router-link to='/schools'>学校</router-link>-->
                                         <!--</li>-->
                                         <!--<li>-->
                                             <!--<router-link to='/subject'>学科</router-link>-->
@@ -260,7 +260,7 @@
                                 <!--<td>-->
                                     <!--<ul>-->
                                         <!--<li>-->
-                                            <!--<router-link to='/schoolStudy'>学校</router-link>-->
+                                            <!--<router-link to='/schools'>学校</router-link>-->
                                         <!--</li>-->
                                         <!--<li>-->
                                             <!--<router-link to='/subject'>学科</router-link>-->

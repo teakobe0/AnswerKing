@@ -99,7 +99,7 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right" style>
-              <el-breadcrumb-item :to="{ path: 'schoolStudy' }"><span class="crumb">全部学校</span></el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/schools' }"><span class="crumb">全部学校</span></el-breadcrumb-item>
               <el-breadcrumb-item><span style="color:rgb(228, 228, 228);">当前学校</span></el-breadcrumb-item>
             </el-breadcrumb>
           </div>
@@ -120,7 +120,8 @@
         <div class="un-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="{path:'/serchDetailsUniversity/schoolall',query: {id: this.Id}}">课程</router-link>
+              <router-link :to="'/schools/university/'+ this.Id +'/schoolall'">课程</router-link>
+              
             </li>
             
           </ul>
@@ -157,7 +158,7 @@ export default {
   },
   created: function() {
     const _this = this;
-    _this.Id = _this.$route.query.id;
+    _this.Id = _this.$route.params.university_id;
     _this.University();
   },
   methods: {
@@ -170,7 +171,7 @@ export default {
           url: `${_this.URLport.serverPath}/University/GetUniversity`,
           async: false,
           params: {
-            id: _this.$route.query.id
+            id: _this.$route.params.university_id
           },
           xhrFields: {
             withCredentials: true

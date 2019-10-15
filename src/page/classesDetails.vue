@@ -307,7 +307,7 @@ export default {
   },
   created: function() {
     const _this = this;
-    _this.Id = _this.$route.query.id;
+    _this.Id = _this.$route.params.classesDetails_id;
     _this.Getclass();
   },
   methods: {
@@ -320,7 +320,7 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Getclass`,
           async: false,
           params: {
-            id: _this.$route.query.id
+            id: _this.$route.params.classesDetails_id
           },
           xhrFields: {
             withCredentials: true

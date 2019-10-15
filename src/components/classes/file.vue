@@ -254,7 +254,7 @@ export default {
     const _this = this;
 
     _this.Classinfos();
-    _this.Id = _this.$route.query.id;
+    _this.Id = _this.$route.params.classesDetails_id;
   },
   filters: {
     formatDate: function(time) {
@@ -272,7 +272,7 @@ export default {
           url: `${_this.URLport.serverPath}/Classinfo/Classinfos`,
           async: false,
           params: {
-            classid: _this.$route.query.id
+            classid: _this.$route.params.classesDetails_id
           },
           xhrFields: {
             withCredentials: true
@@ -309,7 +309,7 @@ export default {
         if (item.attentions == true) {
           _this.attentions.Name = _this.Names.name;
           _this.attentions.TypeId =
-            _this.$route.query.id + "," + item.classinfo.id;
+            _this.$route.params.classesDetails_id + "," + item.classinfo.id;
           _this.attentions.Type = 2;
           _this
             .axios({

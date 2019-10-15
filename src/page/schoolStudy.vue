@@ -165,7 +165,6 @@
   margin-right: 30px;
 }
 
-
 .find-select-bootom li a {
   display: block;
   color: #08b4e1;
@@ -217,8 +216,10 @@
               :trigger-on-focus="false"
             >
               <template slot-scope="{ item }">
-                <span>{{item.value}}</span>
-                <span style="color:#878787;float:right;">{{item.type}}</span>
+                <router-link :to="'/schools/university/'+ item.id" style="width: 100%;height: 34px;display: block;">
+                  <span style="color:#878787;float:left;">{{item.value}}</span>
+                  <span style="color:#878787;float:right;">{{item.type}}</span>
+                </router-link>
               </template>
             </el-autocomplete>
           </div>
@@ -289,7 +290,7 @@
             <ul>
               <li v-for="item in universitys">
                 <router-link
-                  :to="{path:'/serchDetailsUniversity',query: {id: item.university.id}}"
+                  :to="'/schools/university/'+item.university.id"
                 >{{item.university.name}}</router-link>
                 <div class="select-boo-num">{{item.number}}门课程</div>
               </li>
@@ -348,6 +349,7 @@ export default {
   },
   created: function() {
     const _this = this;
+
     _this
       .axios({
         method: "get",
@@ -374,7 +376,7 @@ export default {
         0,
         _this.universitys.length + _this.pageSize
       );
-      if(_this.universitys.length-1 == _this.alluniversitys.length-1){
+      if (_this.universitys.length - 1 == _this.alluniversitys.length - 1) {
         _this.viewMores = false;
       }
       return sortByKey(_this.universitys, "number");
@@ -386,7 +388,6 @@ export default {
           return y < x ? -1 : x > y ? 1 : 0;
         });
       }
-      
     },
     querySearch(queryString, cb) {
       const _this = this;
@@ -401,7 +402,7 @@ export default {
             _this.inputLoad = true;
             _this.state2 = queryString;
             _this.queryString = queryString;
-            var results = []
+            var results = [];
             _this
               .axios({
                 method: "get",
@@ -442,39 +443,37 @@ export default {
     },
     handleSelectauto(item) {
       const _this = this;
-      _this.loading = this.$loading({
-        lock: true,
-        text: "加载中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
-      this.axios({
-        method: "get",
-        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
-        async: false,
-        params: {
-          name: _this.queryString
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-        .then(function(res) {
-          //学校
-          if (item.class == "university") {
-            //学校
-            _this.$router.push({
-              path: "/serchDetailsUniversity",
-              query: {
-                id: res.data.data.ls[item.num].university.id
-              }
-            });
-          }
-          _this.loading.close();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      // _this.loading = this.$loading({
+      //   lock: true,
+      //   text: "加载中",
+      //   spinner: "el-icon-loading",
+      //   background: "rgba(0, 0, 0, 0.7)"
+      // });
+      // this.axios({
+      //   method: "get",
+      //   url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+      //   async: false,
+      //   params: {
+      //     name: _this.queryString
+      //   },
+      //   xhrFields: {
+      //     withCredentials: true
+      //   }
+      // })
+      //   .then(function(res) {
+      //     //学校
+      //     if (item.class == "university") {
+      //       //学校
+      //       // _this.$router.push({
+      //       //   name: "schools/university",
+      //       //   params: { id: res.data.data.ls[item.num].university.id }
+      //       // });
+      //     }
+      //     _this.loading.close();
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
     },
     //根据国家 州/省份检索学校
     GetUniversitys: function(index) {

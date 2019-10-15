@@ -159,7 +159,7 @@
       </div>
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
-          <router-link :to="{path:'/classesDetails',query:{id:item.cla.id}}">{{item.cla.name}}</router-link>
+          <router-link :to="'/schools/university/'+$route.params.university_id+'/classesDetails/'+item.cla.id">{{item.cla.name}}</router-link>
           <p>题库集:{{item.order}}</p>
           <i
             class="el-icon-star-off"
@@ -230,6 +230,7 @@ export default {
   },
   created: function() {
     const _this = this;
+    console.log(_this.$route)
     _this.universityidClass();
   },
   methods: {
@@ -242,7 +243,7 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Class`,
           async: false,
           params: {
-            universityid: _this.$route.query.id
+            universityid: _this.$route.params.university_id
           },
           xhrFields: {
             withCredentials: true
@@ -269,7 +270,7 @@ export default {
             url: `${_this.URLport.serverPath}/Class/Class`,
             async: false,
             params: {
-              universityid: _this.$route.query.id
+              universityid: _this.$route.params.university_id
             },
             xhrFields: {
               withCredentials: true
@@ -293,7 +294,7 @@ export default {
             url: `${_this.URLport.serverPath}/Class/Class`,
             async: false,
             params: {
-              universityid: _this.$route.query.id,
+              universityid: _this.$route.params.university_id,
               alif: alifs
             },
             xhrFields: {
@@ -320,7 +321,7 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Class`,
           async: false,
           params: {
-            universityid: _this.$route.query.id,
+            universityid: _this.$route.params.university_id,
             name: names
           },
           xhrFields: {
