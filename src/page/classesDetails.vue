@@ -128,23 +128,26 @@
 .classesDetails-tag-con li {
   float: left;
   list-style-type: none;
+  text-align: center;
+  cursor: pointer;
+  width: 73px;
   height: 46px;
   line-height: 50px;
   margin-right: 10px;
 }
 
-.classesDetails-tag-con li a {
+/* .classesDetails-tag-con li a {
   display: inline-block;
   text-align: center;
   width: 73px;
   height: 46px;
   color: #000;
   text-decoration: none;
-}
+} */
 
-.classesDetails-tag-con li a:hover {
+.classesDetails-tag-con li:hover {
   height: 46px;
-  border-bottom: 4px solid #507adc;
+  border-bottom: 4px solid #4559ae;
 }
 .classesDetails-tag-con div {
   font-size: 14px;
@@ -196,11 +199,11 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right" style>
-              <el-breadcrumb-item :to="{ path: '/schoolStudy' }">
+              <el-breadcrumb-item :to="{ path: '/schools' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item
-                :to="{ path: '/serchDetailsUniversity',query: {id: this.universityId}}"
+                :to="'/schools/university/'+$route.params.university_id"
               >
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
@@ -257,10 +260,11 @@
         <div class="classesDetails-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">题库集</router-link>
+              <!-- <router-link :to="{path:'/classes/file',query: {id: this.Id}}">题库集</router-link> -->
+              题库集
             </li>
             <!-- <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
-                            <router-link :to="{path:'/classesDetails/file',query: {id: this.Id}}">题库集</router-link>
+                            <router-link :to="{path:'/classes/file',query: {id: this.Id}}">题库集</router-link>
             </li>-->
           </ul>
           <div>题库集是由各校童鞋友情分享!</div>
@@ -307,7 +311,7 @@ export default {
   },
   created: function() {
     const _this = this;
-    _this.Id = _this.$route.params.classesDetails_id;
+    _this.Id = _this.$route.params.classes_id;
     _this.Getclass();
   },
   methods: {
@@ -320,7 +324,7 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Getclass`,
           async: false,
           params: {
-            id: _this.$route.params.classesDetails_id
+            id: _this.$route.params.classes_id
           },
           xhrFields: {
             withCredentials: true

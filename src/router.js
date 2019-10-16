@@ -21,11 +21,11 @@ import classesStudy from '@/page/classesStudy.vue'  //课程资源
 // const serchDetails = () => import('@/page/searchDetails.vue')
 import serchDetails from '@/page/searchDetails.vue'  //搜索详情
 // const serchDetailsContent = () => import('@/page/searchDetailsContent.vue')
-import serchDetailsContent from '@/page/searchDetailsContent.vue'  //答案页面
+import content from '@/page/searchDetailsContent.vue'  //答案页面
 // const serchDetailsUniversity = () => import('@/page/searchDetailsUniversity.vue')
 import university from '@/page/searchDetailsUniversity.vue'  //学校详情页面
 // const classesDetails = () => import('@/page/classesDetails.vue')
-import classesDetails from '@/page/classesDetails.vue'  //课程详情页面
+import classes from '@/page/classesDetails.vue'  //课程详情页面
 // const member = () => import('@/page/member.vue')
 import member from '@/page/member.vue'  //会员
 
@@ -164,12 +164,11 @@ export default new Router({
             ]
         },
         {
-            path: '/serchDetailsContent',      //设置跳转
-            component: serchDetailsContent,
+            path: '/schools/university/:university_id/classes/:classes_id/content/:classinfo_id',      //设置跳转
+            component: content,
         },
         {
             path: '/schools/university/:university_id',      //设置跳转
-            name:"schools/university",
             component: university,
             children:[
                 {
@@ -195,8 +194,8 @@ export default new Router({
             ]
         },
         {
-            path: '/schools/university/:university_id/classesDetails:classesDetails_id',      //设置跳转
-            component: classesDetails,
+            path: '/schools/university/:university_id/classes/:classes_id',      //设置跳转
+            component: classes,
             children:[
                 {
                     path: '/',      //设置跳转
@@ -243,7 +242,7 @@ export default new Router({
             component: standardBehavior
         },
         {
-            path: '/ownness',      //设置跳转
+            path: '/ownness/:client_id',      //设置跳转
             component: ownness
         },
 

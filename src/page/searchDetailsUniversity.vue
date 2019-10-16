@@ -70,9 +70,12 @@
 .un-tag-con li {
   float: left;
   list-style-type: none;
+  text-align: center;
+  width: 73px;
   height: 46px;
   line-height: 50px;
   margin-right: 10px;
+  cursor: pointer;
 }
 
 .un-tag-con li:hover {
@@ -80,14 +83,14 @@
   border-bottom: 4px solid #4559ae;
 }
 
-.un-tag-con li a {
+/* .un-tag-con li a {
   display: inline-block;
   text-align: center;
   width: 73px;
   height: 46px;
   color: #000;
   text-decoration: none;
-}
+} */
 </style>
 
 <template>
@@ -120,8 +123,8 @@
         <div class="un-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="'/schools/university/'+ this.Id +'/schoolall'">课程</router-link>
-              
+              <!-- <router-link :to="'/schools/university/'+ this.Id +'/schoolall'">课程</router-link> -->
+              课程
             </li>
             
           </ul>

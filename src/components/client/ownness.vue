@@ -110,6 +110,7 @@
 <template>
   <div class="ownnessPage">
     <homeNav msg="登录/注册" />
+    <div v-if="titleShow==true" v-title :data-title="clientName+'-CourseWhale'"></div>
     <div class="ownnessPage-con">
       <div class="ownnessPage-title">
         <div class="op-title-con">
@@ -171,13 +172,14 @@ export default {
       nullShow: false,
       loading: true,
       activeNames: 0,
-      aaa: false
+      titleShow:false,
     };
   },
   created: function() {
     const _this = this;
-    _this.action();
     _this.getclientbyid();
+    _this.action();
+    
   },
   filters: {
     formatDate: function(time) {
@@ -198,7 +200,7 @@ export default {
           url: `${_this.URLport.serverPath}/Client/GetClientById`,
           async: false,
           params: {
-            id: _this.$route.query.id
+            id: _this.$route.params.client_id
           },
           xhrFields: {
             withCredentials: true
@@ -207,6 +209,7 @@ export default {
         .then(function(res) {
           _this.clientName = res.data.data.name;
           _this.clientImg = res.data.data.image;
+          _this.titleShow = true;
         })
         .catch(function(error) {
           console.log(error);
@@ -224,7 +227,7 @@ export default {
           url: `${_this.URLport.serverPath}/Client/Action`,
           async: false,
           params: {
-            clientid: _this.$route.query.id
+            clientid: _this.$route.params.client_id
           },
           xhrFields: {
             withCredentials: true

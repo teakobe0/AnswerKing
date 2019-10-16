@@ -58,7 +58,7 @@
     <ul v-for="item in universityClass">
       <li>
         <i class="el-icon-tickets"></i>
-        <router-link :to="{ path: 'classesDetails',query: {id: item.cla.id}}">{{item.cla.name}}</router-link>
+        <router-link :to="'/schools/university/'+$route.params.university_id+'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
         <span>{{item.cla.university}}</span>
         <span>题库:{{item.order}}</span>
       </li>
@@ -116,7 +116,7 @@ export default {
             });
           }
           for (var i = 0; i < 5; i++) {
-            if (res.data.data[i].cla.id != _this.$route.query.id) {
+            if (res.data.data[i].cla.id != _this.$route.params.classes_id) {
               _this.universityClass.push(res.data.data[i]);
             } else {
               // _this.universityClass.push(res.data.data[6])

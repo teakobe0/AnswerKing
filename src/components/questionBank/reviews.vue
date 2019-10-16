@@ -488,7 +488,7 @@ export default {
           url: `${_this.URLport.serverPath}/Comment/Comments`,
           async: false,
           params: {
-            classinfoid: _this.$route.query.classInfoId
+            classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
             withCredentials: true
@@ -561,7 +561,7 @@ export default {
         } else {
           _this.addComments.parentId = 0;
           _this.addComments.contents = _this.retext;
-          _this.addComments.classInfoId = _this.$route.query.classInfoId;
+          _this.addComments.classInfoId = _this.$route.params.classinfo_id;
           _this.addComments.clientid = _this.personreviewsid;
           _this
             .axios({
@@ -610,14 +610,14 @@ export default {
         } else {
           _this.addComments.parentId = _this.replyOneTwoid;
           _this.addComments.contents = model;
-          _this.addComments.classInfoId = _this.$route.query.classInfoId;
+          _this.addComments.classInfoId = _this.$route.params.classinfo_id;
           _this.addComments.clientid = _this.personreviewsid;
           _this.addComments.contenturl =
             model +
             "," +
-            _this.$route.query.id +
+            _this.$route.params.classes_id +
             "," +
-            _this.$route.query.classInfoId;
+            _this.$route.params.classinfo_id;
           _this
             .axios({
               method: "POST",

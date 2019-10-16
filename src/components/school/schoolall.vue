@@ -159,7 +159,7 @@
       </div>
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
-          <router-link :to="'/schools/university/'+$route.params.university_id+'/classesDetails/'+item.cla.id">{{item.cla.name}}</router-link>
+          <router-link :to="'/schools/university/'+$route.params.university_id+'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
           <p>题库集:{{item.order}}</p>
           <i
             class="el-icon-star-off"

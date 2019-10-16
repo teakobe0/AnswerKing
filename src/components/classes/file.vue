@@ -175,7 +175,7 @@
       <div class="file-con-course" v-if="courseShow == true">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
-            :to="{path:'/serchDetailsContent',query:{id:item.classinfo.classId,classInfoId:item.classinfo.id}}"
+            :to="'/schools/university/'+$route.params.university_id+'/classes/'+$route.params.classes_id+'/content/'+item.classinfo.id"
             class="file-course-img"
           >
             <p class="course-goal">
@@ -196,7 +196,7 @@
           <span class="ownness">
             <router-link
               @click.native="ownness(item.clientname,item.clientimg)"
-              :to="{ path: '/ownness',query: {id: item.classinfo.clientId}}"
+              :to="'/ownness/'+item.classinfo.clientId"
               :title="'访问'+ item.clientname +'的个人资料'"
               class="ownness-name"
             >
@@ -252,9 +252,9 @@ export default {
   props: ["Names", "attCon"],
   created: function() {
     const _this = this;
-
+    console.log(_this.$route);
     _this.Classinfos();
-    _this.Id = _this.$route.params.classesDetails_id;
+    _this.Id = _this.$route.params.classes_id;
   },
   filters: {
     formatDate: function(time) {
@@ -272,7 +272,7 @@ export default {
           url: `${_this.URLport.serverPath}/Classinfo/Classinfos`,
           async: false,
           params: {
-            classid: _this.$route.params.classesDetails_id
+            classid: _this.$route.params.classes_id
           },
           xhrFields: {
             withCredentials: true
@@ -309,7 +309,7 @@ export default {
         if (item.attentions == true) {
           _this.attentions.Name = _this.Names.name;
           _this.attentions.TypeId =
-            _this.$route.params.classesDetails_id + "," + item.classinfo.id;
+            _this.$route.params.classes_id + "," + item.classinfo.id;
           _this.attentions.Type = 2;
           _this
             .axios({

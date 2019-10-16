@@ -26,7 +26,12 @@
         <img :src="item.Imgs" alt />
         <h3>{{className}}</h3>
         <p>分数:{{item.classinfo.totalGrade}}</p>
-        <button @click="skipclass(item.classinfo.classId,item.classinfo.id)" @click.native="flushCom">进入题库</button>
+        <button
+          @click="skipclass(item.classinfo.classId,item.classinfo.id)"
+          @click.native="flushCom"
+        >
+          <router-link style="text-decoration:none;color:#FFF" :to="'/schools/university/'+$route.params.university_id+'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id">进入题库</router-link>
+        </button>
       </el-carousel-item>
     </el-carousel>
   </div>
@@ -55,11 +60,11 @@ export default {
     //根据课程id检索课程订单
     Classinfos: function() {
       const _this = this;
-      const classinfos = _this.classinfoss;
-      const classInfoId = _this.$route.query.classInfoId;
+      let classinfos = _this.classinfoss;
+      let classInfoId = _this.$route.params.classinfo_id;
       for (var i = 0; i < classinfos.length; i++) {
         _this.$set(classinfos[i], "Imgs", blueleftimg);
-        if (classinfos[i].id != classInfoId) {
+        if (classinfos[i].classinfo.id != classInfoId) {
           _this.courses.push(classinfos[i]);
         } else if (classinfos.length == 1) {
           _this.otherQuestionShow = false;
@@ -69,10 +74,10 @@ export default {
     skipclass: function(classId, id) {
       const _this = this;
       // window.location.reload();
-      _this.$router.push({
-        path: "/serchDetailsContent",
-        query: { id: classId, classInfoId: id }
-      });
+      // _this.$router.push({
+      //   path: "/serchDetailsContent",
+      //   query: { id: classId, classInfoId: id }
+      // });
     }
   }
 };

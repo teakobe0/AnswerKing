@@ -74,7 +74,7 @@
           <router-link to="/home">首页</router-link>
         </li>
         <li>
-          <router-link to="/schoolStudy">学校资源</router-link>
+          <router-link to="/schools">学校资源</router-link>
         </li>
         <li>
           <router-link to="/classesStudy">课程资源</router-link>

@@ -299,6 +299,7 @@
 <template>
   <div id="serch">
     <homeNav></homeNav>
+    
     <div v-title data-title="搜索结果-CourseWhale"></div>
     <div class="serch-nav" :class="{fixedNav:isfixedNav}">
       <div class="serch-nav-con">
@@ -462,283 +463,283 @@
 </template>
 
 <script type="es6">
-import homeNav from "@/components/public/homeNav.vue";
-import homeFooter from "@/components/public/homeFooter.vue";
-import { formatDate } from "@/common/js/date.js";
-import { Loading } from "element-ui";
+// import homeNav from "@/components/public/homeNav.vue";
+// import homeFooter from "@/components/public/homeFooter.vue";
+// import { formatDate } from "@/common/js/date.js";
+// import { Loading } from "element-ui";
 
-export default {
-  name: "serch",
-  components: {
-    homeNav,
-    homeFooter
-  },
-  data() {
-    return {
-      //三大类型的显示容器
-      value1: [], //classes
-      value2: [], //content
-      value3: [], //university
-      //三大类型的初始容器
-      allClasses: [],
-      allContent: [],
-      allUniversity: [],
-      //内容显示数量
-      pageSize: 6,
-      //内容的显示隐藏
-      clessShow: true,
-      contentShow: true,
-      universityShow: true,
-      //上下箭头的显示隐藏
-      clessicondownShow: true,
-      clessiconupShow: false,
-      conicondownShow: true,
-      coniconupShow: false,
-      unicondownShow: true,
-      uniconupShow: false,
-      //外层盒子的显示隐藏
-      clessBoxShow: false,
-      contentBoxShow: false,
-      universityBoxShow: false,
-      clesstops: true,
-      //三大类型的数量
-      classeNum: 0,
-      contentNum: 0,
-      universityNum: 0,
-      //导航的显示隐藏
-      isfixedNav: false,
-      isfixedNavtop: true,
-      isserchTextSwitch: false,
-      show: false,
-      showNav: true,
-      //内容的标题name
-      conClassName: []
-    };
-  },
-  created: function() {
-    const _this = this;
-    _this.openFullScreen2();
-  },
-  filters: {
-    formatDate: function(time) {
-      let date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd");
-    }
-  },
-  mounted() {
-    const _this = this;
-    window.addEventListener("scroll", _this.handleScroll);
-    //window.addEventListener('scroll', function () {
-    //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
-    //    //console.log("文档高度" + document.body.offsetHeight); // 文档高度
-    //});
-  },
-  methods: {
-    openFullScreen2() {
-      const _this = this;
-      _this.loading = this.$loading({
-        lock: true,
-        text: "加载中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
-      _this.gettingdata();
-    },
-    handleScroll() {
-      const _this = this;
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-      //console.log(scrollTop)
-      if (scrollTop >= 300) {
-        _this.isfixedNav = true;
-        _this.isfixedNavtop = false;
-      } else if (scrollTop == 0) {
-        _this.isfixedNav = false;
-        _this.isfixedNavtop = true;
-      }
-      if (scrollTop > 300) {
-        _this.show = true;
-      } else if (scrollTop == 0) {
-        _this.show = false;
-      }
-    },
-    pageTop: function() {
-      const _this = this;
-      window.scroll(0, 0);
-    },
-    //获取页面数据
-    gettingdata: function() {
-      const _this = this;
-      this.axios({
-        method: "get",
-        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
-        async: false,
-        params: {
-          name: _this.$route.query.serchName
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-        .then(function(res) {
-          console.log(res);
-          _this.classeNum = res.data.data.classes.length;
-          _this.contentNum = res.data.data.content.length;
-          _this.universityNum = res.data.data.ls.length;
-          //课程
-          if (res.data.data.classes.length != 0) {
-            _this.allClasses = res.data.data.classes;
-            _this.value1 = _this.allClasses.slice(0, _this.pageSize);
-            _this.clessShow = true;
-            _this.clessBoxShow = true;
-          } else {
-            _this.clessShow = false;
-            _this.clessBoxShow = false;
-          }
-          //答案
-          if (res.data.data.content.length != 0) {
-            _this.allContent = res.data.data.content;
-            _this.value2 = _this.allContent.slice(0, _this.pageSize);
+// export default {
+//   name: "serch",
+//   components: {
+//     homeNav,
+//     homeFooter
+//   },
+//   data() {
+//     return {
+//       //三大类型的显示容器
+//       value1: [], //classes
+//       value2: [], //content
+//       value3: [], //university
+//       //三大类型的初始容器
+//       allClasses: [],
+//       allContent: [],
+//       allUniversity: [],
+//       //内容显示数量
+//       pageSize: 6,
+//       //内容的显示隐藏
+//       clessShow: true,
+//       contentShow: true,
+//       universityShow: true,
+//       //上下箭头的显示隐藏
+//       clessicondownShow: true,
+//       clessiconupShow: false,
+//       conicondownShow: true,
+//       coniconupShow: false,
+//       unicondownShow: true,
+//       uniconupShow: false,
+//       //外层盒子的显示隐藏
+//       clessBoxShow: false,
+//       contentBoxShow: false,
+//       universityBoxShow: false,
+//       clesstops: true,
+//       //三大类型的数量
+//       classeNum: 0,
+//       contentNum: 0,
+//       universityNum: 0,
+//       //导航的显示隐藏
+//       isfixedNav: false,
+//       isfixedNavtop: true,
+//       isserchTextSwitch: false,
+//       show: false,
+//       showNav: true,
+//       //内容的标题name
+//       conClassName: []
+//     };
+//   },
+//   created: function() {
+//     const _this = this;
+//     _this.openFullScreen2();
+//   },
+//   filters: {
+//     formatDate: function(time) {
+//       let date = new Date(time);
+//       return formatDate(date, "yyyy-MM-dd");
+//     }
+//   },
+//   mounted() {
+//     const _this = this;
+//     window.addEventListener("scroll", _this.handleScroll);
+//     //window.addEventListener('scroll', function () {
+//     //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
+//     //    //console.log("文档高度" + document.body.offsetHeight); // 文档高度
+//     //});
+//   },
+//   methods: {
+//     openFullScreen2() {
+//       const _this = this;
+//       _this.loading = this.$loading({
+//         lock: true,
+//         text: "加载中",
+//         spinner: "el-icon-loading",
+//         background: "rgba(0, 0, 0, 0.7)"
+//       });
+//       _this.gettingdata();
+//     },
+//     handleScroll() {
+//       const _this = this;
+//       var scrollTop =
+//         window.pageYOffset ||
+//         document.documentElement.scrollTop ||
+//         document.body.scrollTop;
+//       //console.log(scrollTop)
+//       if (scrollTop >= 300) {
+//         _this.isfixedNav = true;
+//         _this.isfixedNavtop = false;
+//       } else if (scrollTop == 0) {
+//         _this.isfixedNav = false;
+//         _this.isfixedNavtop = true;
+//       }
+//       if (scrollTop > 300) {
+//         _this.show = true;
+//       } else if (scrollTop == 0) {
+//         _this.show = false;
+//       }
+//     },
+//     pageTop: function() {
+//       const _this = this;
+//       window.scroll(0, 0);
+//     },
+//     //获取页面数据
+//     gettingdata: function() {
+//       const _this = this;
+//       this.axios({
+//         method: "get",
+//         url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+//         async: false,
+//         params: {
+//           name: _this.$route.query.serchName
+//         },
+//         xhrFields: {
+//           withCredentials: true
+//         }
+//       })
+//         .then(function(res) {
+//           console.log(res);
+//           _this.classeNum = res.data.data.classes.length;
+//           _this.contentNum = res.data.data.content.length;
+//           _this.universityNum = res.data.data.ls.length;
+//           //课程
+//           if (res.data.data.classes.length != 0) {
+//             _this.allClasses = res.data.data.classes;
+//             _this.value1 = _this.allClasses.slice(0, _this.pageSize);
+//             _this.clessShow = true;
+//             _this.clessBoxShow = true;
+//           } else {
+//             _this.clessShow = false;
+//             _this.clessBoxShow = false;
+//           }
+//           //答案
+//           if (res.data.data.content.length != 0) {
+//             _this.allContent = res.data.data.content;
+//             _this.value2 = _this.allContent.slice(0, _this.pageSize);
 
-            // for (var i = 0; i < _this.value2.length; i++) {
-            //   _this.$set(_this.value2[i], "className", "");
-            //   _this
-            //     .axios({
-            //       method: "get",
-            //       url: `${_this.URLport.serverPath}/Class/Getclass`,
-            //       async: false,
-            //       params: {
-            //         id: _this.value2[i].classId
-            //       },
-            //       xhrFields: {
-            //         withCredentials: true
-            //       }
-            //     })
-            //     .then(function(res) {
-            //       var conClassName = []
-            //       conClassName.push(res.data.data.name);
-            //       console.log(conClassName)
-            //     })
-            //     .catch(function(error) {
-            //       console.log(error);
-            //     });
-            // }
-            // for(var j = 0; j < _this.value2.length; j++){
-            //     _this.value2[j].className = _this.conClassName[0]
-            // }
-            // console.log(_this.value2.className);
-            //   if (_this.value2[i].classId == _this.conClassName[i].id) {
-            //     _this.value2[i].className = _this.conClassName[i].name;
-            //   }
-            _this.contentShow = true;
-            _this.contentBoxShow = true;
-          } else {
-            _this.contentShow = false;
-            _this.contentBoxShow = false;
-          }
-          //学校
-          if (res.data.data.ls.length != 0) {
-            _this.allUniversity = res.data.data.ls;
-            _this.value3 = _this.allUniversity.slice(0, _this.pageSize);
-            _this.universityShow = true;
-            _this.universityBoxShow = true;
-          } else {
-            _this.universityShow = false;
-            _this.universityBoxShow = false;
-          }
-          _this.loading.close();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    // 查看更多方法
-    viewMmore: function(name) {
-      const _this = this;
-      if (name == "clessChange") {
-        if (_this.value1.length != 0) {
-          _this.value1 = _this.allClasses.slice(
-            0,
-            _this.value1.length + _this.pageSize
-          );
-          _this.clessShow = true;
-        } else {
-          _this.clessShow = false;
-        }
-      } else if (name == "contentChange") {
-        if (_this.value2.length != 0) {
-          _this.value2 = _this.allContent.slice(
-            0,
-            _this.value2.length + _this.pageSize
-          );
-          _this.contentShow = true;
-        } else {
-          _this.contentShow = false;
-        }
-      } else if (name == "univerChange") {
-        if (_this.value3.length != 0) {
-          _this.value3 = _this.allUniversity.slice(
-            0,
-            _this.value3.length + _this.pageSize
-          );
-          _this.universityShow = true;
-        } else {
-          _this.universityShow = false;
-        }
-      }
-    },
-    // 点击控制搜索结果的打开关闭
-    searchResultShow: function(name) {
-      const _this = this;
-      if (name == "clessShow") {
-        _this.clessShow = !_this.clessShow;
-        _this.clessicondownShow = !_this.clessicondownShow;
-        _this.clessiconupShow = !_this.clessiconupShow;
-      } else if (name == "contentShow") {
-        _this.contentShow = !_this.contentShow;
-        _this.conicondownShow = !_this.conicondownShow;
-        _this.coniconupShow = !_this.coniconupShow;
-      } else if (name == "universityShow") {
-        _this.universityShow = !_this.universityShow;
-        _this.unicondownShow = !_this.unicondownShow;
-        _this.uniconupShow = !_this.uniconupShow;
-      }
-    },
-    Switch: function() {
-      const _this = this;
-      _this.isserchTextSwitch = !_this.isserchTextSwitch;
-    },
-    // 顶部开关控制搜索结果的打开关闭
-    searchResultSwitch: function(val, name) {
-      const _this = this;
-      if (name == "clessShow") {
-        if (_this.clessShow == true) {
-          _this.clessicondownShow = true;
-          _this.clessiconupShow = false;
-        } else {
-          _this.clessicondownShow = false;
-          _this.clessiconupShow = true;
-        }
-      } else if (name == "contentShow") {
-        if (_this.contentShow == true) {
-          _this.conicondownShow = true;
-          _this.coniconupShow = false;
-        } else {
-          _this.conicondownShow = false;
-          _this.coniconupShow = true;
-        }
-      } else if (name == "universityShow") {
-        if (_this.universityShow == true) {
-          _this.unicondownShow = true;
-          _this.uniconupShow = false;
-        } else {
-          _this.unicondownShow = false;
-          _this.uniconupShow = true;
-        }
-      }
-    }
-  }
-};
+//             // for (var i = 0; i < _this.value2.length; i++) {
+//             //   _this.$set(_this.value2[i], "className", "");
+//             //   _this
+//             //     .axios({
+//             //       method: "get",
+//             //       url: `${_this.URLport.serverPath}/Class/Getclass`,
+//             //       async: false,
+//             //       params: {
+//             //         id: _this.value2[i].classId
+//             //       },
+//             //       xhrFields: {
+//             //         withCredentials: true
+//             //       }
+//             //     })
+//             //     .then(function(res) {
+//             //       var conClassName = []
+//             //       conClassName.push(res.data.data.name);
+//             //       console.log(conClassName)
+//             //     })
+//             //     .catch(function(error) {
+//             //       console.log(error);
+//             //     });
+//             // }
+//             // for(var j = 0; j < _this.value2.length; j++){
+//             //     _this.value2[j].className = _this.conClassName[0]
+//             // }
+//             // console.log(_this.value2.className);
+//             //   if (_this.value2[i].classId == _this.conClassName[i].id) {
+//             //     _this.value2[i].className = _this.conClassName[i].name;
+//             //   }
+//             _this.contentShow = true;
+//             _this.contentBoxShow = true;
+//           } else {
+//             _this.contentShow = false;
+//             _this.contentBoxShow = false;
+//           }
+//           //学校
+//           if (res.data.data.ls.length != 0) {
+//             _this.allUniversity = res.data.data.ls;
+//             _this.value3 = _this.allUniversity.slice(0, _this.pageSize);
+//             _this.universityShow = true;
+//             _this.universityBoxShow = true;
+//           } else {
+//             _this.universityShow = false;
+//             _this.universityBoxShow = false;
+//           }
+//           _this.loading.close();
+//         })
+//         .catch(function(error) {
+//           console.log(error);
+//         });
+//     },
+//     // 查看更多方法
+//     viewMmore: function(name) {
+//       const _this = this;
+//       if (name == "clessChange") {
+//         if (_this.value1.length != 0) {
+//           _this.value1 = _this.allClasses.slice(
+//             0,
+//             _this.value1.length + _this.pageSize
+//           );
+//           _this.clessShow = true;
+//         } else {
+//           _this.clessShow = false;
+//         }
+//       } else if (name == "contentChange") {
+//         if (_this.value2.length != 0) {
+//           _this.value2 = _this.allContent.slice(
+//             0,
+//             _this.value2.length + _this.pageSize
+//           );
+//           _this.contentShow = true;
+//         } else {
+//           _this.contentShow = false;
+//         }
+//       } else if (name == "univerChange") {
+//         if (_this.value3.length != 0) {
+//           _this.value3 = _this.allUniversity.slice(
+//             0,
+//             _this.value3.length + _this.pageSize
+//           );
+//           _this.universityShow = true;
+//         } else {
+//           _this.universityShow = false;
+//         }
+//       }
+//     },
+//     // 点击控制搜索结果的打开关闭
+//     searchResultShow: function(name) {
+//       const _this = this;
+//       if (name == "clessShow") {
+//         _this.clessShow = !_this.clessShow;
+//         _this.clessicondownShow = !_this.clessicondownShow;
+//         _this.clessiconupShow = !_this.clessiconupShow;
+//       } else if (name == "contentShow") {
+//         _this.contentShow = !_this.contentShow;
+//         _this.conicondownShow = !_this.conicondownShow;
+//         _this.coniconupShow = !_this.coniconupShow;
+//       } else if (name == "universityShow") {
+//         _this.universityShow = !_this.universityShow;
+//         _this.unicondownShow = !_this.unicondownShow;
+//         _this.uniconupShow = !_this.uniconupShow;
+//       }
+//     },
+//     Switch: function() {
+//       const _this = this;
+//       _this.isserchTextSwitch = !_this.isserchTextSwitch;
+//     },
+//     // 顶部开关控制搜索结果的打开关闭
+//     searchResultSwitch: function(val, name) {
+//       const _this = this;
+//       if (name == "clessShow") {
+//         if (_this.clessShow == true) {
+//           _this.clessicondownShow = true;
+//           _this.clessiconupShow = false;
+//         } else {
+//           _this.clessicondownShow = false;
+//           _this.clessiconupShow = true;
+//         }
+//       } else if (name == "contentShow") {
+//         if (_this.contentShow == true) {
+//           _this.conicondownShow = true;
+//           _this.coniconupShow = false;
+//         } else {
+//           _this.conicondownShow = false;
+//           _this.coniconupShow = true;
+//         }
+//       } else if (name == "universityShow") {
+//         if (_this.universityShow == true) {
+//           _this.unicondownShow = true;
+//           _this.uniconupShow = false;
+//         } else {
+//           _this.unicondownShow = false;
+//           _this.uniconupShow = true;
+//         }
+//       }
+//     }
+//   }
+// };
 </script>

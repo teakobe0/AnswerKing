@@ -378,15 +378,15 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right">
-              <el-breadcrumb-item :to="{ path: '/schoolStudy' }">
+              <el-breadcrumb-item :to="{ path: '/schools' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item
-                :to="{ path: '/serchDetailsUniversity',query: {id: this.value.universityId}}"
-              >
+              <el-breadcrumb-item :to="'/schools/university/'+$route.params.university_id">
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item :to="{ path: '/classesDetails',query: {id: this.Id}}">
+              <el-breadcrumb-item
+                :to="'/schools/university/'+$route.params.university_id+'/classes/'+$route.params.classes_id"
+              >
                 <span class="crumb">该课题库</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
@@ -400,13 +400,11 @@
             <h2>{{value.name}}</h2>
             <p>
               学校:
-              <router-link
-                :to="{ path: '/serchDetailsUniversity',query: {id: this.value.universityId}}"
-              >{{value.university}}</router-link>
+              <router-link :to="'/schools/university/'+this.value.universityId">{{value.university}}</router-link>
               <span v-if="value.professor">教授:{{value.professor}}</span>
               <span v-if="contributor == true">贡献者:</span>
               <router-link
-                :to="{ path: '/ownness',query: {id: informations.classinfo.clientId}}"
+                :to="'/ownness/'+informations.classinfo.clientId"
                 class="ownness-name"
                 @click="ownness"
                 :title="'访问'+ informations.clientname +'的个人资料'"
@@ -483,8 +481,12 @@
                   :label="'第'+ item.no + '周' + '('+ item.grade + '分' + ')'"
                   :value="item.id"
                 >
-                  <span style="float: left">第{{ item.no }}周</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span>
+                  <router-link to="/home" style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6">
+                    <span style="float: left;">第{{ item.no }}周</span>
+                    <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span>
+                  </router-link>
+                  <!-- <span style="float: left;">第{{ item.no }}周</span>
+                  <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span> -->
                 </el-option>
               </el-select>
             </div>
@@ -585,8 +587,8 @@ export default {
       UseRecords: {},
       titleShow: false,
       // 有用没用和贡献者显示隐藏(因为需要.clainfo所以导致数据结构的不同如果直接显示会报错)
-      bookmarkShow:false,
-      contributor:false,
+      bookmarkShow: false,
+      contributor: false,
       // 关注
       attentions: {
         Name: "",
@@ -599,7 +601,7 @@ export default {
       classShow: true,
       // 按钮禁用
       disableds: false,
-      attenDisabled:false,
+      attenDisabled: false,
       // 当前周
       currentWeek: [],
       currentWeekShow: false,
@@ -615,13 +617,12 @@ export default {
       contributors: {
         name: "Monickers"
       },
-      attentionCon:[]
-      
+      attentionCon: []
     };
   },
   created: function() {
     const _this = this;
-    _this.Id = _this.$route.query.id;
+    _this.Id = _this.$route.params.classes_id;
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -639,7 +640,7 @@ export default {
           url: `${_this.URLport.serverPath}/Class/Getclass`,
           async: false,
           params: {
-            id: _this.$route.query.id
+            id: _this.$route.params.classes_id
           },
           xhrFields: {
             withCredentials: true
@@ -666,7 +667,7 @@ export default {
           url: `${_this.URLport.serverPath}/ClassWeek/ClassWeeks`,
           async: false,
           params: {
-            classinfoid: _this.$route.query.classInfoId
+            classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
             withCredentials: true
@@ -776,10 +777,6 @@ export default {
                 } else {
                   _this.tabs = res.data.data;
                   _this.conShow = true;
-                  // _this.tabs[0] = res.data.data[2];
-                  // _this.tabs[1] = res.data.data[3];
-                  // _this.tabs[2] = res.data.data[0];
-                  // _this.tabs[3] = res.data.data[1];
                   _this.value1 = Number(_this.valueWeek[0].id);
                   _this.RetrieveTheTnswer(_this.tabs[0].id);
                 }
@@ -831,7 +828,7 @@ export default {
           url: `${_this.URLport.serverPath}/Classinfo/Classinfos`,
           async: false,
           params: {
-            classid: _this.$route.query.id
+            classid: _this.$route.params.classes_id
           },
           xhrFields: {
             withCredentials: true
@@ -841,11 +838,13 @@ export default {
           _this.classinfoss = res.data.data;
           _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {
-            if (res.data.data[i].classinfo.id == _this.$route.query.classInfoId) {
+            if (
+              res.data.data[i].classinfo.id == _this.$route.params.classinfo_id
+            ) {
               _this.informations = res.data.data[i];
               _this.bookmarkShow = true;
-              if(_this.informations.clientname){
-                  _this.contributor = true;
+              if (_this.informations.clientname) {
+                _this.contributor = true;
               }
             }
           }
@@ -915,6 +914,7 @@ export default {
         })
         .then(function(res) {
           _this.Answer = res.data.data;
+          console.log(_this.Answer);
           _this.$store.state.answer.loading = false;
           if (_this.Answer.length == 0) {
             _this.$store.state.answer.tabconwu = true;
@@ -1079,7 +1079,7 @@ export default {
           url: `${_this.URLport.serverPath}/Classinfo/ChangeClassInfo`,
           async: false,
           params: {
-            classInfoid: Number(_this.$route.query.classInfoId),
+            classInfoid: Number(_this.$route.params.classinfo_id),
             type: _this.useOnuse.type,
             check: _this.useOnuse.check
           },
@@ -1108,7 +1108,7 @@ export default {
             url: `${_this.URLport.serverPath}/Classinfo/UseRecords`,
             async: false,
             params: {
-              classInfoid: Number(_this.$route.query.classInfoId)
+              classInfoid: Number(_this.$route.params.classinfo_id)
             },
             xhrFields: {
               withCredentials: true
@@ -1178,7 +1178,7 @@ export default {
     // 关注
     attention: function() {
       const _this = this;
-      
+
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
         _this.attenDisabled = true;
@@ -1217,7 +1217,7 @@ export default {
             var v = [];
             v = _this.attentionCon[i].typeId.split(",");
             if (_this.informations.classinfo.id == v[1]) {
-              attentionsId = _this.attentionCon[i].id
+              attentionsId = _this.attentionCon[i].id;
             }
           }
           _this
