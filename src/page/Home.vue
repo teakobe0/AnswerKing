@@ -644,7 +644,7 @@
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
                         <router-link
-                          :to="{ path: 'serchDetailsUniversity',query: {id: item.university_id}}"
+                          :to="'/university/'+item.university_id"
                         >{{item.university_name}}</router-link>
                       </li>
                     </ul>
@@ -663,7 +663,7 @@
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
                         <router-link
-                          :to="{ path: 'classesDetails',query: {id: item.class_id}}"
+                          :to="'/classes/'+item.class_id"
                         >{{item.class_name}}</router-link>
                       </li>
                     </ul>
@@ -681,7 +681,7 @@
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
                         <router-link
-                          :to="{ path: '/ownness',query: {id: item.client_id}}"
+                          :to="'/ownness/'+item.client_id"
                         >{{item.client_name}}</router-link>
                       </li>
                     </ul>
@@ -689,7 +689,7 @@
                 </div>
               </div>
               <div class="homeUniversity">
-                <router-link to="/schoolStudy" class="homeUniv-button">查看61所全部学校资源</router-link>
+                <router-link to="/schools" class="homeUniv-button">查看61所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home23.png" alt class="home-ser-img-1" />

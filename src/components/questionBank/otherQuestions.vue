@@ -30,7 +30,7 @@
           @click="skipclass(item.classinfo.classId,item.classinfo.id)"
           @click.native="flushCom"
         >
-          <router-link style="text-decoration:none;color:#FFF" :to="'/schools/university/'+$route.params.university_id+'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id">进入题库</router-link>
+          <router-link style="text-decoration:none;color:#FFF" :to="'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id">进入题库</router-link>
         </button>
       </el-carousel-item>
     </el-carousel>

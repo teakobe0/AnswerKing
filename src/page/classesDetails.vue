@@ -203,7 +203,7 @@
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item
-                :to="'/schools/university/'+$route.params.university_id"
+                :to="'/university/'+universityId"
               >
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
@@ -246,7 +246,7 @@
               <p>
                 学校:
                 <router-link
-                  :to="{path:'/serchDetailsUniversity',query: {id: this.universityId}}"
+                  :to="'/university/'+universityId"
                 >{{value.university}}</router-link>
                 <span v-if="value.professor">教授:{{value.professor}}</span>
               </p>

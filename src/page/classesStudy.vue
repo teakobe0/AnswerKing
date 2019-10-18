@@ -262,7 +262,7 @@
           <div class="find-class-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in classesAll">
-                <router-link :to="'/schools/university/'+item.cla.universityId+'/classes/'+item.cla.id">
+                <router-link :to="'/classes/'+item.cla.id">
                   <span class="classes-boo-name">{{item.cla.name}}</span>
                   <span class="classes-boo-order">{{item.order}}个题库</span>
                 </router-link>

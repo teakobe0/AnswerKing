@@ -58,7 +58,7 @@
     <ul v-for="item in universityClass">
       <li>
         <i class="el-icon-tickets"></i>
-        <router-link :to="'/schools/university/'+$route.params.university_id+'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
+        <router-link :to="'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
         <span>{{item.cla.university}}</span>
         <span>题库:{{item.order}}</span>
       </li>

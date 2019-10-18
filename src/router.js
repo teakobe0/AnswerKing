@@ -51,7 +51,7 @@ import schoolClasses from '@/components/school/schoolClasses.vue'
 import file from '@/components/classes/file.vue'  //当前课程全部题库文件
 import schoolFile from '@/components/school/schoolFile.vue'
 
-
+import answer from "@/components/questionBank/answer.vue";
 
 import platinavip from '@/components/client/platinayearly.vue'
 
@@ -67,7 +67,7 @@ export default new Router({
         {
             path: '/',
             component: home,
-            
+
         },
         {
             path: '/login',      //设置跳转
@@ -104,7 +104,7 @@ export default new Router({
         {
             path: '/personalData',      //设置跳转
             component: personalData,
-            children:[
+            children: [
                 {
                     path: '/',      //设置跳转
                     component: basic,
@@ -164,13 +164,13 @@ export default new Router({
             ]
         },
         {
-            path: '/schools/university/:university_id/classes/:classes_id/content/:classinfo_id',      //设置跳转
+            path: '/classes/:classes_id/content/:classinfo_id/weeks/:weeks_id/weektype/:weektype_id',      //设置跳转
             component: content,
         },
         {
-            path: '/schools/university/:university_id',      //设置跳转
+            path: '/university/:university_id',      //设置跳转
             component: university,
-            children:[
+            children: [
                 {
                     path: '/',      //设置跳转
                     component: schoolall,
@@ -194,9 +194,9 @@ export default new Router({
             ]
         },
         {
-            path: '/schools/university/:university_id/classes/:classes_id',      //设置跳转
+            path: '/classes/:classes_id',      //设置跳转
             component: classes,
-            children:[
+            children: [
                 {
                     path: '/',      //设置跳转
                     component: file,

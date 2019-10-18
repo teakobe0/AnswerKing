@@ -284,12 +284,6 @@ export default {
       _this.handleHide();
     }
   },
-  // 监听路由变化
-  watch: {
-    $route(to, from) {
-      this.$router.go(0);
-    }
-  }
 };
 </script>
 

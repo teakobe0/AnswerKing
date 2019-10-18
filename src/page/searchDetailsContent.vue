@@ -381,12 +381,10 @@
               <el-breadcrumb-item :to="{ path: '/schools' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item :to="'/schools/university/'+$route.params.university_id">
+              <el-breadcrumb-item :to="'/university/'+ value.universityId">
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item
-                :to="'/schools/university/'+$route.params.university_id+'/classes/'+$route.params.classes_id"
-              >
+              <el-breadcrumb-item :to="'/classes/'+$route.params.classes_id">
                 <span class="crumb">该课题库</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
@@ -400,7 +398,7 @@
             <h2>{{value.name}}</h2>
             <p>
               学校:
-              <router-link :to="'/schools/university/'+this.value.universityId">{{value.university}}</router-link>
+              <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
               <span v-if="value.professor">教授:{{value.professor}}</span>
               <span v-if="contributor == true">贡献者:</span>
               <router-link
@@ -481,12 +479,13 @@
                   :label="'第'+ item.no + '周' + '('+ item.grade + '分' + ')'"
                   :value="item.id"
                 >
-                  <router-link to="/home" style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6">
+                  <router-link
+                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+item.id+'/weektype/'+weekTypeId"
+                    style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6"
+                  >
                     <span style="float: left;">第{{ item.no }}周</span>
                     <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span>
                   </router-link>
-                  <!-- <span style="float: left;">第{{ item.no }}周</span>
-                  <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span> -->
                 </el-option>
               </el-select>
             </div>
@@ -611,13 +610,16 @@ export default {
       recommendClassFlag: false,
       // 其他题库子组件的显示
       otherQuestionsFlag: false,
+      weekFlag: false,
       // 题库集订单传给子组件
       classinfoss: [],
       // 贡献者
       contributors: {
         name: "Monickers"
       },
-      attentionCon: []
+      attentionCon: [],
+      // 第一个状态ID
+      weekTypeId: ""
     };
   },
   created: function() {
@@ -682,9 +684,9 @@ export default {
             _this.auditText = true;
             _this.classShow = false;
           }
-          if (
-            _this.$route.query.classWeekId &&
-            _this.$route.query.classweektypeid
+          if (false
+            // _this.$route.params.weeks_id &&
+            // _this.$route.params.weektype_id
           ) {
             // _this
             //   .axios({
@@ -692,19 +694,25 @@ export default {
             //     url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
             //     async: false,
             //     params: {
-            //       classweekid: _this.$route.query.classWeekId
+            //       classweekid: _this.$route.params.weeks_id
             //     },
             //     xhrFields: {
             //       withCredentials: true
             //     }
             //   })
             //   .then(function(res) {
-            //     _this.value1 = Number(_this.$route.query.classWeekId);
-            //     _this.tabs = [];
-            //     _this.tabs[0] = res.data.data[2];
-            //     _this.tabs[1] = res.data.data[3];
-            //     _this.tabs[2] = res.data.data[0];
-            //     _this.tabs[3] = res.data.data[1];
+            //     if (res.data.data.length == 0) {
+            //       _this.conShow = false;
+            //       _this.$store.state.answer.tabconwu = false;
+            //       _this.$store.state.answer.answer = [];
+            //       _this.$store.state.answer.imgss = [];
+            //       _this.value1 = Number(_this.valueWeek[0].id);
+            //     } else {
+            //       _this.tabs = res.data.data;
+            //       console.log(_this.tabs)
+            //       _this.conShow = true;
+            //       _this.value1 = Number(_this.valueWeek[0].id);
+            //     }
             //     for (var i = 0; i < _this.tabs.length; i++) {
             //       var cwtParentId = Number(_this.$route.query.cwtParentId);
             //       if (_this.tabs[i].refId === cwtParentId) {
@@ -774,10 +782,12 @@ export default {
                   _this.$store.state.answer.answer = [];
                   _this.$store.state.answer.imgss = [];
                   _this.value1 = Number(_this.valueWeek[0].id);
+                  _this.weekFlag = true;
                 } else {
                   _this.tabs = res.data.data;
                   _this.conShow = true;
                   _this.value1 = Number(_this.valueWeek[0].id);
+                  _this.weekFlag = true;
                   _this.RetrieveTheTnswer(_this.tabs[0].id);
                 }
               })
@@ -897,6 +907,7 @@ export default {
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
+      console.log(classWeekTypeId);
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this.numnum = index;
@@ -959,6 +970,8 @@ export default {
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
+      console.log(classWeekTypeId)
+      _this.weekTypeId = classWeekTypeId;
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this

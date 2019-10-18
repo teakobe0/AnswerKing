@@ -290,7 +290,7 @@
             <ul>
               <li v-for="item in universitys">
                 <router-link
-                  :to="'/schools/university/'+item.university.id"
+                  :to="'/university/'+item.university.id"
                 >{{item.university.name}}</router-link>
                 <div class="select-boo-num">{{item.number}}门课程</div>
               </li>

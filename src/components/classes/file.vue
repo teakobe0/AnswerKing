@@ -175,7 +175,7 @@
       <div class="file-con-course" v-if="courseShow == true">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
-            :to="'/schools/university/'+$route.params.university_id+'/classes/'+$route.params.classes_id+'/content/'+item.classinfo.id"
+            :to="'/classes/'+$route.params.classes_id+'/content/'+item.classinfo.id+'/weeks/'+0+'/weektype/'+0"
             class="file-course-img"
           >
             <p class="course-goal">
@@ -252,7 +252,6 @@ export default {
   props: ["Names", "attCon"],
   created: function() {
     const _this = this;
-    console.log(_this.$route);
     _this.Classinfos();
     _this.Id = _this.$route.params.classes_id;
   },
