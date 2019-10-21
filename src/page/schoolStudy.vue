@@ -216,7 +216,7 @@
               :trigger-on-focus="false"
             >
               <template slot-scope="{ item }">
-                <router-link :to="'/schools/university/'+ item.id" style="width: 100%;height: 34px;display: block;">
+                <router-link :to="'/university/'+ item.id" style="width: 100%;height: 34px;display: block;">
                   <span style="color:#878787;float:left;">{{item.value}}</span>
                   <span style="color:#878787;float:right;">{{item.type}}</span>
                 </router-link>

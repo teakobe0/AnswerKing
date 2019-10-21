@@ -247,15 +247,10 @@
 .serchDetailsContent-tag-right ul li a {
   display: block;
   line-height: 50px;
-  width: 290px;
+  width: 100%;
   height: 50px;
   text-decoration: none;
   color: #000;
-  text-align: center;
-}
-
-.serchDetailsContent-tag-right ul li a:hover {
-  background-color: #e3e3e3;
 }
 
 .tabshow {
@@ -480,7 +475,7 @@
                   :value="item.id"
                 >
                   <router-link
-                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+item.id+'/weektype/'+weekTypeId"
+                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+item.id+'/weektype/'+0"
                     style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6"
                   >
                     <span style="float: left;">第{{ item.no }}周</span>
@@ -498,8 +493,12 @@
                   :class="{tabsType:index == numnum}"
                   @click="tab(index,item.id)"
                 >
-                  {{item.contentType}}(
-                  <span style="color: #136bd3;">{{item.grade}}</span>分)
+                  <router-link
+                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+item.id"
+                  >
+                    {{item.contentType}}(
+                    <span style="color: #136bd3;">{{item.grade}}</span>分)
+                  </router-link>
                 </li>
               </ul>
               <!-- 答案图片组件 -->
@@ -610,7 +609,6 @@ export default {
       recommendClassFlag: false,
       // 其他题库子组件的显示
       otherQuestionsFlag: false,
-      weekFlag: false,
       // 题库集订单传给子组件
       classinfoss: [],
       // 贡献者
@@ -618,8 +616,6 @@ export default {
         name: "Monickers"
       },
       attentionCon: [],
-      // 第一个状态ID
-      weekTypeId: ""
     };
   },
   created: function() {
@@ -684,85 +680,74 @@ export default {
             _this.auditText = true;
             _this.classShow = false;
           }
-          if (false
-            // _this.$route.params.weeks_id &&
-            // _this.$route.params.weektype_id
-          ) {
-            // _this
-            //   .axios({
-            //     method: "get",
-            //     url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-            //     async: false,
-            //     params: {
-            //       classweekid: _this.$route.params.weeks_id
-            //     },
-            //     xhrFields: {
-            //       withCredentials: true
-            //     }
-            //   })
-            //   .then(function(res) {
-            //     if (res.data.data.length == 0) {
-            //       _this.conShow = false;
-            //       _this.$store.state.answer.tabconwu = false;
-            //       _this.$store.state.answer.answer = [];
-            //       _this.$store.state.answer.imgss = [];
-            //       _this.value1 = Number(_this.valueWeek[0].id);
-            //     } else {
-            //       _this.tabs = res.data.data;
-            //       console.log(_this.tabs)
-            //       _this.conShow = true;
-            //       _this.value1 = Number(_this.valueWeek[0].id);
-            //     }
-            //     for (var i = 0; i < _this.tabs.length; i++) {
-            //       var cwtParentId = Number(_this.$route.query.cwtParentId);
-            //       if (_this.tabs[i].refId === cwtParentId) {
-            //         _this.numnum = i;
-            //       }
-            //     }
-            //   })
-            //   .catch(function(error) {
-            //     console.log(error);
-            //   });
-            // _this
-            //   .axios({
-            //     method: "get",
-            //     url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-            //     async: false,
-            //     params: {
-            //       classweektypeid: _this.$route.query.classweektypeid
-            //     },
-            //     xhrFields: {
-            //       withCredentials: true
-            //     }
-            //   })
-            //   .then(function(res) {
-            //     _this.Answer = res.data.data;
-            //     if (_this.Answer.length == 0) {
-            //       _this.$store.state.answer.tabconwu = true;
-            //     } else {
-            //       _this.$store.state.answer.tabconwu = false;
-            //     }
-            //     for (var i = 0; i < _this.Answer.length; i++) {
-            //       if (
-            //         _this.Answer[i].url == null ||
-            //         _this.Answer[i].url == "" ||
-            //         _this.Answer[i].url == ""
-            //       ) {
-            //
-            //       } else {
-            //         _this.Answer[i].conurl = true;
-            //         _this.Answer[i].context = false;
-            //         _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-            //         _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-            //       }
-            //     }
-            //     _this.$store.state.answer.answer = _this.Answer;
-            //     _this.$store.state.answer.imgss = _this.imgss;
-            //   })
-            //   .catch(function(error) {
-            //     console.log(error);
-            //   });
-          } else {
+          if (_this.$route.params.weeks_id != 0 && _this.$route.params.weektype_id == 0) {
+            _this
+              .axios({
+                method: "get",
+                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
+                async: false,
+                params: {
+                  classweekid: _this.$route.params.weeks_id
+                },
+                xhrFields: {
+                  withCredentials: true
+                }
+              })
+              .then(function(res) {
+                if (res.data.data.length == 0) {
+                  _this.conShow = false;
+                  _this.$store.state.answer.tabconwu = false;
+                  _this.$store.state.answer.answer = [];
+                  _this.$store.state.answer.imgss = [];
+                  _this.value1 = Number(_this.valueWeek[0].id);
+                } else {
+                  _this.tabs = res.data.data;
+                  let weekTypeId = _this.tabs[0].id;
+                  _this.conShow = true;
+                  _this.value1 = Number(_this.$route.params.weeks_id);
+                  _this.tab(0,weekTypeId);
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          } else if(_this.$route.params.weeks_id != 0 && _this.$route.params.weektype_id != 0){
+            _this
+              .axios({
+                method: "get",
+                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
+                async: false,
+                params: {
+                  classweekid: _this.$route.params.weeks_id
+                },
+                xhrFields: {
+                  withCredentials: true
+                }
+              })
+              .then(function(res) {
+                if (res.data.data.length == 0) {
+                  _this.conShow = false;
+                  _this.$store.state.answer.tabconwu = false;
+                  _this.$store.state.answer.answer = [];
+                  _this.$store.state.answer.imgss = [];
+                  _this.value1 = Number(_this.valueWeek[0].id);
+                } else {
+                  _this.tabs = res.data.data;
+                  _this.conShow = true;
+                  _this.value1 = Number(_this.$route.params.weeks_id);
+                  for (let i = 0; i < _this.tabs.length; i++) {
+                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
+                      _this.numnum = i;
+                    }
+                  }
+                  _this.tab(_this.numnum,_this.$route.params.weektype_id);
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+           
+          }else if(_this.$route.params.weeks_id == 0 && _this.$route.params.weektype_id == 0){
             _this
               .axios({
                 method: "get",
@@ -782,12 +767,10 @@ export default {
                   _this.$store.state.answer.answer = [];
                   _this.$store.state.answer.imgss = [];
                   _this.value1 = Number(_this.valueWeek[0].id);
-                  _this.weekFlag = true;
                 } else {
                   _this.tabs = res.data.data;
                   _this.conShow = true;
                   _this.value1 = Number(_this.valueWeek[0].id);
-                  _this.weekFlag = true;
                   _this.RetrieveTheTnswer(_this.tabs[0].id);
                 }
               })
@@ -866,7 +849,6 @@ export default {
     //每周课程ID获取类型
     handleWeeks: function(classWeekId) {
       const _this = this;
-
       for (var i = 0; i < _this.valueWeek.length; i++) {
         if (classWeekId == _this.valueWeek[i].id) {
           _this.currentWeek = _this.valueWeek[i];
@@ -893,10 +875,6 @@ export default {
           } else {
             _this.tabs = res.data.data;
             _this.conShow = true;
-            // _this.tabs[0] = res.data.data[2];
-            // _this.tabs[1] = res.data.data[3];
-            // _this.tabs[2] = res.data.data[0];
-            // _this.tabs[3] = res.data.data[1];
             _this.RetrieveTheTnswer(_this.tabs[0].id);
           }
         })
@@ -907,7 +885,6 @@ export default {
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
-      console.log(classWeekTypeId);
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this.numnum = index;
@@ -925,7 +902,6 @@ export default {
         })
         .then(function(res) {
           _this.Answer = res.data.data;
-          console.log(_this.Answer);
           _this.$store.state.answer.loading = false;
           if (_this.Answer.length == 0) {
             _this.$store.state.answer.tabconwu = true;
@@ -970,8 +946,7 @@ export default {
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
-      console.log(classWeekTypeId)
-      _this.weekTypeId = classWeekTypeId;
+      // 跟地址栏上的ID总是慢一步，星期一来在解决吧
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this

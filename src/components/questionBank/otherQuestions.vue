@@ -30,7 +30,10 @@
           @click="skipclass(item.classinfo.classId,item.classinfo.id)"
           @click.native="flushCom"
         >
-          <router-link style="text-decoration:none;color:#FFF" :to="'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id">进入题库</router-link>
+          <router-link
+            style="text-decoration:none;color:#FFF"
+            :to="'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id+'/weeks/'+0+'/weektype/'+0"
+          >进入题库</router-link>
         </button>
       </el-carousel-item>
     </el-carousel>
@@ -73,11 +76,7 @@ export default {
     },
     skipclass: function(classId, id) {
       const _this = this;
-      // window.location.reload();
-      // _this.$router.push({
-      //   path: "/serchDetailsContent",
-      //   query: { id: classId, classInfoId: id }
-      // });
+      window.location.reload();
     }
   }
 };

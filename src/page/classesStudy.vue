@@ -236,8 +236,10 @@
               :trigger-on-focus="false"
             >
               <template slot-scope="{ item }">
-                <span>{{item.value}}</span>
-                <span style="color:#878787;float:right;">{{item.type}}</span>
+                <router-link :to="'/classes/'+ item.id" style="width: 100%;height: 34px;display: block;">
+                  <span style="color:#878787;float:left;">{{item.value}}</span>
+                  <span style="color:#878787;float:right;">{{item.type}}</span>
+                </router-link>
               </template>
             </el-autocomplete>
           </div>

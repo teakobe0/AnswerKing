@@ -123,7 +123,7 @@
         <div class="un-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="'/university/'+ $route.params.university_id +'/schoolall'">课程</router-link>
+              <!-- <router-link :to="'/university/'+ $route.params.university_id +'/schoolall'">课程</router-link> -->
               课程
             </li>
             

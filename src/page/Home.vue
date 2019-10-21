@@ -662,9 +662,7 @@
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
-                        <router-link
-                          :to="'/classes/'+item.class_id"
-                        >{{item.class_name}}</router-link>
+                        <router-link :to="'/classes/'+item.class_id">{{item.class_name}}</router-link>
                       </li>
                     </ul>
                   </vue-seamless>
@@ -680,9 +678,7 @@
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
-                        <router-link
-                          :to="'/ownness/'+item.client_id"
-                        >{{item.client_name}}</router-link>
+                        <router-link :to="'/ownness/'+item.client_id">{{item.client_name}}</router-link>
                       </li>
                     </ul>
                   </vue-seamless>
@@ -996,7 +992,6 @@ export default {
                 // } else {
                 //   results.push({ value: "没有找到对应的课程内容" });
                 // }
-
                 cb(results);
               })
               .catch(function(error) {
@@ -1031,19 +1026,13 @@ export default {
           //课程
           if (item.class == "classes") {
             _this.$router.push({
-              path: "/classesDetails",
-              query: {
-                id: item.id
-              }
+              path: `/classes/${item.id}`
             });
           }
           if (item.class == "university") {
             //学校
             _this.$router.push({
-              path: "/serchDetailsUniversity",
-              query: {
-                id: item.id
-              }
+              path: `/university/${item.id}`
             });
           }
           // else if (item.class == "content") {
