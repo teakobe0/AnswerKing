@@ -615,7 +615,7 @@ export default {
       contributors: {
         name: "Monickers"
       },
-      attentionCon: [],
+      attentionCon: []
     };
   },
   created: function() {
@@ -680,7 +680,11 @@ export default {
             _this.auditText = true;
             _this.classShow = false;
           }
-          if (_this.$route.params.weeks_id != 0 && _this.$route.params.weektype_id == 0) {
+          if (
+            _this.$route.params.weeks_id != 0 &&
+            _this.$route.params.weektype_id == 0
+          ) {
+            console.log(1);
             _this
               .axios({
                 method: "get",
@@ -705,13 +709,17 @@ export default {
                   let weekTypeId = _this.tabs[0].id;
                   _this.conShow = true;
                   _this.value1 = Number(_this.$route.params.weeks_id);
-                  _this.tab(0,weekTypeId);
+                  _this.tab(0, weekTypeId);
                 }
               })
               .catch(function(error) {
                 console.log(error);
               });
-          } else if(_this.$route.params.weeks_id != 0 && _this.$route.params.weektype_id != 0){
+          } else if (
+            _this.$route.params.weeks_id != 0 &&
+            _this.$route.params.weektype_id != 0
+          ) {
+            console.log(2);
             _this
               .axios({
                 method: "get",
@@ -740,14 +748,14 @@ export default {
                       _this.numnum = i;
                     }
                   }
-                  _this.tab(_this.numnum,_this.$route.params.weektype_id);
+                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
                 }
               })
               .catch(function(error) {
                 console.log(error);
               });
-           
-          }else if(_this.$route.params.weeks_id == 0 && _this.$route.params.weektype_id == 0){
+          } else {
+            console.log(3);
             _this
               .axios({
                 method: "get",
@@ -887,61 +895,70 @@ export default {
       const _this = this;
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
+      _this.$store.state.answer.loginIf = false;
       _this.numnum = index;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+            async: false,
+            params: {
+              classweektypeid: classWeekTypeId
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
             }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
+          })
+          .then(function(res) {
+            _this.Answer = res.data.data;
+            _this.$store.state.answer.loading = false;
+            if (_this.Answer.length == 0) {
               _this.$store.state.answer.tabconwu = true;
+            } else {
+              _this.$store.state.answer.tabconwu = false;
             }
-          }
-
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+            if (_this.Answer.length == 1) {
+              for (var i = 0; i < _this.Answer.length; i++) {
+                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                  _this.$store.state.answer.tabconwu = true;
+                } else {
+                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+                }
+              }
+            }
+            if (_this.Answer.length > 1) {
+              for (var i = 0; i < _this.Answer.length; i++) {
+                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                } else {
+                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+                }
+              }
+              if (
+                (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+                (_this.Answer[0].url == null &&
+                  _this.Answer[1].url == null &&
+                  _this.Answer[2].url == null)
+              ) {
+                _this.$store.state.answer.tabconwu = true;
+              }
+            }
+            _this.$store.state.answer.answer = _this.Answer;
+            _this.$store.state.answer.imgss = _this.imgss;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        _this.$store.state.answer.loading = false;
+        _this.$store.state.answer.tabconwu = false;
+        _this.$store.state.answer.loginIf = true;
+      }
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
@@ -949,60 +966,70 @@ export default {
       // 跟地址栏上的ID总是慢一步，星期一来在解决吧
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          _this.numnum = 0;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
+      _this.$store.state.answer.loginIf = false;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+            async: false,
+            params: {
+              classweektypeid: classWeekTypeId
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
             }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
+          })
+          .then(function(res) {
+            _this.Answer = res.data.data;
+            _this.$store.state.answer.loading = false;
+            _this.numnum = 0;
+            if (_this.Answer.length == 0) {
               _this.$store.state.answer.tabconwu = true;
+            } else {
+              _this.$store.state.answer.tabconwu = false;
             }
-          }
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+            if (_this.Answer.length == 1) {
+              for (var i = 0; i < _this.Answer.length; i++) {
+                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                  _this.$store.state.answer.tabconwu = true;
+                } else {
+                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+                }
+              }
+            }
+            if (_this.Answer.length > 1) {
+              for (var i = 0; i < _this.Answer.length; i++) {
+                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+                } else {
+                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+                }
+              }
+              if (
+                (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+                (_this.Answer[0].url == null &&
+                  _this.Answer[1].url == null &&
+                  _this.Answer[2].url == null)
+              ) {
+                _this.$store.state.answer.tabconwu = true;
+              }
+            }
+            _this.$store.state.answer.answer = _this.Answer;
+            _this.$store.state.answer.imgss = _this.imgss;
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        _this.$store.state.answer.loading = false;
+        _this.$store.state.answer.tabconwu = false;
+        _this.$store.state.answer.loginIf = true;
+      }
     },
     bookmarks: function() {
       const _this = this;

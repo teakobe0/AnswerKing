@@ -188,9 +188,6 @@ export default {
             data: this.ruleForm,
             xhrFields: {
               withCredentials: true
-            },
-            headers: {
-              token: localStorage.getItem("token")
             }
           })
             .then(function(res) {

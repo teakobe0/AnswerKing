@@ -216,12 +216,10 @@ export default {
             data: this.ruleForm,
             xhrFields: {
               withCredentials: true
-            },
-            headers: {
-              token: localStorage.getItem("token")
             }
           })
             .then(function(res) {
+              console.log(res)
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 // _this.loadings = false;

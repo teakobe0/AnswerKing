@@ -2,7 +2,8 @@ export default {
     state:{
         answer:[],
         imgss:"",
-        tabconwu:true,
+        tabconwu:false,
         loading:false,
+        loginIf:false
     }
 }

@@ -14,7 +14,6 @@
   padding: 10px;
   overflow: hidden;
   cursor: pointer;
-  
 }
 
 .tabCon .cover:hover {
@@ -27,7 +26,6 @@
 }
 
 .tabCon div img {
-  
 }
 
 .tabCon-wu {
@@ -37,6 +35,16 @@
   font-size: 20px;
   color: #136bd3;
   margin: 0 auto;
+}
+.tabCon-wu a {
+  color:#7613d3;
+  text-decoration: none;
+}
+.tabCon-wu a:hover {
+  color:#e01044;
+}
+.tabCon-wu a:active {
+  color:#136bd3;
 }
 .popContainer-wrap {
 }
@@ -97,8 +105,15 @@
       v-loading="this.$store.state.answer.loading"
       element-loading-background="rgba(255, 255, 255)"
     >
+      <p class="tabCon-wu" v-if="this.$store.state.answer.loginIf">
+        请"<router-link to="/login">登录</router-link>"之后查看答案
+      </p>
       <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
-      <div oncontextmenu="return false;" ondragstart="return false;" v-for="(items,index) in this.$store.state.answer.answer">
+      <div
+        oncontextmenu="return false;"
+        ondragstart="return false;"
+        v-for="(items,index) in this.$store.state.answer.answer"
+      >
         <div
           class="cover"
           v-for="(item,indexs) in items.Imgs"
@@ -106,7 +121,11 @@
           @mouseleave="onMouseout"
           @click="() => handleanwer(indexs)"
         >
-          <img style="width:100%;height:100%;filter: blur(1px);" :src="item.contentUrl" :alt="items.contents">
+          <img
+            style="width:100%;height:100%;filter: blur(1px);"
+            :src="item.contentUrl"
+            :alt="items.contents"
+          />
         </div>
       </div>
       <VueEasyLightbox
@@ -156,12 +175,11 @@ export default {
       // 控制全屏遮罩的打开
       fullscreenLoading: false,
       loading: true,
-      clock:null,
+      clock: null
     };
   },
   created: function() {
     const _this = this;
-    
   },
   methods: {
     onMouseOver: function() {
@@ -204,7 +222,7 @@ export default {
           })
           .catch(() => {
             _this.shade = true;
-            if(_this.totalTime == 30){
+            if (_this.totalTime == 30) {
               _this.shade = false;
               _this.fullscreenLoading = false;
               _this.visible = false;
@@ -231,7 +249,7 @@ export default {
     //点击答案显示遮罩方法
     handleanwer: function(index) {
       const _this = this;
-      
+
       event.preventDefault();
       if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
         _this.shade = false;
@@ -239,7 +257,6 @@ export default {
         _this.index = index;
         _this.shows();
       } else {
-        
         _this.shade = true;
         _this.totalTime = 30;
         _this.content = _this.totalTime + "s后可观看答案";
@@ -283,7 +300,7 @@ export default {
       // _this.shows();
       _this.handleHide();
     }
-  },
+  }
 };
 </script>
 
