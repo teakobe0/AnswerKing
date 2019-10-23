@@ -105,9 +105,6 @@
       v-loading="this.$store.state.answer.loading"
       element-loading-background="rgba(255, 255, 255)"
     >
-      <p class="tabCon-wu" v-if="this.$store.state.answer.loginIf">
-        请"<router-link to="/login">登录</router-link>"之后查看答案
-      </p>
       <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
       <div
         oncontextmenu="return false;"

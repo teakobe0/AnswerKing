@@ -362,6 +362,32 @@
   top: 14px;
   left: 109px;
 }
+.advertising {
+  width: 953px;
+  height: 100px;
+  margin-top: 24px;
+  /* border-top: 1px dashed #e1e1e1; */
+  background-image: url("../assets/234.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.advertising div {
+  margin-top: 24px;
+  margin-left: 35px;
+}
+.advertising .advertising-p2 {
+  margin-top: 10px;
+  margin-left: 120px;
+}
+.advertising img {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  right: 35px;
+  top: 15px;
+}
 </style>
 
 <template>
@@ -503,6 +529,15 @@
               </ul>
               <!-- 答案图片组件 -->
               <answer></answer>
+            </div>
+            <div class="advertising">
+              <div>
+                <p class="advertising-p1">没有找到您需要的答案嘛？</p>
+                <p class="advertising-p2">
+                  扫描右侧的二维码关注<b style="color:#3ccece;">凡易公众号</b>告诉我们吧！
+                </p>
+              </div>
+              <img src="../assets/erweima.png" alt />
             </div>
             <!-- 评论组件 -->
             <reviews></reviews>
@@ -895,70 +930,60 @@ export default {
       const _this = this;
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.loginIf = false;
       _this.numnum = index;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-            async: false,
-            params: {
-              classweektypeid: classWeekTypeId
-            },
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            _this.Answer = res.data.data;
-            _this.$store.state.answer.loading = false;
-            if (_this.Answer.length == 0) {
-              _this.$store.state.answer.tabconwu = true;
-            } else {
-              _this.$store.state.answer.tabconwu = false;
-            }
-            if (_this.Answer.length == 1) {
-              for (var i = 0; i < _this.Answer.length; i++) {
-                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                  _this.$store.state.answer.tabconwu = true;
-                } else {
-                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                }
-              }
-            }
-            if (_this.Answer.length > 1) {
-              for (var i = 0; i < _this.Answer.length; i++) {
-                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                } else {
-                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                }
-              }
-              if (
-                (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-                (_this.Answer[0].url == null &&
-                  _this.Answer[1].url == null &&
-                  _this.Answer[2].url == null)
-              ) {
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+          async: false,
+          params: {
+            classweektypeid: classWeekTypeId
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.Answer = res.data.data;
+          _this.$store.state.answer.loading = false;
+          if (_this.Answer.length == 0) {
+            _this.$store.state.answer.tabconwu = true;
+          } else {
+            _this.$store.state.answer.tabconwu = false;
+          }
+          if (_this.Answer.length == 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
                 _this.$store.state.answer.tabconwu = true;
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
               }
             }
-            _this.$store.state.answer.answer = _this.Answer;
-            _this.$store.state.answer.imgss = _this.imgss;
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      } else {
-        _this.$store.state.answer.loading = false;
-        _this.$store.state.answer.tabconwu = false;
-        _this.$store.state.answer.loginIf = true;
-      }
+          }
+          if (_this.Answer.length > 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
+            }
+            if (
+              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+              (_this.Answer[0].url == null &&
+                _this.Answer[1].url == null &&
+                _this.Answer[2].url == null)
+            ) {
+              _this.$store.state.answer.tabconwu = true;
+            }
+          }
+          _this.$store.state.answer.answer = _this.Answer;
+          _this.$store.state.answer.imgss = _this.imgss;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
@@ -966,70 +991,60 @@ export default {
       // 跟地址栏上的ID总是慢一步，星期一来在解决吧
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.loginIf = false;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-            async: false,
-            params: {
-              classweektypeid: classWeekTypeId
-            },
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            _this.Answer = res.data.data;
-            _this.$store.state.answer.loading = false;
-            _this.numnum = 0;
-            if (_this.Answer.length == 0) {
-              _this.$store.state.answer.tabconwu = true;
-            } else {
-              _this.$store.state.answer.tabconwu = false;
-            }
-            if (_this.Answer.length == 1) {
-              for (var i = 0; i < _this.Answer.length; i++) {
-                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                  _this.$store.state.answer.tabconwu = true;
-                } else {
-                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                }
-              }
-            }
-            if (_this.Answer.length > 1) {
-              for (var i = 0; i < _this.Answer.length; i++) {
-                if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                } else {
-                  _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                  _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                }
-              }
-              if (
-                (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-                (_this.Answer[0].url == null &&
-                  _this.Answer[1].url == null &&
-                  _this.Answer[2].url == null)
-              ) {
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+          async: false,
+          params: {
+            classweektypeid: classWeekTypeId
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.Answer = res.data.data;
+          _this.$store.state.answer.loading = false;
+          _this.numnum = 0;
+          if (_this.Answer.length == 0) {
+            _this.$store.state.answer.tabconwu = true;
+          } else {
+            _this.$store.state.answer.tabconwu = false;
+          }
+          if (_this.Answer.length == 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
                 _this.$store.state.answer.tabconwu = true;
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
               }
             }
-            _this.$store.state.answer.answer = _this.Answer;
-            _this.$store.state.answer.imgss = _this.imgss;
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      } else {
-        _this.$store.state.answer.loading = false;
-        _this.$store.state.answer.tabconwu = false;
-        _this.$store.state.answer.loginIf = true;
-      }
+          }
+          if (_this.Answer.length > 1) {
+            for (var i = 0; i < _this.Answer.length; i++) {
+              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+              } else {
+                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+              }
+            }
+            if (
+              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
+              (_this.Answer[0].url == null &&
+                _this.Answer[1].url == null &&
+                _this.Answer[2].url == null)
+            ) {
+              _this.$store.state.answer.tabconwu = true;
+            }
+          }
+          _this.$store.state.answer.answer = _this.Answer;
+          _this.$store.state.answer.imgss = _this.imgss;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     bookmarks: function() {
       const _this = this;

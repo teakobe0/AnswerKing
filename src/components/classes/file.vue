@@ -42,8 +42,8 @@
   background-color: #d4d4d4;
 }
 .file-con-course {
-  margin-top: 50px;
-  margin-bottom: 50px;
+  margin-top: 30px;
+  margin-bottom: 30px;
 }
 .file-con-course div {
   width: 200px;

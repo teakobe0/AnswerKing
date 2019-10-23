@@ -2,19 +2,15 @@
 // 这里只列一部分，具体配置参考文档啊
 const webpack = require('webpack')
 module.exports = {
-    // baseUrl  type:{string} default:'/'
     // 将部署应用程序的基本URL
-    // 将部署应用程序的基本URL。
-    // 默认情况下，Vue CLI假设您的应用程序将部署在域的根目录下。
-    // https://www.my-app.com/。如果应用程序部署在子路径上，则需要使用此选项指定子路径。例如，如果您的应用程序部署在https://www.foobar.com/my-app/，集baseUrl到'/my-app/'.
-
-    baseUrl: process.env.NODE_ENV === 'production' ? '/' : '/',
+    publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
     productionSourceMap: false,
-    externals: {
-        // "element-ui": "ElementUI",
-        // "vue": "Vue",
-        "jquery": "$",
-    },
+    // externals表示不需要打包的文件
+    // configureWebpack: {
+    //     externals: {
+    //         'vue': 'Vue',
+    //     }
+    // },
     // css: {
     //     loaderOptions: {
     //       sass: {
@@ -56,7 +52,7 @@ module.exports = {
 
     devServer: {
         port: 8081, // 端口号
-        host: '192.168.1.20',
+        host: '192.168.1.8',
         https: false, // https:{type:Boolean}
         open: true, //配置自动启动浏览器
 

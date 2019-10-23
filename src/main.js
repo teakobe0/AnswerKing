@@ -7,6 +7,10 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
+
+
+import VueClipboard from 'vue-clipboard2'
+Vue.use(VueClipboard)
 // 引入vue-easy-lightbox（图片放大工具）
 // import Lightbox from 'vue-easy-lightbox'
 // Vue.use(Lightbox)

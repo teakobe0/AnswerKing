@@ -84,6 +84,18 @@
 .acctypeVip {
   line-height: 30px;
 }
+.InvitationCon p{
+  color: #409eff;
+  text-align: center;
+  margin-top: 16px;
+}
+.encryptInput {
+  width: 910px !important;
+  margin-top: 16px !important;
+}
+.encryptButton {
+  margin-left: 20px !important;
+}
 </style>
 
 
@@ -124,6 +136,14 @@
           <li v-if="this.value.birthday == '0001-01-01T00:00:00'">生日:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
         </ul>
       </div>
+      <div class="InvitationCon">
+        <p>您可以将下方地址发送给您的好友注册成为网站用户,注册成功我们将送您和您的好友各得7天VIP！享受无限制浏览！</p>
+        <el-input class="encryptInput" v-model="input" placeholder="请输入内容"></el-input>
+        <el-button class="encryptButton" @click="Invitation" v-clipboard:copy="copy" v-clipboard:success="onCopy" v-clipboard:error="onError">
+            粘贴
+        </el-button>
+      </div>
+      
       <!-- <div class="head-right-middle">
         <p class="right-middle-title">文件</p>
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -136,6 +156,7 @@
 </template>
 <script type="es6">
 import { formatDate } from "@/common/js/date.js";
+import Utils from "@/utils.js";
 
 export default {
   name: "basic",
@@ -145,11 +166,15 @@ export default {
     return {
       activeName: "first",
       value: {},
-      role:""
+      role:"",
+      inviterId:0,
+      copy:"",
+      input:""
     };
   },
   created: function() {
     const _this = this;
+    
     _this.gainpersonal();
   },
   filters: {
@@ -159,6 +184,15 @@ export default {
     }
   },
   methods: {
+    Invitation(){
+      const _this = this;
+    },
+    onCopy(){
+        this.$message.success('已将链接复制到剪切板！请发送给您的好友点击！')
+    },
+    onError(){
+        this.$message.console.error('复制失败');
+    },
     handleClick: function(tab, event) {
       console.log(tab, event);
     },
@@ -180,6 +214,11 @@ export default {
           })
           .then(function(res) {
             _this.value = res.data.data;
+            _this.inviterId = _this.value.id;
+            let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
+            let encryptText = "http://192.168.1.8:8081/register?inviter="+encrypt;
+            _this.copy = encryptText;
+            _this.input = encryptText;
           })
           .catch(function(error) {
             console.log(error);

@@ -136,14 +136,14 @@
   margin-right: 10px;
 }
 
-/* .classesDetails-tag-con li a {
+.classesDetails-tag-con li a {
   display: inline-block;
   text-align: center;
   width: 73px;
   height: 46px;
   color: #000;
   text-decoration: none;
-} */
+}
 
 .classesDetails-tag-con li:hover {
   height: 46px;
@@ -188,6 +188,32 @@
 .crumbs span {
   line-height: 38px;
 }
+.ClassesAdvertising {
+  width: 1300px;
+  height: 100px;
+  margin-bottom: 30px !important;
+  margin: 0 auto;
+  background-image: url("../assets/234.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  overflow: hidden;
+}
+.ClassesAdvertising div{
+  margin-top: 24px;
+  margin-left: 35px;
+}
+.ClassesAdvertising .advertising-p2 {
+  margin-top: 10px;
+  margin-left: 250px;
+}
+.ClassesAdvertising img {
+  width: 70px;
+  height: 70px;
+  position: absolute;
+  right: 35px;
+  top: 15px;
+}
 </style>
 
 <template>
@@ -202,9 +228,7 @@
               <el-breadcrumb-item :to="{ path: '/schools' }">
                 <span class="crumb">全部学校</span>
               </el-breadcrumb-item>
-              <el-breadcrumb-item
-                :to="'/university/'+universityId"
-              >
+              <el-breadcrumb-item :to="'/university/'+universityId">
                 <span class="crumb">该校课程</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
@@ -245,9 +269,7 @@
 
               <p>
                 学校:
-                <router-link
-                  :to="'/university/'+universityId"
-                >{{value.university}}</router-link>
+                <router-link :to="'/university/'+universityId">{{value.university}}</router-link>
                 <span v-if="value.professor">教授:{{value.professor}}</span>
               </p>
 
@@ -260,8 +282,7 @@
         <div class="classesDetails-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <!-- <router-link :to="{path:'/classes/file',query: {id: this.Id}}">题库集</router-link> -->
-              题库集
+              <router-link :to="'/classes/'+ $route.params.classes_id +'/file'">题库集</router-link>
             </li>
             <!-- <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
                             <router-link :to="{path:'/classes/file',query: {id: this.Id}}">题库集</router-link>
@@ -271,7 +292,16 @@
         </div>
       </div>
       <div>
-        <router-view :Names="this.value" :attCon="this.attentionCon"/>
+        <router-view :Names="this.value" :attCon="this.attentionCon" />
+      </div>
+      <div class="ClassesAdvertising">
+        <div>
+          <p class="advertising-p1">没有找到您需要的答案嘛？想要更多的了解我们嘛？</p>
+          <p class="advertising-p2">
+            扫描右侧的二维码关注<b style="color:#3ccece;">凡易公众号</b>告诉我们吧！
+          </p>
+        </div>
+        <img src="../assets/erweima.png" alt />
       </div>
     </div>
     <homeFooter></homeFooter>
@@ -306,7 +336,7 @@ export default {
         Type: ""
       },
       attenDisabled: false,
-      attentionCon:[],
+      attentionCon: []
     };
   },
   created: function() {
@@ -385,7 +415,7 @@ export default {
     },
     attention: function() {
       const _this = this;
-      
+
       if (localStorage.token) {
         _this.value.attentions = !_this.value.attentions;
         _this.attenDisabled = true;

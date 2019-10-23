@@ -118,6 +118,7 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import Footer from "@/components/public/footer.vue";
+import Utils from "@/utils.js";
 export default {
   name: "register",
   components: {
@@ -151,7 +152,8 @@ export default {
       ruleForm: {
         Email: "",
         Password: "",
-        Passwords: ""
+        Passwords: "",
+        inviterid: 0
       },
       //rules是Element的表单验证规则
       rules: {
@@ -169,7 +171,8 @@ export default {
         Passwords: [
           { required: true, validator: validatePass2, trigger: "blur" }
         ]
-      }
+      },
+      decrypt: 0
     };
   },
   //页面的方法还是写在methods{}中
@@ -181,15 +184,23 @@ export default {
         if (valid) {
           const _this = this;
           _this.loadings = true;
-          this.axios({
-            method: "POST",
-            url: `${_this.URLport.serverPath}/client/Register`,
-            async: false,
-            data: this.ruleForm,
-            xhrFields: {
-              withCredentials: true
-            }
-          })
+          if (_this.$route.query.inviter) {
+            _this.decrypt = Utils.decrypt(
+              _this.$route.query.inviter,
+              "hAw6eqnFLKxpsDv3"
+            );
+            _this.ruleForm.inviterid = _this.decrypt;
+          }
+          _this
+            .axios({
+              method: "POST",
+              url: `${_this.URLport.serverPath}/client/Register`,
+              async: false,
+              data: _this.ruleForm,
+              xhrFields: {
+                withCredentials: true
+              }
+            })
             .then(function(res) {
               // 注册成功保存TOKEN相当于自动登录
               localStorage.token = res.data.data.token;
@@ -206,7 +217,6 @@ export default {
                 }
                 // _this.$store.state.logo.show = false;
                 // _this.$store.state.logo.hide = true;
-
                 // _this.$router.push({ path: "/login" });
               } else if (res.data.status == 2) {
                 _this.loadings = false;
@@ -219,6 +229,88 @@ export default {
             .catch(function(error) {
               console.log(error);
             });
+          // if (_this.$route.query.inviter) {
+          //   _this
+          //     .axios({
+          //       method: "POST",
+          //       url: `${_this.URLport.serverPath}/client/Register`,
+          //       async: false,
+          //       data: _this.ruleForm,
+          //       params: {
+          //         inviterid: Number(_this.decrypt)
+          //       },
+          //       xhrFields: {
+          //         withCredentials: true
+          //       }
+          //     })
+          //     .then(function(res) {
+          //       // 注册成功保存TOKEN相当于自动登录
+          //       localStorage.token = res.data.data.token;
+          //       if (res.data.status == 1) {
+          //         _this.$message({
+          //           message: "注册成功",
+          //           type: "success"
+          //         });
+          //         if (localStorage.SkipPath) {
+          //           _this.$router.push({
+          //             path: localStorage.SkipPath
+          //           });
+          //           localStorage.removeItem("SkipPath");
+          //         }
+          //         // _this.$store.state.logo.show = false;
+          //         // _this.$store.state.logo.hide = true;
+          //         // _this.$router.push({ path: "/login" });
+          //       } else if (res.data.status == 2) {
+          //         _this.loadings = false;
+          //         _this.$message({
+          //           message: res.data.msg,
+          //           type: "success"
+          //         });
+          //       }
+          //     })
+          //     .catch(function(error) {
+          //       console.log(error);
+          //     });
+          // } else {
+          //   _this.axios({
+          //     method: "POST",
+          //     url: `${_this.URLport.serverPath}/client/Register`,
+          //     async: false,
+          //     data: _this.ruleForm,
+          //     xhrFields: {
+          //       withCredentials: true
+          //     }
+          //   })
+          //     .then(function(res) {
+          //       // 注册成功保存TOKEN相当于自动登录
+          //       localStorage.token = res.data.data.token;
+          //       if (res.data.status == 1) {
+          //         _this.$message({
+          //           message: "注册成功",
+          //           type: "success"
+          //         });
+          //         if (localStorage.SkipPath) {
+          //           _this.$router.push({
+          //             path: localStorage.SkipPath
+          //           });
+          //           localStorage.removeItem("SkipPath");
+          //         }
+          //         // _this.$store.state.logo.show = false;
+          //         // _this.$store.state.logo.hide = true;
+
+          //         // _this.$router.push({ path: "/login" });
+          //       } else if (res.data.status == 2) {
+          //         _this.loadings = false;
+          //         _this.$message({
+          //           message: res.data.msg,
+          //           type: "success"
+          //         });
+          //       }
+          //     })
+          //     .catch(function(error) {
+          //       console.log(error);
+          //     });
+          // }
         } else {
           console.log("error submit!!");
           return false;
