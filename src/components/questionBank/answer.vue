@@ -3,7 +3,10 @@
   width: 763px;
   float: left;
 }
-
+.loading {
+  width: 763px;
+  height: 212px;
+}
 .tabCon .cover {
   width: 150px;
   height: 180px;
@@ -19,14 +22,6 @@
 .tabCon .cover:hover {
   border: 1px solid #136bd3;
 }
-.tabCon div p {
-  height: 180px;
-  width: 150px;
-  overflow: hidden;
-}
-
-.tabCon div img {
-}
 
 .tabCon-wu {
   /* width: 100px; */
@@ -37,14 +32,14 @@
   margin: 0 auto;
 }
 .tabCon-wu a {
-  color:#7613d3;
+  color: #7613d3;
   text-decoration: none;
 }
 .tabCon-wu a:hover {
-  color:#e01044;
+  color: #e01044;
 }
 .tabCon-wu a:active {
-  color:#136bd3;
+  color: #136bd3;
 }
 .popContainer-wrap {
 }
@@ -100,37 +95,38 @@
 
 <template>
   <div id="answer">
-    <div
-      class="tabCon"
-      v-loading="this.$store.state.answer.loading"
-      element-loading-background="rgba(255, 255, 255)"
-    >
-      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
-      <div
-        oncontextmenu="return false;"
-        ondragstart="return false;"
-        v-for="(items,index) in this.$store.state.answer.answer"
+    <div class="tabCon">
+      <div class="loading"
+        v-loading="this.$store.state.answer.loading"
+        element-loading-background="rgba(255, 255, 255)"
       >
+        <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
         <div
-          class="cover"
-          v-for="(item,indexs) in items.Imgs"
-          @mouseenter="onMouseOver"
-          @mouseleave="onMouseout"
-          @click="() => handleanwer(indexs)"
+          oncontextmenu="return false;"
+          ondragstart="return false;"
+          v-for="(items,index) in this.$store.state.answer.answer"
         >
-          <img
-            style="width:100%;height:100%;filter: blur(1px);"
-            :src="item.contentUrl"
-            :alt="items.contents"
-          />
+          <div
+            class="cover"
+            v-for="(item,indexs) in items.Imgs"
+            @mouseenter="onMouseOver"
+            @mouseleave="onMouseout"
+            @click="() => handleanwer(indexs)"
+          >
+            <img
+              style="width:100%;height:100%;filter: blur(1px);"
+              :src="item.contentUrl"
+              :alt="items.contents"
+            />
+          </div>
         </div>
+        <VueEasyLightbox
+          :visible="visible"
+          :imgs="this.$store.state.answer.imgss"
+          :index="index"
+          @hide="handleHide"
+        ></VueEasyLightbox>
       </div>
-      <VueEasyLightbox
-        :visible="visible"
-        :imgs="this.$store.state.answer.imgss"
-        :index="index"
-        @hide="handleHide"
-      ></VueEasyLightbox>
     </div>
     <div class="popContainer-wrap">
       <div class="popContainer" v-show="shade==true">

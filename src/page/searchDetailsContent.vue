@@ -930,6 +930,7 @@ export default {
       const _this = this;
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
+      _this.$store.state.answer.answer = [];
       _this.numnum = index;
       _this
         .axios({
@@ -991,6 +992,7 @@ export default {
       // 跟地址栏上的ID总是慢一步，星期一来在解决吧
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
+      _this.$store.state.answer.answer = [];
       _this
         .axios({
           method: "get",
