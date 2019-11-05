@@ -2,6 +2,16 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+// 路由守卫，进入页面的时候默认显示最顶上
+router.beforeEach((to, from, next) => {
+  document.body.scrollTop = 0
+  // firefox
+  document.documentElement.scrollTop = 0
+  // safari
+  window.pageYOffset = 0
+  next()
+})
+
 //引入element
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'

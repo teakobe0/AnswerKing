@@ -379,7 +379,7 @@
 }
 .advertising .advertising-p2 {
   margin-top: 10px;
-  margin-left: 120px;
+  margin-left: 90px;
 }
 .advertising img {
   width: 70px;
@@ -534,10 +534,10 @@
               <div>
                 <p class="advertising-p1">没有找到您需要的答案嘛？</p>
                 <p class="advertising-p2">
-                  扫描右侧的二维码关注<b style="color:#3ccece;">凡易公众号</b>告诉我们吧！
+                  扫描右侧的二维码添加<b style="color:#3ccece;">凡易客服</b>的微信告诉我们吧！
                 </p>
               </div>
-              <img src="../assets/erweima.png" alt />
+              <img src="../assets/erweima.jpg" alt />
             </div>
             <!-- 评论组件 -->
             <reviews></reviews>
