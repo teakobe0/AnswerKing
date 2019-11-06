@@ -216,7 +216,7 @@ export default {
             _this.value = res.data.data;
             _this.inviterId = _this.value.id;
             let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
-            let encryptText = "http://192.168.1.8:8081/register?inviter="+encrypt;
+            let encryptText = "http://coursewhale.com/register?inviter="+encrypt;
             _this.copy = encryptText;
             _this.input = encryptText;
           })

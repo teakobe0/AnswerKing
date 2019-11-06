@@ -186,11 +186,12 @@ export default {
           _this.loadings = true;
           if (_this.$route.query.inviter) {
             _this.decrypt = Utils.decrypt(
-              _this.$route.query.inviter,
+              _this.$route.query.inviter.replace(/\s+/g, '+'),
               "hAw6eqnFLKxpsDv3"
             );
             _this.ruleForm.inviterid = _this.decrypt;
           }
+          
           _this
             .axios({
               method: "POST",

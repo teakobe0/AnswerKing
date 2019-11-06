@@ -193,11 +193,12 @@
   height: 100px;
   margin-bottom: 30px !important;
   margin: 0 auto;
-  background-image: url("../assets/234.jpg");
+  background-image: url("../assets/222.jpg");
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
+  color: #fff;
 }
 .ClassesAdvertising div{
   margin-top: 24px;
@@ -205,7 +206,7 @@
 }
 .ClassesAdvertising .advertising-p2 {
   margin-top: 10px;
-  margin-left: 250px;
+  margin-left: 190px;
 }
 .ClassesAdvertising img {
   width: 70px;
@@ -296,9 +297,9 @@
       </div>
       <div class="ClassesAdvertising">
         <div>
-          <p class="advertising-p1">没有找到您需要的答案嘛？想要更多的了解我们嘛？</p>
+          <p class="advertising-p1">没有找到您需要的课程吗？想得到更多的学习辅导服务吗？</p>
           <p class="advertising-p2">
-            扫描右侧的二维码添加<b style="color:#3ccece;">凡易客服</b>的微信告诉我们吧！
+            扫描二维码添加CourseWhale合作伙伴学业辅导的<b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />

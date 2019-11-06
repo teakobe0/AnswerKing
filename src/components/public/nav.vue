@@ -223,7 +223,7 @@
                 </div>
                 <ul >
                     <li>
-                        <router-link to='/schoolStudy' :class="searchBarFixed == true ? 'Navcolora:hover' :''">学校资源</router-link>
+                        <router-link to='/schools' :class="searchBarFixed == true ? 'Navcolora:hover' :''">学校资源</router-link>
                     </li>
                     <li>
                         <router-link to='/classesStudy' :class="searchBarFixed == true ? 'Navcolora:hover' :''">课程资源</router-link>

@@ -367,11 +367,12 @@
   height: 100px;
   margin-top: 24px;
   /* border-top: 1px dashed #e1e1e1; */
-  background-image: url("../assets/234.jpg");
+  background-image: url("../assets/222.jpg");
   background-position: center;
   background-repeat: no-repeat;
   position: relative;
   overflow: hidden;
+  color: #fff;
 }
 .advertising div {
   margin-top: 24px;
@@ -532,9 +533,9 @@
             </div>
             <div class="advertising">
               <div>
-                <p class="advertising-p1">没有找到您需要的答案嘛？</p>
+                <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
                 <p class="advertising-p2">
-                  扫描右侧的二维码添加<b style="color:#3ccece;">凡易客服</b>的微信告诉我们吧！
+                  扫描二维码添加CourseWhale合作伙伴学业辅导的<b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
                 </p>
               </div>
               <img src="../assets/erweima.jpg" alt />
