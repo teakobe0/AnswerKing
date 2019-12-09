@@ -28,6 +28,7 @@ import university from '@/page/searchDetailsUniversity.vue'  //学校详情页�
 import classes from '@/page/classesDetails.vue'  //课程详情页面
 // const member = () => import('@/page/member.vue')
 import member from '@/page/member.vue'  //会员
+import imgDetails from '@/page/imgDetails.vue'  //会员
 
 import ownness from '@/components/client/ownness.vue'  //个人资料
 // Footer里的页面
@@ -244,6 +245,10 @@ export default new Router({
         {
             path: '/ownness/:client_id',      //设置跳转
             component: ownness
+        },
+        {
+            path: '/imgDetails',      //设置跳转
+            component: imgDetails
         },
 
     ]

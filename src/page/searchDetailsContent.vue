@@ -830,14 +830,16 @@ export default {
     //将图片的ID和路径保存到outputList的方法
     getUrlList: function(rawList) {
       const _this = this;
+      
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
+        console.log(imgUrlArray)
         if (imgUrlArray[i].length != 0) {
           outputList.push({
             id: rawList.id,
             contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
-            contents: rawList.contents
+            contents: rawList.contents,
             // conurl: rawList.conurl
           });
         }
@@ -890,7 +892,7 @@ export default {
           console.log(error);
         });
     },
-    //每周课程ID获取类型
+    //每周课程周ID获取类型
     handleWeeks: function(classWeekId) {
       const _this = this;
       for (var i = 0; i < _this.valueWeek.length; i++) {
@@ -1017,11 +1019,13 @@ export default {
           }
           if (_this.Answer.length == 1) {
             for (var i = 0; i < _this.Answer.length; i++) {
+              
               if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
                 _this.$store.state.answer.tabconwu = true;
               } else {
                 _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
                 _this.imgss = _this.getUrlListCover(_this.Answer[i]);
+                
               }
             }
           }

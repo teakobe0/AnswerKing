@@ -91,6 +91,18 @@
 .popContainer .closeshade:hover {
   color: #fff;
 }
+.imgShow {
+  width: 100px;
+  height: 30px;
+  position: fixed;
+  bottom: 10px;
+  right:10px;
+  z-index: 9999;
+}
+.imgShow a {
+  text-decoration: none;
+  color: black;
+}
 </style>
 
 <template>
@@ -109,10 +121,11 @@
           <div
             class="cover"
             v-for="(item,indexs) in items.Imgs"
-            @mouseenter="onMouseOver"
-            @mouseleave="onMouseout"
+            @mouseenter="onMouseOver(items,indexs)"
+            @mouseleave="onMouseout(items,indexs)"
             @click="() => handleanwer(indexs)"
           >
+            <el-button class="imgShow" size="mini" v-show="imgshow" @click="skipImgDetails"><router-link to="/imgDetails">查看详情</router-link></el-button>
             <img
               style="width:100%;height:100%;filter: blur(1px);"
               :src="item.contentUrl"
@@ -168,29 +181,33 @@ export default {
       // 控制全屏遮罩的打开
       fullscreenLoading: false,
       loading: true,
-      clock: null
+      clock: null,
+      // 图片查看详情按钮的展示
+      imgshow:false,
     };
   },
   created: function() {
     const _this = this;
   },
   methods: {
-    onMouseOver: function() {
+    onMouseOver: function(item,index) {
       const _this = this;
-      _this.MouseOver = true;
+      console.log(item)
     },
-    onMouseout: function() {
+    onMouseout: function(item,index) {
       const _this = this;
-      _this.MouseOver = false;
     },
     shows() {
       let _this = this;
       _this.visible = true;
+      _this.imgshow = true;
     },
     handleHide() {
       let _this = this;
       _this.visible = false;
       _this.fullscreenLoading = false;
+      _this.imgshow = false;
+
     },
     joim: function() {
       const _this = this;
@@ -242,8 +259,7 @@ export default {
     //点击答案显示遮罩方法
     handleanwer: function(index) {
       const _this = this;
-
-      event.preventDefault();
+      event.preventDefault(); //阻止URL跳转方法
       if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
         _this.shade = false;
         // 控制图片查看器的打开
@@ -283,7 +299,7 @@ export default {
       // let remainTime = _this.totalTime;
     },
     // 关闭遮罩
-    Closemask: function() {
+    Closemask() {
       const _this = this;
       _this.countdownClock = null;
       _this.shade = false;
@@ -292,6 +308,9 @@ export default {
       // _this.imageShow = true;
       // _this.shows();
       _this.handleHide();
+    },
+    skipImgDetails(){
+
     }
   }
 };
