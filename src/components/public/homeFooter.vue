@@ -2,7 +2,7 @@
 .homeFooter {
   background-color: #4559ae;
   position: absolute;
-  bottom: 0;
+  /* bottom: 0; */
   left: 0;
   width: 100%;
   padding-bottom: 30px;
