@@ -449,7 +449,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data.data)
           _this.classesAll = res.data.data.data;
           _this.loading = false;
           _this.classesPagings = true;

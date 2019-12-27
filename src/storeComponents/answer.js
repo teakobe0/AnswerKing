@@ -4,6 +4,7 @@ export default {
         imgss:"",
         tabconwu:false,
         loading:false,
-        loginIf:false
+        loginIf:false,
+        imgWeekTypeId:0,
     }
 }

@@ -1106,6 +1106,7 @@ export default {
     },
     handleScroll() {
       const _this = this;
+      
       if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
         var elPosition1 = $(".img-fluid1").offset().top;
         var elPosition2 = $(".img-fluid2").offset().top;

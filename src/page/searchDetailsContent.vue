@@ -535,7 +535,8 @@
               <div>
                 <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
                 <p class="advertising-p2">
-                  扫描二维码添加CourseWhale合作伙伴学业辅导的<b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
+                  扫描二维码添加CourseWhale合作伙伴学业辅导的
+                  <b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
                 </p>
               </div>
               <img src="../assets/erweima.jpg" alt />
@@ -651,7 +652,9 @@ export default {
       contributors: {
         name: "Monickers"
       },
-      attentionCon: []
+      attentionCon: [],
+      // 当前类型ID（为了图片查看详情页面获取图片用）
+      imgWeekTypeId: 0
     };
   },
   created: function() {
@@ -720,7 +723,6 @@ export default {
             _this.$route.params.weeks_id != 0 &&
             _this.$route.params.weektype_id == 0
           ) {
-            console.log(1);
             _this
               .axios({
                 method: "get",
@@ -745,6 +747,7 @@ export default {
                   let weekTypeId = _this.tabs[0].id;
                   _this.conShow = true;
                   _this.value1 = Number(_this.$route.params.weeks_id);
+                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
                   _this.tab(0, weekTypeId);
                 }
               })
@@ -755,7 +758,6 @@ export default {
             _this.$route.params.weeks_id != 0 &&
             _this.$route.params.weektype_id != 0
           ) {
-            console.log(2);
             _this
               .axios({
                 method: "get",
@@ -784,14 +786,18 @@ export default {
                       _this.numnum = i;
                     }
                   }
+                  _this.$store.state.answer.imgWeekTypeId =
+                    _this.$route.params.weektype_id;
                   _this.tab(_this.numnum, _this.$route.params.weektype_id);
                 }
               })
               .catch(function(error) {
                 console.log(error);
               });
-          } else {
-            console.log(3);
+          } else if (
+            _this.$route.params.weeks_id == 0 &&
+            _this.$route.params.weektype_id != 0
+          ) {
             _this
               .axios({
                 method: "get",
@@ -814,8 +820,46 @@ export default {
                 } else {
                   _this.tabs = res.data.data;
                   _this.conShow = true;
+                  for (let i = 0; i < _this.tabs.length; i++) {
+                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
+                      _this.numnum = i;
+                    }
+                  }
+                  _this.$store.state.answer.imgWeekTypeId =
+                    _this.$route.params.weektype_id;
+                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          } else {
+            _this
+              .axios({
+                method: "get",
+                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
+                async: false,
+                params: {
+                  classweekid: _this.valueWeek[0].id
+                },
+                xhrFields: {
+                  withCredentials: true
+                }
+              })
+              .then(function(res) {
+                if (res.data.data.length == 0) {
+                  _this.conShow = false;
+                  _this.$store.state.answer.tabconwu = false;
+                  _this.$store.state.answer.answer = [];
+                  _this.$store.state.answer.imgss = [];
                   _this.value1 = Number(_this.valueWeek[0].id);
-                  _this.RetrieveTheTnswer(_this.tabs[0].id);
+                } else {
+                  _this.tabs = res.data.data;
+                  let weekTypeId = _this.tabs[0].id;
+                  _this.conShow = true;
+                  _this.value1 = Number(_this.valueWeek[0].id);
+                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
+                  _this.RetrieveTheTnswer(weekTypeId);
                 }
               })
               .catch(function(error) {
@@ -830,16 +874,15 @@ export default {
     //将图片的ID和路径保存到outputList的方法
     getUrlList: function(rawList) {
       const _this = this;
-      
+
       var imgUrlArray = rawList.url.split("|");
       var outputList = [];
       for (var i = 0; i < imgUrlArray.length; i++) {
-        console.log(imgUrlArray)
         if (imgUrlArray[i].length != 0) {
           outputList.push({
             id: rawList.id,
             contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
-            contents: rawList.contents,
+            contents: rawList.contents
             // conurl: rawList.conurl
           });
         }
@@ -921,6 +964,8 @@ export default {
           } else {
             _this.tabs = res.data.data;
             _this.conShow = true;
+            _this.$store.state.answer.imgWeekTypeId = _this.tabs[0].id;
+            console.log(_this.$store.state.answer.imgWeekTypeId);
             _this.RetrieveTheTnswer(_this.tabs[0].id);
           }
         })
@@ -931,6 +976,7 @@ export default {
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
+      _this.$store.state.answer.imgWeekTypeId = classWeekTypeId;
       _this.outputLists.length = 0;
       _this.$store.state.answer.loading = true;
       _this.$store.state.answer.answer = [];
@@ -1019,13 +1065,11 @@ export default {
           }
           if (_this.Answer.length == 1) {
             for (var i = 0; i < _this.Answer.length; i++) {
-              
               if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
                 _this.$store.state.answer.tabconwu = true;
               } else {
                 _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
                 _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-                
               }
             }
           }

@@ -247,7 +247,7 @@ export default new Router({
             component: ownness
         },
         {
-            path: '/classes/:classes_id/content/:classinfo_id/weeks/:weeks_id/weektype/:weektype_id/imgDetails',      //设置跳转
+            path: '/classes/:classes_id/content/:classinfo_id/weeks/:weeks_id/weektype/:weektype_id/imgDetails/:imgDetails_id',      //设置跳转
             component: imgDetails
         },
 

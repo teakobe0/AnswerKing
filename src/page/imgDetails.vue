@@ -11,29 +11,138 @@
   overflow: hidden;
 }
 .imgD-xian {
-  width: 650px;
+  width: 1300px;
   height: 4px;
   margin: 0 auto;
   background-color: #f7c00d;
   border-radius: 2px;
-  margin-top: 20px;
+  margin-bottom: 24px;
+}
+/* 左侧缩略图固定之前的样式 */
+.thumbnail {
+  width: 258px;
+  float: left;
+  padding: 20px 20px 0px 20px;
+  border: 1px solid rgb(202, 202, 202);
+}
+.thumbnail-text {
+  width: 310px;
+  height: 30px;
+  color: rgb(97, 97, 97);
+}
+.thumbnail-text i {
+  font-size: 10px;
+  margin-left: 5px;
+}
+.thumbnail-img {
+  width: 117px;
+  height: 170px;
+  float: left;
   margin-bottom: 20px;
 }
-.imgD-Con img {
-  width: 640px;
+.thumbnail a {
+  display: inline-block;
+}
+.thumbnail img {
+  width: 117px;
+  height: 170px;
+  border: 1px solid rgb(202, 202, 202);
+  cursor: pointer;
+  border-radius: 5px;
+}
+.thumbnail .thumbnail-img:nth-child(even) {
+  margin-right: 20px;
+}
+.thumbnail img:hover {
+  border: 1px solid rgb(23, 102, 206);
+}
+/* 左侧缩略图固定之后的样式 */
+/* .thumbnailFixed {
+  position: fixed;
+  top: 80px;
+  z-index: 9999;
+  width: 258px;
+  float: left;
+  padding: 20px;
+  border: 1px solid rgb(202, 202, 202);
+}
+.thumbnailFixed .thumbnail-img {
+  width: 117px;
+  height: 170px;
+  float: left;
+  margin-bottom: 20px;
+}
+.thumbnailFixed .thumbnail-img:nth-last-child(1) {
+  margin-bottom: 0px;
+}
+.thumbnailFixed .thumbnail-img:nth-last-child(2) {
+  margin-bottom: 0px;
+}
+.thumbnailFixed .thumbnail a {
+  display: inline-block;
+}
+.thumbnailFixed .thumbnail-text {
+  height: 30px;
+}
+.thumbnailFixed img {
+  width: 117px;
+  height: 170px;
+  float: left;
+  border: 1px solid rgb(202, 202, 202);
+  cursor: pointer;
+}
+.thumbnailFixed .thumbnail-img:nth-child(even) {
+  margin-right: 20px;
+}
+.thumbnailFixed img:hover {
+  border: 1px solid rgb(23, 102, 206);
+} */
+/* 结束 */
+
+.answer {
+  width: 970px;
+  float: right;
+}
+.answer img {
+  width: 970px;
+  padding: 20px;
   z-index: 9999;
   /* position: fixed;
   top: 90px; */
-  float: left;
+  margin-bottom: 20px;
+  border: 1px solid rgb(202, 202, 202);
+  box-shadow: 1px 3px 5px rgb(202, 202, 202);
 }
+
 .imgD-text {
-  width: 640px;
+  width: 928px;
   margin-top: 10px;
+  margin-bottom: 30px;
   /* margin-left: 650px; */
   float: right;
+  border: 1px solid rgb(202, 202, 202);
+  padding: 20px;
+  color: rgb(97, 97, 97);
 }
 .imgDetails-title {
   margin-top: 80px;
+}
+.UP {
+  position: fixed;
+  right: 40px;
+  bottom: 100px;
+  background-color: #fff;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #409eff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+  cursor: pointer;
+  z-index: 5;
 }
 </style>
 
@@ -53,8 +162,13 @@
             <el-breadcrumb-item :to="'/classes/'+$route.params.classes_id">
               <span class="crumb">该课题库</span>
             </el-breadcrumb-item>
+            <el-breadcrumb-item
+              :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
+            >
+              <span class="crumb">当前题库</span>
+            </el-breadcrumb-item>
             <el-breadcrumb-item>
-              <span style="color:rgb(228, 228, 228);">当前题库</span>
+              <span style="color:rgb(228, 228, 228);">图片详情</span>
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -125,29 +239,43 @@
         </div>
       </div>
       <div class="imgD-xian"></div>
-      <img src="http://47.254.29.164:8088/uploads/16001/15001/Quiz/1600115001Quiz55154.png" alt />
-      <div class="imgD-text">
-        <p>
-          10)Which of the following was NOT a crop the colonists learned to grow from the
-          Indians? For 1Point Your Answer: C)wheat Correct: 1point 1)Where did the Puritans
-          first settle? For 1Point Your Answer: D)Plymouth Harbor Correct: 1 point 2)The
-          main cause of the American Revolution was: For 1 Point Your Answer: B)taxes
-          Correct: 1point 3)Which of the following terms best describes George Washington?
-          For1Point Your Answer: D)dignified Correct: 1 point 4)Early Puritan societies
-          were governed by a type of government termed a: For 1 Point Your Answer: B)the
-          ocracy Correct: 1 point 5)George Washington&#39;s Patriot army won every battle
-          over the British. For 1Point Your Answer: False Correct: 1 point 6)Thomas Jef
-          ferson did all of the following EXCEPT: For 1 Point Your Answer: C)end slaver
-          y Correct: 1 point 7)Which of the following did not have the direct involveme
-          nt of George Washington? For 1Point Your Answer: B)Declaration of Independence
-          Correct: 1point 8)The colony first set up specifically for Catholics was: For
-          1Point Your Answer: A) Maryland Correct: 1 point 9)Relations between early co
-          lonists and Indians were always hostile. For 1 Point Your Answer:False Corre
-          ct: 1point
-        </p>
+      <div
+        :class="{thumbnail:isFixed,thumbnailFixed:isFixed==false}"
+        v-for="(items,index) in this.Answer"
+        v-show="isFixedShow"
+      >
+        <div class="thumbnail-text">
+          所有图片
+          <i class="el-icon-info" title="点击缩略图跳转"></i>
+        </div>
+        <div class="thumbnail-img" v-for="(item,indexs) in items.Imgs">
+          <a :href="'#'+indexs">
+            <img :src="item.contentUrl" :alt="items.contents" />
+          </a>
+        </div>
+      </div>
+      <div class="answer" v-for="(items,index) in this.Answer">
+        <div v-for="(item,indexs) in items.Imgs">
+          <img :src="item.contentUrl" :alt="items.contents" :id="indexs" />
+        </div>
+        <div class="imgD-text">
+          <p>{{items.contents}}</p>
+        </div>
       </div>
     </div>
-    <div class="imgD-xian"></div>
+    <div class="ClassesAdvertising">
+      <div>
+        <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
+        <p class="advertising-p2">
+          扫描二维码添加CourseWhale合作伙伴学业辅导的
+          <b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
+        </p>
+      </div>
+      <img src="../assets/erweima.jpg" alt />
+      <div class="UP" v-show="UPshow" @click="UPcilick">
+        <i class="el-icon-caret-top"></i>
+      </div>
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -155,6 +283,7 @@
 <script type="es6">
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import motionCss from "../../public/css/motion.min.css";
 export default {
   name: "imgDetails",
   components: {
@@ -176,7 +305,19 @@ export default {
         Id: "",
         type: "",
         check: ""
-      }
+      },
+      // 关注
+      attentions: {
+        Name: "",
+        TypeId: "",
+        Type: ""
+      },
+      // 答案图片内容
+      Answer: [],
+      informations: {},
+      isFixed: true,
+      isFixedShow: true,
+      UPshow: false
     };
   },
   created: function() {
@@ -184,8 +325,28 @@ export default {
     // 获取课程信息
     _this.Getclass();
     _this.Classinfos();
+    _this.gainImg();
+  },
+  mounted() {
+    var _this = this;
+    window.addEventListener("scroll", _this.handleScroll);
   },
   methods: {
+    handleScroll() {
+      var _this = this;
+      if (_this.$route.params.imgDetails_id) {
+        var scrollTop =
+          window.pageYOffset ||
+          document.documentElement.scrollTop ||
+          document.body.scrollTop;
+        if (scrollTop >= 500) {
+          _this.UPshow = true;
+          $(".UP").addClass("animation fade-in");
+        }else {
+          _this.UPshow = false;
+        }
+      }
+    },
     //根据课程id检索
     Getclass: function() {
       const _this = this;
@@ -228,7 +389,6 @@ export default {
         })
         .then(function(res) {
           _this.classinfoss = res.data.data;
-          console.log(res.data.data);
           _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {
             if (
@@ -402,7 +562,7 @@ export default {
       }
     },
     // 关注
-    attention: function() {
+    attention() {
       const _this = this;
 
       if (localStorage.token) {
@@ -479,6 +639,55 @@ export default {
           type: "warning"
         });
       }
+    },
+    //将图片的ID和路径保存到outputList的方法
+    getUrlList: function(rawList) {
+      const _this = this;
+      var imgUrlArray = rawList.url.split("|");
+      var outputList = [];
+      for (var i = 0; i < imgUrlArray.length; i++) {
+        if (imgUrlArray[i].length != 0) {
+          outputList.push({
+            id: rawList.id,
+            contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
+            contents: rawList.contents
+            // conurl: rawList.conurl
+          });
+        }
+      }
+
+      return outputList;
+    },
+    // 获取答案图片
+    gainImg() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+          async: false,
+          params: {
+            classweektypeid: _this.$route.params.imgDetails_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.Answer = res.data.data;
+          for (var i = 0; i < _this.Answer.length; i++) {
+            if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+            } else {
+              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    UPcilick(){
+      document.documentElement.scrollTop = 0
     }
   }
 };
