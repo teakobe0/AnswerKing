@@ -104,7 +104,7 @@
   float: right;
 }
 .answer img {
-  width: 970px;
+  width: 928px;
   padding: 20px;
   z-index: 9999;
   /* position: fixed;

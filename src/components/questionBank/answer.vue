@@ -125,7 +125,7 @@
             @mouseleave="onMouseout(items,indexs)"
             @click="() => handleanwer(indexs)"
           >
-            <el-button class="imgShow" size="mini" v-show="imgshow" @click="skipImgDetails"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id+'/imgDetails/'+$store.state.answer.imgWeekTypeId">查看详情</router-link></el-button>
+            <el-button class="imgShow" size="mini" v-show="imgshow" @click="skipImgDetails"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId">查看详情</router-link></el-button>
             <img
               style="width:100%;height:100%;filter: blur(1px);"
               :src="item.contentUrl"
