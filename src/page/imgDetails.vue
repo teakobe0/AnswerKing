@@ -40,6 +40,21 @@
   float: left;
   margin-bottom: 20px;
 }
+.thumbnail-bt {
+  width: 100%;
+  margin-bottom: 20px !important;
+  padding: 0px !important;
+}
+.thumbnail-bt a{
+  display: block;
+  text-decoration: none;
+  color: #3b3b3b;
+  width: 100%;
+  line-height: 40px;
+}
+.thumbnail-bt a:hover {
+  color: #fe2a93;
+}
 .thumbnail a {
   display: inline-block;
 }
@@ -56,49 +71,6 @@
 .thumbnail img:hover {
   border: 1px solid rgb(23, 102, 206);
 }
-/* 左侧缩略图固定之后的样式 */
-/* .thumbnailFixed {
-  position: fixed;
-  top: 80px;
-  z-index: 9999;
-  width: 258px;
-  float: left;
-  padding: 20px;
-  border: 1px solid rgb(202, 202, 202);
-}
-.thumbnailFixed .thumbnail-img {
-  width: 117px;
-  height: 170px;
-  float: left;
-  margin-bottom: 20px;
-}
-.thumbnailFixed .thumbnail-img:nth-last-child(1) {
-  margin-bottom: 0px;
-}
-.thumbnailFixed .thumbnail-img:nth-last-child(2) {
-  margin-bottom: 0px;
-}
-.thumbnailFixed .thumbnail a {
-  display: inline-block;
-}
-.thumbnailFixed .thumbnail-text {
-  height: 30px;
-}
-.thumbnailFixed img {
-  width: 117px;
-  height: 170px;
-  float: left;
-  border: 1px solid rgb(202, 202, 202);
-  cursor: pointer;
-}
-.thumbnailFixed .thumbnail-img:nth-child(even) {
-  margin-right: 20px;
-}
-.thumbnailFixed img:hover {
-  border: 1px solid rgb(23, 102, 206);
-} */
-/* 结束 */
-
 .answer {
   width: 970px;
   float: right;
@@ -107,8 +79,6 @@
   width: 928px;
   padding: 20px;
   z-index: 9999;
-  /* position: fixed;
-  top: 90px; */
   margin-bottom: 20px;
   border: 1px solid rgb(202, 202, 202);
   box-shadow: 1px 3px 5px rgb(202, 202, 202);
@@ -118,11 +88,11 @@
   width: 928px;
   margin-top: 10px;
   margin-bottom: 30px;
-  /* margin-left: 650px; */
   float: right;
   border: 1px solid rgb(202, 202, 202);
   padding: 20px;
   color: rgb(97, 97, 97);
+  line-height: 30px;
 }
 .imgDetails-title {
   margin-top: 80px;
@@ -177,7 +147,7 @@
     <div class="imgD-Con">
       <div class="serchDetailsContent-top">
         <div class="serchDetailsContent-top-info">
-          <h2>{{value.name}}</h2>
+          <h2><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">{{value.name}}</router-link></h2>
           <p>
             学校:
             <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
@@ -240,12 +210,11 @@
       </div>
       <div class="imgD-xian"></div>
       <div
-        :class="{thumbnail:isFixed,thumbnailFixed:isFixed==false}"
+        class="thumbnail"
         v-for="(items,index) in this.Answer"
-        v-show="isFixedShow"
       >
         <div class="thumbnail-text">
-          所有图片
+          所有文件
           <i class="el-icon-info" title="点击缩略图跳转"></i>
         </div>
         <div class="thumbnail-img" v-for="(item,indexs) in items.Imgs">
@@ -253,6 +222,7 @@
             <img :src="item.contentUrl" :alt="items.contents" />
           </a>
         </div>
+        <el-button class="thumbnail-bt"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">查看全部文件</router-link></el-button>
       </div>
       <div class="answer" v-for="(items,index) in this.Answer">
         <div v-for="(item,indexs) in items.Imgs">
@@ -315,8 +285,6 @@ export default {
       // 答案图片内容
       Answer: [],
       informations: {},
-      isFixed: true,
-      isFixedShow: true,
       UPshow: false
     };
   },

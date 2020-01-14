@@ -45,13 +45,19 @@
   width: 100%;
   position: relative;
 }
+
 .serchDetailsContent-top-info h2 {
   width: 900px;
-  color: #3b3b3b;
   margin-top: 24px;
   margin-bottom: 8px;
 }
-
+.serchDetailsContent-top-info h2 a{
+  text-decoration: none;
+  color: #3b3b3b;
+}
+.serchDetailsContent-top-info h2 a:hover{
+  color: #fe2a93;
+}
 .serchDetailsContent-top-info p {
   color: #777;
   font-size: 16px;

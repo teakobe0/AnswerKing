@@ -28,7 +28,9 @@ import university from '@/page/searchDetailsUniversity.vue'  //学校详情页�
 import classes from '@/page/classesDetails.vue'  //课程详情页面
 // const member = () => import('@/page/member.vue')
 import member from '@/page/member.vue'  //会员
-import imgDetails from '@/page/imgDetails.vue'  //会员
+import imgDetails from '@/page/imgDetails.vue'  //图片详情
+import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
+
 
 import ownness from '@/components/client/ownness.vue'  //个人资料
 // Footer里的页面
@@ -249,6 +251,10 @@ export default new Router({
         {
             path: '/classes/:classes_id/content/:classinfo_id/weeks/:weeks_id/weektype/:weektype_id/imgDetails/:imgDetails_id',      //设置跳转
             component: imgDetails
+        },
+        {
+            path: '/uploadAnswer',      //设置跳转
+            component: uploadAnswer
         },
 
     ]

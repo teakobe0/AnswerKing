@@ -97,9 +97,13 @@
   position: fixed;
   bottom: 10px;
   right:10px;
+  padding: 0px !important;
   z-index: 9999;
 }
 .imgShow a {
+  display: block;
+  width: 100px;
+  line-height: 30px;
   text-decoration: none;
   color: black;
 }
@@ -125,7 +129,7 @@
             @mouseleave="onMouseout(items,indexs)"
             @click="() => handleanwer(indexs)"
           >
-            <el-button class="imgShow" size="mini" v-show="imgshow" @click="skipImgDetails"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId">查看详情</router-link></el-button>
+            <el-button class="imgShow" size="mini" v-show="imgshow"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId">查看详情</router-link></el-button>
             <img
               style="width:100%;height:100%;filter: blur(1px);"
               :src="item.contentUrl"
@@ -284,18 +288,6 @@ export default {
           }
         }, 1000);
       }
-
-      // _this.isChoose = !_this.isChoose
-      // clearInterval(clock); //清除定时器
-      // console.log(_this.countdownClock);
-      // if (!_this.countdownClock) {
-      //   clearTimeout(_this.countdownClock);
-      //   _this.countdownClock = null;
-      // }
-      // console.log(_this.countdownClock);
-      // _this.countdownClock = _this.clockTick();
-
-      // let remainTime = _this.totalTime;
     },
     // 关闭遮罩
     Closemask() {
@@ -307,9 +299,6 @@ export default {
       // _this.imageShow = true;
       // _this.shows();
       _this.handleHide();
-    },
-    skipImgDetails(){
-      console.log(this.$route.params)
     }
   }
 };

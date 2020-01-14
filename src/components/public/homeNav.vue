@@ -39,13 +39,13 @@
         height: 32px;
         margin-top: 24px;
     }
-    .homenav-ser {
+    /* .homenav-ser {
         float: left;
         margin-top: 20px;
         margin-left: 90px;
         width: 400px;
         text-align: left;
-    }
+    } */
 
     .nav li li a {
         display: inline-block;
@@ -222,19 +222,19 @@
                         <img src="../../assets/logo.png" alt="">
                     </router-link>
                 </div>
-                <div class="homenav-ser">
+                <!-- <div class="homenav-ser"> -->
                     <!-- <div class="homenav-register" v-model="toggle" @click="homenavRe()" v-if="vanish">
                         <i class="el-icon-search"></i>
                         <a href="javascript:void(0)">搜索</a>
                     </div> -->
-                    <div class="homenavInput" v-if="vanishs" >
+                    <!-- <div class="homenavInput" v-if="vanishs" >
                         <i class="el-icon-search"></i>
                         <input type="text" placeholder="搜索" v-focus @blur="homenavLoseFoucs" v-model="statle" @keyup.enter="handleEnter(statle)"></input>
                         <a href="javascript:void(0)">
                             <i class="el-icon-close" @click="homenavDel"></i>
                         </a>
-                    </div>
-                </div>
+                    </div> -->
+                <!-- </div> -->
                 <ul >
                     <li>
                         <router-link to='/schools' :class="searchBarFixed == true ? 'navcolora:hover' :''">学校资源</router-link>
@@ -280,6 +280,11 @@
                     <li>
                         <router-link to='/member'>成为会员</router-link>
                     </li>
+                    
+                    <li>
+                        <router-link to='/uploadAnswer'>贡献资源</router-link>
+                    </li>
+
                     <li v-if="$store.state.logo.show">
                         <router-link to='/login'>登录</router-link>
 
