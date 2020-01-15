@@ -64,6 +64,43 @@
 .up-answer-week {
   float: right;
 }
+.up-answer-topic {
+  margin-top: 86px;
+}
+.topic-title {
+  overflow: hidden;
+  cursor: pointer;
+  line-height: 30px;
+}
+.topic-title:hover {
+  background-color: rgb(250, 250, 250);
+}
+.topic-title p {
+  float: left;
+}
+.topic-title i {
+  float: right;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+.topic-con {
+  /* border: 1px solid #777; */
+  padding-bottom: 10px;
+  border-bottom: 1px solid #ababab;
+}
+.upload-topic {
+  margin-top: 12px;
+}
+.up-answer-img {
+  margin-top: 12px;
+}
+.upload-img {
+  margin-top: 12px;
+  
+}
+.upload-img .el-upload {
+  margin-left: 380px;
+}
 /* 编辑答案结束 */
 
 /* 下一步按钮样式 */
@@ -156,7 +193,55 @@
                 ></el-option>
               </el-select>
             </div>
-            <div class="up-answer-topic">编辑题目</div>
+            <div class="up-answer-topic">
+              <div class="topic-title" @click="topictitle">
+                <p>编辑题目(选填)</p>
+                <i class="el-icon-arrow-down" v-show="topictitleshow == false"></i>
+                <i class="el-icon-arrow-up" v-show="topictitleshow == true"></i>
+              </div>
+              <div class="topic-con" v-show="topictitleshow">
+                <div class="share-prefix">题目名称</div>
+
+                <el-input v-model="topic" placeholder="请输入您的题目名称"></el-input>
+                <el-upload
+                  class="upload-topic"
+                  ref="upload"
+                  action="https://jsonplaceholder.typicode.com/posts/"
+                  :on-preview="handlePreview"
+                  :on-remove="handleRemove"
+                  :file-list="fileList"
+                  :auto-upload="false"
+                  :limit="uu"
+                >
+                  <el-button slot="trigger" size="small" type="primary">选取题目图片</el-button>
+                  <i
+                    slot="tip"
+                    class="el-upload__tip"
+                    style="margin-left:10px;color:#9c9c9c;"
+                  >只能上传jpg/png文件，且不超过500kb</i>
+                </el-upload>
+              </div>
+            </div>
+            <div class="up-answer-img">
+              <p>编辑答案*</p>
+              <div class="share-prefix">答案内容</div>
+              <el-input v-model="imgs" placeholder="请输入您的答案内容"></el-input>
+              <el-upload
+                class="upload-img"
+                drag
+                action="https://jsonplaceholder.typicode.com/posts/"
+                multiple
+                :auto-upload="false"
+              >
+                <i class="el-icon-upload"></i>
+                <div class="el-upload__text">
+                  将文件拖到此处，或
+                  <em>点击上传</em>
+                  <div class="el-upload__tip" slot="tip" style="color:#9c9c9c;">只能上传jpg/png文件，且不超过500kb</div>
+                </div>
+                
+              </el-upload>
+            </div>
           </div>
           <!-- 编辑答案END -->
           <div class="next">
@@ -207,6 +292,7 @@ export default {
   },
   data() {
     return {
+      uu: 1,
       active: 2,
       school: "",
       schooloptions: [
@@ -281,7 +367,14 @@ export default {
         }
       ],
       //   选择学校和填写学校的显示隐藏
-      upschool: true
+      upschool: true,
+      fileList: [],
+      // 题目名称
+      topic: "",
+      // 题目区域的显示隐藏
+      topictitleshow: true,
+      // 答案图片
+      imgs:"",
     };
   },
   created: function() {
@@ -299,7 +392,20 @@ export default {
     steplast() {
       this.active--;
     },
-    stepupload() {}
+    stepupload() {
+      const _this = this;
+      this.$refs.upload.submit();
+      // this.active = 3;
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    topictitle() {
+      this.topictitleshow = !this.topictitleshow;
+    }
   }
 };
 </script>
