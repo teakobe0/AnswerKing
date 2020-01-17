@@ -717,6 +717,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           _this.valueWeek = res.data.data;
           _this.currentWeek = _this.valueWeek[0];
           _this.currentWeekShow = true;

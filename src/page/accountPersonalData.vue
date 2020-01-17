@@ -308,6 +308,7 @@ export default {
     // 上传成功
     handleAvatarSuccess(res, file) {
       const _this = this;
+      
       _this.imageUrl = _this.URLport.ImgPersonal + res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
       _this.headShow = true;
