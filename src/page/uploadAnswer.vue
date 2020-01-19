@@ -5,7 +5,7 @@
 }
 .ua-con {
   margin-top: 80px;
-  height: 1000px;
+  /* height: 1000px; */
 }
 .ua-middle {
   width: 1300px;
@@ -239,7 +239,7 @@
         </div>
         <!-- 展示创建过的订单开始 -->
         <div v-show="active == 2">
-          <div class="showAnswer" v-for="item in answerArray">
+          <div class="showAnswer" v-for="(item,index) in answerArray">
             <div class="SA-con">
               <div class="SA-title">
                 <span class="SA-course">{{item.classname}}--{{item.universityname}}</span>
@@ -254,26 +254,18 @@
               <div v-show="active == 2 && item.show == false">
                 <div class="SA-topic">
                   <p>{{item.classInfoContentTest.name}}</p>
-                  <img src="../assets/3.jpg" alt />
+                  <img :src="item.answerImg" alt />
                 </div>
                 <div class="SA-answer">
-                  <p>{{item.classInfoContentTest.Contents}}</p>
-                  <img src="../assets/3.jpg" alt />
+                  <p>{{item.classInfoContentTest.contents}}</p>
+                  <img :src="item.topicImg" alt />
                 </div>
               </div>
               <div v-show="active == 2 && item.show == true">
-                <el-form
-                  :model="editupload"
-                  :rules="editrules"
-                  ref="editupload"
-                  class="demo-ruleForm"
-                  @submit.native.prevent
-                >
                   <div class="up-answer-week">
                     <div class="share-prefix">周选择*</div>
-                    <el-form-item prop="week">
                       <el-select
-                        v-model="item.classInfoContentTest.ClassWeek"
+                        v-model="item.classInfoContentTest.classWeek"
                         placeholder="请选择当前课程所在的周"
                         style="width:550px;"
                       >
@@ -284,13 +276,11 @@
                           :value="item.label"
                         ></el-option>
                       </el-select>
-                    </el-form-item>
                   </div>
                   <div class="up-answer-type">
                     <div class="share-prefix">类型选择*</div>
-                    <el-form-item prop="type">
                       <el-select
-                        v-model="item.classInfoContentTest.ClassWeekType"
+                        v-model="item.classInfoContentTest.classWeekType"
                         placeholder="请选择当前课程的类型"
                         style="width:550px;"
                       >
@@ -301,28 +291,28 @@
                           :value="item.label"
                         ></el-option>
                       </el-select>
-                    </el-form-item>
                   </div>
                   <div class="up-answer-topic">
                     <div class="topic-con">
                       <div class="share-prefix">题目名称(选填)</div>
-                      <el-form-item prop="topic">
                         <el-input
                           v-model="item.classInfoContentTest.name"
                           placeholder="请输入您的题目名称(选填)"
                         ></el-input>
-                      </el-form-item>
-                      <el-form-item prop="topicUrl" ref="uploadTopicUrl">
                         <el-upload
                           class="upload-topic"
-                          ref="upload"
-                          action="https://jsonplaceholder.typicode.com/posts/"
-                          :on-preview="topicHandlePreview"
-                          :on-remove="topicHandleRemove"
-                          :file-list="fileList"
-                          :auto-upload="false"
+                          ref="answerArray"
+                          :action="imgSite"
+                          :headers="myHeaders"
+                          :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
+                          :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.nameUrl)}"
+                          :on-change="editTopicHandleChange"
+                          :before-upload="editTopicHandlebeforeupload"
+                          :file-list="item.topicUrlList"
+                          :auto-upload="true"
                           :limit="uploadNum"
                           list-type="picture"
+                          :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
                         >
                           <el-button
                             slot="trigger"
@@ -331,30 +321,28 @@
                             icon="el-icon-picture"
                           >添加题目图片</el-button>
                         </el-upload>
-                      </el-form-item>
                     </div>
                   </div>
                   <div class="up-answer-img">
                     <div class="share-prefix">答案内容*(必填)</div>
-                    <el-form-item prop="answer">
                       <el-input
-                        v-model="item.classInfoContentTest.Contents"
+                        v-model="item.classInfoContentTest.contents"
                         placeholder="请输入您的答案内容(选填)"
                       ></el-input>
-                    </el-form-item>
-                    <el-form-item prop="answerUrl" ref="uploadAnswerUrl">
                       <el-upload
                         class="upload-topic"
-                        ref="upload"
-                        action="https://jsonplaceholder.typicode.com/posts/"
-                        :on-success="answerHandlePreview"
-                        :on-remove="answerHandleRemove"
-                        :on-change="answerHandleChange"
-                        :before-upload="answerHandlebeforeupload"
-                        :file-list="fileList"
-                        :auto-upload="false"
+                        ref="answerArray"
+                        :action="imgSite"
+                        :headers="myHeaders"
+                        :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
+                        :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.url)}"
+                        :on-change="editAnswerHandleChange"
+                        :before-upload="editAnswerHandlebeforeupload"
+                        :file-list="item.answerUrlList"
+                        :auto-upload="true"
                         :limit="uploadNum"
                         list-type="picture"
+                        :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
                       >
                         <el-button
                           slot="trigger"
@@ -368,16 +356,14 @@
                           style="margin-left:10px;color:#9c9c9c;"
                         >只能上传jpg/png文件，且不超过500kb</i>
                       </el-upload>
-                    </el-form-item>
                   </div>
                   <el-button
                     style="margin-top: 20px;position: absolute;top:207px;right:20px;"
                     size="small"
                     type="danger"
-                    @click="editstepupload('editupload')"
+                    @click="editstepupload(item)"
                     v-show="active == 2"
                   >提交答案</el-button>
-                </el-form>
               </div>
             </div>
             <!-- 编辑现有答案 -->
@@ -529,16 +515,16 @@
                     <el-form-item prop="topicUrl" ref="uploadTopicUrl">
                       <el-upload
                         class="upload-topic"
-                        ref="upload"
+                        ref="uploadTopicUrl"
                         :action="imgSite"
                         :headers="myHeaders"
-                        :on-preview="topicHandlePreview"
+                        :on-success="topicHandleSuccess"
                         :on-remove="topicHandleRemove"
                         :before-upload="topicHandlebeforeupload"
-                        :file-list="fileList"
-                        :auto-upload="false"
+                        :file-list="topicfileList"
+                        :auto-upload="true"
                         :limit="uploadNum"
-                        :data="{classInfoTestId:this.classInfoTestId}"
+                        :data="{classInfoTestId:68}"
                         list-type="picture"
                       >
                         <el-button
@@ -559,17 +545,17 @@
                   <el-form-item prop="answerUrl" ref="uploadAnswerUrl">
                     <el-upload
                       class="upload-topic"
-                      ref="upload"
+                      ref="addAnswerUpload"
                       :action="imgSite"
                       :headers="myHeaders"
-                      :on-success="answerHandlePreview"
+                      :on-success="answerHandleSucceed"
                       :on-remove="answerHandleRemove"
                       :on-change="answerHandleChange"
                       :before-upload="answerHandlebeforeupload"
-                      :file-list="fileList"
-                      :auto-upload="false"
+                      :file-list="answerfileList"
+                      :auto-upload="true"
                       :limit="uploadNum"
-                      :data="{classInfoTestId:this.classInfoTestId.toString()}"
+                      :data="{classInfoTestId:68}"
                       list-type="picture"
                     >
                       <el-button
@@ -685,8 +671,8 @@ export default {
   data() {
     return {
       uploadNum: 1,
-      active: 0,
-      formData: new FormData(),
+      active: 2,
+      formData: {},
       // 选择课程下一步
       seletchourse: {
         name: "",
@@ -794,12 +780,12 @@ export default {
       upschool: true,
       // 选择课程和填写课程的显示隐藏
       upcourse: true,
-      fileList: [
-          {
-            name: 'food.jpeg', 
-            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
-          }
-        ],
+      editTopicFileList:[],
+      editAnswerFileList:[],
+      topicfileList: [
+      ],
+      answerfileList: [
+      ],
       // 题目名称
       topic: "",
       // 题目区域的显示隐藏
@@ -810,15 +796,15 @@ export default {
         // {
         //   classInfoContentTest: {
         //     name: "斤斤计较",
-        //     NameUrl: "题目URL",
-        //     Contents: "1的N次方",
-        //     Url: "答案URL",
-        //     ClassWeek: 1,
-        //     ClassWeekType: "Assignment",
-        //     ClassTestId: 1,
-        //     ClassInfoTestId: 1,
-        //     UniversityTestId: 1,
-        //     ClientId: 1,
+        //     nameUrl: "题目URL",
+        //     contents: "1的N次方",
+        //     url: "答案URL",
+        //     classWeek: 1,
+        //     classWeekType: "Assignment",
+        //     classTestId: 1,
+        //     classInfoTestId: 1,
+        //     universityTestId: 1,
+        //     clientId: 1,
         //     id: 5,
         //     createTime: "2020-01-19T00:00:00"
         //   },
@@ -830,17 +816,16 @@ export default {
       // 订单ID
       classInfoTestId: 0,
       // 答案图片
-      answerFile:[],
+      answerFile: [],
       imgSite: this.URLport.serverPath + "/File/UploadImg",
       myHeaders: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
-      }
+      },
     };
   },
   created: function() {
     const _this = this;
-    // _this.serchingWeek();
-    // _this.serchingAnswer();
+    _this.serchingAnswer(68);
   },
   methods: {
     // 添加学校显示
@@ -950,7 +935,6 @@ export default {
             _this.active = 2;
             _this.orderTitle = res.data.data.classInfoTest.name;
             _this.classInfoTestId = res.data.data.classInfoTest.id;
-            _this.serchingWeek(_this.classInfoTestId);
             _this.serchingAnswer(_this.classInfoTestId);
           }
         })
@@ -990,7 +974,6 @@ export default {
                 _this.active = 2;
                 _this.orderTitle = res.data.data.classInfoTest.name;
                 _this.classInfoTestId = res.data.data.classInfoTest.id;
-                _this.serchingWeek(_this.classInfoTestId);
                 _this.serchingAnswer(_this.classInfoTestId);
                 _this.$message({
                   message: "添加课程成功",
@@ -1010,49 +993,55 @@ export default {
     // 立即上传
     stepupload(upload) {
       const _this = this;
-      _this.formData.Name = _this.upload.topic;
-      _this.formData.NameUrl = _this.upload.topicUrl;
-      _this.formData.UniversityTestId = _this.upload.schoolId;
-      _this.formData.Url = _this.upload.answerUrl;
-      _this.formData.Contents = _this.upload.answer;
-      _this.formData.ClassInfoTestId = _this.classInfoTestId;
-      _this.formData.ClassTestId = _this.upload.courseId;
-      _this.formData.ClassWeek = _this.upload.week;
-      _this.formData.ClassWeekType = _this.upload.type;
-      console.log(_this.formData);
+      // this.$refs.addAnswerUpload.submit();
+      var formData = {};
+      formData.Name = _this.upload.topic;
+      formData.NameUrl = _this.upload.topicUrl;
+      formData.UniversityTestId = _this.upload.schoolId;
+      formData.Url = _this.upload.answerUrl;
+      formData.Contents = _this.upload.answer;
+      formData.ClassInfoTestId = _this.classInfoTestId;
+      formData.ClassTestId = _this.upload.courseId;
+      formData.ClassWeek = _this.upload.week;
+      formData.ClassWeekType = _this.upload.type;
+      _this.formData = formData;
       if (_this.doupload == true) {
         _this.rules.answerUrl = [];
         _this.$refs["uploadAnswerUrl"].clearValidate();
       }
       _this.$refs[upload].validate(valid => {
         if (valid) {
-          // _this
-          //   .axios({
-          //     method: "post",
-          //     url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
-          //     async: false,
-          //     data: _this.formData,
-          //     xhrFields: {
-          //       withCredentials: true
-          //     },
-          //     headers: {
-          //       Authorization: `Bearer ${localStorage.getItem("token")}`
-          //     }
-          //   })
-          //   .then(function(res) {
-          //     console.log(res);
-          //     if (res.data.status == 1) {
-          //       _this.$message({
-          //         message: "添加答案成功",
-          //         type: "success"
-          //       });
-          //     }
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error);
-          //   });
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
+              async: false,
+              data: _this.formData,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.upload.Name = "";
+                _this.upload.Contents = "";
+                _this.topicfileList = [],
+                _this.answerfileList = [],
+                _this.serchingAnswer(_this.classInfoTestId);
+                _this.$message({
+                  message: "添加答案成功",
+                  type: "success"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
 
-          // _this.$refs.upload.submit();
           // var a = { label: "第" + 2 + "周"};
           // _this.weekoptions.push(a);
         } else {
@@ -1063,13 +1052,14 @@ export default {
     // 检索当前订单的周数量
     serchingWeek(classInfoTestId) {
       const _this = this;
+      _this.weekoptions = [{ label: 1 }];
       _this
         .axios({
           method: "get",
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
           async: false,
           params: {
-            classInfoTestId: classInfoTestId
+            classInfoTestId: 68
           },
           xhrFields: {
             withCredentials: true
@@ -1078,12 +1068,10 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            for (let i = 0; i < 2; i++) {
-              for (let i = 2; i <= res.data.data.length + 1; i++) {
-                const obj = {};
-                obj.label = i;
-                _this.weekoptions.push(obj);
-              }
+            for (let i = 2; i <= res.data.data.length + 1; i++) {
+              const obj = {};
+              obj.label = i;
+              _this.weekoptions.push(obj);
             }
           }
         })
@@ -1100,7 +1088,7 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
           async: false,
           params: {
-            classInfoTestId: classInfoTestId
+            classInfoTestId: 68
           },
           xhrFields: {
             withCredentials: true
@@ -1112,10 +1100,32 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            _this.answerArray = res.data.data;
-            for (var i = 0; i < _this.answerArray.length; i++) {
-              _this.$set(_this.answerArray[i], "show", false);
+            var answerArray = [];
+            answerArray = res.data.data;
+            _this.serchingWeek(classInfoTestId);
+            for (var i = 0; i < answerArray.length; i++) {
+              _this.$set(answerArray[i], "show", false);
+              _this.$set(answerArray[i], "topicImg", []);
+              _this.$set(answerArray[i], "topicUrlList", []);
+              _this.$set(answerArray[i], "answerImg", []);
+              _this.$set(answerArray[i], "answerUrlList", []);
+              _this.$set(answerArray[i], "topicCacheUrl", "");
+              _this.$set(answerArray[i], "answerCacheUrl", "");
+              answerArray[i].topicImg = _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url;
+              answerArray[i].answerImg = _this.URLport.ImgPath + answerArray[i].classInfoContentTest.nameUrl;
+              if(answerArray[i].classInfoContentTest.nameUrl == ""){
+                 answerArray[i].topicUrlList = [];
+              }else {
+                answerArray[i].topicUrlList.push({url: _this.URLport.ImgPath + answerArray[i].classInfoContentTest.nameUrl});
+              }
+              if(answerArray[i].classInfoContentTest.url == ""){
+                answerArray[i].answerUrlList = [];
+              }else {
+                answerArray[i].answerUrlList.push({url: _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url});
+              }
             }
+            _this.answerArray = answerArray;
+            console.log(_this.answerArray)
           }
         })
         .catch(function(error) {
@@ -1123,9 +1133,9 @@ export default {
         });
     },
     // 题目图片
+    // 上传之前
     topicHandlebeforeupload(file) {
       const _this = this;
-      console.log(file);
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
@@ -1136,28 +1146,79 @@ export default {
       }
       return isJPG && isLt2M;
     },
-    topicHandlePreview() {},
-    topicHandleRemove() {},
+    // 成功之后
+    topicHandleSuccess(res, file, fileList,idx) {
+      const _this = this;
+      _this.answerArray[idx]
+    },
+    // 删除之后
+    topicHandleRemove(file, fileList) {
+      const _this = this;
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          async: false,
+          params: {
+            id: 0, 
+            imgurl:_this.upload.topicUrl
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+
     // 答案图片
     // 文件删除后
-    answerHandleRemove(upload) {
+    answerHandleRemove(file, fileList) {
       const _this = this;
-      _this.doupload = false;
-      _this.rules.answerUrl = [{ required: true, message: "请上传答案图片" }];
-      _this.$refs["upload"].validateField("answerUrl");
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          async: false,
+          params: {
+            id: 0, 
+            imgurl: _this.upload.answerUrl
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _this.doupload = false;
+          _this.rules.answerUrl = [{ required: true, message: "请上传答案图片" }];
+          _this.$refs["upload"].validateField("answerUrl");
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+      
+      
     },
     // 文件上传成功之后
-    answerHandlePreview(res, file, fileList) {
+    answerHandleSucceed(res, file, fileList) {
       const _this = this;
-      _this.upload.answerUrl = res.data.data.file;
-      console.log(res);
-      console.log(_this.upload.answerUrl);
+      _this.upload.answerUrl = res.file;
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
       const _this = this;
-      console.log(file);
-      _this.answerFile = file;
+      // _this.answerFile = file;
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
@@ -1172,8 +1233,8 @@ export default {
     answerHandleChange(file) {
       const _this = this;
       console.log(file);
-      _this.fileList[0].name = file.name;
-      _this.fileList[0].url = file.url;
+      // _this.fileList[0].name = file.name;
+      // _this.fileList[0].url = file.url;
       if (file) {
         _this.doupload = true;
         _this.$refs["uploadAnswerUrl"].clearValidate();
@@ -1320,10 +1381,133 @@ export default {
       const _this = this;
       item.show = !item.show;
     },
-    editstepupload() {
+    editstepupload(item) {
+      const _this = this;
+      var formData = {};
+      formData.Name = item.classInfoContentTest.name;
+      formData.NameUrl = item.topicCacheUrl;
+      formData.UniversityTestId = item.classInfoContentTest.universityTestId;
+      formData.Url = item.answerCacheUrl;
+      formData.Contents = item.classInfoContentTest.contents;
+      formData.ClassInfoTestId = item.classInfoContentTest.classInfoTestId;
+      formData.ClassTestId = item.classInfoContentTest.classTestId;
+      formData.ClassWeek = item.classInfoContentTest.classWeek;
+      formData.ClassWeekType = item.classInfoContentTest.classWeekType;
+      formData.Id = item.classInfoContentTest.id;
+      console.log(formData);
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Edit`,
+          async: false,
+          data: formData,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.serchingAnswer(_this.classInfoTestId);
+            _this.$message({
+              message: "添加答案成功",
+              type: "success"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    orderTitleMeth() {},
+    // 编辑题目图片
+    editTopicHandleSuccess(res, file, fileList,index){
+      const _this = this;
+      console.log(res)
+      // _this.answerArray[idx].topicImg.push({name:res.size,url:res.file})
+      _this.answerArray[index].topicCacheUrl = res.file;
+      
+    },
+    editTopicHandleRemove(file, fileList,idx,id,nameUrl){
+      const _this = this;
+      var uid = id;
+      if(nameUrl == ""){
+        uid = 0;
+      }
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          async: false,
+          params: {
+            id: uid, 
+            imgurl:nameUrl
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _this.serchingAnswer(_this.classInfoTestId);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    editTopicHandleChange(file, fileList){
       const _this = this;
     },
-    orderTitleMeth() {}
+    editTopicHandlebeforeupload(file){
+      const _this = this;
+    },
+    // 编辑答案图片
+    editAnswerHandlesuccess(res, file, fileList,index){
+      const _this = this;
+      _this.answerArray[index].answerCacheUrl = res.file;
+    },
+    editAnswerHandleRemove(file, fileList,idx,id,url){
+      const _this = this;
+      var uid = id;
+      if(nameUrl == ""){
+        uid = 0;
+      }
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          async: false,
+          params: {
+            id: uid, 
+            imgurl:url
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          _this.serchingAnswer(_this.classInfoTestId);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    editAnswerHandleChange(file, fileList){
+      const _this = this;
+    },
+    editAnswerHandlebeforeupload(file){
+      const _this = this;
+    }
   }
 };
 </script>

@@ -280,7 +280,7 @@ export default {
         .then(function(res) {
           _this.$store.state.modified.Name = res.data.data.name;
           if (res.data.data.image) {
-            _this.imageUrl = _this.URLport.ImgPersonal + res.data.data.image;
+            _this.imageUrl = _this.URLport.ImgPath + res.data.data.image;
             _this.headShow = true;
           } else {
             _this.headShow = false;
@@ -308,7 +308,7 @@ export default {
     handleAvatarSuccess(res, file) {
       const _this = this;
       
-      _this.imageUrl = _this.URLport.ImgPersonal + res.data;
+      _this.imageUrl = _this.URLport.ImgPath + res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
       _this.headShow = true;
       _this.$message({
