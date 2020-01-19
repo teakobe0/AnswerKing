@@ -284,7 +284,6 @@ export default {
             _this.headShow = true;
           } else {
             _this.headShow = false;
-            
           }
         })
         .catch(function(error) {

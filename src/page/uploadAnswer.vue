@@ -233,7 +233,7 @@
           <el-button
             style="float:right;"
             type="primary"
-            @click="stepupload('upload')"
+            @click="orderTitleMeth"
             v-show="active == 2"
           >保存标题</el-button>
         </div>
@@ -245,7 +245,7 @@
                 <span class="SA-course">{{item.classname}}--{{item.universityname}}</span>
                 <span
                   class="SA-week"
-                >第{{item.classInfoContentTest.ClassWeek}}周--{{item.classInfoContentTest.ClassWeekType}}</span>
+                >第{{item.classInfoContentTest.classWeek}}周--{{item.classInfoContentTest.classWeekType}}</span>
               </div>
               <div class="SA-edit">
                 <i class="el-icon-edit edits" @click="editAnswerShow(item)"></i>
@@ -280,7 +280,7 @@
                         <el-option
                           v-for="item in weekoptions"
                           :key="item.label"
-                          :label="item.label"
+                          :label="'第'+ item.label + '周'"
                           :value="item.label"
                         ></el-option>
                       </el-select>
@@ -296,7 +296,7 @@
                       >
                         <el-option
                           v-for="item in typeoptions"
-                          :key="item.value"
+                          :key="item.label"
                           :label="item.label"
                           :value="item.label"
                         ></el-option>
@@ -499,8 +499,8 @@
                     <el-select v-model="upload.week" placeholder="请选择当前课程所在的周" style="width:550px;">
                       <el-option
                         v-for="item in weekoptions"
-                        :key="item.value"
-                        :label="item.label"
+                        :key="item.label"
+                        :label="'第'+ item.label + '周'"
                         :value="item.label"
                       ></el-option>
                     </el-select>
@@ -530,12 +530,15 @@
                       <el-upload
                         class="upload-topic"
                         ref="upload"
-                        action="https://jsonplaceholder.typicode.com/posts/"
+                        :action="imgSite"
+                        :headers="myHeaders"
                         :on-preview="topicHandlePreview"
                         :on-remove="topicHandleRemove"
+                        :before-upload="topicHandlebeforeupload"
                         :file-list="fileList"
                         :auto-upload="false"
                         :limit="uploadNum"
+                        :data="{classInfoTestId:this.classInfoTestId}"
                         list-type="picture"
                       >
                         <el-button
@@ -557,7 +560,8 @@
                     <el-upload
                       class="upload-topic"
                       ref="upload"
-                      action="https://jsonplaceholder.typicode.com/posts/"
+                      :action="imgSite"
+                      :headers="myHeaders"
                       :on-success="answerHandlePreview"
                       :on-remove="answerHandleRemove"
                       :on-change="answerHandleChange"
@@ -565,6 +569,7 @@
                       :file-list="fileList"
                       :auto-upload="false"
                       :limit="uploadNum"
+                      :data="{classInfoTestId:this.classInfoTestId.toString()}"
                       list-type="picture"
                     >
                       <el-button
@@ -577,7 +582,7 @@
                         slot="tip"
                         class="el-upload__tip"
                         style="margin-left:10px;color:#9c9c9c;"
-                      >只能上传jpg/png文件，且不超过500kb</i>
+                      >每次只能上传1张jpg/png的图片，且不超过2MB</i>
                     </el-upload>
                   </el-form-item>
                 </div>
@@ -680,7 +685,7 @@ export default {
   data() {
     return {
       uploadNum: 1,
-      active: 2,
+      active: 0,
       formData: new FormData(),
       // 选择课程下一步
       seletchourse: {
@@ -705,11 +710,11 @@ export default {
       // 表单容器
       upload: {
         school: "",
-        schoolId: "",
+        schoolId: 0,
         course: "",
-        courseId: "",
+        courseId: 0,
         type: "",
-        week: "",
+        week: 1,
         topic: "",
         topicUrl: "",
         answer: "",
@@ -767,14 +772,21 @@ export default {
       type: "",
       typeoptions: [
         {
-          value: "选项1",
           label: "Assignment"
+        },
+        {
+          label: "Quzi"
+        },
+        {
+          label: "Exam"
+        },
+        {
+          label: "Discussion"
         }
       ],
       week: "",
       weekoptions: [
         {
-          value: "选项1",
           label: 1
         }
       ],
@@ -782,7 +794,12 @@ export default {
       upschool: true,
       // 选择课程和填写课程的显示隐藏
       upcourse: true,
-      fileList: [],
+      fileList: [
+          {
+            name: 'food.jpeg', 
+            url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100'
+          }
+        ],
       // 题目名称
       topic: "",
       // 题目区域的显示隐藏
@@ -790,31 +807,40 @@ export default {
       // 答案图片的验证
       doupload: false,
       answerArray: [
-        {
-          classInfoContentTest: {
-            name: "斤斤计较",
-            NameUrl: "题目URL",
-            Contents: "1的N次方",
-            Url: "答案URL",
-            ClassWeek: 1,
-            ClassWeekType: "Assignment",
-            ClassTestId: 1,
-            ClassInfoTestId: 1,
-            UniversityTestId: 1,
-            ClientId: 1,
-            id: 5,
-            createTime: "2020-01-19T00:00:00"
-          },
-          universityname: "ABS",
-          classname: "xuexi",
-          show: false
-        }
-      ]
+        // {
+        //   classInfoContentTest: {
+        //     name: "斤斤计较",
+        //     NameUrl: "题目URL",
+        //     Contents: "1的N次方",
+        //     Url: "答案URL",
+        //     ClassWeek: 1,
+        //     ClassWeekType: "Assignment",
+        //     ClassTestId: 1,
+        //     ClassInfoTestId: 1,
+        //     UniversityTestId: 1,
+        //     ClientId: 1,
+        //     id: 5,
+        //     createTime: "2020-01-19T00:00:00"
+        //   },
+        //   universityname: "ABS",
+        //   classname: "xuexi",
+        //   show: false
+        // }
+      ],
+      // 订单ID
+      classInfoTestId: 0,
+      // 答案图片
+      answerFile:[],
+      imgSite: this.URLport.serverPath + "/File/UploadImg",
+      myHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
     };
   },
   created: function() {
     const _this = this;
-    console.log(_this.answerArray);
+    // _this.serchingWeek();
+    // _this.serchingAnswer();
   },
   methods: {
     // 添加学校显示
@@ -841,12 +867,13 @@ export default {
     // 选择学校下一步
     schoolNext(upload) {
       const _this = this;
-      _this.$refs[upload].validateField("school", errMsg => {
-        if (errMsg) {
-        } else {
-          _this.active = 1;
-        }
-      });
+      _this.active = 1;
+      // _this.$refs[upload].validateField("school", errMsg => {
+      //   if (errMsg) {
+      //   } else {
+      //     _this.active = 1;
+      //   }
+      // });
     },
     // 新增学校下一步
     addSchoolNext(ruleForm) {
@@ -902,34 +929,37 @@ export default {
       seletchourse.name = _this.course;
       seletchourse.UniversityTestId = _this.upload.schoolId;
       seletchourse.id = _this.upload.courseId;
+      _this.active = 2;
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/ClassTest/Add`,
+          async: false,
+          data: seletchourse,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.upload.course = res.data.data.classtest.name;
+            _this.active = 2;
+            _this.orderTitle = res.data.data.classInfoTest.name;
+            _this.classInfoTestId = res.data.data.classInfoTest.id;
+            _this.serchingWeek(_this.classInfoTestId);
+            _this.serchingAnswer(_this.classInfoTestId);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
       _this.$refs[upload].validateField("course", errMsg => {
         if (errMsg) {
         } else {
-          _this.active = 2;
-          _this
-            .axios({
-              method: "post",
-              url: `${_this.URLport.serverPath}/ClassTest/Add`,
-              async: false,
-              data: seletchourse,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              console.log(res);
-              if (res.data.status == 1) {
-                _this.upload.course = res.data.data.classtest.name;
-                _this.active = 2;
-                _this.orderTitle = res.data.data.classInfoTest.name;
-              }
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
       });
     },
@@ -959,6 +989,9 @@ export default {
                 _this.upload.course = res.data.data.classtest.name;
                 _this.active = 2;
                 _this.orderTitle = res.data.data.classInfoTest.name;
+                _this.classInfoTestId = res.data.data.classInfoTest.id;
+                _this.serchingWeek(_this.classInfoTestId);
+                _this.serchingAnswer(_this.classInfoTestId);
                 _this.$message({
                   message: "添加课程成功",
                   type: "success"
@@ -977,23 +1010,132 @@ export default {
     // 立即上传
     stepupload(upload) {
       const _this = this;
+      _this.formData.Name = _this.upload.topic;
+      _this.formData.NameUrl = _this.upload.topicUrl;
+      _this.formData.UniversityTestId = _this.upload.schoolId;
+      _this.formData.Url = _this.upload.answerUrl;
+      _this.formData.Contents = _this.upload.answer;
+      _this.formData.ClassInfoTestId = _this.classInfoTestId;
+      _this.formData.ClassTestId = _this.upload.courseId;
+      _this.formData.ClassWeek = _this.upload.week;
+      _this.formData.ClassWeekType = _this.upload.type;
+      console.log(_this.formData);
       if (_this.doupload == true) {
         _this.rules.answerUrl = [];
         _this.$refs["uploadAnswerUrl"].clearValidate();
       }
       _this.$refs[upload].validate(valid => {
         if (valid) {
-          // _this.rules.answerUrl = [];
-          console.log(123123);
+          // _this
+          //   .axios({
+          //     method: "post",
+          //     url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
+          //     async: false,
+          //     data: _this.formData,
+          //     xhrFields: {
+          //       withCredentials: true
+          //     },
+          //     headers: {
+          //       Authorization: `Bearer ${localStorage.getItem("token")}`
+          //     }
+          //   })
+          //   .then(function(res) {
+          //     console.log(res);
+          //     if (res.data.status == 1) {
+          //       _this.$message({
+          //         message: "添加答案成功",
+          //         type: "success"
+          //       });
+          //     }
+          //   })
+          //   .catch(function(error) {
+          //     console.log(error);
+          //   });
+
           // _this.$refs.upload.submit();
-          // var a = { label: "第" + 2 + "周", value: "选项2" };
+          // var a = { label: "第" + 2 + "周"};
           // _this.weekoptions.push(a);
         } else {
           return false;
         }
       });
     },
+    // 检索当前订单的周数量
+    serchingWeek(classInfoTestId) {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
+          async: false,
+          params: {
+            classInfoTestId: classInfoTestId
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            for (let i = 0; i < 2; i++) {
+              for (let i = 2; i <= res.data.data.length + 1; i++) {
+                const obj = {};
+                obj.label = i;
+                _this.weekoptions.push(obj);
+              }
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 检索答案的方法
+    serchingAnswer(classInfoTestId) {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
+          async: false,
+          params: {
+            classInfoTestId: classInfoTestId
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.answerArray = res.data.data;
+            for (var i = 0; i < _this.answerArray.length; i++) {
+              _this.$set(_this.answerArray[i], "show", false);
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     // 题目图片
+    topicHandlebeforeupload(file) {
+      const _this = this;
+      console.log(file);
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
+    },
     topicHandlePreview() {},
     topicHandleRemove() {},
     // 答案图片
@@ -1004,19 +1146,34 @@ export default {
       _this.rules.answerUrl = [{ required: true, message: "请上传答案图片" }];
       _this.$refs["upload"].validateField("answerUrl");
     },
-    // 文件上传时
-    answerHandlePreview(file) {
-      console.log(123123);
+    // 文件上传成功之后
+    answerHandlePreview(res, file, fileList) {
+      const _this = this;
+      _this.upload.answerUrl = res.data.data.file;
+      console.log(res);
+      console.log(_this.upload.answerUrl);
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
       const _this = this;
       console.log(file);
+      _this.answerFile = file;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
     // 文件状态有变化时
     answerHandleChange(file) {
       const _this = this;
       console.log(file);
+      _this.fileList[0].name = file.name;
+      _this.fileList[0].url = file.url;
       if (file) {
         _this.doupload = true;
         _this.$refs["uploadAnswerUrl"].clearValidate();
@@ -1163,9 +1320,10 @@ export default {
       const _this = this;
       item.show = !item.show;
     },
-    editstepupload(){
+    editstepupload() {
       const _this = this;
-    }
+    },
+    orderTitleMeth() {}
   }
 };
 </script>
