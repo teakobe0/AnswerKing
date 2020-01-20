@@ -249,7 +249,7 @@
               </div>
               <div class="SA-edit">
                 <i class="el-icon-edit edits" @click="editAnswerShow(item)"></i>
-                <i class="el-icon-delete delete"></i>
+                <i class="el-icon-delete delete" @click="editAnswerDelete(item)"></i>
               </div>
               <div v-show="active == 2 && item.show == false">
                 <div class="SA-topic">
@@ -370,7 +370,7 @@
           </div>
         </div>
         <!-- 展示创建过的订单结束 -->
-        <div class="up-upload">
+        <div class="up-upload" v-show="this.$route.query.type != 3">
           <el-form
             :model="upload"
             :rules="rules"
@@ -524,7 +524,7 @@
                         :file-list="topicfileList"
                         :auto-upload="true"
                         :limit="uploadNum"
-                        :data="{classInfoTestId:68}"
+                        :data="{classInfoTestId:this.classInfoTestId}"
                         list-type="picture"
                       >
                         <el-button
@@ -555,7 +555,7 @@
                       :file-list="answerfileList"
                       :auto-upload="true"
                       :limit="uploadNum"
-                      :data="{classInfoTestId:68}"
+                      :data="{classInfoTestId:this.classInfoTestId}"
                       list-type="picture"
                     >
                       <el-button
@@ -671,8 +671,9 @@ export default {
   data() {
     return {
       uploadNum: 1,
-      active: 2,
+      active: 0,
       formData: {},
+      editformData: {},
       // 选择课程下一步
       seletchourse: {
         name: "",
@@ -821,13 +822,53 @@ export default {
       myHeaders: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       },
+      clientId:0,
     };
   },
   created: function() {
     const _this = this;
-    _this.serchingAnswer(68);
+    // _this.serchingAnswer(68);
+    _this.gainpersonal();
+    if(this.$route.query.type == 1){
+      this.active = 0;
+      _this.cacheUniversityId(_this.$route.query.id);
+    }
+    if(this.$route.query.type == 2){
+      this.active = 1;
+      _this.cacheCourseId(_this.$route.query.id);
+    }
+    if(this.$route.query.type == 3){
+      this.active = 2;
+      _this.cacheAnswerId(_this.$route.query.id);
+    }
   },
   methods: {
+    // 获取个人信息
+    gainpersonal: function() {
+      const _this = this;
+      if (localStorage.getItem("token")) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.clientId = res.data.data.id
+          })
+          .catch(function(error) {
+            console.log(error);
+            console.log("获取token失败");
+          });
+      } else {
+      }
+    },
     // 添加学校显示
     upschoolShow() {
       const _this = this;
@@ -1059,14 +1100,13 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
           async: false,
           params: {
-            classInfoTestId: 68
+            classInfoTestId: classInfoTestId
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             for (let i = 2; i <= res.data.data.length + 1; i++) {
               const obj = {};
@@ -1088,7 +1128,7 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
           async: false,
           params: {
-            classInfoTestId: 68
+            classInfoTestId: classInfoTestId
           },
           xhrFields: {
             withCredentials: true
@@ -1381,26 +1421,82 @@ export default {
       const _this = this;
       item.show = !item.show;
     },
+    // 删除答案
+    editAnswerDelete(item){
+      const _this = this;
+      this.$confirm('此操作将永久删除该答案, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this
+            .axios({
+              method: "delete",
+              url: `${_this.URLport.serverPath}/classInfoContentTest/Del`,
+              async: false,
+              params: {
+                id: item.classInfoContentTest.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.serchingAnswer(_this.classInfoTestId);
+                _this.$message({
+                  message: "删除答案成功",
+                  type: "success"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });          
+        });
+      
+    },
     editstepupload(item) {
       const _this = this;
       var formData = {};
       formData.Name = item.classInfoContentTest.name;
-      formData.NameUrl = item.topicCacheUrl;
+      if(item.topicCacheUrl != ""){
+        formData.NameUrl = item.topicCacheUrl;
+      }else {
+        formData.NameUrl = item.classInfoContentTest.nameurl;
+      }
       formData.UniversityTestId = item.classInfoContentTest.universityTestId;
-      formData.Url = item.answerCacheUrl;
+      if(item.answerCacheUrl != ""){
+        formData.Url = item.answerCacheUrl;
+      }else {
+        formData.Url = item.classInfoContentTest.url;
+      }
+      formData.ClientId = _this.clientId
       formData.Contents = item.classInfoContentTest.contents;
       formData.ClassInfoTestId = item.classInfoContentTest.classInfoTestId;
       formData.ClassTestId = item.classInfoContentTest.classTestId;
       formData.ClassWeek = item.classInfoContentTest.classWeek;
       formData.ClassWeekType = item.classInfoContentTest.classWeekType;
       formData.Id = item.classInfoContentTest.id;
+      formData.createTime = item.classInfoContentTest.createTime;
+      _this.editformData = formData;
       console.log(formData);
+      console.log(item)
       _this
         .axios({
-          method: "post",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Edit`,
+          method: "put",
+          url: `${_this.URLport.serverPath}/classInfoContentTest/Edit`,
           async: false,
-          data: formData,
+          data: _this.editformData,
           xhrFields: {
             withCredentials: true
           },
@@ -1411,7 +1507,7 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            _this.serchingAnswer(_this.classInfoTestId);
+            // _this.serchingAnswer(_this.classInfoTestId);
             _this.$message({
               message: "添加答案成功",
               type: "success"
@@ -1455,7 +1551,6 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          _this.serchingAnswer(_this.classInfoTestId);
         })
         .catch(function(error) {
           console.log(error);
@@ -1475,7 +1570,7 @@ export default {
     editAnswerHandleRemove(file, fileList,idx,id,url){
       const _this = this;
       var uid = id;
-      if(nameUrl == ""){
+      if(url == ""){
         uid = 0;
       }
       _this
@@ -1496,7 +1591,6 @@ export default {
         })
         .then(function(res) {
           console.log(res);
-          _this.serchingAnswer(_this.classInfoTestId);
         })
         .catch(function(error) {
           console.log(error);
@@ -1507,7 +1601,84 @@ export default {
     },
     editAnswerHandlebeforeupload(file){
       const _this = this;
-    }
+    },
+    cacheAnswerId(id){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/GetClassInfoContentTest`,
+          async: false,
+          params: {
+            id: id, 
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            var answerArray = [];
+            answerArray = res.data.data;
+            // _this.serchingWeek(res.data.data.classInfoContentTest.classInfoTestId);
+            for (var i = 0; i < answerArray.length; i++) {
+              _this.$set(answerArray[i], "show", false);
+              _this.$set(answerArray[i], "topicImg", []);
+              _this.$set(answerArray[i], "topicUrlList", []);
+              _this.$set(answerArray[i], "answerImg", []);
+              _this.$set(answerArray[i], "answerUrlList", []);
+              _this.$set(answerArray[i], "topicCacheUrl", "");
+              _this.$set(answerArray[i], "answerCacheUrl", "");
+              answerArray[i].topicImg = _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url;
+              answerArray[i].answerImg = _this.URLport.ImgPath + answerArray[i].classInfoContentTest.nameUrl;
+              if(answerArray[i].classInfoContentTest.nameUrl == ""){
+                 answerArray[i].topicUrlList = [];
+              }else {
+                answerArray[i].topicUrlList.push({url: _this.URLport.ImgPath + answerArray[i].classInfoContentTest.nameUrl});
+              }
+              if(answerArray[i].classInfoContentTest.url == ""){
+                answerArray[i].answerUrlList = [];
+              }else {
+                answerArray[i].answerUrlList.push({url: _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url});
+              }
+            }
+            _this.answerArray = answerArray;
+            console.log(_this.answerArray)
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    cacheUniversityId(){},
+    cacheCourseId(id){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassTest/GetClassTest`,
+          async: false,
+          params: {
+            id: id, 
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
   }
 };
 </script>

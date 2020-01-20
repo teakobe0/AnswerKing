@@ -197,7 +197,7 @@
               </span>
             </router-link>
           </li>
-          <!-- <li><router-link to="/personalData/award"><span><i class="el-icon-bell"></i>奖励</span></router-link></li> -->
+          <li><router-link to="/personalData/award"><span><i class="el-icon-upload"></i>我的贡献</span></router-link></li>
           <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
           <li>
             <router-link to="/personalData/attention">
