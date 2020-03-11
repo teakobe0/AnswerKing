@@ -61,23 +61,22 @@ export default {
   },
   methods: {
     handleClick(row) {
-      console.log(row);
       if (row.type == "学校") {
         this.$router.push({
           path: "/uploadAnswer",
-          query: { id: "1", type: 1 }
+          query: { id: row.id , type: 1 }
         });
       }
       if (row.type == "课程") {
         this.$router.push({
           path: "/uploadAnswer",
-          query: { id: "1", type: 2 }
+          query: { id: row.id , type: 2 }
         });
       }
       if (row.type == "题库集") {
         this.$router.push({
           path: "/uploadAnswer",
-          query: { id: "1", type: 3 }
+          query: { id: row.id , type: 3 }
         });
       }
     },

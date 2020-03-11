@@ -230,6 +230,7 @@
 <template>
     <div class="member">
         <homeNav msg="登录/注册"/>
+        <div v-title data-title="成为会员-CourseWhale"></div>
         <div class="member-con">
             <div class="member-title">
                 <p>会员中心</p>

@@ -40,7 +40,7 @@
 .Feedbackpage p {
   margin-bottom: 22px;
 }
-.el-textarea textarea {
+.Feedbackpage .el-textarea textarea {
   height: 65px !important;
 }
 #submits {

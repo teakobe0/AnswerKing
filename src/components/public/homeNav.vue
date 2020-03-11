@@ -285,6 +285,10 @@
                         <router-link to='/uploadAnswer'>贡献资源</router-link>
                     </li>
 
+                     <li>
+                        <router-link to='/question'>问答大厅</router-link>
+                    </li>
+
                     <li v-if="$store.state.logo.show">
                         <router-link to='/login'>登录</router-link>
 
