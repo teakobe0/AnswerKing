@@ -233,7 +233,7 @@
         </div>
       </div>
     </div>
-    <div class="ClassesAdvertising">
+    <!-- <div class="ClassesAdvertising">
       <div>
         <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
         <p class="advertising-p2">
@@ -245,7 +245,7 @@
       <div class="UP" v-show="UPshow" @click="UPcilick">
         <i class="el-icon-caret-top"></i>
       </div>
-    </div>
+    </div> -->
     <homeFooter></homeFooter>
   </div>
 </template>

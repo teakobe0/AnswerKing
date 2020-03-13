@@ -913,8 +913,7 @@ export default {
         }
       ],
       week: "",
-      weekoptions: [
-      ],
+      weekoptions: [],
       // 选择学校和填写学校的显示隐藏
       upschool: true,
       // 选择课程和填写课程的显示隐藏
@@ -946,12 +945,9 @@ export default {
       orderNull: false
     };
   },
-  beforeRouteUpdate (to, from, next) {
-    
-  },
+  beforeRouteUpdate(to, from, next) {},
   created: function() {
     const _this = this;
-    
     _this.gainpersonal();
     if (_this.$route.query.type == 1) {
       _this.active = 0;
@@ -1156,8 +1152,10 @@ export default {
                 }
               })
               .then(function(res) {
+                console.log(res);
                 if (res.data.status == 1) {
                   _this.upload.course = res.data.data.classtest.name;
+                  _this.upload.courseId = res.data.data.classtest.id;
                   _this.active = 2;
                   _this.orderInfo.Name = res.data.data.classInfoTest.name;
                   _this.classInfoTestId = res.data.data.classInfoTest.id;
@@ -1166,6 +1164,11 @@ export default {
                   _this.$message({
                     message: "添加课程成功",
                     type: "success"
+                  });
+                } else {
+                  _this.$message({
+                    message: res.data.msg,
+                    type: "error"
                   });
                 }
               })
@@ -1200,11 +1203,21 @@ export default {
         formData.ClassWeek = _this.upload.week;
         formData.ClassWeekType = _this.upload.type;
         _this.formData = formData;
-        if (_this.doupload == true) {
-          _this.rules.answerUrl = [];
-          _this.$refs["uploadAnswerUrl"].clearValidate();
-        }
+        console.log(formData.NameUrl)
+        console.log(_this.upload)
+        // if (_this.doupload == true) {
+        //   console.log(1);
+        //   // _this.rules.answerUrl = [];
+        //   // _this.$refs["uploadAnswerUrl"].clearValidate();
+        // } else {
+        //   console.log(2);
+        //   // _this.$refs["upload"].validateField("answerUrl");
+        //   // _this.rules.answerUrl = [
+        //   //   { required: true, message: "请上传答案图片", trigger: "change" }
+        //   // ];
+        // }
         _this.$refs[upload].validate(valid => {
+          console.log(valid)
           if (valid) {
             _this
               .axios({
@@ -1226,6 +1239,10 @@ export default {
                   (_this.topicfileList = []),
                     (_this.answerfileList = []),
                     _this.serchingAnswer(_this.classInfoTestId);
+                  _this.upload.topic = "";
+                  _this.upload.topicUrl = "";
+                  _this.upload.answerUrl = "";
+                  _this.upload.answer = "";
                   _this.$message({
                     message: "添加答案成功",
                     type: "success"
@@ -1235,9 +1252,6 @@ export default {
               .catch(function(error) {
                 console.log(error);
               });
-
-            // var a = { label: "第" + 2 + "周"};
-            // _this.weekoptions.push(a);
           } else {
             return false;
           }
@@ -1266,7 +1280,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res.data.data)
           if (res.data.status == 1) {
             for (let i = 2; i <= res.data.data.length + 1; i++) {
               const obj = {};
@@ -1298,6 +1311,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res);
           if (res.data.status == 1) {
             if (res.data.data.length == 0) _this.orderNull = true;
             var answerArray = [];
@@ -1360,6 +1374,7 @@ export default {
     topicHandleSuccess(res, file, fileList, idx) {
       const _this = this;
       _this.answerArray[idx];
+      _this.upload.topicUrl = res.file;
     },
     // 删除之后
     topicHandleRemove(file, fileList) {
@@ -1390,6 +1405,7 @@ export default {
     // 文件删除后
     answerHandleRemove(file, fileList) {
       const _this = this;
+      console.log(3);
       _this
         .axios({
           method: "delete",
@@ -1408,10 +1424,7 @@ export default {
         })
         .then(function(res) {
           _this.doupload = false;
-          _this.rules.answerUrl = [
-            { required: true, message: "请上传答案图片" }
-          ];
-          _this.$refs["upload"].validateField("answerUrl");
+          _this.upload.answerUrl = "";
         })
         .catch(function(error) {
           console.log(error);
@@ -1421,6 +1434,10 @@ export default {
     answerHandleSucceed(res, file, fileList) {
       const _this = this;
       _this.upload.answerUrl = res.file;
+      _this.$refs["upload"].clearValidate("answerUrl");
+      _this.rules.answerUrl = [
+        { required: true, message: "请上传答案图片", trigger: "change" }
+      ];
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
@@ -1439,13 +1456,6 @@ export default {
     // 文件状态有变化时
     answerHandleChange(file) {
       const _this = this;
-      if (file) {
-        _this.doupload = true;
-        _this.$refs["uploadAnswerUrl"].clearValidate();
-      } else {
-        _this.doupload = false;
-        _this.$refs["upload"].validateField("answerUrl");
-      }
     },
     // 学校输入框触发
     querySearch(queryString, cb) {
@@ -1634,11 +1644,12 @@ export default {
       if (localStorage.getItem("token")) {
         var formData = {};
         formData.Name = item.classInfoContentTest.name;
-        if (item.topicCacheUrl != "") {
-          formData.NameUrl = item.topicCacheUrl;
-        } else {
-          formData.NameUrl = item.classInfoContentTest.nameurl;
-        }
+        formData.NameUrl = item.topicCacheUrl;
+        // if (item.topicCacheUrl != "") {
+        //   formData.NameUrl = item.topicCacheUrl;
+        // } else {
+        //   formData.NameUrl = item.classInfoContentTest.nameurl;
+        // }
         formData.UniversityTestId = item.classInfoContentTest.universityTestId;
         if (item.answerCacheUrl != "") {
           formData.Url = item.answerCacheUrl;
@@ -1951,7 +1962,6 @@ export default {
         }
       });
     }
-  },
-  
+  }
 };
 </script>
