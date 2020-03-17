@@ -61,7 +61,7 @@
             <div class="attentionNull" v-if="attNull2 == false">暂无关注的题库集</div>
             <div v-for="item in questionAtt">
               <router-link
-                :to="'/classes/'+item.typeIds[0]+'/content/'+item.typeIds[1]"
+                :to="'/classes/'+item.typeIds[0]+'/content/'+item.typeIds[1]+'/weeks/'+0+'/weektype/'+0"
               >{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
               <el-button size="mini" @click="delAttention(item.id)">取消关注</el-button>
