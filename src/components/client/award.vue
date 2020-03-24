@@ -1,4 +1,10 @@
 <style>
+.award-right {
+  width: 1000px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 #award h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -23,7 +29,7 @@
 
 <template>
   <div id="award">
-    <div class="pd-con-head-right">
+    <div class="award-right">
         <h3>我的贡献</h3>
         <div class="MyAward">
           <el-table :data="tableData" border style="width: 100%">

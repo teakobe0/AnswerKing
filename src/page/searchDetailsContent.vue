@@ -537,7 +537,7 @@
               <!-- 答案图片组件 -->
               <answer></answer>
             </div>
-            <!-- <div class="advertising">
+            <div class="advertising">
               <div>
                 <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
                 <p class="advertising-p2">
@@ -546,7 +546,7 @@
                 </p>
               </div>
               <img src="../assets/erweima.jpg" alt />
-            </div> -->
+            </div>
             <!-- 评论组件 -->
             <reviews></reviews>
           </div>

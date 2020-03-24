@@ -213,11 +213,11 @@
         <div class="ql-left">
           <div class="ql-ask">
             <div class="ql-ask-title">
-              <div class="ql-ask-title-1">
+              <div class="ql-ask-title-1" @click="newTime">
                 <i class="el-icon-time"></i>
                 新提问
               </div>
-              <div class="ql-ask-title-1">
+              <div class="ql-ask-title-1" @click="topCurrency">
                 <i class="el-icon-coin"></i>
                 高悬赏
               </div>
@@ -228,9 +228,9 @@
             </div>
             <div class="ql-ask-con" v-for="item in qlList">
               <h3>
-                <router-link to="/questionDetails">{{item.name}}</router-link>
+                <router-link to="/questionDetails">{{item.title}}</router-link>
               </h3>
-              <div>{{item.nameCon}}{{item.nameCon}}</div>
+              <div>{{item.content}}</div>
               <div class="ql-ask-reply">
                 <div style="float:left">
                   <el-button
@@ -246,11 +246,11 @@
                 <div style="float:right;line-height:40px;color:#8590a6;">
                   <span style="margin-right:11px;">
                     <i class="el-icon-time"></i>
-                    {{item.time | formatDate}}
+                    {{item.endTime | formatDate}}
                   </span>
                   <span>
                     <i class="el-icon-coin"></i>
-                    {{item.reward}}
+                    {{item.currency}}
                   </span>
                 </div>
               </div>
@@ -286,40 +286,43 @@
     </div>
     <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
       <div class="ql-editQuzi">
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
-          <el-form-item prop="name" class="ql-editQuziTi">
-            <el-input v-model="ruleForm.name" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
+        <el-form :model="QuestionsQuiz" :rules="QuestionsQuizrules" ref="QuestionsQuiz" class="demo-ruleForm">
+          <el-form-item prop="Title" class="ql-editQuziTi">
+            <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
-          <el-form-item prop="nameDetail" class="ql-editNameDetail">
+          <el-form-item prop="Content" class="ql-editNameDetail">
             <el-input
               type="textarea"
               placeholder="输入问题背景、条件等详细信(选填)"
-              v-model="ruleForm.nameDetail"
+              v-model="QuestionsQuiz.Content"
               :autosize="{ minRows: 2, maxRows: 22}"
             ></el-input>
           </el-form-item>
           <div style="overflow: hidden;">
             <div style="float:left;">
               <div class="PR">答题时间</div>
-              <el-form-item prop="qlTime">
+              <el-form-item prop="EndTime">
                 <el-date-picker
-                  v-model="ruleForm.qlTime"
-                  style="z-index:9999;"
-                  type="datetimerange"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
+                  v-model="QuestionsQuiz.EndTime"
+                  type="datetime"
+                  placeholder="选择日期时间"
                 ></el-date-picker>
               </el-form-item>
             </div>
             <div style="float:right;">
               <div class="PR">悬赏金</div>
-              <el-input placeholder="悬赏金(选填)" style="width:130px;"></el-input>
+              <el-form-item prop="Currency">
+                <el-input
+                  v-model="QuestionsQuiz.Currency"
+                  placeholder="悬赏金(选填)"
+                  style="width:130px;"
+                ></el-input>
+              </el-form-item>
             </div>
           </div>
         </el-form>
         <div style="overflow:hidden">
-          <el-button class="releaseQl" type="primary" size="medium" @click="releaseQl">发布问题</el-button>
+          <el-button class="releaseQl" type="primary" size="medium" @click="releaseQl('QuestionsQuiz')">发布问题</el-button>
         </div>
 
         <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div>
@@ -328,24 +331,17 @@
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
         <h3>选择您向提问人提出的时间和赏金要求</h3>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" class="demo-ruleForm">
+        <el-form :model="auction" :rules="auctionrules" ref="auction" class="demo-ruleForm">
           <div style="overflow: hidden;">
             <div style="float:left;">
               <div class="PR">答题时间</div>
               <el-form-item prop="qlTime">
-                <el-date-picker
-                  v-model="ruleForm.qlTime"
-                  style="z-index:9999;"
-                  type="datetimerange"
-                  range-separator="至"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期"
-                ></el-date-picker>
+                <el-date-picker v-model="auction.EndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
               </el-form-item>
             </div>
             <div style="float:right;">
               <div class="PR">悬赏金</div>
-              <el-input placeholder="悬赏金(选填)" style="width:130px;"></el-input>
+              <el-input v-model="auction.Currency" placeholder="悬赏金(选填)" style="width:130px;"></el-input>
             </div>
           </div>
         </el-form>
@@ -373,63 +369,57 @@ export default {
   },
   data() {
     return {
-      ruleForm: {
-        name: "",
-        nameDetail: "",
-        qlTime: [new Date(), new Date()]
+      // 我要提问列表
+      QuestionsQuiz: {
+        Title: "",
+        Content: "",
+        EndTime: new Date(),
+        Currency: ""
       },
-      rules: {
-        name: [
-          { required: true, message: "最少输入4个字", trigger: "blur" },
+      // 我要提问表单验证
+      QuestionsQuizrules: {
+        Title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" }
         ],
-        nameDetail: [
-          { required: false, message: "请输入活动名称", trigger: "blur" }
-        ],
-        qlTime: [
+        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+        EndTime: [
           {
             type: "date",
-            required: false,
+            required: true,
             message: "请选择日期",
             trigger: "change"
           }
-        ]
+        ],
+        Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
-      qlList: [
-        {
-          name: "假如你很久没有见到喜欢的人了，你想对她说什么？",
-          nameCon:
-            "最近几年德云社每年都有新人通过各种方式红起来，2020你看好谁？觉得谁会以什么方式红起来？",
-          answerNum: 70,
-          browseNum: 1001,
-          time: new Date(),
-          reward: 50
-        },
-        {
-          name: "假如有一天我迷路了你会对我说什么？",
-          nameCon:
-            "最近几年德云社每年都有新人通过各种方式红起来，2020你看好谁？觉得谁会以什么方式红起来？",
-          answerNum: 90,
-          browseNum: 2931,
-          time: new Date(),
-          reward: 50
-        },
-        {
-          name: "有哪些可以写在课本上的励志短句?",
-          nameCon:
-            "最近几年德云社每年都有新人通过各种方式红起来，2020你看好谁？觉得谁会以什么方式红起来？",
-          answerNum: 838,
-          browseNum: 2003,
-          time: new Date(),
-          reward: 50
-        }
-      ],
+      // 我要答列表
+      auction: {
+        EndTime: new Date(),
+        Currency: ""
+      },
+      // 我要答表单验证
+      auctionrules: {
+        EndTime: [
+          {
+            type: "date",
+            required: true,
+            message: "请选择日期",
+            trigger: "change"
+          }
+        ],
+        Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
+      },
+      qlList: [],
       qlShade: false,
-      qlreplyShade: false
+      qlreplyShade: false,
+      value1: "",
+      value2: ""
     };
   },
   created: function() {
     const _this = this;
+    _this.quizList();
   },
   filters: {
     formatDate: function(time) {
@@ -438,6 +428,87 @@ export default {
     }
   },
   methods: {
+    // 检索问题列表
+    quizList() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            type: "currency",
+            pagenum: 1,
+            pagesize: 20
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data.data;
+            console.log(res);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 新提问展示
+    newTime(){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            type: "time",
+            pagenum: 1,
+            pagesize: 20
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data.data;
+            console.log(res);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 高悬赏展示
+    topCurrency(){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            type: "currency",
+            pagenum: 1,
+            pagesize: 20
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data.data;
+            console.log(res);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     // 我要提问按钮
     NewQuitBt() {
       const _this = this;
@@ -459,9 +530,42 @@ export default {
       _this.qlreplyShade = !_this.qlreplyShade;
     },
     // 发布问题
-    releaseQl() {
+    releaseQl(QuestionsQuiz) {
       const _this = this;
-      console.log(_this.qlTime);
+      console.log(_this.QuestionsQuiz);
+      _this.$refs[QuestionsQuiz].validate(valid => {
+        _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/Questions/Add`,
+            async: false,
+            data: _this.QuestionsQuiz,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              
+              
+              _this.$message({
+                message: "发布成功",
+                type: "success"
+              });
+            } else {
+              _this.$message({
+                message: "发布失败",
+                type: "error"
+              });
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      });
     }
   }
 };

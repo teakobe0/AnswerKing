@@ -28,7 +28,6 @@
         <p>分数:{{item.classinfo.totalGrade}}</p>
         <button
           @click="skipclass(item.classinfo.classId,item.classinfo.id)"
-          @click.native="flushCom"
         >
           <router-link
             style="text-decoration:none;color:#FFF"

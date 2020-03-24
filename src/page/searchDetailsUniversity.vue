@@ -133,7 +133,7 @@
       <div>
         <router-view/>
       </div>
-      <!-- <div class="ClassesAdvertising">
+      <div class="ClassesAdvertising">
         <div>
           <p class="advertising-p1">没有找到您需要的学校吗？想得到更多的学习辅导服务吗？</p>
           <p class="advertising-p2">
@@ -141,7 +141,7 @@
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div> -->
+      </div>
     </div>
     <homeFooter></homeFooter>
   </div>

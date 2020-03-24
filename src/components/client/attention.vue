@@ -1,4 +1,10 @@
 <style>
+.attention-right {
+  width: 1000px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 #attention h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -45,7 +51,7 @@
 
 <template>
   <div id="attention">
-    <div class="pd-con-head-right">
+    <div class="attention-right">
       <h3>我的关注</h3>
       <div class="MyAttention">
         <el-tabs v-model="activeName" @tab-click="handleClick">

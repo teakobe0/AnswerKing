@@ -1,4 +1,10 @@
 <style>
+.inform-right {
+  width: 1000px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 #inform h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -28,7 +34,7 @@
 
 <template>
   <div id="inform">
-    <div class="pd-con-head-right">
+    <div class="inform-right">
       <h3>通知信息</h3>
       <div class="message">
         <div style="text-align:center" v-show="dataNull == true">暂无数据</div>
