@@ -4,11 +4,11 @@
   height: 100%;
   position: relative;
   padding-bottom: 276px;
-  overflow: hidden;
 }
 
 .ql-con {
   margin-top: 80px;
+  margin-bottom: 20px;
   overflow: hidden;
 }
 .ql-body {
@@ -20,7 +20,6 @@
 .ql-left {
   width: 980px;
   float: left;
-  height: 800px;
 }
 .ql-ask {
   background-color: #fff;
@@ -237,7 +236,7 @@
                     icon="el-icon-edit"
                     size="medium"
                     class="ql-ask-reply-1"
-                    @click="replyShade"
+                    @click="replyShade(item)"
                     @mousewheel.prevent
                   >我要答</el-button>
                   <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
@@ -286,7 +285,12 @@
     </div>
     <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
       <div class="ql-editQuzi">
-        <el-form :model="QuestionsQuiz" :rules="QuestionsQuizrules" ref="QuestionsQuiz" class="demo-ruleForm">
+        <el-form
+          :model="QuestionsQuiz"
+          :rules="QuestionsQuizrules"
+          ref="QuestionsQuiz"
+          class="demo-ruleForm"
+        >
           <el-form-item prop="Title" class="ql-editQuziTi">
             <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
@@ -322,7 +326,12 @@
           </div>
         </el-form>
         <div style="overflow:hidden">
-          <el-button class="releaseQl" type="primary" size="medium" @click="releaseQl('QuestionsQuiz')">发布问题</el-button>
+          <el-button
+            class="releaseQl"
+            type="primary"
+            size="medium"
+            @click="releaseQl('QuestionsQuiz')"
+          >发布问题</el-button>
         </div>
 
         <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div>
@@ -335,18 +344,21 @@
           <div style="overflow: hidden;">
             <div style="float:left;">
               <div class="PR">答题时间</div>
-              <el-form-item prop="qlTime">
+              <el-form-item prop="EndTime">
                 <el-date-picker v-model="auction.EndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
               </el-form-item>
             </div>
             <div style="float:right;">
               <div class="PR">悬赏金</div>
-              <el-input v-model="auction.Currency" placeholder="悬赏金(选填)" style="width:130px;"></el-input>
+              <el-form-item prop="Currency">
+                <el-input v-model="auction.Currency" placeholder="悬赏金(选填)" style="width:130px;"></el-input>
+              </el-form-item>
+              
             </div>
           </div>
         </el-form>
         <div style="overflow:hidden">
-          <el-button class="releaseQl" type="primary" size="medium" @click="releaseQl">提交</el-button>
+          <el-button class="releaseQl" type="primary" size="medium" @click="auctionQl('auction')">提交</el-button>
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
       </div>
@@ -385,7 +397,6 @@ export default {
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
           {
-            type: "date",
             required: true,
             message: "请选择日期",
             trigger: "change"
@@ -396,13 +407,13 @@ export default {
       // 我要答列表
       auction: {
         EndTime: new Date(),
-        Currency: ""
+        Currency: "",
+        QuestionId:""
       },
       // 我要答表单验证
       auctionrules: {
         EndTime: [
           {
-            type: "date",
             required: true,
             message: "请选择日期",
             trigger: "change"
@@ -437,7 +448,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
           async: false,
           params: {
-            type: "currency",
+            type: "",
             pagenum: 1,
             pagesize: 20
           },
@@ -456,7 +467,7 @@ export default {
         });
     },
     // 新提问展示
-    newTime(){
+    newTime() {
       const _this = this;
       _this
         .axios({
@@ -483,7 +494,7 @@ export default {
         });
     },
     // 高悬赏展示
-    topCurrency(){
+    topCurrency() {
       const _this = this;
       _this
         .axios({
@@ -519,9 +530,56 @@ export default {
       const _this = this;
       _this.qlShade = !_this.qlShade;
     },
-    // 我要答显示遮罩按钮
-    replyShade() {
+    // 发布问题
+    releaseQl(QuestionsQuiz) {
       const _this = this;
+      console.log(_this.QuestionsQuiz);
+      _this.$refs[QuestionsQuiz].validate(valid => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Questions/Add`,
+              async: false,
+              data: _this.QuestionsQuiz,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.QuestionsQuiz.Title = "";
+                _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.EndTime = new Date();
+                _this.QuestionsQuiz.Currency = "";
+                _this.qlShade = !_this.qlShade;
+                _this.$message({
+                  message: "发布成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发布失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      });
+    },
+    // 我要答显示遮罩按钮
+    replyShade(item) {
+      const _this = this;
+      console.log(item)
+      _this.auction.QuestionId = item.id;
+      _this.auction.EndTime = item.endTime;
+      _this.auction.Currency = item.currency;
       _this.qlreplyShade = !_this.qlreplyShade;
     },
     // 隐藏我要答
@@ -529,42 +587,42 @@ export default {
       const _this = this;
       _this.qlreplyShade = !_this.qlreplyShade;
     },
-    // 发布问题
-    releaseQl(QuestionsQuiz) {
+    // 竞拍确定
+    auctionQl(auction) {
       const _this = this;
-      console.log(_this.QuestionsQuiz);
-      _this.$refs[QuestionsQuiz].validate(valid => {
-        _this
-          .axios({
-            method: "post",
-            url: `${_this.URLport.serverPath}/Questions/Add`,
-            async: false,
-            data: _this.QuestionsQuiz,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              
-              
-              _this.$message({
-                message: "发布成功",
-                type: "success"
-              });
-            } else {
-              _this.$message({
-                message: "发布失败",
-                type: "error"
-              });
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+      _this.$refs[auction].validate(valid => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Questions/AddBidding`,
+              async: false,
+              data: _this.auction,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.qlreplyShade = !_this.qlreplyShade;
+                _this.$message({
+                  message: "发布成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发布失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
       });
     }
   }

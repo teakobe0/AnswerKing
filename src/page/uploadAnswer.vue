@@ -10,9 +10,13 @@
 .ua-middle {
   width: 1300px;
   margin: 0 auto;
-  padding: 50px 0 50px 0;
+  padding: 100px 0 100px 0;
 }
 .up-upload {
+}
+.up-upload-back {
+  width: 100%;
+  background-color: #fafbff;
 }
 /* 共用样式 */
 .share-box {
@@ -20,7 +24,7 @@
   margin: 0 auto;
   padding: 20px;
   margin-top: 20px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); */
   overflow: hidden;
   position: relative;
 }
@@ -31,10 +35,22 @@
   margin-top: 16px;
 }
 .share-title {
-  text-align: center;
+  text-align: left;
   color: #303a3d;
   font-size: 21px;
   font-weight: 700;
+  margin-bottom: 27px;
+}
+.share-subtitle {
+  font-size: 21px;
+  color: #3e5ca5;
+  font-weight: 700;
+  margin-bottom: 32px;
+}
+.share-subtitle .modification {
+  position: relative;
+  left: 10px;
+  margin-bottom: -3px;
 }
 /* 共用样式结束 */
 
@@ -114,7 +130,7 @@
 .SA-con {
   width: 1120px;
   margin: 0 auto;
-  padding: 20px;
+  padding: 20px 20px 40px 20px;
   margin-top: 20px;
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
   overflow: hidden;
@@ -129,12 +145,16 @@
   margin: 0 auto;
 }
 .nextcenter {
-  text-align: center;
+  text-align: right;
+  padding-right: 90px;
 }
 #uploadAnswer .el-form-item {
   margin-bottom: 0px !important;
 }
 /* 展示订单开始 */
+.up-upload .el-input__inner {
+  height: 50px !important;
+}
 .SA-title {
   border-bottom: 1px solid #f0f0f0;
   padding: 0 0 12px 0;
@@ -163,8 +183,14 @@
 .SA-topic p {
   float: left;
   width: 490px;
+  height: 45px;
   line-height: 22px;
   color: #2d3639;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /*限制在一个块元素显示的文本的行数*/
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .SA-topic img {
   width: 50px;
@@ -179,8 +205,14 @@
 .SA-answer p {
   float: left;
   width: 490px;
+  height: 45px;
   line-height: 22px;
   color: #2d3639;
+  word-break: break-all;
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /*限制在一个块元素显示的文本的行数*/
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 .SA-answer img {
   width: 50px;
@@ -223,301 +255,113 @@
   color: #ffcd1f;
 }
 /* 展示订单结束 */
+.el-scrollbar__wrap {
+  overflow-y: scroll !important;
+  overflow-x: scroll !important;
+}
+.demo-title .el-input__inner {
+  border: none !important;
+  height: 29px !important;
+  font-size: 21px !important;
+  padding: 0px !important;
+  background-color: #fafbff !important;
+}
 </style>
 
 <template>
   <div id="uploadAnswer">
     <homeNav></homeNav>
     <div class="ua-con">
-      <div class="ua-middle">
-        <el-steps
-          :active="active"
-          align-center
-          finish-status="success"
-          style="width:1000px;margin:0 auto;margin-bottom: 16px;"
-        >
-          <el-step title="编辑学校" icon="el-icon-edit"></el-step>
-          <el-step title="编辑课程" icon="el-icon-s-order"></el-step>
-          <el-step title="编辑答案" icon="el-icon-upload"></el-step>
-        </el-steps>
-        <div class="orderTitle" v-show="active == 2">
-          <el-form
-            :model="orderInfo"
-            :rules="orderInforules"
-            ref="orderInfo"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <el-form-item prop="name" style="float: left;">
-              <el-input v-model="orderInfo.name" placeholder="请输入标题(必填)" style="width:1040px;"></el-input>
-            </el-form-item>
-            <el-button
+      <el-steps
+        :active="active"
+        align-center
+        finish-status="success"
+        style="width:1000px;margin:120px auto;margin-bottom: 40px;"
+      >
+        <el-step title="编辑学校" icon="el-icon-edit"></el-step>
+        <el-step title="编辑课程" icon="el-icon-s-order"></el-step>
+        <el-step title="编辑答案" icon="el-icon-upload"></el-step>
+      </el-steps>
+      <div class="up-upload-back">
+        <div class="ua-middle">
+          <div class="orderTitle" v-show="active == 2">
+            <div class="share-subtitle">
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
+            </div>
+            <div class="share-subtitle">
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
+            </div>
+            <div class="share-subtitle">
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              <span style="border-bottom: 1px solid #3e5ca5;padding-bottom:2px;">{{orderInfo.name}}</span>
+              <el-button class="modification" type="mini" @click="modification">修改</el-button>
+            </div>
+            <el-form
+              :model="orderInfo"
+              :rules="orderInforules"
+              ref="orderInfo"
+              class="demo-title"
+              @submit.native.prevent
+            >
+              <el-form-item prop="name" style="float: left;" v-show="subtitle">
+                <el-input
+                  v-model="orderInfo.name"
+                  placeholder="请输入标题(必填)"
+                  style="width:1160px;"
+                  @change="orderTitleMeth(orderInfo)"
+                ></el-input>
+              </el-form-item>
+              <!-- <el-button
               style="float:right;"
               type="primary"
               @click="orderTitleMeth(orderInfo)"
               v-show="active == 2"
-            >保存标题</el-button>
-          </el-form>
-        </div>
-        <div class="orderNull" v-show="this.orderNull == true && this.$route.query.type == 3">
+              >保存标题</el-button>-->
+            </el-form>
+          </div>
+          <!-- <div class="orderNull" v-show="this.orderNull == true && this.$route.query.type == 3">
           当前题库集没有答案
           <router-link to="/personalData/award">返回</router-link>
-        </div>
-        <!-- 展示创建过的订单开始 -->
-        <div v-show="active == 2">
-          <div class="showAnswer" v-for="(item,index) in answerArray">
-            <div class="SA-con">
-              <div class="SA-title">
-                <span class="SA-course">{{item.classname}}--{{item.universityname}}</span>
-                <span
-                  class="SA-week"
-                >第{{item.classInfoContentTest.classWeek}}周--{{item.classInfoContentTest.classWeekType}}</span>
-              </div>
-              <div class="SA-edit">
-                <i class="el-icon-edit edits" @click="editAnswerShow(item)"></i>
-                <i class="el-icon-delete delete" @click="editAnswerDelete(item)"></i>
-              </div>
-              <div v-show="active == 2 && item.show == false">
-                <div class="SA-topic">
-                  <p v-show="item.classInfoContentTest.name == ''" style="color:#ccc;">题目名称</p>
-                  <p
-                    v-show="item.classInfoContentTest.name != ''"
-                  >{{item.classInfoContentTest.name}}</p>
-                  <img :src="item.answerImg" alt />
+          </div>-->
+          <!-- 展示创建过的订单开始 -->
+          <div v-show="active == 2">
+            <div class="showAnswer" v-for="(item,index) in answerArray">
+              <div class="SA-con">
+                <div class="SA-title">
+                  <span class="SA-course">{{item.classname}}--{{item.universityname}}</span>
+                  <span
+                    class="SA-week"
+                  >第{{item.classInfoContentTest.classWeek}}周--{{item.classInfoContentTest.classWeekType}}</span>
                 </div>
-                <div class="SA-answer">
-                  <p v-show="item.classInfoContentTest.contents == ''" style="color:#ccc;">答案内容</p>
-                  <p
-                    v-show="item.classInfoContentTest.contents != ''"
-                  >{{item.classInfoContentTest.contents}}</p>
-                  <img :src="item.topicImg" alt />
+                <div class="SA-edit">
+                  <i class="el-icon-edit edits" @click="editAnswerShow(item)"></i>
+                  <i class="el-icon-delete delete" @click="editAnswerDelete(item)"></i>
                 </div>
-              </div>
-              <div v-show="active == 2 && item.show == true">
-                <div class="up-answer-week">
-                  <div class="share-prefix">周选择*</div>
-                  <el-select
-                    v-model="item.classInfoContentTest.classWeek"
-                    placeholder="请选择当前课程所在的周"
-                    style="width:550px;"
-                  >
-                    <el-option
-                      v-for="item in weekoptions"
-                      :key="item.label"
-                      :label="'第'+ item.label + '周'"
-                      :value="item.label"
-                    ></el-option>
-                  </el-select>
-                </div>
-                <div class="up-answer-type">
-                  <div class="share-prefix">类型选择*</div>
-                  <el-select
-                    v-model="item.classInfoContentTest.classWeekType"
-                    placeholder="请选择当前课程的类型"
-                    style="width:550px;"
-                  >
-                    <el-option
-                      v-for="item in typeoptions"
-                      :key="item.label"
-                      :label="item.label"
-                      :value="item.label"
-                    ></el-option>
-                  </el-select>
-                </div>
-                <div class="up-answer-topic">
-                  <div class="topic-con">
-                    <div class="share-prefix">题目名称(选填)</div>
-                    <el-input v-model="item.classInfoContentTest.name" placeholder="请输入您的题目名称(选填)"></el-input>
-                    <el-upload
-                      class="upload-topic"
-                      ref="answerArray"
-                      :action="imgSite"
-                      :headers="myHeaders"
-                      :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
-                      :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.nameUrl)}"
-                      :on-change="editTopicHandleChange"
-                      :before-upload="editTopicHandlebeforeupload"
-                      :file-list="item.topicUrlList"
-                      :auto-upload="true"
-                      :limit="uploadNum"
-                      list-type="picture"
-                      :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
-                    >
-                      <el-button
-                        slot="trigger"
-                        size="small"
-                        type="primary"
-                        icon="el-icon-picture"
-                      >添加题目图片</el-button>
-                    </el-upload>
+                <div v-show="active == 2 && item.show == false">
+                  <div class="SA-topic">
+                    <p v-show="item.classInfoContentTest.name == ''" style="color:#ccc;">题目名称</p>
+                    <p
+                      v-show="item.classInfoContentTest.name != ''"
+                    >{{item.classInfoContentTest.name}}</p>
+                    <img :src="item.topicImg" alt />
+                  </div>
+
+                  <div class="SA-answer">
+                    <p v-show="item.classInfoContentTest.contents == ''" style="color:#ccc;">答案内容</p>
+                    <p
+                      v-show="item.classInfoContentTest.contents != ''"
+                    >{{item.classInfoContentTest.contents}}</p>
+                    <img :src="item.answerImg" alt />
                   </div>
                 </div>
-                <div class="up-answer-img">
-                  <div class="share-prefix">答案内容*(必填)</div>
-                  <el-input
-                    v-model="item.classInfoContentTest.contents"
-                    placeholder="请输入您的答案内容(选填)"
-                  ></el-input>
-                  <el-upload
-                    class="upload-topic"
-                    ref="answerArray"
-                    :action="imgSite"
-                    :headers="myHeaders"
-                    :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
-                    :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.url)}"
-                    :on-change="editAnswerHandleChange"
-                    :before-upload="editAnswerHandlebeforeupload"
-                    :file-list="item.answerUrlList"
-                    :auto-upload="true"
-                    :limit="uploadNum"
-                    list-type="picture"
-                    :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
-                  >
-                    <el-button
-                      slot="trigger"
-                      size="small"
-                      type="primary"
-                      icon="el-icon-picture"
-                    >添加答案图片</el-button>
-                    <i
-                      slot="tip"
-                      class="el-upload__tip"
-                      style="margin-left:10px;color:#9c9c9c;"
-                    >只能上传jpg/png文件，且不超过500kb</i>
-                  </el-upload>
-                </div>
-                <el-button
-                  style="margin-top: 20px;position: absolute;top:207px;right:20px;"
-                  size="small"
-                  type="danger"
-                  @click="editstepupload(item)"
-                  v-show="active == 2"
-                >提交答案</el-button>
-              </div>
-            </div>
-            <!-- 编辑现有答案 -->
-          </div>
-        </div>
-        <!-- 展示创建过的订单结束 -->
-        <div class="up-upload" v-show="this.$route.query.type != 3">
-          <el-form
-            :model="upload"
-            :rules="rules"
-            ref="upload"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <!-- 选择学校START -->
-            <div
-              class="up-school"
-              v-show="upschool == true && active == 0 && $route.query.type != 1"
-            >
-              <div class="share-box">
-                <p class="share-title">选择学校</p>
-                <div class="share-prefix">学校*</div>
-                <el-form-item prop="school">
-                  <el-autocomplete
-                    class="query-schoolserch"
-                    v-model="school"
-                    :fetch-suggestions="querySearch"
-                    @select="SchoolHandleSelectauto"
-                    placeholder="请输入您需要查询的学校名称"
-                    prefix-icon="el-icon-search"
-                    :trigger-on-focus="false"
-                    @blur="schoolBlur"
-                    style="width:1120px;"
-                  >
-                    <template slot-scope="{ item }">
-                      <div
-                        style="width: 100%;height: 34px;display: block;"
-                        v-show="item.type != null"
-                      >
-                        <span style="color:#878787;float:left;">{{item.value}}</span>
-                        <span style="color:#878787;float:right;">{{item.type}}</span>
-                      </div>
-                      <div v-show="item.type == null">没有找到对应的学校</div>
-                    </template>
-                  </el-autocomplete>
-                </el-form-item>
-              </div>
-              <div class="nextcenter">
-                <el-button style="margin-top: 20px;" @click="upschoolShow">添加学校</el-button>
-                <el-button
-                  style="margin-top: 20px;"
-                  type="primary"
-                  @click="schoolNext('upload')"
-                  :disabled="schooldisabled"
-                >下一步</el-button>
-              </div>
-            </div>
-
-            <!-- 选择学校END -->
-
-            <!-- 选择课程START -->
-            <div
-              class="up-class"
-              v-show="upcourse == true && active == 1  && $route.query.type != 2"
-            >
-              <div class="share-box">
-                <p class="share-title">选择课程</p>
-                <div class="share-prefix">学校*</div>
-                <div>{{upload.school}}</div>
-                <div class="share-prefix">课程*</div>
-                <el-form-item prop="course">
-                  <el-autocomplete
-                    class="query-schoolserch"
-                    v-model="course"
-                    :fetch-suggestions="courseQuerySearch"
-                    @select="courseHandleSelectauto"
-                    placeholder="请输入您需要查询的课程名称"
-                    prefix-icon="el-icon-search"
-                    :trigger-on-focus="false"
-                    @blur="courseBlur"
-                    style="width:1120px;"
-                  >
-                    <template slot-scope="{ item }">
-                      <div
-                        style="width: 100%;height: 34px;display: block;"
-                        v-show="item.type != null"
-                      >
-                        <span style="color:#878787;float:left;">{{item.value}}</span>
-                        <span style="color:#878787;float:right;">{{item.type}}</span>
-                      </div>
-                      <div v-show="item.type == null">没有找到对应的课程</div>
-                    </template>
-                  </el-autocomplete>
-                  <!-- <el-select v-model="upload.course" placeholder="请选择您的课程" style="width:1120px;">
-                    <el-option
-                      v-for="item in courseoptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
-                    ></el-option>
-                  </el-select>-->
-                </el-form-item>
-              </div>
-              <div class="nextcenter">
-                <el-button style="margin-top: 20px;" @click="steplast">上一步</el-button>
-                <el-button style="margin-top: 20px;" @click="upcourseShow">添加课程</el-button>
-                <el-button
-                  style="margin-top: 20px;"
-                  type="primary"
-                  @click="courseNext('upload')"
-                  :disabled="coursedisabled"
-                >下一步</el-button>
-              </div>
-            </div>
-            <!-- 选择课程END -->
-
-            <!-- 编辑答案START -->
-            <div class="up-answer" v-show="active == 2  && $route.query.type != 3 ">
-              <div class="share-box">
-                <p class="share-title">添加答案--{{upload.course}}--{{upload.school}}</p>
-
-                <div class="up-answer-week">
-                  <div class="share-prefix">周选择*</div>
-                  <el-form-item prop="week">
-                    <el-select v-model="upload.week" placeholder="请选择当前课程所在的周" style="width:550px;">
+                <div v-show="active == 2 && item.show == true">
+                  <div class="up-answer-week">
+                    <div class="share-prefix">周选择*</div>
+                    <el-select
+                      v-model="item.classInfoContentTest.classWeek"
+                      placeholder="请选择当前课程所在的周"
+                      style="width:550px;"
+                    >
                       <el-option
                         v-for="item in weekoptions"
                         :key="item.label"
@@ -525,42 +369,47 @@
                         :value="item.label"
                       ></el-option>
                     </el-select>
-                  </el-form-item>
-                </div>
-                <div class="up-answer-type">
-                  <div class="share-prefix">类型选择*</div>
-                  <el-form-item prop="type">
-                    <el-select v-model="upload.type" placeholder="请选择当前课程的类型" style="width:550px;">
+                  </div>
+                  <div class="up-answer-type">
+                    <div class="share-prefix">类型选择*</div>
+                    <el-select
+                      v-model="item.classInfoContentTest.classWeekType"
+                      placeholder="请选择当前课程的类型"
+                      style="width:550px;"
+                    >
                       <el-option
                         v-for="item in typeoptions"
-                        :key="item.value"
+                        :key="item.label"
                         :label="item.label"
                         :value="item.label"
                       ></el-option>
                     </el-select>
-                  </el-form-item>
-                </div>
-
-                <div class="up-answer-topic">
-                  <div class="topic-con">
-                    <div class="share-prefix">题目名称(选填)</div>
-                    <el-form-item prop="topic">
-                      <el-input v-model="upload.topic" placeholder="请输入您的题目名称(选填)"></el-input>
-                    </el-form-item>
-                    <el-form-item prop="topicUrl" ref="uploadTopicUrl">
+                  </div>
+                  <div class="up-answer-topic">
+                    <div class="topic-con">
+                      <div class="share-prefix">题目名称(选填)</div>
+                      <el-input
+                        type="textarea"
+                        style="overflow-y: hidden;"
+                        placeholder="请输入您的题目名称(选填)"
+                        v-model="item.classInfoContentTest.name"
+                        :autosize="{ minRows: 1.4, maxRows: 10}"
+                      ></el-input>
+                      <!-- <el-input v-model="item.classInfoContentTest.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
                       <el-upload
                         class="upload-topic"
-                        ref="uploadTopicUrl"
+                        ref="answerArray"
                         :action="imgSite"
                         :headers="myHeaders"
-                        :on-success="topicHandleSuccess"
-                        :on-remove="topicHandleRemove"
-                        :before-upload="topicHandlebeforeupload"
-                        :file-list="topicfileList"
+                        :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
+                        :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.nameUrl)}"
+                        :on-change="editTopicHandleChange"
+                        :before-upload="editTopicHandlebeforeupload"
+                        :file-list="item.topicUrlList"
                         :auto-upload="true"
                         :limit="uploadNum"
-                        :data="{classInfoTestId:this.classInfoTestId}"
                         list-type="picture"
+                        :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
                       >
                         <el-button
                           slot="trigger"
@@ -569,29 +418,35 @@
                           icon="el-icon-picture"
                         >添加题目图片</el-button>
                       </el-upload>
-                    </el-form-item>
+                    </div>
                   </div>
-                </div>
-                <div class="up-answer-img">
-                  <div class="share-prefix">答案内容*(必填)</div>
-                  <el-form-item prop="answer">
-                    <el-input v-model="upload.answer" placeholder="请输入您的答案内容(选填)"></el-input>
-                  </el-form-item>
-                  <el-form-item prop="answerUrl" ref="uploadAnswerUrl">
+                  <div class="up-answer-img">
+                    <div class="share-prefix">答案内容*(必填)</div>
+                    <el-input
+                      type="textarea"
+                      style="overflow-y: hidden;"
+                      placeholder="请输入您的答案内容(选填)"
+                      v-model="item.classInfoContentTest.contents"
+                      :autosize="{ minRows: 1.4, maxRows: 10}"
+                    ></el-input>
+                    <!-- <el-input
+                    v-model="item.classInfoContentTest.contents"
+                    placeholder="请输入您的答案内容(选填)"
+                    ></el-input>-->
                     <el-upload
                       class="upload-topic"
-                      ref="addAnswerUpload"
+                      ref="answerArray"
                       :action="imgSite"
                       :headers="myHeaders"
-                      :on-success="answerHandleSucceed"
-                      :on-remove="answerHandleRemove"
-                      :on-change="answerHandleChange"
-                      :before-upload="answerHandlebeforeupload"
-                      :file-list="answerfileList"
+                      :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
+                      :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.url)}"
+                      :on-change="editAnswerHandleChange"
+                      :before-upload="editAnswerHandlebeforeupload"
+                      :file-list="item.answerUrlList"
                       :auto-upload="true"
                       :limit="uploadNum"
-                      :data="{classInfoTestId:this.classInfoTestId}"
                       list-type="picture"
+                      :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
                     >
                       <el-button
                         slot="trigger"
@@ -603,160 +458,392 @@
                         slot="tip"
                         class="el-upload__tip"
                         style="margin-left:10px;color:#9c9c9c;"
-                      >每次只能上传1张jpg/png的图片，且不超过2MB</i>
+                      >只能上传jpg/png文件，且不超过500kb</i>
                     </el-upload>
+                  </div>
+                  <el-button
+                    style="position: absolute;bottom:4px;right:20px;"
+                    size="small"
+                    type="danger"
+                    @click="editstepupload(item)"
+                    v-show="active == 2"
+                  >提交答案</el-button>
+                </div>
+              </div>
+              <!-- 编辑现有答案 -->
+            </div>
+          </div>
+          <!-- 展示创建过的订单结束 -->
+          <div class="up-upload">
+            <el-form
+              :model="upload"
+              :rules="rules"
+              ref="upload"
+              class="demo-ruleForm"
+              @submit.native.prevent
+            >
+              <!-- 选择学校START -->
+              <div
+                class="up-school"
+                v-show="upschool == true && active == 0 && $route.query.type != 1"
+              >
+                <div class="share-box">
+                  <p class="share-title">选择上传内容所属的大学</p>
+                  <el-form-item prop="school">
+                    <el-autocomplete
+                      class="query-schoolserch"
+                      v-model="school"
+                      :fetch-suggestions="querySearch"
+                      @select="SchoolHandleSelectauto"
+                      placeholder="请输入您需要查询的学校名称"
+                      prefix-icon="el-icon-search"
+                      :trigger-on-focus="false"
+                      @blur="schoolBlur"
+                      style="width:1120px;"
+                    >
+                      <template slot-scope="{ item }">
+                        <div
+                          style="width: 100%;height: 34px;display: block;"
+                          v-show="item.type != null"
+                        >
+                          <span style="color:#878787;float:left;">{{item.value}}</span>
+                          <span style="color:#878787;float:right;">{{item.type}}</span>
+                        </div>
+                        <div v-show="item.type == null">没有找到对应的学校</div>
+                      </template>
+                    </el-autocomplete>
                   </el-form-item>
                 </div>
-                <!-- <el-button
+                <div class="nextcenter">
+                  <span
+                    style="margin-top: 20px;margin-right:20px;text-decoration:underline;color:#a2a2a2;cursor:pointer;"
+                    @click="upschoolShow"
+                  >没有找到?点击这里添加一所新的学校</span>
+                  <el-button
+                    style="margin-top: 20px;"
+                    type="primary"
+                    @click="schoolNext('upload')"
+                    :disabled="schooldisabled"
+                  >下一步</el-button>
+                </div>
+              </div>
+
+              <!-- 选择学校END -->
+
+              <!-- 选择课程START -->
+              <div
+                class="up-class"
+                v-show="upcourse == true && active == 1  && $route.query.type != 2"
+              >
+                <div class="share-box">
+                  <div class="share-subtitle">
+                    <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+                    {{upload.school}}
+                  </div>
+                  <div class="share-title">选择上传所属的课程</div>
+                  <el-form-item prop="course">
+                    <el-autocomplete
+                      class="query-schoolserch"
+                      v-model="course"
+                      :fetch-suggestions="courseQuerySearch"
+                      @select="courseHandleSelectauto"
+                      placeholder="请输入您需要查询的课程名称"
+                      prefix-icon="el-icon-search"
+                      :trigger-on-focus="false"
+                      @blur="courseBlur"
+                      style="width:1120px;"
+                    >
+                      <template slot-scope="{ item }">
+                        <div
+                          style="width: 100%;height: 34px;display: block;"
+                          v-show="item.type != null"
+                        >
+                          <span style="color:#878787;float:left;">{{item.value}}</span>
+                          <span style="color:#878787;float:right;">{{item.type}}</span>
+                        </div>
+                        <div v-show="item.type == null">没有找到对应的课程</div>
+                      </template>
+                    </el-autocomplete>
+                    <!-- <el-select v-model="upload.course" placeholder="请选择您的课程" style="width:1120px;">
+                    <el-option
+                      v-for="item in courseoptions"
+                      :key="item.value"
+                      :label="item.label"
+                      :value="item.label"
+                    ></el-option>
+                    </el-select>-->
+                  </el-form-item>
+                </div>
+                <div class="nextcenter">
+                  <el-button style="margin-top: 20px;" @click="steplast">上一步</el-button>
+                  <el-button style="margin-top: 20px;" @click="upcourseShow" title="没有找到?点击这里添加一门新的课程">添加课程</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    type="primary"
+                    @click="courseNext('upload')"
+                    :disabled="coursedisabled"
+                  >下一步</el-button>
+                </div>
+              </div>
+              <!-- 选择课程END -->
+
+              <!-- 编辑答案START -->
+              <div class="up-answer" v-if="active == 2">
+                <div class="share-box">
+                  <p class="share-title">添加答案--{{upload.course}}--{{upload.school}}</p>
+
+                  <div class="up-answer-week">
+                    <div class="share-prefix">周选择*</div>
+                    <el-form-item prop="week">
+                      <el-select
+                        v-model="upload.week"
+                        placeholder="请选择当前课程所在的周"
+                        style="width:550px;"
+                      >
+                        <el-option
+                          v-for="item in weekoptions"
+                          :key="item.label"
+                          :label="'第'+ item.label + '周'"
+                          :value="item.label"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                  <div class="up-answer-type">
+                    <div class="share-prefix">类型选择*</div>
+                    <el-form-item prop="type">
+                      <el-select
+                        v-model="upload.type"
+                        placeholder="请选择当前课程的类型"
+                        style="width:550px;"
+                      >
+                        <el-option
+                          v-for="item in typeoptions"
+                          :key="item.value"
+                          :label="item.label"
+                          :value="item.label"
+                        ></el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+
+                  <div class="up-answer-topic">
+                    <div class="topic-con">
+                      <div class="share-prefix">题目名称(选填)</div>
+                      <el-form-item prop="topic">
+                        <el-input v-model="upload.topic" placeholder="请输入您的题目名称(选填)"></el-input>
+                      </el-form-item>
+                      <el-form-item prop="topicUrl" ref="uploadTopicUrl">
+                        <el-upload
+                          class="upload-topic"
+                          ref="uploadTopicUrl"
+                          :action="imgSite"
+                          :headers="myHeaders"
+                          :on-success="topicHandleSuccess"
+                          :on-remove="topicHandleRemove"
+                          :before-upload="topicHandlebeforeupload"
+                          :file-list="topicfileList"
+                          :auto-upload="true"
+                          :limit="uploadNum"
+                          :data="{classInfoTestId:this.classInfoTestId}"
+                          list-type="picture"
+                        >
+                          <el-button
+                            slot="trigger"
+                            size="small"
+                            type="primary"
+                            icon="el-icon-picture"
+                          >添加题目图片</el-button>
+                        </el-upload>
+                      </el-form-item>
+                    </div>
+                  </div>
+                  <div class="up-answer-img">
+                    <div class="share-prefix">答案内容*(必填)</div>
+                    <el-form-item prop="answer">
+                      <el-input v-model="upload.answer" placeholder="请输入您的答案内容(选填)"></el-input>
+                    </el-form-item>
+                    <el-form-item prop="answerUrl" ref="uploadAnswerUrl">
+                      <el-upload
+                        class="upload-topic"
+                        ref="addAnswerUpload"
+                        :action="imgSite"
+                        :headers="myHeaders"
+                        :on-success="answerHandleSucceed"
+                        :on-remove="answerHandleRemove"
+                        :on-change="answerHandleChange"
+                        :before-upload="answerHandlebeforeupload"
+                        :file-list="answerfileList"
+                        :auto-upload="true"
+                        :limit="uploadNum"
+                        :data="{classInfoTestId:this.classInfoTestId}"
+                        list-type="picture"
+                      >
+                        <el-button
+                          slot="trigger"
+                          size="small"
+                          type="primary"
+                          icon="el-icon-picture"
+                        >添加答案图片</el-button>
+                        <i
+                          slot="tip"
+                          class="el-upload__tip"
+                          style="margin-left:10px;color:#9c9c9c;"
+                        >每次只能上传1张jpg/png的图片，且不超过2MB</i>
+                      </el-upload>
+                    </el-form-item>
+                  </div>
+                  <!-- <el-button
                   style="margin-top: 20px;position: absolute;right: 20px;top: 209px;"
                   type="danger"
                   @click="stepupload('upload')"
                   v-show="active == 2"
-                >提交答案</el-button>-->
+                  >提交答案</el-button>-->
+                </div>
+                <div class="nextcenter">
+                  <el-button style="margin-top: 20px;" @click="steplast" v-show="lastStep">上一步</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    type="danger"
+                    @click="stepupload('upload')"
+                    v-show="active == 2"
+                  >提交答案</el-button>
+                </div>
               </div>
-              <div class="nextcenter">
-                <el-button
-                  style="margin-top: 20px;"
-                  @click="steplast"
-                  v-show="active >= 1 && active <= 2"
-                >上一步</el-button>
-                <el-button
-                  style="margin-top: 20px;"
-                  type="danger"
-                  @click="stepupload('upload')"
-                  v-show="active == 2"
-                >提交答案</el-button>
+              <!-- 编辑答案END -->
+            </el-form>
+            <!-- 手写学校START -->
+            <el-form
+              :model="ruleForm"
+              :rules="addrules"
+              ref="ruleForm"
+              class="demo-ruleForm"
+              @submit.native.prevent
+            >
+              <div class="up-school" v-show="upschool == false && active == 0">
+                <div class="share-box">
+                  <p class="share-title">添加一所新的大学</p>
+                  <el-form-item prop="name">
+                    <el-input
+                      v-model="ruleForm.name"
+                      placeholder="输入您想要添加的大学名称,例如University of chicago"
+                    ></el-input>
+                  </el-form-item>
+                </div>
+                <div class="nextcenter">
+                  <el-button style="margin-top: 20px;" @click="upschoolShow">取消</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    @click="addSchoolNext('ruleForm')"
+                    type="primary"
+                  >添加学校</el-button>
+                </div>
               </div>
-            </div>
-            <!-- 编辑答案END -->
-          </el-form>
-          <!-- 手写学校START -->
-          <el-form
-            :model="ruleForm"
-            :rules="addrules"
-            ref="ruleForm"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <div class="up-school" v-show="upschool == false && active == 0">
-              <div class="share-box">
-                <p class="share-title">编辑学校</p>
-                <div class="share-prefix">学校*</div>
-                <el-form-item prop="name">
-                  <el-input v-model="ruleForm.name" placeholder="请填写您的学校名称"></el-input>
-                </el-form-item>
+              <!-- 手写学校END -->
+            </el-form>
+            <!-- 手写课程START -->
+            <el-form
+              :model="addchourses"
+              :rules="chourserules"
+              ref="addchourses"
+              class="demo-ruleForm"
+              @submit.native.prevent
+            >
+              <div class="up-class" v-show="upcourse == false && active == 1 ">
+                <div class="share-box">
+                  <div class="share-subtitle">
+                    <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+                    {{upload.school}}
+                  </div>
+                  <div class="share-title">添加一门新的课程</div>
+                  <el-form-item prop="name">
+                    <el-input v-model="addchourses.name" placeholder="输入您想要添加的课程名称,例如Photography"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="nextcenter">
+                  <el-button style="margin-top: 20px;" @click="upcourseShow">取消</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    @click="addCourseNext('addchourses')"
+                    type="primary"
+                  >添加课程</el-button>
+                </div>
               </div>
-              <div class="nextcenter">
-                <el-button style="margin-top: 20px;" @click="upschoolShow">取消</el-button>
-                <el-button
-                  style="margin-top: 20px;"
-                  @click="addSchoolNext('ruleForm')"
-                  type="primary"
-                >添加学校</el-button>
-              </div>
-            </div>
-            <!-- 手写学校END -->
-          </el-form>
-          <!-- 手写课程START -->
-          <el-form
-            :model="addchourses"
-            :rules="chourserules"
-            ref="addchourses"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <div class="up-class" v-show="upcourse == false && active == 1 ">
-              <div class="share-box">
-                <p class="share-title">编辑课程</p>
-                <div class="share-prefix">学校*</div>
-                <div>{{upload.school}}</div>
-                <div class="share-prefix">课程*</div>
-                <el-form-item prop="name">
-                  <el-input v-model="addchourses.name" placeholder="请填写您的课程名称"></el-input>
-                </el-form-item>
-              </div>
-              <div class="nextcenter">
-                <el-button style="margin-top: 20px;" @click="upcourseShow">取消</el-button>
-                <el-button
-                  style="margin-top: 20px;"
-                  @click="addCourseNext('addchourses')"
-                  type="primary"
-                >添加课程</el-button>
-              </div>
-            </div>
-            <!-- 手写课程END -->
-          </el-form>
+              <!-- 手写课程END -->
+            </el-form>
 
-          <!-- 修改学校 -->
-          <el-form
-            :model="editruleForm"
-            :rules="ediaddtrules"
-            ref="editruleForm"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <div class="up-school" v-show="$route.query.type == 1">
-              <div class="share-box">
-                <p class="share-title">修改学校</p>
-                <div class="share-prefix">学校*</div>
-                <el-form-item prop="name">
-                  <el-input v-model="editruleForm.name" placeholder="请填写您的学校名称"></el-input>
-                </el-form-item>
+            <!-- 修改学校 -->
+            <el-form
+              :model="editruleForm"
+              :rules="ediaddtrules"
+              ref="editruleForm"
+              class="demo-ruleForm"
+              @submit.native.prevent
+            >
+              <div class="up-school" v-show="$route.query.type == 1">
+                <div class="share-box">
+                  <p class="share-title">修改学校</p>
+                  <div class="share-prefix">学校*</div>
+                  <el-form-item prop="name">
+                    <el-input v-model="editruleForm.name" placeholder="请填写您的学校名称"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="nextcenter" v-show="$route.query.type == 1">
+                  <router-link
+                    to="/personalData/award"
+                    style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
+                  >
+                    <el-button>取消</el-button>
+                  </router-link>
+                  <el-button
+                    style="margin-top: 20px;"
+                    @click="editSchoolNext('editruleForm',editruleForm)"
+                    type="primary"
+                  >修改学校</el-button>
+                </div>
               </div>
-              <div class="nextcenter" v-show="$route.query.type == 1">
-                <router-link
-                  to="/personalData/award"
-                  style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
-                >
-                  <el-button>取消</el-button>
-                </router-link>
-                <el-button
-                  style="margin-top: 20px;"
-                  @click="editSchoolNext('editruleForm',editruleForm)"
-                  type="primary"
-                >修改学校</el-button>
-              </div>
-            </div>
-            <!-- 修改学校END -->
-          </el-form>
-          <!-- 修改课程START -->
-          <el-form
-            :model="editchourses"
-            :rules="editchourserules"
-            ref="editchourses"
-            class="demo-ruleForm"
-            @submit.native.prevent
-          >
-            <div class="up-class" v-show="$route.query.type == 2">
-              <div class="share-box">
-                <p class="share-title">修改课程</p>
-                <div class="share-prefix">学校*</div>
-                <div>{{editchourses.school}}</div>
-                <div class="share-prefix">课程*</div>
-                <el-form-item prop="name">
-                  <el-input v-model="editchourses.name" placeholder="请填写您的课程名称"></el-input>
-                </el-form-item>
-              </div>
-              <div class="nextcenter">
-                <router-link
-                  to="/personalData/award"
-                  style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
-                >
-                  <el-button>取消</el-button>
-                </router-link>
+              <!-- 修改学校END -->
+            </el-form>
+            <!-- 修改课程START -->
+            <el-form
+              :model="editchourses"
+              :rules="editchourserules"
+              ref="editchourses"
+              class="demo-ruleForm"
+              @submit.native.prevent
+            >
+              <div class="up-class" v-show="$route.query.type == 2">
+                <div class="share-box">
+                  <p class="share-title">修改课程</p>
+                  <div class="share-prefix">学校*</div>
+                  <div>{{editchourses.school}}</div>
+                  <div class="share-prefix">课程*</div>
+                  <el-form-item prop="name">
+                    <el-input v-model="editchourses.name" placeholder="请填写您的课程名称"></el-input>
+                  </el-form-item>
+                </div>
+                <div class="nextcenter">
+                  <router-link
+                    to="/personalData/award"
+                    style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
+                  >
+                    <el-button>取消</el-button>
+                  </router-link>
 
-                <el-button
-                  style="margin-top: 20px;"
-                  @click="editCourseNext('editchourses',editchourses)"
-                  type="primary"
-                >修改课程</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    @click="editCourseNext('editchourses',editchourses)"
+                    type="primary"
+                  >修改课程</el-button>
+                </div>
               </div>
-            </div>
-            <!-- 修改课程END -->
-          </el-form>
+              <!-- 修改课程END -->
+            </el-form>
+          </div>
         </div>
       </div>
-      <div class="ClassesAdvertising" style="width:1160px;">
+
+      <!-- <div class="ClassesAdvertising" style="width:1160px;">
         <div>
           <p class="advertising-p1">没有找到您需要的吗？想得到更多的学习辅导服务吗？</p>
           <p class="advertising-p2">
@@ -765,7 +852,7 @@
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div>
+      </div>-->
     </div>
     <homeFooter></homeFooter>
   </div>
@@ -783,7 +870,7 @@ export default {
   },
   data() {
     return {
-      abc: true,
+      subtitle:false,
       uploadNum: 1,
       active: 0,
       formData: {},
@@ -861,7 +948,7 @@ export default {
         topicUrl: [{ required: false, message: "请上传题目图片" }],
         answer: [{ required: false, message: "请输入答案", trigger: "blur" }],
         answerUrl: [
-          { required: true, message: "请上传答案图片", trigger: "change" }
+          { required: false, message: "请上传答案图片", trigger: "change" }
         ]
       },
       // 编辑表单容器
@@ -900,16 +987,16 @@ export default {
       type: "",
       typeoptions: [
         {
-          label: "Assignment"
+          label: "作业(Asssignment)"
         },
         {
-          label: "Quzi"
+          label: "测验(Quiz)"
         },
         {
-          label: "Exam"
+          label: "考试(Exam)"
         },
         {
-          label: "Discussion"
+          label: "讨论(Discussion)"
         }
       ],
       week: "",
@@ -942,12 +1029,16 @@ export default {
       coursekong: {},
       schoolKong: {},
       orderKong: {},
-      orderNull: false
+      orderNull: false,
+      lastStep: true
     };
   },
-  beforeRouteUpdate(to, from, next) {},
+  // beforeRouteUpdate(to, from, next) {
+
+  // },
   created: function() {
     const _this = this;
+
     _this.gainpersonal();
     if (_this.$route.query.type == 1) {
       _this.active = 0;
@@ -959,11 +1050,9 @@ export default {
     }
     if (_this.$route.query.type == 3) {
       _this.active = 2;
+      _this.lastStep = false;
       _this.cacheAnswerId(_this.$route.query.id);
     }
-    // if(_this.$route.query.type != 1 && _this.$route.query.type != 2 && _this.$route.query.type != 3){
-    //   console.log("找不到")
-    // }
   },
   methods: {
     // 获取个人信息
@@ -989,6 +1078,11 @@ export default {
             console.log(error);
           });
       } else {
+        _this.$message({
+          message: "请登录之后进行上传",
+          type: "error"
+        });
+        _this.$router.push({ path: "/login" });
       }
     },
     // 添加学校显示
@@ -1203,8 +1297,7 @@ export default {
         formData.ClassWeek = _this.upload.week;
         formData.ClassWeekType = _this.upload.type;
         _this.formData = formData;
-        console.log(formData.NameUrl)
-        console.log(_this.upload)
+        console.log(_this.formData);
         // if (_this.doupload == true) {
         //   console.log(1);
         //   // _this.rules.answerUrl = [];
@@ -1217,7 +1310,7 @@ export default {
         //   // ];
         // }
         _this.$refs[upload].validate(valid => {
-          console.log(valid)
+          console.log(valid);
           if (valid) {
             _this
               .axios({
@@ -1246,6 +1339,11 @@ export default {
                   _this.$message({
                     message: "添加答案成功",
                     type: "success"
+                  });
+                } else {
+                  _this.$message({
+                    message: res.data.msg,
+                    type: "error"
                   });
                 }
               })
@@ -1311,9 +1409,9 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             if (res.data.data.length == 0) _this.orderNull = true;
+
             var answerArray = [];
             answerArray = res.data.data;
             _this.serchingWeek(classInfoTestId);
@@ -1326,13 +1424,15 @@ export default {
               _this.$set(answerArray[i], "topicCacheUrl", "");
               _this.$set(answerArray[i], "answerCacheUrl", "");
               answerArray[i].topicImg =
-                _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url;
-              answerArray[i].answerImg =
                 _this.URLport.ImgPath +
                 answerArray[i].classInfoContentTest.nameUrl;
+              answerArray[i].answerImg =
+                _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url;
               if (answerArray[i].classInfoContentTest.nameUrl == "") {
                 answerArray[i].topicUrlList = [];
               } else {
+                answerArray[i].topicCacheUrl =
+                  answerArray[i].classInfoContentTest.nameUrl;
                 answerArray[i].topicUrlList.push({
                   url:
                     _this.URLport.ImgPath +
@@ -1342,6 +1442,8 @@ export default {
               if (answerArray[i].classInfoContentTest.url == "") {
                 answerArray[i].answerUrlList = [];
               } else {
+                answerArray[i].answerCacheUrl =
+                  answerArray[i].classInfoContentTest.url;
                 answerArray[i].answerUrlList.push({
                   url:
                     _this.URLport.ImgPath +
@@ -1405,7 +1507,6 @@ export default {
     // 文件删除后
     answerHandleRemove(file, fileList) {
       const _this = this;
-      console.log(3);
       _this
         .axios({
           method: "delete",
@@ -1423,7 +1524,7 @@ export default {
           }
         })
         .then(function(res) {
-          _this.doupload = false;
+          // _this.doupload = false;
           _this.upload.answerUrl = "";
         })
         .catch(function(error) {
@@ -1434,10 +1535,10 @@ export default {
     answerHandleSucceed(res, file, fileList) {
       const _this = this;
       _this.upload.answerUrl = res.file;
-      _this.$refs["upload"].clearValidate("answerUrl");
-      _this.rules.answerUrl = [
-        { required: true, message: "请上传答案图片", trigger: "change" }
-      ];
+      // _this.$refs["upload"].clearValidate("answerUrl");
+      // _this.rules.answerUrl = [
+      //   { required: true, message: "请上传答案图片", trigger: "change" }
+      // ];
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
@@ -1595,7 +1696,6 @@ export default {
     // 删除答案
     editAnswerDelete(item) {
       const _this = this;
-      console.log(item);
       this.$confirm("此操作将永久删除该答案, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -1640,24 +1740,26 @@ export default {
     // 打开编辑答案内的上传
     editstepupload(item) {
       const _this = this;
-      console.log(item);
       if (localStorage.getItem("token")) {
+        console.log(item);
         var formData = {};
         formData.Name = item.classInfoContentTest.name;
         formData.NameUrl = item.topicCacheUrl;
+
         // if (item.topicCacheUrl != "") {
         //   formData.NameUrl = item.topicCacheUrl;
         // } else {
-        //   formData.NameUrl = item.classInfoContentTest.nameurl;
+        //   formData.NameUrl = "";
         // }
         formData.UniversityTestId = item.classInfoContentTest.universityTestId;
-        if (item.answerCacheUrl != "") {
-          formData.Url = item.answerCacheUrl;
-        } else {
-          formData.Url = item.classInfoContentTest.url;
-        }
-        formData.ClientId = _this.clientId;
         formData.Contents = item.classInfoContentTest.contents;
+        formData.Url = item.answerCacheUrl;
+        // if (item.answerCacheUrl != "") {
+        //   formData.Url = item.answerCacheUrl;
+        // } else {
+        //   formData.Url = item.classInfoContentTest.url;
+        // }
+        formData.ClientId = _this.clientId;
         formData.ClassInfoTestId = item.classInfoContentTest.classInfoTestId;
         formData.ClassTestId = item.classInfoContentTest.classTestId;
         formData.ClassWeek = item.classInfoContentTest.classWeek;
@@ -1679,7 +1781,6 @@ export default {
             }
           })
           .then(function(res) {
-            // console.log(res)
             if (res.data.status == 1) {
               _this.serchingAnswer(_this.editformData.ClassInfoTestId);
               _this.$message({
@@ -1717,6 +1818,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
+            _this.subtitle = !_this.subtitle;
             _this.$message({
               message: "修改题库集名称成功",
               type: "success"
@@ -1730,11 +1832,12 @@ export default {
     // 编辑题目图片
     editTopicHandleSuccess(res, file, fileList, index) {
       const _this = this;
-      // _this.answerArray[idx].topicImg.push({name:res.size,url:res.file})
       _this.answerArray[index].topicCacheUrl = res.file;
     },
     editTopicHandleRemove(file, fileList, idx, id, nameUrl) {
       const _this = this;
+      _this.answerArray[idx].topicCacheUrl = "";
+      _this.answerArray[idx].topicImg = "";
       var uid = id;
       if (nameUrl == "") {
         uid = 0;
@@ -1755,24 +1858,32 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
-        .then(function(res) {})
+        .then(function(res) {
+          console.log(res);
+        })
         .catch(function(error) {
           console.log(error);
         });
     },
-    editTopicHandleChange(file, fileList) {
+    editTopicHandleChange(file, fileList, idx, nameUrl) {
       const _this = this;
+      console.log(idx);
+      console.log(nameUrl);
     },
     editTopicHandlebeforeupload(file) {
       const _this = this;
+      console.log(file);
     },
     // 编辑答案图片
     editAnswerHandlesuccess(res, file, fileList, index) {
       const _this = this;
       _this.answerArray[index].answerCacheUrl = res.file;
     },
+    //
     editAnswerHandleRemove(file, fileList, idx, id, url) {
       const _this = this;
+      _this.answerArray[idx].answerCacheUrl = "";
+      _this.answerArray[idx].answerImg = "";
       var uid = id;
       if (url == "") {
         uid = 0;
@@ -1807,7 +1918,6 @@ export default {
     // 修改题库集获取信息
     cacheAnswerId(id) {
       const _this = this;
-
       _this
         .axios({
           method: "get",
@@ -1824,12 +1934,16 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res);
           if (res.data.status == 1) {
-            _this.orderInfo.name = res.data.data.name;
-            _this.orderKong = res.data.data;
+            _this.orderInfo.name = res.data.data.cict.name;
+            _this.orderKong = res.data.data.cict;
             if (_this.$route.query.type == 3) {
-              _this.classInfoTestId = res.data.data.id;
-              _this.serchingAnswer(res.data.data.id);
+              _this.classInfoTestId = res.data.data.cict.id;
+              _this.upload.course = res.data.data.clas;
+              _this.upload.school = res.data.data.university;
+              _this.serchingAnswer(res.data.data.cict.id);
+              _this.serchingWeek(res.data.data.cict.id);
             }
           }
         })
@@ -1961,7 +2075,11 @@ export default {
           return false;
         }
       });
-    }
+    },
+    modification(){
+      const _this = this;
+      _this.subtitle = !_this.subtitle;
+    },
   }
 };
 </script>

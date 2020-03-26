@@ -219,7 +219,6 @@ export default {
             }
           })
             .then(function(res) {
-              console.log(res)
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 // _this.loadings = false;
@@ -229,12 +228,12 @@ export default {
                 });
                 //_this.$store.state.logo.show = false;
                 //_this.$store.state.logo.hide = true;
-                if (localStorage.SkipPath) {
+                if (localStorage.SkipPath != "/login") {
                   _this.$router.push({
                     path: localStorage.SkipPath,
                   });
                 }else {
-                  _this.$router.push({ path: "/home" });
+                  _this.$router.push({ path: "/uploadAnswer" });
                 }
               }
             })
