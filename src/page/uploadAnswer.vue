@@ -10,7 +10,7 @@
 .ua-middle {
   width: 1300px;
   margin: 0 auto;
-  padding: 100px 0 100px 0;
+  padding: 50px 0 90px 0;
 }
 .up-upload {
 }
@@ -20,11 +20,11 @@
 }
 /* 共用样式 */
 .share-box {
-  width: 1120px;
-  margin: 0 auto;
-  padding: 20px;
+  width: 1300px;
+  /* padding: 20px; */
   margin-top: 20px;
   /* box-shadow: 0 0 6px rgba(0, 0, 0, 0.3); */
+  /* background-color: #fff; */
   overflow: hidden;
   position: relative;
 }
@@ -68,6 +68,9 @@
 
 /* 编辑答案开始 */
 .up-answer {
+  /* width: 1260px;
+  padding: 20px;
+  background-color: #fff; */
 }
 .up-answer-course {
   font-size: 18px;
@@ -87,7 +90,7 @@
   /* margin-top: 16px; */
 }
 .up-answer-topic {
-  width: 280px;
+  width: 620px;
   float: left;
 }
 .topic-title {
@@ -107,34 +110,44 @@
   margin-right: 8px;
 }
 .topic-con {
-  padding-bottom: 10px;
+  /* padding-bottom: 10px; */
 }
 .upload-topic {
-  margin-top: 12px;
+  margin-top: 5px;
+  overflow: hidden;
 }
 .up-answer-img {
-  width: 820px;
+  width: 620px;
   margin-left: 20px;
   float: right;
+}
+.up-answer-img .el-form-item__content {
+  /* line-height: 25px !important; */
+}
+.up-answer-img .el-upload-list__item {
+  margin-top: 0px !important;
 }
 .upload-img {
   margin-top: 12px;
 }
-.upload-img .el-upload {
-  margin-left: 380px;
+.upload-topic .el-upload {
+  float: right !important;
+  margin-bottom: 9px !important;
 }
 /* 编辑答案结束 */
 /* 展示答案开始 */
-.showAnswer {
+.showAnswer .el-input__inner {
+  height: 50px !important;
 }
 .SA-con {
-  width: 1120px;
-  margin: 0 auto;
-  padding: 20px 20px 40px 20px;
+  width: 1260px;
+  padding: 20px;
   margin-top: 20px;
-  box-shadow: 0 0 6px rgba(0, 0, 0, 0.3);
+  background-color: #fff;
   overflow: hidden;
   position: relative;
+  box-shadow: 0 0 6px rgba(239, 239, 239, 0.3);
+  border-radius: 2px;
 }
 /* 展示答案结束 */
 /* 下一步按钮样式 */
@@ -146,7 +159,6 @@
 }
 .nextcenter {
   text-align: right;
-  padding-right: 90px;
 }
 #uploadAnswer .el-form-item {
   margin-bottom: 0px !important;
@@ -157,7 +169,7 @@
 }
 .SA-title {
   border-bottom: 1px solid #f0f0f0;
-  padding: 0 0 12px 0;
+  margin-bottom: 20px;
   overflow: hidden;
 }
 .SA-course {
@@ -169,20 +181,21 @@
 }
 .SA-week {
   /* float: right; */
-  color: #4f5c61;
+  color: #5051ad;
   vertical-align: text-bottom;
-  margin-left: 20px;
   font-size: 16px;
+  line-height: 50px;
 }
 .SA-topic {
   padding-top: 12px;
   float: left;
-  width: 550px;
+  width: 620px;
   vertical-align: text-bottom;
+  position: relative;
 }
 .SA-topic p {
   float: left;
-  width: 490px;
+  width: 550px;
   height: 45px;
   line-height: 22px;
   color: #2d3639;
@@ -193,21 +206,24 @@
   overflow: hidden;
 }
 .SA-topic img {
-  width: 50px;
-  height: 50px;
-  float: right;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 15px;
+  right: 0px;
 }
 .SA-answer {
   padding-top: 12px;
   float: right;
-  width: 550px;
+  width: 620px;
+  position: relative;
 }
 .SA-answer p {
   float: left;
-  width: 490px;
+  width: 550px;
   height: 45px;
   line-height: 22px;
-  color: #2d3639;
+  color: #2a2a2a;
   word-break: break-all;
   display: -webkit-box;
   -webkit-line-clamp: 2; /*限制在一个块元素显示的文本的行数*/
@@ -215,9 +231,11 @@
   overflow: hidden;
 }
 .SA-answer img {
-  width: 50px;
-  height: 50px;
-  float: right;
+  width: 60px;
+  height: 60px;
+  position: absolute;
+  top: 15px;
+  right: 0px;
 }
 .SA-edit {
   position: absolute;
@@ -237,34 +255,151 @@
 }
 .orderTitle {
   margin-top: 16px;
-  margin: 0 auto;
-  width: 1160px;
-  overflow: hidden;
-}
-.orderNull {
-  text-align: center;
-  width: 1160px;
-  line-height: 250px;
-  color: #136bd3;
-}
-.orderNull a {
-  text-decoration: underline;
-  color: #da0e0e;
-}
-.orderNull a:hover {
-  color: #ffcd1f;
+  width: 100%;
+  /* overflow: hidden; */
+  position: relative;
 }
 /* 展示订单结束 */
 .el-scrollbar__wrap {
   overflow-y: scroll !important;
   overflow-x: scroll !important;
 }
+.demo-title {
+  float: left;
+  position: absolute;
+  top: 1px;
+  left: 31px;
+}
 .demo-title .el-input__inner {
   border: none !important;
-  height: 29px !important;
+  height: 30px !important;
   font-size: 21px !important;
   padding: 0px !important;
   background-color: #fafbff !important;
+  border-bottom: 1px solid #3e5ca5 !important;
+  padding-bottom: 2px !important;
+  border-radius: 0px !important;
+}
+.demo-title .el-form-item__content {
+  line-height: 0px !important;
+}
+.share-subtitle-ti {
+  font-size: 21px;
+  height: 30px;
+  color: #3e5ca5;
+  font-weight: 700;
+  margin-bottom: 32px;
+  position: relative;
+}
+.share-subtitle-ti .subtitle-span {
+  border-bottom: 1px solid #3e5ca5;
+  padding-bottom: 2px;
+  position: relative;
+  left: 31px;
+}
+.share-subtitle-ti .modification {
+  position: absolute;
+  top: 0px;
+  margin-left: 10px;
+}
+.up-answer-title {
+  height: 50px;
+  border-bottom: 1px solid #f0f0f0;
+  margin-bottom: 20px;
+}
+.up-answer-week .el-input__inner {
+  border: none !important;
+  color: #2e8bff !important;
+}
+.up-answer-type .el-input__inner {
+  border: none !important;
+  color: #2e8bff !important;
+}
+.up-answer-week {
+  float: left;
+}
+.up-answer-week .el-input__inner {
+  padding: 0;
+}
+.up-answer-type {
+  float: left;
+}
+.up-answer-fn {
+  float: right;
+  line-height: 50px;
+}
+/* 添加一个新的题目按钮 */
+.addTopic {
+  width: 100%;
+  height: 100px;
+  background-color: #fff;
+  text-align: center;
+  line-height: 100px;
+  color: #4b58b6;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  box-shadow: 0 0 6px rgba(239, 239, 239, 0.3);
+  border-radius: 2px;
+}
+.addTopic:hover {
+  color: #ffcd1f;
+}
+.addTopic:active {
+  color: #ffce1fe8;
+}
+/* 确认创建题库 */
+.affirmQb {
+  width: 100%;
+  height: 100px;
+  background-color: #409efe;
+  text-align: center;
+  line-height: 100px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 18px;
+  cursor: pointer;
+  border-radius: 2px;
+}
+.affirmQb:hover {
+  background-color: #ffcd1f;
+  color: #000;
+}
+.affirmQb:active {
+  background-color: #ffce1fe8;
+}
+/* 页面顶部的确认创建题库 */
+.miniAffirmQb {
+  width: 100px;
+  height: 40px;
+  background-color: #409efe;
+  text-align: center;
+  line-height: 40px;
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  border-radius: 2px;
+}
+.miniAffirmQb:hover {
+  background-color: #ffcd1f;
+  color: #000;
+}
+.miniAffirmQb:active {
+  background-color: #ffce1fe8;
+}
+.answer-box {
+  width: 1260px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #fff;
+  overflow: hidden;
+  box-shadow: 0 0 6px rgba(239, 239, 239, 0.3);
 }
 </style>
 
@@ -291,76 +426,51 @@
             <div class="share-subtitle">
               <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
             </div>
-            <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
-              <span style="border-bottom: 1px solid #3e5ca5;padding-bottom:2px;">{{orderInfo.name}}</span>
-              <el-button class="modification" type="mini" @click="modification">修改</el-button>
+            <div class="share-subtitle-ti">
+              <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
+              <span class="subtitle-span" v-show="subtitle == false">{{orderInfo.name}}
+                <el-button
+                  class="modification"
+                  type="mini"
+                  @click="modification"
+                  v-show="subtitle == false"
+                >修改</el-button>
+              </span>
+              <el-form
+                v-show="subtitle == true"
+                :model="orderInfo"
+                :rules="orderInforules"
+                ref="orderInfo"
+                class="demo-title"
+                @submit.native.prevent
+              >
+                <el-form-item prop="name" style="float: left;">
+                  <el-input
+                    v-model="orderInfo.name"
+                    placeholder="请输入标题(必填)"
+                    style="width:1269px;"
+                    @change="orderTitleMeth(orderInfo)"
+                  ></el-input>
+                </el-form-item>
+              </el-form>
             </div>
-            <el-form
-              :model="orderInfo"
-              :rules="orderInforules"
-              ref="orderInfo"
-              class="demo-title"
-              @submit.native.prevent
-            >
-              <el-form-item prop="name" style="float: left;" v-show="subtitle">
-                <el-input
-                  v-model="orderInfo.name"
-                  placeholder="请输入标题(必填)"
-                  style="width:1160px;"
-                  @change="orderTitleMeth(orderInfo)"
-                ></el-input>
-              </el-form-item>
-              <!-- <el-button
-              style="float:right;"
-              type="primary"
-              @click="orderTitleMeth(orderInfo)"
-              v-show="active == 2"
-              >保存标题</el-button>-->
-            </el-form>
+            <div class="miniAffirmQb" @click="affirmQb">确认创建</div>
           </div>
-          <!-- <div class="orderNull" v-show="this.orderNull == true && this.$route.query.type == 3">
-          当前题库集没有答案
-          <router-link to="/personalData/award">返回</router-link>
-          </div>-->
           <!-- 展示创建过的订单开始 -->
           <div v-show="active == 2">
             <div class="showAnswer" v-for="(item,index) in answerArray">
               <div class="SA-con">
                 <div class="SA-title">
-                  <span class="SA-course">{{item.classname}}--{{item.universityname}}</span>
                   <span
                     class="SA-week"
-                  >第{{item.classInfoContentTest.classWeek}}周--{{item.classInfoContentTest.classWeekType}}</span>
-                </div>
-                <div class="SA-edit">
-                  <i class="el-icon-edit edits" @click="editAnswerShow(item)"></i>
-                  <i class="el-icon-delete delete" @click="editAnswerDelete(item)"></i>
-                </div>
-                <div v-show="active == 2 && item.show == false">
-                  <div class="SA-topic">
-                    <p v-show="item.classInfoContentTest.name == ''" style="color:#ccc;">题目名称</p>
-                    <p
-                      v-show="item.classInfoContentTest.name != ''"
-                    >{{item.classInfoContentTest.name}}</p>
-                    <img :src="item.topicImg" alt />
-                  </div>
-
-                  <div class="SA-answer">
-                    <p v-show="item.classInfoContentTest.contents == ''" style="color:#ccc;">答案内容</p>
-                    <p
-                      v-show="item.classInfoContentTest.contents != ''"
-                    >{{item.classInfoContentTest.contents}}</p>
-                    <img :src="item.answerImg" alt />
-                  </div>
-                </div>
-                <div v-show="active == 2 && item.show == true">
+                    v-show="active == 2 && item.show == false"
+                  >第{{item.classInfoContentTest.classWeek}}周&nbsp;-&nbsp;{{item.classInfoContentTest.classWeekType}}</span>
                   <div class="up-answer-week">
-                    <div class="share-prefix">周选择*</div>
                     <el-select
+                      v-show="active == 2 && item.show == true"
                       v-model="item.classInfoContentTest.classWeek"
                       placeholder="请选择当前课程所在的周"
-                      style="width:550px;"
+                      style="width:80px;"
                     >
                       <el-option
                         v-for="item in weekoptions"
@@ -371,11 +481,11 @@
                     </el-select>
                   </div>
                   <div class="up-answer-type">
-                    <div class="share-prefix">类型选择*</div>
                     <el-select
+                      v-show="active == 2 && item.show == true"
                       v-model="item.classInfoContentTest.classWeekType"
                       placeholder="请选择当前课程的类型"
-                      style="width:550px;"
+                      style="width:173px;"
                     >
                       <el-option
                         v-for="item in typeoptions"
@@ -385,15 +495,43 @@
                       ></el-option>
                     </el-select>
                   </div>
+                </div>
+                <div class="SA-edit">
+                  <i
+                    class="el-icon-circle-check edits"
+                    v-show="active == 2 && item.show == true"
+                    title="保存题目"
+                    @click="editstepupload(item)"
+                  ></i>
+                  <i class="el-icon-edit edits" @click="editAnswerShow(item)" title="编辑"></i>
+                  <i class="el-icon-delete delete" @click="editAnswerDelete(item)" title="删除"></i>
+                </div>
+                <div v-show="active == 2 && item.show == false">
+                  <div class="SA-topic">
+                    <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
+                    <p v-show="item.classInfoContentTest.name == ''" style="color:#2a2a2a;">[暂无]</p>
+                    <p
+                      v-show="item.classInfoContentTest.name != ''"
+                    >{{item.classInfoContentTest.name}}</p>
+                    <img :src="item.topicImg" alt />
+                  </div>
+
+                  <div class="SA-answer">
+                    <span style="color:#ccc;margin-bottom:5px;display: block;">答案内容</span>
+                    <p v-show="item.classInfoContentTest.contents == ''" style="color:#2a2a2a;">[暂无]</p>
+                    <p
+                      v-show="item.classInfoContentTest.contents != ''"
+                    >{{item.classInfoContentTest.contents}}</p>
+                    <img :src="item.answerImg" alt />
+                  </div>
+                </div>
+                <div v-show="active == 2 && item.show == true">
                   <div class="up-answer-topic">
                     <div class="topic-con">
-                      <div class="share-prefix">题目名称(选填)</div>
                       <el-input
-                        type="textarea"
                         style="overflow-y: hidden;"
                         placeholder="请输入您的题目名称(选填)"
                         v-model="item.classInfoContentTest.name"
-                        :autosize="{ minRows: 1.4, maxRows: 10}"
                       ></el-input>
                       <!-- <el-input v-model="item.classInfoContentTest.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
                       <el-upload
@@ -421,18 +559,11 @@
                     </div>
                   </div>
                   <div class="up-answer-img">
-                    <div class="share-prefix">答案内容*(必填)</div>
                     <el-input
-                      type="textarea"
                       style="overflow-y: hidden;"
                       placeholder="请输入您的答案内容(选填)"
                       v-model="item.classInfoContentTest.contents"
-                      :autosize="{ minRows: 1.4, maxRows: 10}"
                     ></el-input>
-                    <!-- <el-input
-                    v-model="item.classInfoContentTest.contents"
-                    placeholder="请输入您的答案内容(选填)"
-                    ></el-input>-->
                     <el-upload
                       class="upload-topic"
                       ref="answerArray"
@@ -457,17 +588,10 @@
                       <i
                         slot="tip"
                         class="el-upload__tip"
-                        style="margin-left:10px;color:#9c9c9c;"
-                      >只能上传jpg/png文件，且不超过500kb</i>
+                        style="margin-left:240px;color:#9c9c9c;display: inline-block;"
+                      >每次只能上传1张jpg/png的图片，且不超过2MB</i>
                     </el-upload>
                   </div>
-                  <el-button
-                    style="position: absolute;bottom:4px;right:20px;"
-                    size="small"
-                    type="danger"
-                    @click="editstepupload(item)"
-                    v-show="active == 2"
-                  >提交答案</el-button>
                 </div>
               </div>
               <!-- 编辑现有答案 -->
@@ -499,7 +623,7 @@
                       prefix-icon="el-icon-search"
                       :trigger-on-focus="false"
                       @blur="schoolBlur"
-                      style="width:1120px;"
+                      style="width:1300px;"
                     >
                       <template slot-scope="{ item }">
                         <div
@@ -551,7 +675,7 @@
                       prefix-icon="el-icon-search"
                       :trigger-on-focus="false"
                       @blur="courseBlur"
-                      style="width:1120px;"
+                      style="width:1300px;"
                     >
                       <template slot-scope="{ item }">
                         <div
@@ -564,19 +688,15 @@
                         <div v-show="item.type == null">没有找到对应的课程</div>
                       </template>
                     </el-autocomplete>
-                    <!-- <el-select v-model="upload.course" placeholder="请选择您的课程" style="width:1120px;">
-                    <el-option
-                      v-for="item in courseoptions"
-                      :key="item.value"
-                      :label="item.label"
-                      :value="item.label"
-                    ></el-option>
-                    </el-select>-->
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
                   <el-button style="margin-top: 20px;" @click="steplast">上一步</el-button>
-                  <el-button style="margin-top: 20px;" @click="upcourseShow" title="没有找到?点击这里添加一门新的课程">添加课程</el-button>
+                  <el-button
+                    style="margin-top: 20px;"
+                    @click="upcourseShow"
+                    title="没有找到?点击这里添加一门新的课程"
+                  >添加课程</el-button>
                   <el-button
                     style="margin-top: 20px;"
                     type="primary"
@@ -588,48 +708,49 @@
               <!-- 选择课程END -->
 
               <!-- 编辑答案START -->
-              <div class="up-answer" v-if="active == 2">
-                <div class="share-box">
-                  <p class="share-title">添加答案--{{upload.course}}--{{upload.school}}</p>
-
-                  <div class="up-answer-week">
-                    <div class="share-prefix">周选择*</div>
-                    <el-form-item prop="week">
-                      <el-select
-                        v-model="upload.week"
-                        placeholder="请选择当前课程所在的周"
-                        style="width:550px;"
-                      >
-                        <el-option
-                          v-for="item in weekoptions"
-                          :key="item.label"
-                          :label="'第'+ item.label + '周'"
-                          :value="item.label"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
-                  </div>
-                  <div class="up-answer-type">
-                    <div class="share-prefix">类型选择*</div>
-                    <el-form-item prop="type">
-                      <el-select
-                        v-model="upload.type"
-                        placeholder="请选择当前课程的类型"
-                        style="width:550px;"
-                      >
-                        <el-option
-                          v-for="item in typeoptions"
-                          :key="item.value"
-                          :label="item.label"
-                          :value="item.label"
-                        ></el-option>
-                      </el-select>
-                    </el-form-item>
+              <div class="up-answer" v-if="active == 2 && upAnswerShow">
+                <div class="answer-box">
+                  <div class="up-answer-title">
+                    <div class="up-answer-week">
+                      <el-form-item prop="week">
+                        <el-select
+                          v-model="upload.week"
+                          placeholder="请选择当前课程所在的周"
+                          style="width:80px;"
+                        >
+                          <el-option
+                            v-for="item in weekoptions"
+                            :key="item.label"
+                            :label="'第'+ item.label + '周'"
+                            :value="item.label"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </div>
+                    <div class="up-answer-type">
+                      <el-form-item prop="type">
+                        <el-select
+                          v-model="upload.type"
+                          placeholder="请选择当前课程的类型"
+                          style="width:173px;"
+                        >
+                          <el-option
+                            v-for="item in typeoptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.label"
+                          ></el-option>
+                        </el-select>
+                      </el-form-item>
+                    </div>
+                    <div class="up-answer-fn">
+                      <el-button size="small" @click="topicCancel" title="隐藏题目">取消</el-button>
+                      <el-button type="primary" size="small" @click="stepupload('upload')">保存题目</el-button>
+                    </div>
                   </div>
 
                   <div class="up-answer-topic">
                     <div class="topic-con">
-                      <div class="share-prefix">题目名称(选填)</div>
                       <el-form-item prop="topic">
                         <el-input v-model="upload.topic" placeholder="请输入您的题目名称(选填)"></el-input>
                       </el-form-item>
@@ -659,7 +780,6 @@
                     </div>
                   </div>
                   <div class="up-answer-img">
-                    <div class="share-prefix">答案内容*(必填)</div>
                     <el-form-item prop="answer">
                       <el-input v-model="upload.answer" placeholder="请输入您的答案内容(选填)"></el-input>
                     </el-form-item>
@@ -688,27 +808,15 @@
                         <i
                           slot="tip"
                           class="el-upload__tip"
-                          style="margin-left:10px;color:#9c9c9c;"
+                          style="margin-left:240px;color:#9c9c9c;display: inline-block;line-height: 0px;"
                         >每次只能上传1张jpg/png的图片，且不超过2MB</i>
                       </el-upload>
                     </el-form-item>
                   </div>
-                  <!-- <el-button
-                  style="margin-top: 20px;position: absolute;right: 20px;top: 209px;"
-                  type="danger"
-                  @click="stepupload('upload')"
-                  v-show="active == 2"
-                  >提交答案</el-button>-->
                 </div>
-                <div class="nextcenter">
+                <!-- <div class="nextcenter">
                   <el-button style="margin-top: 20px;" @click="steplast" v-show="lastStep">上一步</el-button>
-                  <el-button
-                    style="margin-top: 20px;"
-                    type="danger"
-                    @click="stepupload('upload')"
-                    v-show="active == 2"
-                  >提交答案</el-button>
-                </div>
+                </div>-->
               </div>
               <!-- 编辑答案END -->
             </el-form>
@@ -782,8 +890,7 @@
             >
               <div class="up-school" v-show="$route.query.type == 1">
                 <div class="share-box">
-                  <p class="share-title">修改学校</p>
-                  <div class="share-prefix">学校*</div>
+                  <p class="share-title">修改一所学校名称</p>
                   <el-form-item prop="name">
                     <el-input v-model="editruleForm.name" placeholder="请填写您的学校名称"></el-input>
                   </el-form-item>
@@ -814,10 +921,11 @@
             >
               <div class="up-class" v-show="$route.query.type == 2">
                 <div class="share-box">
-                  <p class="share-title">修改课程</p>
-                  <div class="share-prefix">学校*</div>
-                  <div>{{editchourses.school}}</div>
-                  <div class="share-prefix">课程*</div>
+                  <div class="share-subtitle">
+                    <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+                    {{editchourses.school}}
+                  </div>
+                  <p class="share-title">修改一门课程名称</p>
                   <el-form-item prop="name">
                     <el-input v-model="editchourses.name" placeholder="请填写您的课程名称"></el-input>
                   </el-form-item>
@@ -839,6 +947,12 @@
               </div>
               <!-- 修改课程END -->
             </el-form>
+          </div>
+          <div class="addTopic" @click="addTopic" v-show="active == 2">
+            <p>+&nbsp;添加一个新的题目</p>
+          </div>
+          <div class="affirmQb" @click="affirmQb" v-show="active == 2">
+            <p>确认创建</p>
           </div>
         </div>
       </div>
@@ -870,7 +984,7 @@ export default {
   },
   data() {
     return {
-      subtitle:false,
+      subtitle: false,
       uploadNum: 1,
       active: 0,
       formData: {},
@@ -928,7 +1042,7 @@ export default {
         schoolId: 0,
         course: "",
         courseId: 0,
-        type: "",
+        type: "作业(Asssignment)",
         week: 1,
         topic: "",
         topicUrl: "",
@@ -1029,13 +1143,12 @@ export default {
       coursekong: {},
       schoolKong: {},
       orderKong: {},
-      orderNull: false,
-      lastStep: true
+      lastStep: true,
+      // 新题目展开隐藏
+      upAnswerShow: false
     };
   },
-  // beforeRouteUpdate(to, from, next) {
-
-  // },
+  beforeRouteUpdate(to, from, next) {},
   created: function() {
     const _this = this;
 
@@ -1089,14 +1202,11 @@ export default {
     upschoolShow() {
       const _this = this;
       _this.upschool = !_this.upschool;
-      // _this.school = "";
-      // _this.course = "";
     },
     // 添加课程显示
     upcourseShow() {
       const _this = this;
       _this.upcourse = !_this.upcourse;
-      // _this.course = "";
     },
     // 上一步
     steplast() {
@@ -1117,13 +1227,6 @@ export default {
           type: "error"
         });
       }
-
-      // _this.$refs[upload].validateField("school", errMsg => {
-      //   if (errMsg) {
-      //   } else {
-      //     _this.active = 1;
-      //   }
-      // });
     },
     // 新增学校下一步
     addSchoolNext(ruleForm) {
@@ -1212,11 +1315,6 @@ export default {
           .catch(function(error) {
             console.log(error);
           });
-        // _this.$refs[upload].validateField("course", errMsg => {
-        //   if (errMsg) {
-        //   } else {
-        //   }
-        // });
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1284,7 +1382,6 @@ export default {
     // 立即上传
     stepupload(upload) {
       const _this = this;
-      // this.$refs.addAnswerUpload.submit();
       if (localStorage.getItem("token")) {
         var formData = {};
         formData.Name = _this.upload.topic;
@@ -1297,63 +1394,58 @@ export default {
         formData.ClassWeek = _this.upload.week;
         formData.ClassWeekType = _this.upload.type;
         _this.formData = formData;
-        console.log(_this.formData);
-        // if (_this.doupload == true) {
-        //   console.log(1);
-        //   // _this.rules.answerUrl = [];
-        //   // _this.$refs["uploadAnswerUrl"].clearValidate();
-        // } else {
-        //   console.log(2);
-        //   // _this.$refs["upload"].validateField("answerUrl");
-        //   // _this.rules.answerUrl = [
-        //   //   { required: true, message: "请上传答案图片", trigger: "change" }
-        //   // ];
-        // }
-        _this.$refs[upload].validate(valid => {
-          console.log(valid);
-          if (valid) {
-            _this
-              .axios({
-                method: "post",
-                url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
-                async: false,
-                data: _this.formData,
-                xhrFields: {
-                  withCredentials: true
-                },
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-              })
-              .then(function(res) {
-                if (res.data.status == 1) {
-                  _this.upload.Name = "";
-                  _this.upload.Contents = "";
-                  (_this.topicfileList = []),
-                    (_this.answerfileList = []),
+        if (formData.Url == "" && formData.Contents == "") {
+          _this.$message({
+            message: "答案内容和图片请至少保证上传一项!",
+            type: "error"
+          });
+        } else {
+          _this.$refs[upload].validate(valid => {
+            if (valid) {
+              _this
+                .axios({
+                  method: "post",
+                  url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
+                  async: false,
+                  data: _this.formData,
+                  xhrFields: {
+                    withCredentials: true
+                  },
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                  }
+                })
+                .then(function(res) {
+                  if (res.data.status == 1) {
+                    _this.upload.Name = "";
+                    _this.upload.Contents = "";
+                    _this.topicfileList = [];
+                    _this.answerfileList = [];
                     _this.serchingAnswer(_this.classInfoTestId);
-                  _this.upload.topic = "";
-                  _this.upload.topicUrl = "";
-                  _this.upload.answerUrl = "";
-                  _this.upload.answer = "";
-                  _this.$message({
-                    message: "添加答案成功",
-                    type: "success"
-                  });
-                } else {
-                  _this.$message({
-                    message: res.data.msg,
-                    type: "error"
-                  });
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else {
-            return false;
-          }
-        });
+                    _this.upload.topic = "";
+                    _this.upload.topicUrl = "";
+                    _this.upload.answerUrl = "";
+                    _this.upload.answer = "";
+                    _this.upAnswerShow = false;
+                    _this.$message({
+                      message: "添加答案成功",
+                      type: "success"
+                    });
+                  } else {
+                    _this.$message({
+                      message: res.data.msg,
+                      type: "error"
+                    });
+                  }
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            } else {
+              return false;
+            }
+          });
+        }
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1409,9 +1501,8 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           if (res.data.status == 1) {
-            if (res.data.data.length == 0) _this.orderNull = true;
-
             var answerArray = [];
             answerArray = res.data.data;
             _this.serchingWeek(classInfoTestId);
@@ -1423,31 +1514,37 @@ export default {
               _this.$set(answerArray[i], "answerUrlList", []);
               _this.$set(answerArray[i], "topicCacheUrl", "");
               _this.$set(answerArray[i], "answerCacheUrl", "");
-              answerArray[i].topicImg =
-                _this.URLport.ImgPath +
-                answerArray[i].classInfoContentTest.nameUrl;
-              answerArray[i].answerImg =
-                _this.URLport.ImgPath + answerArray[i].classInfoContentTest.url;
-              if (answerArray[i].classInfoContentTest.nameUrl == "") {
+              if (
+                answerArray[i].classInfoContentTest.nameUrl.lastIndexOf(
+                  "jpg"
+                ) == -1 &&
+                answerArray[i].classInfoContentTest.nameUrl.lastIndexOf(
+                  "png"
+                ) == -1
+              ) {
                 answerArray[i].topicUrlList = [];
               } else {
-                answerArray[i].topicCacheUrl =
-                  answerArray[i].classInfoContentTest.nameUrl;
+                answerArray[i].topicImg =
+                answerArray[i].classInfoContentTest.nameUrl;
+                const a = answerArray[i].classInfoContentTest.nameUrl.split('/')
+                answerArray[i].topicCacheUrl = '/'+a[3]+'/'+a[4]+'/'+a[5];
                 answerArray[i].topicUrlList.push({
-                  url:
-                    _this.URLport.ImgPath +
-                    answerArray[i].classInfoContentTest.nameUrl
+                  url: answerArray[i].classInfoContentTest.nameUrl
                 });
               }
-              if (answerArray[i].classInfoContentTest.url == "") {
+              if (
+                answerArray[i].classInfoContentTest.url.lastIndexOf("jpg") ==
+                  -1 &&
+                answerArray[i].classInfoContentTest.url.lastIndexOf("png") == -1
+              ) {
                 answerArray[i].answerUrlList = [];
               } else {
-                answerArray[i].answerCacheUrl =
-                  answerArray[i].classInfoContentTest.url;
+                answerArray[i].answerImg =
+                answerArray[i].classInfoContentTest.url;
+                const b = answerArray[i].classInfoContentTest.url.split('/')
+                answerArray[i].answerCacheUrl = '/'+b[3]+'/'+b[4]+'/'+b[5];
                 answerArray[i].answerUrlList.push({
-                  url:
-                    _this.URLport.ImgPath +
-                    answerArray[i].classInfoContentTest.url
+                  url: answerArray[i].classInfoContentTest.url
                 });
               }
             }
@@ -1535,15 +1632,10 @@ export default {
     answerHandleSucceed(res, file, fileList) {
       const _this = this;
       _this.upload.answerUrl = res.file;
-      // _this.$refs["upload"].clearValidate("answerUrl");
-      // _this.rules.answerUrl = [
-      //   { required: true, message: "请上传答案图片", trigger: "change" }
-      // ];
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
       const _this = this;
-      // _this.answerFile = file;
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
@@ -1741,24 +1833,12 @@ export default {
     editstepupload(item) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        console.log(item);
         var formData = {};
         formData.Name = item.classInfoContentTest.name;
         formData.NameUrl = item.topicCacheUrl;
-
-        // if (item.topicCacheUrl != "") {
-        //   formData.NameUrl = item.topicCacheUrl;
-        // } else {
-        //   formData.NameUrl = "";
-        // }
         formData.UniversityTestId = item.classInfoContentTest.universityTestId;
         formData.Contents = item.classInfoContentTest.contents;
         formData.Url = item.answerCacheUrl;
-        // if (item.answerCacheUrl != "") {
-        //   formData.Url = item.answerCacheUrl;
-        // } else {
-        //   formData.Url = item.classInfoContentTest.url;
-        // }
         formData.ClientId = _this.clientId;
         formData.ClassInfoTestId = item.classInfoContentTest.classInfoTestId;
         formData.ClassTestId = item.classInfoContentTest.classTestId;
@@ -1767,31 +1847,43 @@ export default {
         formData.Id = item.classInfoContentTest.id;
         formData.createTime = item.classInfoContentTest.createTime;
         _this.editformData = formData;
-        _this
-          .axios({
-            method: "put",
-            url: `${_this.URLport.serverPath}/classInfoContentTest/Edit`,
-            async: false,
-            data: _this.editformData,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.serchingAnswer(_this.editformData.ClassInfoTestId);
-              _this.$message({
-                message: "修改答案成功",
-                type: "success"
-              });
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
+        if (formData.Url == "" && formData.Contents == "") {
+          _this.$message({
+            message: "答案内容和图片请至少保证上传一项!",
+            type: "error"
           });
+        } else {
+          _this
+            .axios({
+              method: "put",
+              url: `${_this.URLport.serverPath}/classInfoContentTest/Edit`,
+              async: false,
+              data: _this.editformData,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.serchingAnswer(_this.editformData.ClassInfoTestId);
+                _this.$message({
+                  message: "修改答案成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1867,12 +1959,9 @@ export default {
     },
     editTopicHandleChange(file, fileList, idx, nameUrl) {
       const _this = this;
-      console.log(idx);
-      console.log(nameUrl);
     },
     editTopicHandlebeforeupload(file) {
       const _this = this;
-      console.log(file);
     },
     // 编辑答案图片
     editAnswerHandlesuccess(res, file, fileList, index) {
@@ -1934,7 +2023,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.orderInfo.name = res.data.data.cict.name;
             _this.orderKong = res.data.data.cict;
@@ -1943,7 +2031,6 @@ export default {
               _this.upload.course = res.data.data.clas;
               _this.upload.school = res.data.data.university;
               _this.serchingAnswer(res.data.data.cict.id);
-              _this.serchingWeek(res.data.data.cict.id);
             }
           }
         })
@@ -2026,6 +2113,7 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
+                _this.$router.push("/personalData/award");
                 _this.$message({
                   message: "修改学校成功",
                   type: "success"
@@ -2062,6 +2150,7 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
+                _this.$router.push("/personalData/award");
                 _this.$message({
                   message: "修改课程成功",
                   type: "success"
@@ -2076,10 +2165,56 @@ export default {
         }
       });
     },
-    modification(){
+    modification() {
       const _this = this;
       _this.subtitle = !_this.subtitle;
     },
+    // 添加一个新的题目
+    addTopic() {
+      const _this = this;
+      if (_this.upAnswerShow) {
+        _this.$message({
+          message: "一次只可以添加一个新的题目!",
+          type: "warning"
+        });
+      }
+      _this.upAnswerShow = true;
+    },
+    // 隐藏新的题目
+    topicCancel() {
+      const _this = this;
+      _this.upAnswerShow = false;
+    },
+    // 确认提交
+    affirmQb() {
+      const _this = this;
+      _this
+        .axios({
+          method: "put",
+          url: `${_this.URLport.serverPath}/ClassinfoTest/Change`,
+          async: false,
+          params: {
+            id: Number(_this.classInfoTestId)
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.$message({
+              message: "创建成功,工作人员正在审核内容。",
+              type: "success"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    }
   }
 };
 </script>
