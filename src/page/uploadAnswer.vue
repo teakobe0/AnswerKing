@@ -421,14 +421,17 @@
         <div class="ua-middle">
           <div class="orderTitle" v-show="active == 2">
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.school}}
             </div>
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.course}}
             </div>
             <div class="share-subtitle-ti">
               <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
-              <span class="subtitle-span" v-show="subtitle == false">{{orderInfo.name}}
+              <span class="subtitle-span" v-show="subtitle == false">
+                {{orderInfo.name}}
                 <el-button
                   class="modification"
                   type="mini"
@@ -1220,7 +1223,42 @@ export default {
     schoolNext(upload) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        _this.active = 1;
+        // _this.active = 1;
+        var school = {name:""};
+        school.name = _this.school.trim();
+        _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/UniversityTest/Add`,
+            async: false,
+            data: school,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res)
+            if (res.data.status == 1) {
+              _this.upload.school = res.data.data.name;
+              _this.upload.schoolId = res.data.data.id;
+              _this.active = 1;
+              // _this.upcourse = false;
+              _this.$message({
+                message: "添加学校成功",
+                type: "success"
+              });
+            } else {
+              _this.upload.school = res.data.data.name;
+              _this.upload.schoolId = res.data.data.id;
+              _this.active = 1;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1344,7 +1382,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
                 if (res.data.status == 1) {
                   _this.upload.course = res.data.data.classtest.name;
                   _this.upload.courseId = res.data.data.classtest.id;
@@ -1501,7 +1538,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           if (res.data.status == 1) {
             var answerArray = [];
             answerArray = res.data.data;
@@ -1525,9 +1561,12 @@ export default {
                 answerArray[i].topicUrlList = [];
               } else {
                 answerArray[i].topicImg =
-                answerArray[i].classInfoContentTest.nameUrl;
-                const a = answerArray[i].classInfoContentTest.nameUrl.split('/')
-                answerArray[i].topicCacheUrl = '/'+a[3]+'/'+a[4]+'/'+a[5];
+                  answerArray[i].classInfoContentTest.nameUrl;
+                const a = answerArray[i].classInfoContentTest.nameUrl.split(
+                  "/"
+                );
+                answerArray[i].topicCacheUrl =
+                  "/" + a[3] + "/" + a[4] + "/" + a[5];
                 answerArray[i].topicUrlList.push({
                   url: answerArray[i].classInfoContentTest.nameUrl
                 });
@@ -1540,9 +1579,10 @@ export default {
                 answerArray[i].answerUrlList = [];
               } else {
                 answerArray[i].answerImg =
-                answerArray[i].classInfoContentTest.url;
-                const b = answerArray[i].classInfoContentTest.url.split('/')
-                answerArray[i].answerCacheUrl = '/'+b[3]+'/'+b[4]+'/'+b[5];
+                  answerArray[i].classInfoContentTest.url;
+                const b = answerArray[i].classInfoContentTest.url.split("/");
+                answerArray[i].answerCacheUrl =
+                  "/" + b[3] + "/" + b[4] + "/" + b[5];
                 answerArray[i].answerUrlList.push({
                   url: answerArray[i].classInfoContentTest.url
                 });
@@ -1578,6 +1618,8 @@ export default {
     // 删除之后
     topicHandleRemove(file, fileList) {
       const _this = this;
+      const a = _this.upload.topicUrl.split("/");
+      const nameurl = "/" + a[3] + "/" + a[4] + "/" + a[5];
       _this
         .axios({
           method: "delete",
@@ -1585,33 +1627,7 @@ export default {
           async: false,
           params: {
             id: 0,
-            imgurl: _this.upload.topicUrl
-          },
-          xhrFields: {
-            withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        .then(function(res) {})
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-
-    // 答案图片
-    // 文件删除后
-    answerHandleRemove(file, fileList) {
-      const _this = this;
-      _this
-        .axios({
-          method: "delete",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
-          async: false,
-          params: {
-            id: 0,
-            imgurl: _this.upload.answerUrl
+            imgurl: nameurl
           },
           xhrFields: {
             withCredentials: true
@@ -1621,8 +1637,51 @@ export default {
           }
         })
         .then(function(res) {
-          // _this.doupload = false;
-          _this.upload.answerUrl = "";
+          if (res.data.status == 1) {
+            _this.upload.topicUrl = "";
+          } else {
+            _this.$message({
+              message: "删除图片失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+
+    // 答案图片
+    // 文件删除后
+    answerHandleRemove(res, file, fileList) {
+      const _this = this;
+      const a = _this.upload.answerUrl.split("/");
+      const url = "/" + a[3] + "/" + a[4] + "/" + a[5];
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          async: false,
+          params: {
+            id: 0,
+            imgurl: url
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.upload.answerUrl = "";
+          } else {
+            _this.$message({
+              message: "删除图片失败",
+              type: "error"
+            });
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -1660,12 +1719,12 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 1) {
+          if (queryString.length >= 2) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/UniversityTest/UniversityTests`,
+                url: `${_this.URLport.serverPath}/University/UniversitysPage`,
                 async: false,
                 params: {
                   name: valuestr
@@ -1675,13 +1734,14 @@ export default {
                 }
               })
               .then(function(res) {
-                if (res.data.data.length > 0) {
+                console.log(res);
+                if (res.data.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data[i]) {
+                    if (res.data.data.data[i]) {
                       results.push({
-                        value: res.data.data[i].name,
+                        value: res.data.data.data[i].name,
                         type: "大学",
-                        id: res.data.data[i].id
+                        id: res.data.data.data[i].id
                       });
                     }
                   }
@@ -1928,11 +1988,10 @@ export default {
     },
     editTopicHandleRemove(file, fileList, idx, id, nameUrl) {
       const _this = this;
-      _this.answerArray[idx].topicCacheUrl = "";
-      _this.answerArray[idx].topicImg = "";
-      var uid = id;
-      if (nameUrl == "") {
-        uid = 0;
+      const a = nameUrl.split("/");
+      var nameUrls = "/" + a[3] + "/" + a[4] + "/" + a[5];
+      if (nameUrl.length <= 26) {
+        nameUrls = _this.answerArray[idx].topicCacheUrl;
       }
       _this
         .axios({
@@ -1940,8 +1999,8 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
           async: false,
           params: {
-            id: uid,
-            imgurl: nameUrl
+            id: id,
+            imgurl: nameUrls
           },
           xhrFields: {
             withCredentials: true
@@ -1951,7 +2010,15 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
+          if (res.data.status == 1) {
+            _this.answerArray[idx].topicCacheUrl = "";
+            _this.answerArray[idx].topicImg = "";
+          } else {
+            _this.$message({
+              message: "删除图片失败",
+              type: "error"
+            });
+          }
         })
         .catch(function(error) {
           console.log(error);
@@ -1971,11 +2038,10 @@ export default {
     //
     editAnswerHandleRemove(file, fileList, idx, id, url) {
       const _this = this;
-      _this.answerArray[idx].answerCacheUrl = "";
-      _this.answerArray[idx].answerImg = "";
-      var uid = id;
-      if (url == "") {
-        uid = 0;
+      const a = url.split("/");
+      var answerUrl = "/" + a[3] + "/" + a[4] + "/" + a[5];
+      if (url.length <= 26) {
+        answerUrl = _this.answerArray[idx].answerCacheUrl;
       }
       _this
         .axios({
@@ -1983,8 +2049,8 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
           async: false,
           params: {
-            id: uid,
-            imgurl: url
+            id: id,
+            imgurl: answerUrl
           },
           xhrFields: {
             withCredentials: true
@@ -1993,7 +2059,17 @@ export default {
             Authorization: `Bearer ${localStorage.getItem("token")}`
           }
         })
-        .then(function(res) {})
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.answerArray[idx].answerCacheUrl = "";
+            _this.answerArray[idx].answerImg = "";
+          } else {
+            _this.$message({
+              message: "删除图片失败",
+              type: "error"
+            });
+          }
+        })
         .catch(function(error) {
           console.log(error);
         });
