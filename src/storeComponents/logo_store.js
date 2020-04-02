@@ -3,5 +3,6 @@ export default {
         show:true,
         hide:false,
         message:0,
+        contactUs:true,
     }
 }

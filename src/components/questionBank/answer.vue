@@ -111,6 +111,7 @@
 
 <template>
   <div id="answer">
+    <popupLogin></popupLogin>
     <div class="tabCon">
       <div class="loading"
         v-loading="this.$store.state.answer.loading"
@@ -163,11 +164,12 @@
 </template>
 <script type="es6">
 import VueEasyLightbox from "vue-easy-lightbox";
-
+import popupLogin from "@/components/public/popupLogin.vue";
 export default {
   name: "answer",
   components: {
-    VueEasyLightbox
+    VueEasyLightbox,
+    popupLogin
   },
   data() {
     return {

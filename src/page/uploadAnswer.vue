@@ -421,17 +421,14 @@
         <div class="ua-middle">
           <div class="orderTitle" v-show="active == 2">
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
-              {{upload.school}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
             </div>
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
-              {{upload.course}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
             </div>
             <div class="share-subtitle-ti">
               <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
-              <span class="subtitle-span" v-show="subtitle == false">
-                {{orderInfo.name}}
+              <span class="subtitle-span" v-show="subtitle == false">{{orderInfo.name}}
                 <el-button
                   class="modification"
                   type="mini"
@@ -1045,7 +1042,7 @@ export default {
         schoolId: 0,
         course: "",
         courseId: 0,
-        type: "作业(Asssignment)",
+        type: "作业(Assignment)",
         week: 1,
         topic: "",
         topicUrl: "",
@@ -1104,7 +1101,7 @@ export default {
       type: "",
       typeoptions: [
         {
-          label: "作业(Asssignment)"
+          label: "作业(Assignment)"
         },
         {
           label: "测验(Quiz)"
@@ -1246,10 +1243,6 @@ export default {
               _this.upload.schoolId = res.data.data.id;
               _this.active = 1;
               // _this.upcourse = false;
-              _this.$message({
-                message: "添加学校成功",
-                type: "success"
-              });
             } else {
               _this.upload.school = res.data.data.name;
               _this.upload.schoolId = res.data.data.id;

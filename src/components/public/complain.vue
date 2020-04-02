@@ -2,21 +2,40 @@
 .complain {
 }
 .com-button {
-  width: 100px;
-  height: 30px;
-  text-align: center;
-  line-height: 30px;
-  background-color: #58bce4;
-  color: #fff;
+  width: 310px;
+  background-color: rgb(245, 245, 245);
+  color: #000;
   font-size: 14px;
-  cursor: pointer;
+  
   position: fixed;
   right: 10px;
   bottom: 10px;
   z-index: 9999;
+  padding: 10px;
+  border-radius: 10px;
+
 }
-.com-button:hover {
-  background-color: #75c1e2;
+
+.com-img {
+  float: left;
+}
+.com-img img {
+  width: 50px;
+  height: 50px;
+}
+.com-text {
+  float: right;
+  width: 250px;
+  height: 50px;
+  font-size: 12px;
+  position: relative;
+}
+.com-text i{
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  font-size: 14px;
+  cursor: pointer;
 }
 .com-page {
   position: fixed;
@@ -33,9 +52,10 @@
   right: 10px;
   bottom: 10px;
   text-align: center;
-  border: 1px solid rgb(201, 201, 201);
   padding: 20px;
-  background-color: rgb(233, 233, 233);
+  background-color: rgb(245, 245, 245);
+  border-radius: 10px;
+
 }
 .Feedbackpage p {
   margin-bottom: 22px;
@@ -47,12 +67,25 @@
 }
 #submitss {
 }
+
 </style>
 
 <template>
   <div class="complain">
-    <div class="com-button" v-show="complainShow == true" @click="complainClick">提交建议</div>
-    <div class="com-page" v-show="complainShow == false">
+    <div class="com-button" v-if="this.$store.state.logo.contactUs">
+      
+      <div class="com-img">
+        <img src="../../assets/comIcon.png" alt="">
+      </div>
+      <div class="com-text">
+        <div>
+          CourseWhale课程鲸灵在线问答系统<br/>已经进入内侧阶段,请时刻关注网站最新动态!<br/>如有任何意见或建议<span style="text-decoration:underline;cursor: pointer;"  @click="comPageClick">请点击这里联系我们!</span>
+        </div>
+        <i class="el-icon-close" @click="complainClick"></i>
+      </div>
+      
+      </div>
+    <div class="com-page" v-show="comPageShow">
       <div class="Feedbackpage">
         <p>网站建议</p>
         <el-form
@@ -104,7 +137,7 @@ export default {
       callback();
     };
     return {
-      complainShow: true,
+      comPageShow:false,
       feedback: {
         Url: "",
         Name: "",
@@ -129,8 +162,13 @@ export default {
   methods: {
     complainClick: function() {
       const _this = this;
-      _this.complainShow = !_this.complainShow;
+      _this.$store.state.logo.contactUs = !_this.$store.state.logo.contactUs;
     },
+    comPageClick(){
+      const _this = this;
+      _this.comPageShow = !_this.comPageShow;
+    },
+
     submitForm(feedback) {
       this.$refs[feedback].validate(valid => {
         if (valid) {
@@ -163,7 +201,7 @@ export default {
     },
     cancelForm: function() {
       const _this = this;
-      _this.complainShow = !_this.complainShow;
+      _this.comPageShow = !_this.comPageShow;
     }
   }
 };
