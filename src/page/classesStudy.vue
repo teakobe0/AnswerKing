@@ -23,7 +23,7 @@
 /* End hide from IE-mac */
 .school-con {
   width: 100%;
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .class-query {

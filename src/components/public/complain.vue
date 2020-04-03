@@ -10,8 +10,8 @@
   position: fixed;
   right: 10px;
   bottom: 10px;
-  z-index: 9999;
-  padding: 10px;
+  z-index: 999;
+  padding: 15px;
   border-radius: 10px;
 
 }

@@ -9,7 +9,7 @@
 .serch-cover {
   width: 100%;
   margin: 0 auto;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   background-color: #f4f4f7;
   overflow: hidden;
   padding-bottom: 54px;

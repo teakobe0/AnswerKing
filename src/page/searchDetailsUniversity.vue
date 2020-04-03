@@ -5,7 +5,7 @@
 }
 
 .serchDetailsUniversity-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
   overflow: hidden;
 }
 

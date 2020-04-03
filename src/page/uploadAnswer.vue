@@ -4,7 +4,7 @@
   padding-bottom: 276px;
 }
 .ua-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
   /* height: 1000px; */
 }
 .ua-middle {
@@ -411,7 +411,7 @@
         :active="active"
         align-center
         finish-status="success"
-        style="width:1000px;margin:120px auto;margin-bottom: 40px;"
+        style="width:1000px;margin:40px auto;margin-bottom: 40px;"
       >
         <el-step title="编辑学校" icon="el-icon-edit"></el-step>
         <el-step title="编辑课程" icon="el-icon-s-order"></el-step>

@@ -9,7 +9,7 @@
 .personalData-con {
   width: 1300px;
   margin: 0 auto;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   overflow: hidden;
   background-color: #fafafa;
 }

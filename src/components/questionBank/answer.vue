@@ -96,7 +96,7 @@
   height: 30px;
   position: fixed;
   bottom: 10px;
-  right:10px;
+  right: 10px;
   padding: 0px !important;
   z-index: 9999;
 }
@@ -107,13 +107,35 @@
   text-decoration: none;
   color: black;
 }
+.popupLogins {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 999;
+}
+.popup-con {
+  width: 650px;
+  height: 476px;
+  margin: 0 auto;
+  position: relative;
+  margin-top: 260px;
+}
 </style>
 
 <template>
   <div id="answer">
-    <popupLogin></popupLogin>
+    <div class="popupLogins" v-show="popup">
+      <div class="popup-con">
+        <i class="el-icon-close pop-close" v-show="popup" @click="popupShows"></i>
+        <popupLogin v-show="popup"></popupLogin>
+      </div>
+    </div>
+
     <div class="tabCon">
-      <div class="loading"
+      <div
+        class="loading"
         v-loading="this.$store.state.answer.loading"
         element-loading-background="rgba(255, 255, 255)"
       >
@@ -130,7 +152,11 @@
             @mouseleave="onMouseout(items,indexs)"
             @click="() => handleanwer(indexs)"
           >
-            <el-button class="imgShow" size="mini" v-show="imgshow"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId">查看详情</router-link></el-button>
+            <el-button class="imgShow" size="mini" v-show="imgshow">
+              <router-link
+                :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId"
+              >查看详情</router-link>
+            </el-button>
             <img
               style="width:100%;height:100%;filter: blur(1px);"
               :src="item.contentUrl"
@@ -189,17 +215,18 @@ export default {
       loading: true,
       clock: null,
       // 图片查看详情按钮的展示
-      imgshow:false,
+      imgshow: false,
+      popup: false
     };
   },
   created: function() {
     const _this = this;
   },
   methods: {
-    onMouseOver: function(item,index) {
+    onMouseOver: function(item, index) {
       const _this = this;
     },
-    onMouseout: function(item,index) {
+    onMouseout: function(item, index) {
       const _this = this;
     },
     shows() {
@@ -212,7 +239,6 @@ export default {
       _this.visible = false;
       _this.fullscreenLoading = false;
       _this.imgshow = false;
-
     },
     joim: function() {
       const _this = this;
@@ -265,30 +291,34 @@ export default {
     handleanwer: function(index) {
       const _this = this;
       event.preventDefault(); //阻止URL跳转方法
-      if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
-        _this.shade = false;
-        // 控制图片查看器的打开
-        _this.index = index;
-        _this.shows();
-      } else {
-        _this.shade = true;
-        _this.totalTime = 30;
-        _this.content = _this.totalTime + "s后可观看答案";
-
-        _this.clock = window.setInterval(() => {
-          _this.totalTime--;
+      if (localStorage.token) {
+        if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
+          _this.shade = false;
+          // 控制图片查看器的打开
+          _this.index = index;
+          _this.shows();
+        } else {
+          _this.shade = true;
+          _this.totalTime = 30;
           _this.content = _this.totalTime + "s后可观看答案";
-          if (_this.totalTime < 1) {
-            _this.content = "s后可观看答案";
-            _this.totalTime = 30;
-            _this.shade = false;
-            // 控制图片查看器的打开
-            _this.index = index;
-            _this.shows();
-            //当倒计时小于0时清除定时器
-            window.clearInterval(_this.clock); //清除定时器
-          }
-        }, 1000);
+
+          _this.clock = window.setInterval(() => {
+            _this.totalTime--;
+            _this.content = _this.totalTime + "s后可观看答案";
+            if (_this.totalTime < 1) {
+              _this.content = "s后可观看答案";
+              _this.totalTime = 30;
+              _this.shade = false;
+              // 控制图片查看器的打开
+              _this.index = index;
+              _this.shows();
+              //当倒计时小于0时清除定时器
+              window.clearInterval(_this.clock); //清除定时器
+            }
+          }, 1000);
+        }
+      } else {
+        _this.popup = true;
       }
     },
     // 关闭遮罩
@@ -301,6 +331,10 @@ export default {
       // _this.imageShow = true;
       // _this.shows();
       _this.handleHide();
+    },
+    popupShows() {
+      const _this = this;
+      _this.popup = false;
     }
   }
 };

@@ -83,7 +83,7 @@
       <ul class="footer-2">
         <li class="footer-title">帮助</li>
         <li>
-          <router-link class="homenav-resi" to="/register">注册</router-link>
+          <router-link to="/register">注册</router-link>
         </li>
         <li>
           <router-link to="/faq">帮助中心</router-link>

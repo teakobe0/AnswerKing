@@ -1,11 +1,10 @@
 <style>
 .nav {
   width: 100%;
-  height: 80px;
   background-color: #4458b0;
   z-index: 99;
-  position: fixed;
-  top: 0;
+  /* position: fixed;
+  top: 0; */
 }
 
 .navcolor {
@@ -18,9 +17,7 @@
   width: 1300px;
   height: 80px;
   margin: 0 auto;
-  position: relative;
 }
-
 .nav-logo {
   float: left;
   z-index: 999;
@@ -39,182 +36,107 @@
   height: 32px;
   margin-top: 24px;
 }
-/* .homenav-ser {
-        float: left;
-        margin-top: 20px;
-        margin-left: 90px;
-        width: 400px;
-        text-align: left;
-    } */
 
-.nav li li a {
-  display: inline-block;
-}
-
-.nav li li a {
-  display: block;
-}
-
-.nav ul {
-  list-style-type: none;
+.el-menu-demo {
   float: right;
+  height: 80px;
 }
-
-.nav ul li {
-  float: left;
+.el-menu--horizontal > .el-menu-item {
+  height: 80px !important;
+  line-height: 80px !important;
+  padding: 0 !important;
+}
+.el-menu--horizontal > .el-menu-item:hover {
+  background-color: #4458b0 !important;
+  color: none !important;
+  border-bottom-color: #4458b0 !important;
+}
+.el-menu--horizontal > .el-menu-item a {
+  /* color: #FFF !important; */
+  display: inline-block;
   line-height: 80px;
-  display: block;
-  font-size: 0;
-  width: 110px;
-}
-
-.nav ul li a {
-  display: block;
-  font-size: 14px;
-  text-align: center;
-  color: #ffffff;
+  padding: 0 20px;
   text-decoration: none;
   font-weight: 700;
-  width: 100px;
+}
+.el-menu--horizontal > .el-menu-item a:hover {
+  color: #b9b9b9 !important;
+}
+.el-menu--horizontal > .el-submenu .el-submenu__title {
+  height: 80px !important;
+  line-height: 80px !important;
+  padding: 0 !important;
+}
+.el-menu--horizontal > .el-submenu .el-submenu__title:hover {
+  background-color: #4458b0 !important;
+  color: none !important;
+  border-bottom-color: #4458b0 !important;
+}
+.el-menu--horizontal > .el-menu-item.is-active {
+  border-bottom: 0px solid #409eff !important;
+  color: #fff !important;
+}
+.el-menu--horizontal > .el-submenu.is-active .el-submenu__title {
+  border-bottom: 0px solid #409eff !important;
+  color: #fff !important;
+}
+.el-menu--collapse .el-menu .el-submenu,
+.el-menu--popup {
+  min-width: 96px !important;
+}
+.el-menu.el-menu--horizontal {
+  border-bottom: solid 0px #e6e6e6 !important;
+}
+.homenav-resi {
+  background-color: #3ccece;
+  width: 56px;
+  text-align: center;
+  height: 50px;
+  line-height: 50px !important;
+  /* margin-top: 15px; */
+  border-radius: 2px;
+}
+.homenav-resi:hover {
+  transition-delay: 0.1s;
+  background-color: #fbcc28;
+  color: #000 !important;
+}
+
+#nickname {
+  display: inline-block;
+  width: 56px;
+  height: 80px;
   margin: 0 auto;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  position: relative;
+  text-align: center;
+  padding: 0 20px;
 }
-
-.nav ul table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 0;
+#nickname img {
+  /* margin: 0 auto; */
 }
-
-.nav ul li ul {
+.el-menu--horizontal > .el-submenu .el-submenu__icon-arrow {
   display: none;
 }
 
-.nav ul li:hover,
-.nav ul li a:hover,
-.nav ul li a:active {
-  color: #b9b9b9;
-  background-color: #4458b0;
-}
-
-.nav ul li:hover ul,
-.nav ul li a:hover ul,
-.nav ul li a:active ul {
-  display: block;
-  width: 100%;
-}
-
-.nav ul ul li {
-  display: block;
-  width: 100%;
-  border: none;
-  height: 40px;
-}
-
-.nav ul ul li a {
-  display: block;
-  color: #ffffff;
-  border: none;
-  height: 40px;
-  line-height: 40px;
-  position: relative;
-}
-
-.nav ul li .homenav-resi {
-  background-color: #3ccece;
-  height: 50px;
-  line-height: 50px;
-  margin-top: 15px;
-  border-radius: 2px;
-}
-
-.nav ul li .homenav-resi:hover {
-  transition-delay: 0.1s;
-  background-color: #fbcc28;
-  color: #000;
-}
-
-.homenav-register a {
-  display: inline-block;
+.perImg a {
+  color: #fff !important;
+  display: block !important;
+  text-align: center;
   text-decoration: none;
-  width: 370px;
-  height: 40px;
-  line-height: 40px;
-  color: #fff;
-  font-size: 15px;
-  font-weight: 700;
+}
+.perImg a:hover {
+  color: #b9b9b9 !important;
 }
 
-.homenav-register a:hover {
-  color: #b9b9b9;
-}
-
-.homenav-register i {
-  color: #fff;
-  margin-right: 5px;
-}
-
-.homenavInput input {
-  outline: none;
-  width: 350px;
-  height: 40px;
-  border-width: 0;
-  color: #fff;
-  background-color: #4559ae;
-  font-size: 15px;
-}
-
-.homenavInput input::-webkit-input-placeholder {
-  color: #b9b9b9;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.homenavInput i {
-  color: #fff;
-  margin-right: 5px;
-}
-#nickname {
-  width: 100px;
-  height: 80px;
-  color: #fdb841;
-  position: relative;
-}
-#nickname img {
-  margin-top: 22.5px;
-  width: 32px;
-  height: 32px;
-}
-.messageRed {
-  width: 10px;
-  height: 10px;
-  border-radius: 10px;
-  background: #e20000;
-  position: absolute;
-  top: 21px;
-  right: 24px;
-}
-.messageReds {
-  width: 10px;
-  height: 10px;
-  border-radius: 10px;
-  background: #e20000;
-  position: absolute;
-  top: 3px;
-  right: 10px;
-}
 .vipShow {
   width: 100%;
   font-size: 14px;
   color: #ffaa3b;
   background-color: rgba(56, 73, 148, 0.774);
-  line-height: 20px;
-  position: fixed;
-  top: 0px;
+  line-height: 40px;
   text-align: center;
   z-index: 999;
+  overflow: hidden;
 }
 .vipShow span {
   position: absolute;
@@ -235,115 +157,70 @@
 <template>
   <div class="nav">
     <complain></complain>
-
-    <div :class="searchBarFixed == true ? 'navcolor' :''">
-      <div class="vipShow" v-if="this.$store.state.vip.vipShow">
-        您的会员权益将于&nbsp;{{endTime | formatDate}}&nbsp;截止!您可以选择<router-link to="/personalData/vip">充值</router-link>或通过<router-link to="/personalData/basic">邀请好友</router-link>和<router-link to="/uploadAnswer">贡献资料</router-link>继续享受会员!
-        <span @click="vipHandel">
-          不在显示
-          <i class="el-icon-close"></i>
-        </span>
+    <div class="vipShow" v-if="this.$store.state.vip.vipShow">
+      您的会员权益将于&nbsp;{{endTime | formatDate}}&nbsp;截止!您可以选择<router-link to="/personalData/vip">充值</router-link>或通过<router-link to="/personalData/basic">邀请好友</router-link>和<router-link to="/uploadAnswer">贡献资料</router-link>继续享受会员!
+      <span @click="vipHandel">
+        不在显示
+        <i class="el-icon-close"></i>
+      </span>
+    </div>
+    <div class="homenav-con">
+      <div class="nav-logo">
+        <router-link to="/home">
+          <img src="../../assets/logo.png" alt />
+        </router-link>
       </div>
-      <div class="homenav-con">
-        <div class="nav-logo">
-          <router-link to="/home">
-            <img src="../../assets/logo.png" alt />
-          </router-link>
-        </div>
-        <!-- <div class="homenav-ser"> -->
-        <!-- <div class="homenav-register" v-model="toggle" @click="homenavRe()" v-if="vanish">
-                        <i class="el-icon-search"></i>
-                        <a href="javascript:void(0)">搜索</a>
-        </div>-->
-        <!-- <div class="homenavInput" v-if="vanishs" >
-                        <i class="el-icon-search"></i>
-                        <input type="text" placeholder="搜索" v-focus @blur="homenavLoseFoucs" v-model="statle" @keyup.enter="handleEnter(statle)"></input>
-                        <a href="javascript:void(0)">
-                            <i class="el-icon-close" @click="homenavDel"></i>
-                        </a>
-        </div>-->
-        <!-- </div> -->
-        <ul>
-          <li>
-            <router-link to="/schools" :class="searchBarFixed == true ? 'navcolora:hover' :''">学校资源</router-link>
-            <!--<table cellpadding="0" cellspacing="0">-->
-            <!--<tr>-->
-            <!--<td>-->
-            <!--<ul>-->
-            <!--<li>-->
-            <!--<router-link to='/schools'>学校</router-link>-->
-            <!--</li>-->
-            <!--<li>-->
-            <!--<router-link to='/subject'>学科</router-link>-->
-            <!--</li>-->
-            <!--</ul>-->
-            <!--</td>-->
-            <!--</tr>-->
-            <!--</table>-->
-          </li>
-          <li>
-            <router-link
-              to="/classesStudy"
-              :class="searchBarFixed == true ? 'navcolora:hover' :''"
-            >课程资源</router-link>
-          </li>
-          <li>
-            <router-link to="/member">成为会员</router-link>
-          </li>
-
-          <li>
-            <router-link to="/uploadAnswer">贡献资源</router-link>
-            <ul>
-              <li>
-                <a href="#">上传资料</a>
-              </li>
-              <li>
-                <a href="#">获取酬劳</a>
-              </li>
-            </ul>
-          </li>
-
-          <!-- <li>
-                        <router-link to='/question'>问答大厅</router-link>
-          </li>-->
-
-          <li v-if="$store.state.logo.show">
-            <router-link to="/login">登录</router-link>
-          </li>
-          <li v-if="$store.state.logo.show">
-            <router-link class="homenav-resi" to="/register">注册</router-link>
-          </li>
-          <li v-if="$store.state.logo.hide">
+      <el-menu
+        class="el-menu-demo"
+        mode="horizontal"
+        @select="handleSelect"
+        background-color="#4458b0"
+        text-color="#fff"
+        active-text-color="#ffd04b"
+      >
+        <div></div>
+        <el-menu-item index="1">
+          <router-link to="/schools">学校资源</router-link>
+        </el-menu-item>
+        <el-menu-item index="2">
+          <router-link to="/classesStudy">课程资源</router-link>
+        </el-menu-item>
+        <el-menu-item index="3">
+          <router-link to="/member">成为会员</router-link>
+        </el-menu-item>
+        <el-menu-item index="4">
+          <router-link to="/uploadAnswer">贡献资源</router-link>
+        </el-menu-item>
+        <el-menu-item index="6" v-if="$store.state.logo.show">
+          <router-link to="/login" style="width:56px;text-align: center;">登录</router-link>
+        </el-menu-item>
+        <el-menu-item index="7" v-if="$store.state.logo.show">
+          <router-link class="homenav-resi" to="/register">注册</router-link>
+        </el-menu-item>
+        <el-submenu index="8" v-if="$store.state.logo.hide">
+          <template slot="title">
             <router-link to="/personalData" id="nickname">
-              <img src="../../assets/个人中心.svg" alt />
+              <img src="../../assets/个人中心.svg" alt style="width:32px;height:32px;" />
               <div :class="{messageRed:this.$store.state.logo.message>=1}"></div>
             </router-link>
-            <table cellpadding="0" cellspacing="0">
-              <tr>
-                <td>
-                  <ul>
-                    <li>
-                      <router-link to="/personalData">个人信息</router-link>
-                    </li>
-                    <li>
-                      <router-link to="/personalData/inform">
-                        查看回复
-                        <span
-                          v-show="this.$store.state.logo.message>=1"
-                        >({{this.$store.state.logo.message}})</span>
-                        <div :class="{messageReds:this.$store.state.logo.message>=1}"></div>
-                      </router-link>
-                    </li>
-                    <li>
-                      <a href="javascript:void(0)" @click="logout">注销</a>
-                    </li>
-                  </ul>
-                </td>
-              </tr>
-            </table>
-          </li>
-        </ul>
-      </div>
+          </template>
+          <el-menu-item index="2-1" class="perImg">
+            <router-link to="/personalData">个人信息</router-link>
+          </el-menu-item>
+          <el-menu-item index="2-2" class="perImg">
+            <router-link to="/personalData/inform">
+              查看回复
+              <span
+                v-show="this.$store.state.logo.message>=1"
+              >({{this.$store.state.logo.message}})</span>
+              <div :class="{messageReds:this.$store.state.logo.message>=1}"></div>
+            </router-link>
+          </el-menu-item>
+          <el-menu-item index="2-3" class="perImg">
+            <a href="javascript:void(0)" @click="logout">注销</a>
+          </el-menu-item>
+        </el-submenu>
+      </el-menu>
     </div>
   </div>
 </template>
@@ -373,7 +250,8 @@ export default {
       nummessagetwo: "",
       personreviewsid: "",
       messageLength: 0,
-      endTime: ""
+      endTime: "",
+      activeIndex2: ""
     };
   },
   created: function() {
@@ -397,6 +275,10 @@ export default {
     }
   },
   methods: {
+    handleSelect(key, keyPath) {
+      // this.activeIndex2 = key;
+      console.log(key, keyPath);
+    },
     gainmessage: function() {
       const _this = this;
       _this
@@ -441,12 +323,15 @@ export default {
             }
           })
           .then(function(res) {
-            if(res.data.data.role == "vip"){
+            if (res.data.data.role == "vip") {
               const time = new Date();
               _this.endTime = res.data.data.effectiveDate;
-              const endTimes = new Date(Date.parse(res.data.data.effectiveDate));
+              const endTimes = new Date(
+                Date.parse(res.data.data.effectiveDate)
+              );
               const iDays = parseInt(
-              Math.abs(endTimes - time) / 1000 / 60 / 60 / 24);//把相差的毫秒数转换为天数
+                Math.abs(endTimes - time) / 1000 / 60 / 60 / 24
+              ); //把相差的毫秒数转换为天数
               if (iDays < 7) _this.$store.state.vip.vipShow = true;
             }
             _this.$store.state.loginPerson.loginPerson = res.data.data;

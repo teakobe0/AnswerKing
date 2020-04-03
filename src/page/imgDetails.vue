@@ -95,7 +95,7 @@
   line-height: 30px;
 }
 .imgDetails-title {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 .UP {
   position: fixed;

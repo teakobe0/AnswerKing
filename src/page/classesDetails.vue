@@ -5,7 +5,7 @@
 }
 
 .classesDetails-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .classesDetails-top {
