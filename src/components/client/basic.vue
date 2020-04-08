@@ -219,6 +219,7 @@ export default {
             let encryptText = "http://coursewhale.com/register?inviter="+encrypt;
             _this.copy = encryptText;
             _this.input = encryptText;
+            console.log(res)
           })
           .catch(function(error) {
             console.log(error);

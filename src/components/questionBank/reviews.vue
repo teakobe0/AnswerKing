@@ -450,9 +450,8 @@ export default {
           .then(function(res) {
             _this.personreviews = res.data.data;
             _this.personreviewsid = res.data.data.id;
-            if (res.data.data.image != null) {
-              _this.imageUrl =
-                _this.URLport.ImgPath + res.data.data.image;
+            if (res.data.data.image.length > 26) {
+              _this.imageUrl = res.data.data.image;
               _this.headShowLogin = true;
             }else {
               _this.headShowLogin = false;
@@ -506,14 +505,14 @@ export default {
             _this.$set(_this.reviews[i], "replies", []);
             _this.$set(_this.reviews[i], "headShow", false);
             _this.$set(_this.reviews[i], "headShowTwo", false);
+            
             if (_this.reviews[i].img) {
-              _this.reviews[i].img =
-                _this.URLport.ImgPath + _this.reviews[i].img;
+              _this.reviews[i].img = _this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
+            
             if (_this.reviews[i].replyimg) {
-              _this.reviews[i].replyimg =
-                _this.URLport.ImgPath + _this.reviews[i].replyimg;
+              _this.reviews[i].replyimg = _this.reviews[i].replyimg;
               _this.$set(_this.reviews[i], "headShowTwo", true);
             }
             if (_this.reviews[i].clientId == _this.personreviewsid) {

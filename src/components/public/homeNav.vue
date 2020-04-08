@@ -276,8 +276,6 @@ export default {
   },
   methods: {
     handleSelect(key, keyPath) {
-      // this.activeIndex2 = key;
-      console.log(key, keyPath);
     },
     gainmessage: function() {
       const _this = this;

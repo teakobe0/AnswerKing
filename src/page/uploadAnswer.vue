@@ -1220,38 +1220,8 @@ export default {
     schoolNext(upload) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        // _this.active = 1;
-        var school = {name:""};
-        school.name = _this.school.trim();
-        _this
-          .axios({
-            method: "post",
-            url: `${_this.URLport.serverPath}/UniversityTest/Add`,
-            async: false,
-            data: school,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            console.log(res)
-            if (res.data.status == 1) {
-              _this.upload.school = res.data.data.name;
-              _this.upload.schoolId = res.data.data.id;
-              _this.active = 1;
-              // _this.upcourse = false;
-            } else {
-              _this.upload.school = res.data.data.name;
-              _this.upload.schoolId = res.data.data.id;
-              _this.active = 1;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        _this.active = 1;
+        
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1335,6 +1305,7 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
+              console.log(res)
               _this.upload.course = res.data.data.classtest.name;
               _this.active = 2;
               _this.orderInfo.Name = res.data.data.classInfoTest.name;
@@ -1783,17 +1754,18 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/ClassTest/ClassTests`,
+                url: `${_this.URLport.serverPath}/Class/Classes`,
                 async: false,
                 params: {
                   name: valuestr,
-                  universityTestId: _this.upload.schoolId
+                  universityId: _this.upload.schoolId
                 },
                 xhrFields: {
                   withCredentials: true
                 }
               })
               .then(function(res) {
+                console.log(res)
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
@@ -1820,6 +1792,7 @@ export default {
     // 选择下拉框中其中的一条课程触发
     courseHandleSelectauto(value) {
       const _this = this;
+      console.log(value)
       _this.upload.courseId = value.id;
       _this.upload.course = value.value;
       if (value.type != null) _this.coursedisabled = false;
@@ -2073,7 +2046,7 @@ export default {
     editAnswerHandlebeforeupload(file) {
       const _this = this;
     },
-    // 修改题库集获取信息
+    // 获取题库集信息
     cacheAnswerId(id) {
       const _this = this;
       _this
@@ -2092,6 +2065,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           if (res.data.status == 1) {
             _this.orderInfo.name = res.data.data.cict.name;
             _this.orderKong = res.data.data.cict;

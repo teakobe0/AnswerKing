@@ -210,6 +210,7 @@ export default {
           _this.clientName = res.data.data.name;
           _this.clientImg = res.data.data.image;
           _this.titleShow = true;
+          console.log(res)
         })
         .catch(function(error) {
           console.log(error);
