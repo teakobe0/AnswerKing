@@ -1040,6 +1040,8 @@ export default {
       upload: {
         school: "",
         schoolId: 0,
+        formerSchool:"",
+        formerSchoolId:0,
         course: "",
         courseId: 0,
         type: "作业(Assignment)",
@@ -1220,8 +1222,37 @@ export default {
     schoolNext(upload) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        _this.active = 1;
-        
+       // _this.active = 1;
+        var school = {name:""};
+        school.name = _this.school.trim();
+        _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/UniversityTest/Add`,
+            async: false,
+            data: school,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.upload.school = res.data.data.name;
+              _this.upload.schoolId = res.data.data.id;
+              _this.active = 1;
+              // _this.upcourse = false;
+            } else {
+              _this.upload.school = res.data.data.name;
+              _this.upload.schoolId = res.data.data.id;
+              _this.active = 1;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1683,12 +1714,12 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 2) {
+          if (queryString.length >= 3) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/University/UniversitysPage`,
+                url: `${_this.URLport.serverPath}/UniversityTest/UniversityTests`,
                 async: false,
                 params: {
                   name: valuestr
@@ -1699,20 +1730,22 @@ export default {
               })
               .then(function(res) {
                 console.log(res);
-                if (res.data.data.data.length > 0) {
+                if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data.data[i]) {
+                    if (res.data.data[i]) {
                       results.push({
-                        value: res.data.data.data[i].name,
+                        value: res.data.data[i].name,
                         type: "大学",
-                        id: res.data.data.data[i].id
+                        id: res.data.data[i].id,
+                        clientId:res.data.data[i].clientId,
                       });
                     }
                   }
                 } else {
                   results.push({ value: "", type: null });
+                  
                 }
-
+                
                 cb(results);
               })
               .catch(function(error) {
@@ -1725,9 +1758,16 @@ export default {
     // 选择学校下拉框其中一条学校触发
     SchoolHandleSelectauto(value) {
       const _this = this;
-
-      _this.upload.schoolId = value.id;
-      _this.upload.school = value.value;
+      if(value.clientId != undefined){
+        // 新库
+        _this.upload.schoolId = value.id;
+        _this.upload.school = value.value;
+        _this.upload.formerSchoolId = 0;
+      }else {
+        // 旧库
+        _this.upload.school = value.value;
+        _this.upload.formerSchoolId = value.id;
+      }
       if (value.type != null) _this.schooldisabled = false;
     },
     // 离开学校输入框焦点触发
@@ -1739,7 +1779,7 @@ export default {
         _this.school = "";
       }
     },
-    // 选择课程
+    // 课程输入框触发
     courseQuerySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -1749,16 +1789,17 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 1) {
+          if (queryString.length >= 3) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/Class/Classes`,
+                url: `${_this.URLport.serverPath}/ClassTest/ClassTests`,
                 async: false,
                 params: {
                   name: valuestr,
-                  universityId: _this.upload.schoolId
+                  universityId: _this.upload.formerSchoolId,
+                  universityTestId: _this.upload.schoolId
                 },
                 xhrFields: {
                   withCredentials: true
@@ -1795,6 +1836,30 @@ export default {
       console.log(value)
       _this.upload.courseId = value.id;
       _this.upload.course = value.value;
+      _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/ClassTest/ClassTestes`,
+            async: false,
+            params: {
+              name: value.value,
+              universityTestId: _this.upload.schoolId
+            },
+            xhrFields: {
+              withCredentials: true
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            if(res.data.data != null){
+              _this.upload.courseId = res.data.data.id;
+            }else {
+              _this.upload.courseId = 0;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
       if (value.type != null) _this.coursedisabled = false;
     },
     // 离开课程输入框焦点触发
