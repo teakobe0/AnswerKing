@@ -260,8 +260,8 @@
       <!-- 本人的评论框 -->
       <div style="overflow:hidden;width:953px">
         <div class="headPortrait">
-          <img :src="imageUrl" alt v-if="headShowLogin == true">
-          <img src="../../assets/头像.jpg" alt v-if="headShowLogin == false">
+          <img :src="imageUrl" alt v-if="headShowLogin == true" />
+          <img src="../../assets/头像.jpg" alt v-if="headShowLogin == false" />
           <!-- <p>AW</p> -->
         </div>
         <div class="retext">
@@ -288,8 +288,8 @@
       <div class="statereview" v-for="(item,index) in comment">
         <div class="headPortrait">
           <!-- <p>AW</p> -->
-          <img :src="item.img" alt v-if="item.headShow == true">
-          <img src="../../assets/头像.jpg" alt v-if="item.headShow == false">
+          <img :src="item.img" alt v-if="item.headShow == true" />
+          <img src="../../assets/头像.jpg" alt v-if="item.headShow == false" />
         </div>
         <div class="staterretext">
           <p>
@@ -304,7 +304,7 @@
             <span>回复({{item.replies.length}})</span>
           </div>
           <div class="deleteRetext" v-show="item.deleteshow == true" @click="deletecom(item.id)">
-            <img src="../../assets/删除.svg" alt>
+            <img src="../../assets/删除.svg" alt />
             <span>删除</span>
           </div>
         </div>
@@ -315,8 +315,8 @@
             <div class="openstatereview" v-for="(openitem,openindex) in item.replies">
               <div class="openheadPortrait">
                 <!-- <p>AW</p> -->
-                <img :src="openitem.replyimg" alt v-if="openitem.headShowTwo == true">
-                <img src="../../assets/头像.jpg" alt v-if="openitem.headShowTwo == false">
+                <img :src="openitem.replyimg" alt v-if="openitem.headShowTwo == true" />
+                <img src="../../assets/头像.jpg" alt v-if="openitem.headShowTwo == false" />
               </div>
               <div class="openstaterretext">
                 <p>
@@ -339,7 +339,7 @@
                   v-show="openitem.deleteshow == true"
                   @click="deletecom(openitem.id)"
                 >
-                  <img src="../../assets/删除.svg" alt>
+                  <img src="../../assets/删除.svg" alt />
                   <span>删除</span>
                 </div>
               </div>
@@ -353,7 +353,9 @@
           >
             <div class="headPortrait">
               <!-- <p>AW</p> -->
-              <img :src="imageUrl" alt>
+              <!-- <img :src="imageUrl" alt /> -->
+              <img :src="imageUrl" alt v-if="headShowLogin == true" />
+              <img src="../../assets/头像.jpg" alt v-if="headShowLogin == false" />
             </div>
             <div class="openretext">
               <p>{{personreviews.name}}</p>
@@ -411,7 +413,9 @@ export default {
       personreviewsid: "",
       placeholder: "",
       imageUrl: "",
-      headShowLogin: false
+      headShowLogin: false,
+      // 判断这个是否验证过邮箱
+      personalVipEmail: false
     };
   },
   created: function() {
@@ -453,8 +457,11 @@ export default {
             if (res.data.data.image.length > 26) {
               _this.imageUrl = res.data.data.image;
               _this.headShowLogin = true;
-            }else {
+            } else {
               _this.headShowLogin = false;
+            }
+            if (_this.personreviews.isValidate) {
+              _this.personalVipEmail = true;
             }
             _this.searching();
           })
@@ -505,12 +512,12 @@ export default {
             _this.$set(_this.reviews[i], "replies", []);
             _this.$set(_this.reviews[i], "headShow", false);
             _this.$set(_this.reviews[i], "headShowTwo", false);
-            
+
             if (_this.reviews[i].img) {
               _this.reviews[i].img = _this.reviews[i].img;
               _this.$set(_this.reviews[i], "headShow", true);
             }
-            
+
             if (_this.reviews[i].replyimg) {
               _this.reviews[i].replyimg = _this.reviews[i].replyimg;
               _this.$set(_this.reviews[i], "headShowTwo", true);
@@ -550,43 +557,49 @@ export default {
     addComment: function() {
       const _this = this;
       if (localStorage.token) {
-        var patt = /^[\s]*$/;
-        var pvalue = patt.test(_this.retext);
-        if (pvalue) {
+        if (_this.personalVipEmail) {
+          var patt = /^[\s]*$/;
+          var pvalue = patt.test(_this.retext);
+          if (pvalue) {
+            _this.$message({
+              message: "请输入内容",
+              type: "warning"
+            });
+          } else {
+            _this.addComments.parentId = 0;
+            _this.addComments.contents = _this.retext;
+            _this.addComments.classInfoId = _this.$route.params.classinfo_id;
+            _this.addComments.clientid = _this.personreviewsid;
+            _this
+              .axios({
+                method: "POST",
+                url: `${_this.URLport.serverPath}/Comment/Add`,
+                async: false,
+                data: _this.addComments,
+                xhrFields: {
+                  withCredentials: true
+                },
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+              })
+              .then(function(res) {
+                _this.retext = "";
+                _this.$message({
+                  message: "评论成功",
+                  type: "success"
+                });
+                _this.searching();
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          }
+        } else {
           _this.$message({
-            message: "请输入内容",
+            message: "请在个人中心验证邮箱之后评论",
             type: "warning"
           });
-        } else {
-          _this.addComments.parentId = 0;
-          _this.addComments.contents = _this.retext;
-          _this.addComments.classInfoId = _this.$route.params.classinfo_id;
-          _this.addComments.clientid = _this.personreviewsid;
-          _this
-            .axios({
-              method: "POST",
-              url: `${_this.URLport.serverPath}/Comment/Add`,
-              async: false,
-              data: _this.addComments,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              console.log(res)
-              _this.retext = "";
-              _this.$message({
-                message: "评论成功",
-                type: "success"
-              });
-              _this.searching();
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
       } else {
         _this.$message({
@@ -599,43 +612,50 @@ export default {
     submitReview: function(model) {
       const _this = this;
       if (localStorage.token) {
-        var patt = /^[\s]*$/;
-        var pvalue = patt.test(model);
-        if (pvalue) {
+        if (_this.personalVipEmail) {
+          var patt = /^[\s]*$/;
+          var pvalue = patt.test(model);
+          if (pvalue) {
+            _this.$message({
+              message: "请输入内容",
+              type: "warning"
+            });
+          } else {
+            _this.addComments.parentId = _this.replyOneTwoid;
+            _this.addComments.contents = model;
+            _this.addComments.classInfoId = _this.$route.params.classinfo_id;
+            _this.addComments.clientid = _this.personreviewsid;
+            _this.addComments.contenturl =
+              model +
+              "," +
+              _this.$route.params.classes_id +
+              "," +
+              _this.$route.params.classinfo_id;
+            _this
+              .axios({
+                method: "POST",
+                url: `${_this.URLport.serverPath}/Comment/Add`,
+                async: false,
+                data: _this.addComments,
+                xhrFields: {
+                  withCredentials: true
+                },
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+              })
+              .then(function(res) {
+                _this.searching();
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          }
+        } else {
           _this.$message({
-            message: "请输入内容",
+            message: "请在个人中心验证邮箱之后评论",
             type: "warning"
           });
-        } else {
-          _this.addComments.parentId = _this.replyOneTwoid;
-          _this.addComments.contents = model;
-          _this.addComments.classInfoId = _this.$route.params.classinfo_id;
-          _this.addComments.clientid = _this.personreviewsid;
-          _this.addComments.contenturl =
-            model +
-            "," +
-            _this.$route.params.classes_id +
-            "," +
-            _this.$route.params.classinfo_id;
-          _this
-            .axios({
-              method: "POST",
-              url: `${_this.URLport.serverPath}/Comment/Add`,
-              async: false,
-              data: _this.addComments,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              _this.searching();
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
         }
       } else {
         _this.$message({

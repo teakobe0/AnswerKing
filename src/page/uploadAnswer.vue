@@ -406,7 +406,8 @@
 <template>
   <div id="uploadAnswer">
     <homeNav></homeNav>
-    <div class="ua-con">
+    <UAQ></UAQ>
+    <div class="ua-con" v-show="uaShow">
       <el-steps
         :active="active"
         align-center
@@ -814,9 +815,6 @@
                     </el-form-item>
                   </div>
                 </div>
-                <!-- <div class="nextcenter">
-                  <el-button style="margin-top: 20px;" @click="steplast" v-show="lastStep">上一步</el-button>
-                </div>-->
               </div>
               <!-- 编辑答案END -->
             </el-form>
@@ -975,15 +973,17 @@
 <script type="es6">
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-
+import UAQ from "@/components/public/uploadAnswerFaq.vue";
 export default {
   name: "uploadAnswer",
   components: {
     homeNav,
-    homeFooter
+    homeFooter,
+    UAQ
   },
   data() {
     return {
+      uaShow:false,
       subtitle: false,
       uploadNum: 1,
       active: 0,
@@ -1212,8 +1212,12 @@ export default {
     },
     // 上一步
     steplast() {
+      const _this = this;
       this.active--;
       if (this.active <= 2) {
+        _this.upload.course = "";
+        _this.course = "";
+        _this.coursedisabled = true;
         this.upcourse = true;
         this.upschool = true;
       }
@@ -1789,7 +1793,7 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 3) {
+          if (queryString.length >= 2) {
             var results = [];
             _this
               .axios({
@@ -1813,7 +1817,8 @@ export default {
                       results.push({
                         value: res.data.data[i].name,
                         type: "课程",
-                        id: res.data.data[i].id
+                        id: res.data.data[i].id,
+                        clientId:res.data.data[i].clientId,
                       });
                     }
                   }
@@ -1834,37 +1839,24 @@ export default {
     courseHandleSelectauto(value) {
       const _this = this;
       console.log(value)
-      _this.upload.courseId = value.id;
-      _this.upload.course = value.value;
-      _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/ClassTest/ClassTestes`,
-            async: false,
-            params: {
-              name: value.value,
-              universityTestId: _this.upload.schoolId
-            },
-            xhrFields: {
-              withCredentials: true
-            }
-          })
-          .then(function(res) {
-            console.log(res);
-            if(res.data.data != null){
-              _this.upload.courseId = res.data.data.id;
-            }else {
-              _this.upload.courseId = 0;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+     
+      if(value.clientId == undefined){
+        // 旧库
+        _this.upload.course = value.value;
+        _this.upload.courseId = 0;
+      }else {
+        // 新库
+        _this.upload.courseId = value.id;
+        _this.upload.course = value.value;
+      }
       if (value.type != null) _this.coursedisabled = false;
     },
     // 离开课程输入框焦点触发
     courseBlur() {
       const _this = this;
+      console.log(_this.upload.course)
+      // _this.upload.course = "";
+      // _this.course = "";
       if (_this.upload.course) {
         _this.course = _this.upload.course;
       } else {

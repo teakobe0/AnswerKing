@@ -32,9 +32,12 @@ import imgDetails from '@/page/imgDetails.vue'  //图片详情
 import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
 import question from '@/page/question.vue'  //问答大厅
 import questionDetails from '@/page/questionDetails.vue'  //问答大厅
-
+import emailVerify from '@/page/emailVerify.vue'  //邮箱验证
 
 import ownness from '@/components/client/ownness.vue'  //个人资料
+
+
+
 // Footer里的页面
 import termsOfService from '@/page/footerView/termsOfService.vue' //条款
 import company from '@/page/footerView/company.vue' //公司
@@ -271,6 +274,10 @@ export default new Router({
         {
             path: '/questionDetails',      //设置跳转
             component: questionDetails
+        },
+        {
+            path: '/emailVerify',      //设置跳转
+            component: emailVerify
         },
 
     ]

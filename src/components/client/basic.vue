@@ -136,14 +136,16 @@
           <li v-if="this.value.birthday == '0001-01-01T00:00:00'">生日:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
         </ul>
       </div>
-      <div class="InvitationCon">
+      <div class="InvitationCon" v-show="InvitationShow == true">
         <p>您可以将下方地址发送给您的好友注册成为网站用户,注册成功我们将送您和您的好友各得7天VIP！享受无限制浏览！</p>
         <el-input class="encryptInput" v-model="input" placeholder="请输入内容"></el-input>
         <el-button class="encryptButton" @click="Invitation" v-clipboard:copy="copy" v-clipboard:success="onCopy" v-clipboard:error="onError">
             粘贴
         </el-button>
       </div>
-      
+      <div class="InvitationCon" v-show="InvitationShow == false">
+        <p>您的邮箱还没有验证,<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">点击这里</span>验证邮箱获得7天会员,开启邀请好友继续获得7天会员功能!</p>
+      </div>
       <!-- <div class="head-right-middle">
         <p class="right-middle-title">文件</p>
         <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -169,7 +171,8 @@ export default {
       role:"",
       inviterId:0,
       copy:"",
-      input:""
+      input:"",
+      InvitationShow:false,
     };
   },
   created: function() {
@@ -219,6 +222,9 @@ export default {
             let encryptText = "http://coursewhale.com/register?inviter="+encrypt;
             _this.copy = encryptText;
             _this.input = encryptText;
+            if(_this.value.isValidate){
+              _this.InvitationShow = true;
+            }
             console.log(res)
           })
           .catch(function(error) {
@@ -228,6 +234,33 @@ export default {
       } else {
       }
     },
+    InvitationCon(){
+      const _this = this;
+      _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/Client/SendEmail`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res)
+            if (res.data.status == 1) {
+              _this.$message({
+                  message: "发送成功",
+                  type: "success"
+                });
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+    }
   }
 };
 </script>
