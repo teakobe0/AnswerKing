@@ -79,6 +79,7 @@ export default {
   },
   methods: {
     handleClick(row) {
+      this.$store.state.logo.uaShow = true;
       if (row.type == "学校") {
         this.$router.push({
           path: "/uploadAnswer",

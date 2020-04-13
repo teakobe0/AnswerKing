@@ -407,7 +407,7 @@
   <div id="uploadAnswer">
     <homeNav></homeNav>
     <UAQ></UAQ>
-    <div class="ua-con" v-show="uaShow">
+    <div class="ua-con" v-show="this.$store.state.logo.uaShow">
       <el-steps
         :active="active"
         align-center
@@ -983,7 +983,7 @@ export default {
   },
   data() {
     return {
-      uaShow:false,
+      uaShow:true,
       subtitle: false,
       uploadNum: 1,
       active: 0,

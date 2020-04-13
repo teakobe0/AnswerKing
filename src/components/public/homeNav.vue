@@ -189,7 +189,7 @@
           <router-link to="/member">成为会员</router-link>
         </el-menu-item>
         <el-menu-item index="4">
-          <router-link to="/uploadAnswer">贡献资源</router-link>
+          <router-link to="/uploadAnswer" >贡献资源</router-link>
         </el-menu-item>
         <el-menu-item index="6" v-if="$store.state.logo.show">
           <router-link to="/login" style="width:56px;text-align: center;">登录</router-link>
@@ -394,7 +394,7 @@ export default {
     vipHandel() {
       const _this = this;
       _this.$store.state.vip.vipShow = false;
-    }
+    },
   },
   directives: {
     focus: {
