@@ -486,7 +486,6 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
-            console.log(res);
           }
         })
         .catch(function(error) {
@@ -513,7 +512,6 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
-            console.log(res);
           }
         })
         .catch(function(error) {

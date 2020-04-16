@@ -96,6 +96,19 @@
 .encryptButton {
   margin-left: 20px !important;
 }
+.Integrals {
+  /* line-height: 20px; */
+  padding-top: 16px;
+  padding-bottom: 16px;
+  border-bottom: 1px dashed #dedede;
+  overflow: hidden;
+}
+.Integrals p {
+  float: left;
+}
+.Integrals .inButton {
+  float: right;
+}
 </style>
 
 
@@ -107,6 +120,7 @@
         <h3>个人信息</h3>
         <p class="right-top-acctype">
           <p class="acctypeEmail">邮箱:{{this.value.email}}</p>
+          
           <p class="acctypeVip">
           账户类型:
           <strong v-if="this.value.role != 'vip'">普通</strong>
@@ -143,6 +157,10 @@
             粘贴
         </el-button>
       </div>
+      <div class="Integrals">
+        <p>鲸灵币:{{this.clientVipNum}}</p>
+        <el-button class="inButton" type="mini" @click="IntegralExchanges">兑换会员</el-button>
+      </div>
       <div class="InvitationCon" v-show="InvitationShow == false">
         <p>您的邮箱还没有验证,<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">点击这里</span>验证邮箱获得7天会员,开启邀请好友继续获得7天会员功能!</p>
       </div>
@@ -173,6 +191,10 @@ export default {
       copy:"",
       input:"",
       InvitationShow:false,
+      // 当前货币兑换会员所需数量
+      vipNum:500,
+      // 当前客户持有的货币数量
+      clientVipNum:0
     };
   },
   created: function() {
@@ -197,7 +219,6 @@ export default {
         this.$message.console.error('复制失败');
     },
     handleClick: function(tab, event) {
-      console.log(tab, event);
     },
     // 获取个人信息
     gainpersonal: function() {
@@ -216,6 +237,7 @@ export default {
             }
           })
           .then(function(res) {
+            console.log(res)
             _this.value = res.data.data;
             _this.inviterId = _this.value.id;
             let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
@@ -225,7 +247,7 @@ export default {
             if(_this.value.isValidate){
               _this.InvitationShow = true;
             }
-            console.log(res)
+            _this.clientVipNum = res.data.data.integral;
           })
           .catch(function(error) {
             console.log(error);
@@ -249,11 +271,98 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res)
             if (res.data.status == 1) {
               _this.$message({
                   message: "发送成功",
                   type: "success"
+                });
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+    },
+    // 根据客户id查询积分使用列表
+    GetIntegrals(){
+      const _this = this;
+      if (localStorage.getItem("token")) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/IntegralList`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(123)
+            console.log(res)
+            
+            
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    // 查询当前货币兑换会员比例
+    GetExchanges(){
+      const _this = this;
+      if (localStorage.getItem("token")) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetExchange`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res)
+            let a = res.data.data.split(":");
+            _this.vipNum = Number(a[0]);
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    // 兑换会员
+    IntegralExchanges(){
+      const _this = this;
+      _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/Client/IntegralExchange`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res)
+            if(res.data.status == 1){
+              localStorage.token = res.data.data.token;
+              _this.gainpersonal();
+              _this.$message({
+                  message: "兑换成功",
+                  type: "success"
+                });
+            }else {
+              _this.$message({
+                  message: res.data.msg,
+                  type: "error"
                 });
             }
           })

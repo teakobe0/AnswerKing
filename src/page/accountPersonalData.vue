@@ -127,6 +127,8 @@
 }
 .head-imgs {
   position: relative;
+  width: 140px;
+  height: 140px;
 }
 .headShade {
   width: 140px;
@@ -280,7 +282,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           _this.$store.state.modified.Name = res.data.data.name;
           if (res.data.data.image.length > 26) {
             _this.imageUrl = res.data.data.image;

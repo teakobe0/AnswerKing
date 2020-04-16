@@ -1340,7 +1340,6 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              console.log(res)
               _this.upload.course = res.data.data.classtest.name;
               _this.active = 2;
               _this.orderInfo.Name = res.data.data.classInfoTest.name;
@@ -1733,7 +1732,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
@@ -1810,7 +1808,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res)
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
@@ -1838,7 +1835,6 @@ export default {
     // 选择下拉框中其中的一条课程触发
     courseHandleSelectauto(value) {
       const _this = this;
-      console.log(value)
      
       if(value.clientId == undefined){
         // 旧库
@@ -1854,9 +1850,6 @@ export default {
     // 离开课程输入框焦点触发
     courseBlur() {
       const _this = this;
-      console.log(_this.upload.course)
-      // _this.upload.course = "";
-      // _this.course = "";
       if (_this.upload.course) {
         _this.course = _this.upload.course;
       } else {
@@ -2122,7 +2115,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           if (res.data.status == 1) {
             _this.orderInfo.name = res.data.data.cict.name;
             _this.orderKong = res.data.data.cict;

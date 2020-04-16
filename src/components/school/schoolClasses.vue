@@ -70,7 +70,6 @@
         },
         created: function () {
             const _this = this;
-            console.log(this)
             _this.universityidClass();
         },
         methods: {
@@ -88,7 +87,6 @@
                         withCredentials: true
                     }
                 }).then(function (res) {
-                    console.log(res);
                     _this.classes = res.data.data;
                     _this.classeslength = _this.classes.length;
 

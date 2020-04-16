@@ -923,6 +923,7 @@ export default {
           }
         })
         .then(function(res) {
+          
           _this.classinfoss = res.data.data;
           _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {
@@ -1185,7 +1186,7 @@ export default {
           console.log(error);
         });
     },
-    // 根据课程资料id检索该课程资料有用、没用
+    // 根据课程资料id检索该课程资料有用没用
     UseRecord: function() {
       const _this = this;
       if (localStorage.token) {

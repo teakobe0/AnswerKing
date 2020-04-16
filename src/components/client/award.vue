@@ -30,29 +30,34 @@
 <template>
   <div id="award">
     <div class="award-right">
-        <h3>我的贡献</h3>
-        <div class="MyAward">
-          <el-table :data="tableData" border style="width: 100%">
-            <el-table-column fixed label="日期" width="150px">
-              <template slot-scope="scope">
-                <span>{{ scope.row.createTime | formatDate}}</span>
-              </template>
-            </el-table-column>
-            <el-table-column prop="name" label="您创建的项目" width="619px"></el-table-column>
-            <el-table-column prop="type" label="类别" width="130"></el-table-column>
-            <el-table-column fixed="right" label="操作" width="100">
-              <template slot-scope="scope">
-                <el-button @click="handleClick(scope.row)" type="text" size="mini">编辑</el-button>
-                <el-button
-                  type="text"
-                  size="mini"
-                  style="color:#f95c5c;"
-                  @click="handleDelete(scope.row)"
-                >删除</el-button>
-              </template>
-            </el-table-column>
-          </el-table>
-        </div>
+      <h3>我的贡献</h3>
+      <div class="MyAward">
+        <el-table :data="tableData" border style="width: 100%">
+          <el-table-column fixed label="日期" width="150px">
+            <template slot-scope="scope">
+              <span>{{ scope.row.createTime | formatDate}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column prop="name" label="您创建的项目" width="560px"></el-table-column>
+          <el-table-column prop="type" label="类别" ></el-table-column>
+          <el-table-column prop="type" label="状态" >
+            <template slot-scope="scope">
+              <span>{{ scope.row.statusType}}</span>
+            </template>
+          </el-table-column>
+          <el-table-column fixed="right" label="操作" width="100">
+            <template slot-scope="scope">
+              <el-button @click="handleClick(scope.row)" type="text" size="mini">编辑</el-button>
+              <el-button
+                type="text"
+                size="mini"
+                style="color:#f95c5c;"
+                @click="handleDelete(scope.row)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
     </div>
   </div>
 </template>
@@ -124,7 +129,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
@@ -167,7 +171,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
@@ -210,7 +213,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res);
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
@@ -247,6 +249,31 @@ export default {
         })
         .then(function(res) {
           _this.tableData = res.data.data;
+          for (var i = 0; i < _this.tableData.length; i++) {
+            _this.$set(_this.tableData[i], "statusType", "");
+            if(_this.tableData[i].type == "题库集"){
+              if(_this.tableData[i].status == 0){
+                _this.tableData[i].statusType = "未创建"
+              }
+              if(_this.tableData[i].status == 1){
+                _this.tableData[i].statusType = "全新未审核"
+              }
+              if(_this.tableData[i].status == 2){
+                _this.tableData[i].statusType = "已审核"
+              }
+              if(_this.tableData[i].status == 3){
+                _this.tableData[i].statusType = "修改未审核"
+              }
+            }
+            if(_this.tableData[i].type != "题库集"){
+              if(_this.tableData[i].status == 0){
+                _this.tableData[i].statusType = "未审核"
+              }
+              if(_this.tableData[i].status == 1){
+                _this.tableData[i].statusType = "已审核"
+              }
+            }
+          }
         })
         .catch(function(error) {
           console.log(error);
