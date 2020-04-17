@@ -109,6 +109,12 @@
 .Integrals .inButton {
   float: right;
 }
+.Integrals p i{
+  font-size: 12px;
+  position: relative;
+  top: -4px;
+  left: 3px;
+}
 </style>
 
 
@@ -158,7 +164,7 @@
         </el-button>
       </div>
       <div class="Integrals">
-        <p>鲸灵币:{{this.clientVipNum}}</p>
+        <p>鲸灵币:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
         <el-button class="inButton" type="mini" @click="IntegralExchanges">兑换会员</el-button>
       </div>
       <div class="InvitationCon" v-show="InvitationShow == false">
@@ -192,7 +198,9 @@ export default {
       input:"",
       InvitationShow:false,
       // 当前货币兑换会员所需数量
-      vipNum:500,
+      vipNum:0,
+      // 当前货币兑换会员的月份
+      vipNumText:"",
       // 当前客户持有的货币数量
       clientVipNum:0
     };
@@ -201,6 +209,7 @@ export default {
     const _this = this;
     
     _this.gainpersonal();
+    _this.GetExchanges();
   },
   filters: {
     formatDate: function(time) {
@@ -329,6 +338,8 @@ export default {
             console.log(res)
             let a = res.data.data.split(":");
             _this.vipNum = Number(a[0]);
+            _this.vipNumText = a[1]
+            console.log(a)
           })
           .catch(function(error) {
             console.log(error);
@@ -338,37 +349,46 @@ export default {
     // 兑换会员
     IntegralExchanges(){
       const _this = this;
-      _this
-          .axios({
-            method: "post",
-            url: `${_this.URLport.serverPath}/Client/IntegralExchange`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            console.log(res)
-            if(res.data.status == 1){
-              localStorage.token = res.data.data.token;
-              _this.gainpersonal();
-              _this.$message({
-                  message: "兑换成功",
-                  type: "success"
-                });
-            }else {
-              _this.$message({
-                  message: res.data.msg,
-                  type: "error"
-                });
-            }
+      this.$confirm('您将花费'+_this.vipNum+'鲸灵币兑换'+_this.vipNumText+'会员, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Client/IntegralExchange`,
+              async: false,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res)
+              if(res.data.status == 1){
+                localStorage.token = res.data.data.token;
+                _this.gainpersonal();
+                _this.$message({
+                    message: "兑换成功",
+                    type: "success"
+                  });
+              }else {
+                _this.$message({
+                    message: res.data.msg,
+                    type: "error"
+                  });
+              }
           })
           .catch(function(error) {
             console.log(error);
           });
+        }).catch(() => {
+                  
+        });
+      
     }
   }
 };
