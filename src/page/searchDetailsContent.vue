@@ -51,11 +51,11 @@
   margin-top: 24px;
   margin-bottom: 8px;
 }
-.serchDetailsContent-top-info h2 a{
+.serchDetailsContent-top-info h2 a {
   text-decoration: none;
   color: #3b3b3b;
 }
-.serchDetailsContent-top-info h2 a:hover{
+.serchDetailsContent-top-info h2 a:hover {
   color: #fe2a93;
 }
 .serchDetailsContent-top-info p {
@@ -490,7 +490,7 @@
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
             <div class="serchDetailsContent-tag-left" v-if="classShow == true">
-              <div class="currentWeek" v-if="currentWeekShow == true">
+              <div class="currentWeek" v-if="currentWeekShow">
                 {{'Week'+ currentWeek.no + '('+ currentWeek.grade + '分' + ')'}}
                 <span></span>
               </div>
@@ -645,7 +645,7 @@ export default {
       attenDisabled: false,
       // 当前周
       currentWeek: [],
-      currentWeekShow: false,
+      currentWeekShow: true,
       conShow: true,
       outputLists: [],
       // 推荐课程子组件的显示
@@ -660,12 +660,71 @@ export default {
       },
       attentionCon: [],
       // 当前类型ID（为了图片查看详情页面获取图片用）
-      imgWeekTypeId: 0
+      imgWeekTypeId: 0,
+      a: [],
+      beforeData: [
+      ],
+      afterData: []
     };
   },
   created: function() {
     const _this = this;
     _this.Id = _this.$route.params.classes_id;
+    _this
+      .axios({
+        method: "get",
+        url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+        async: false,
+        params: {
+          weekname: "1",
+          classinfoid: _this.$route.params.classinfo_id
+        },
+        xhrFields: {
+          withCredentials: true
+        }
+      })
+      .then(function(res) {
+        _this.beforeData = res.data.data;
+        console.log(res.data.data);
+
+        let tempArr = [];
+        for (let i = 0; i < _this.beforeData.length; i++) {
+          if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+            _this.afterData.push({
+              classWeekType: _this.beforeData[i].classWeekType,
+              origin: [_this.beforeData[i]]
+            });
+            tempArr.push(_this.beforeData[i].classWeekType);
+          } else {
+            for (let j = 0; j < _this.afterData.length; j++) {
+              if (_this.afterData[j].classWeekType == _this.beforeData[i].classWeekType) {
+                _this.afterData[j].origin.push(_this.beforeData[i]);
+                break;
+              }
+            }
+          }
+        }
+        console.log(_this.afterData);
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
+    _this
+      .axios({
+        method: "get",
+        url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
+        async: false,
+        params: {
+          classInfoTestId: _this.$route.params.classinfo_id
+        },
+        xhrFields: {
+          withCredentials: true
+        }
+      })
+      .then(function(res) {})
+      .catch(function(error) {
+        console.log(error);
+      });
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -719,7 +778,7 @@ export default {
         .then(function(res) {
           _this.valueWeek = res.data.data;
           _this.currentWeek = _this.valueWeek[0];
-          _this.currentWeekShow = true;
+          // _this.currentWeekShow = true;
           if (res.data.data.length == 0) {
             _this.$store.state.answer.tabconwu = false;
             _this.auditText = true;
@@ -923,7 +982,6 @@ export default {
           }
         })
         .then(function(res) {
-          
           _this.classinfoss = res.data.data;
           _this.otherQuestionsFlag = true;
           for (var i = 0; i < res.data.data.length; i++) {

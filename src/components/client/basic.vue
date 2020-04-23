@@ -156,6 +156,10 @@
           <li v-if="this.value.birthday == '0001-01-01T00:00:00'">生日:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
         </ul>
       </div>
+      <div class="Integrals">
+        <p>鲸灵币:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
+        <el-button class="inButton" type="mini" @click="IntegralExchanges">兑换会员</el-button>
+      </div>
       <div class="InvitationCon" v-show="InvitationShow == true">
         <p>您可以将下方地址发送给您的好友注册成为网站用户,注册成功我们将送您和您的好友各得7天VIP！享受无限制浏览！</p>
         <el-input class="encryptInput" v-model="input" placeholder="请输入内容"></el-input>
@@ -163,10 +167,7 @@
             粘贴
         </el-button>
       </div>
-      <div class="Integrals">
-        <p>鲸灵币:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
-        <el-button class="inButton" type="mini" @click="IntegralExchanges">兑换会员</el-button>
-      </div>
+      
       <div class="InvitationCon" v-show="InvitationShow == false">
         <p>您的邮箱还没有验证,<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">点击这里</span>验证邮箱获得7天会员,开启邀请好友继续获得7天会员功能!</p>
       </div>
@@ -198,9 +199,9 @@ export default {
       input:"",
       InvitationShow:false,
       // 当前货币兑换会员所需数量
-      vipNum:0,
+      vipNum:500,
       // 当前货币兑换会员的月份
-      vipNumText:"",
+      vipNumText:"一个月",
       // 当前客户持有的货币数量
       clientVipNum:0
     };
@@ -335,11 +336,9 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res)
             let a = res.data.data.split(":");
             _this.vipNum = Number(a[0]);
             _this.vipNumText = a[1]
-            console.log(a)
           })
           .catch(function(error) {
             console.log(error);
@@ -367,7 +366,6 @@ export default {
               }
             })
             .then(function(res) {
-              console.log(res)
               if(res.data.status == 1){
                 localStorage.token = res.data.data.token;
                 _this.gainpersonal();
@@ -377,7 +375,7 @@ export default {
                   });
               }else {
                 _this.$message({
-                    message: res.data.msg,
+                    message: "兑换失败,积分不足",
                     type: "error"
                   });
               }

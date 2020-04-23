@@ -47,7 +47,8 @@
   <div class="emailVerify">
     <homeNav></homeNav>
     <div v-title data-title="邮箱验证跳转-CourseWhale"></div>
-    <div class="ev-con">
+    <div class="ev-con" v-loading="loading">
+      <div style="height:157px;" v-show="nullShow"></div>
       <div v-show="succendShow">
         <div class="ev-con-title">
           <img src="../assets/对勾2.png" alt />
@@ -99,15 +100,15 @@ export default {
     return {
       num: 5,
       denum: 5,
-      succendShow: true,
+      succendShow: false,
       defeadet: false,
+      nullShow: true,
+      loading:true,
       a: ""
     };
   },
   created: function() {
     const _this = this;
-    document.documentElement.scrollTop = 0;
-    console.log(_this.$route.query.key);
     _this
       .axios({
         method: "put",
@@ -121,15 +122,17 @@ export default {
         }
       })
       .then(function(res) {
-        console.log(res);
+        _this.loading = false;
+        _this.bullShow = false;
+        _this.nullShow = false;
         if (res.data.status == 1) {
           localStorage.token = res.data.data.token;
+          _this.succendShow = true;
           setInterval(function() {
             _this.num--;
             if (_this.num == 0) _this.$router.push({ path: "/home" });
           }, 1000);
         } else {
-          _this.succendShow = false;
           _this.defeadet = true;
           setInterval(function() {
             _this.denum--;

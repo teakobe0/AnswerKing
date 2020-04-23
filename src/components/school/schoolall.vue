@@ -260,6 +260,7 @@ export default {
           console.log(error);
         });
     },
+    // 点击字母根据字母查询
     queryClass: function(alifs) {
       const _this = this;
       if (alifs == "All") {
@@ -312,6 +313,7 @@ export default {
           });
       }
     },
+    // 输入框搜索查询
     queryname: function(names) {
       const _this = this;
       _this

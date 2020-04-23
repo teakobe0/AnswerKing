@@ -266,6 +266,7 @@ export default {
             _this.dynamicState = newData;
             return newData;
           }
+          
         })
         .catch(function(error) {
           console.log(error);

@@ -685,7 +685,7 @@
                 </div>
               </div>
               <div class="homeUniversity">
-                <router-link to="/schools" class="homeUniv-button">查看61所全部学校资源</router-link>
+                <router-link to="/schools" class="homeUniv-button">查看{{this.universityNum}}所全部学校资源</router-link>
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home23.png" alt class="home-ser-img-1" />
@@ -849,7 +849,8 @@ export default {
       isActive1: false,
       isActive2: false,
       isActive3: false,
-      money: 1
+      money: 1,
+      universityNum:0
     };
   },
   computed: {
@@ -867,6 +868,7 @@ export default {
   created: function() {
     const _this = this;
     _this.GetClassinfo();
+    _this.GetUniversitys();
     document.documentElement.scrollTop = 0;
   },
   methods: {
@@ -1137,7 +1139,30 @@ export default {
           $(".text-fluid4").addClass("animation fade-in-right");
         }
       }
-    }
+    },
+    //根据国家 州/省份检索学校
+    GetUniversitys: function(index) {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/University/GetUniversitys`,
+          async: false,
+          params: {
+            name: "美国",
+            state: ""
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.universityNum = res.data.data.length;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
   },
   mounted() {
     const _this = this;
