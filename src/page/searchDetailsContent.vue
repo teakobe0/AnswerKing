@@ -188,6 +188,7 @@
 .serchDetailsContent-tag-left {
   width: 100%;
   margin-top: 24px;
+  min-height: 40px;
   overflow: hidden;
   position: relative;
 }
@@ -195,6 +196,7 @@
 .serchDetailsContent-tag-right {
   width: 100%;
   margin-top: 5px;
+  min-height: 212px;
   overflow: hidden;
 }
 
@@ -490,8 +492,8 @@
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
             <div class="serchDetailsContent-tag-left" v-if="classShow == true">
-              <div class="currentWeek" v-if="currentWeekShow">
-                {{'Week'+ currentWeek.no + '('+ currentWeek.grade + '分' + ')'}}
+              <div class="currentWeek">
+                {{'Week'+ currentWeek.id }}
                 <span></span>
               </div>
               <el-select
@@ -504,15 +506,15 @@
                 <el-option
                   v-for="item in valueWeek"
                   :key="item.id"
-                  :label="'第'+ item.no + '周' + '('+ item.grade + '分' + ')'"
+                  :label="'第'+ item.id + '周'"
                   :value="item.id"
                 >
                   <router-link
                     :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+item.id+'/weektype/'+0"
                     style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6"
                   >
-                    <span style="float: left;">第{{ item.no }}周</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span>
+                    <span style="float: left;">第{{ item.id }}周</span>
+                    <!-- <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span> -->
                   </router-link>
                 </el-option>
               </el-select>
@@ -527,10 +529,10 @@
                   @click="tab(index,item.id)"
                 >
                   <router-link
-                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+item.id"
+                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+item.contentType"
                   >
-                    {{item.contentType}}(
-                    <span style="color: #136bd3;">{{item.grade}}</span>分)
+                    {{item.contentType}}
+                    <!-- (<span style="color: #136bd3;">{{item.grade}}</span>分) -->
                   </router-link>
                 </li>
               </ul>
@@ -594,34 +596,18 @@ export default {
   data() {
     return {
       value: [],
-      value1: 0,
+      value1: 1,
       valueWeek: [],
       Id: "",
-      ClassWeeksId: "",
-      activeName: "first",
       Answer: [],
-      show: true,
-      dialogImageUrl: "",
-      dialogVisible: false,
-      fileListA: [],
       tabs: [],
       numnum: 0,
-      context: false,
-      conurl: false,
-      isChoose: false,
-      bookmark: false,
-      MouseOver: false,
-
-      movable: false,
-      retext: "",
-      openretext: "",
       useOnuse: {
         Id: "",
         type: "",
         check: ""
       },
       informations: {},
-      imageShow: true,
       // 有用没用
       use: false,
       noUse: false,
@@ -645,9 +631,7 @@ export default {
       attenDisabled: false,
       // 当前周
       currentWeek: [],
-      currentWeekShow: true,
       conShow: true,
-      outputLists: [],
       // 推荐课程子组件的显示
       recommendClassFlag: false,
       // 其他题库子组件的显示
@@ -655,14 +639,103 @@ export default {
       // 题库集订单传给子组件
       classinfoss: [],
       // 贡献者
-      contributors: {
-        name: "Monickers"
-      },
       attentionCon: [],
-      // 当前类型ID（为了图片查看详情页面获取图片用）
-      imgWeekTypeId: 0,
-      a: [],
+      answerImgs: [],
       beforeData: [
+        // {
+        //   classWeekType: "测验(Quiz)",
+        //   origin: [
+        //     {
+        //       classInfoTestId: 219,
+        //       classTestId: 23,
+        //       classWeek: 1,
+        //       classWeekType: "测验(Quiz)",
+        //       clientId: 0,
+        //       contents:
+        //         "<p>1)Where did the Puritans first settle? For 1 Point Your Answer: D)Plymouth Harbor Correct: 1 point)The main cause of the American Revolution was: For 1 Point Your Answer: B)taxes Correct: 1point 3)Which of the following terms best describes George Washington? For 1 Point Your Answer: D)dignified Correct: point 4)Early Puritan societies were governed by a type of government termed a: For 1 Point Your Answer: B)theocracy Correct: 1point 5)George Washington&#39;s Patriot army won every battle over the British. For 1 Point Your Answer: False Correct: 1 point 6)Thomas Jefferson did all of the following EXCEPT: For 1 Point Your Answer: C)end slavery Correct: 1 point 7)Which of the following did not have the direct involvement of George Washington? For Point Your Answer: B)Declaration of Independence Correct: 1point 8)The colony first set up specifically for Catholics was: For 1 Point Your Answer:)Maryland Correct: 1 point 9)Relations between early colonists and Indians were always hostile. For 1 Point Your Answer: False Correct: 1 point</p>",
+        //       createBy: "1",
+        //       createTime: "2020-04-20T10:26:00",
+        //       grade: 100,
+        //       id: 2,
+        //       isAudit: true,
+        //       isDel: false,
+        //       name: "",
+        //       nameUrl: "",
+        //       refId: 446,
+        //       universityTestId: 58,
+        //       url:
+        //         "http://192.168.1.32:8086/uploads/16001/15001/Quiz/1600115001Quiz55154.png"
+        //     },
+        //     {
+        //       classInfoTestId: 219,
+        //       classTestId: 23,
+        //       classWeek: 1,
+        //       classWeekType: "测验(Quiz)",
+        //       clientId: 0,
+        //       contents:
+        //         "<p>1)Where did the Puritans first settle? For 1 Point Your Answer: D)Plymouth Harbor Correct: 1 point)The main cause of the American Revolution was: For 1 Point Your Answer: B)taxes Correct: 1point 3)Which of the following terms best describes George Washington? For 1 Point Your Answer: D)dignified Correct: point 4)Early Puritan societies were governed by a type of government termed a: For 1 Point Your Answer: B)theocracy Correct: 1point 5)George Washington&#39;s Patriot army won every battle over the British. For 1 Point Your Answer: False Correct: 1 point 6)Thomas Jefferson did all of the following EXCEPT: For 1 Point Your Answer: C)end slavery Correct: 1 point 7)Which of the following did not have the direct involvement of George Washington? For Point Your Answer: B)Declaration of Independence Correct: 1point 8)The colony first set up specifically for Catholics was: For 1 Point Your Answer:)Maryland Correct: 1 point 9)Relations between early colonists and Indians were always hostile. For 1 Point Your Answer: False Correct: 1 point</p>",
+        //       createBy: "1",
+        //       createTime: "2020-04-20T10:26:00",
+        //       grade: 100,
+        //       id: 2,
+        //       isAudit: true,
+        //       isDel: false,
+        //       name: "",
+        //       nameUrl: "",
+        //       refId: 446,
+        //       universityTestId: 58,
+        //       url:
+        //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz90021.png"
+        //     }
+        //   ]
+        // },
+        // {
+        //   classWeekType: "考试(Quiz)",
+        //   origin: [
+        //     {
+        //       classInfoTestId: 219,
+        //       classTestId: 23,
+        //       classWeek: 1,
+        //       classWeekType: "测验(Quiz)",
+        //       clientId: 0,
+        //       contents:
+        //         "<p>1)Where did the Puritans first settle? For 1 Point Your Answer: D)Plymouth Harbor Correct: 1 point)The main cause of the American Revolution was: For 1 Point Your Answer: B)taxes Correct: 1point 3)Which of the following terms best describes George Washington? For 1 Point Your Answer: D)dignified Correct: point 4)Early Puritan societies were governed by a type of government termed a: For 1 Point Your Answer: B)theocracy Correct: 1point 5)George Washington&#39;s Patriot army won every battle over the British. For 1 Point Your Answer: False Correct: 1 point 6)Thomas Jefferson did all of the following EXCEPT: For 1 Point Your Answer: C)end slavery Correct: 1 point 7)Which of the following did not have the direct involvement of George Washington? For Point Your Answer: B)Declaration of Independence Correct: 1point 8)The colony first set up specifically for Catholics was: For 1 Point Your Answer:)Maryland Correct: 1 point 9)Relations between early colonists and Indians were always hostile. For 1 Point Your Answer: False Correct: 1 point</p>",
+        //       createBy: "1",
+        //       createTime: "2020-04-20T10:26:00",
+        //       grade: 100,
+        //       id: 2,
+        //       isAudit: true,
+        //       isDel: false,
+        //       name: "",
+        //       nameUrl: "",
+        //       refId: 446,
+        //       universityTestId: 58,
+        //       url:
+        //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz90021.png"
+        //     },
+        //     {
+        //       classInfoTestId: 219,
+        //       classTestId: 23,
+        //       classWeek: 1,
+        //       classWeekType: "测验(Quiz)",
+        //       clientId: 0,
+        //       contents:
+        //         "<p>1)Where did the Puritans first settle? For 1 Point Your Answer: D)Plymouth Harbor Correct: 1 point)The main cause of the American Revolution was: For 1 Point Your Answer: B)taxes Correct: 1point 3)Which of the following terms best describes George Washington? For 1 Point Your Answer: D)dignified Correct: point 4)Early Puritan societies were governed by a type of government termed a: For 1 Point Your Answer: B)theocracy Correct: 1point 5)George Washington&#39;s Patriot army won every battle over the British. For 1 Point Your Answer: False Correct: 1 point 6)Thomas Jefferson did all of the following EXCEPT: For 1 Point Your Answer: C)end slavery Correct: 1 point 7)Which of the following did not have the direct involvement of George Washington? For Point Your Answer: B)Declaration of Independence Correct: 1point 8)The colony first set up specifically for Catholics was: For 1 Point Your Answer:)Maryland Correct: 1 point 9)Relations between early colonists and Indians were always hostile. For 1 Point Your Answer: False Correct: 1 point</p>",
+        //       createBy: "1",
+        //       createTime: "2020-04-20T10:26:00",
+        //       grade: 100,
+        //       id: 2,
+        //       isAudit: true,
+        //       isDel: false,
+        //       name: "",
+        //       nameUrl: "",
+        //       refId: 446,
+        //       universityTestId: 58,
+        //       url:
+        //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz77746.png"
+        //     }
+        //   ]
+        // }
       ],
       afterData: []
     };
@@ -670,61 +743,7 @@ export default {
   created: function() {
     const _this = this;
     _this.Id = _this.$route.params.classes_id;
-    _this
-      .axios({
-        method: "get",
-        url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
-        async: false,
-        params: {
-          weekname: "1",
-          classinfoid: _this.$route.params.classinfo_id
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-      .then(function(res) {
-        _this.beforeData = res.data.data;
-        console.log(res.data.data);
 
-        let tempArr = [];
-        for (let i = 0; i < _this.beforeData.length; i++) {
-          if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
-            _this.afterData.push({
-              classWeekType: _this.beforeData[i].classWeekType,
-              origin: [_this.beforeData[i]]
-            });
-            tempArr.push(_this.beforeData[i].classWeekType);
-          } else {
-            for (let j = 0; j < _this.afterData.length; j++) {
-              if (_this.afterData[j].classWeekType == _this.beforeData[i].classWeekType) {
-                _this.afterData[j].origin.push(_this.beforeData[i]);
-                break;
-              }
-            }
-          }
-        }
-        console.log(_this.afterData);
-      })
-      .catch(function(error) {
-        console.log(error);
-      });
-    _this
-      .axios({
-        method: "get",
-        url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
-        async: false,
-        params: {
-          classInfoTestId: _this.$route.params.classinfo_id
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-      .then(function(res) {})
-      .catch(function(error) {
-        console.log(error);
-      });
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -766,9 +785,71 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassWeek/ClassWeeks`,
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
           async: false,
           params: {
+            classInfoTestId: _this.$route.params.classinfo_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          for (let i = 1; i <= res.data.data.length; i++) {
+            const obj = {};
+            obj.id = i;
+            _this.valueWeek.push(obj);
+          }
+          _this.currentWeek = _this.valueWeek[0];
+          if (res.data.data.length == 0) {
+            _this.$store.state.answer.tabconwu = false;
+            _this.auditText = true;
+            _this.classShow = false;
+          }
+          if (
+            // 有周ID没有类型时进入
+            _this.$route.params.weeks_id != 0 &&
+            _this.$route.params.weektype_id == 0
+          ) {
+            _this.typeAnswer(_this.$route.params.weeks_id, 0);
+            _this.value1 = Number(_this.$route.params.weeks_id);
+          } else if (
+            // 有周ID和有类型时进入
+            _this.$route.params.weeks_id != 0 &&
+            _this.$route.params.weektype_id != 0
+          ) {
+            _this.urlTypeAnswer(_this.$route.params.weeks_id);
+            _this.value1 = Number(_this.$route.params.weeks_id);
+          } else if (
+            // 没有周ID有类型时进入
+            _this.$route.params.weeks_id == 0 &&
+            _this.$route.params.weektype_id != 0
+          ) {
+            _this.urlTypeAnswer(_this.valueWeek[0].id);
+          } else {
+            // 周ID和类型都没有时进入
+            _this.typeAnswer(_this.valueWeek[0].id, 0);
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 根据周和订单ID获取类型和答案
+    typeAnswer(weekId, anIndex) {
+      const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
+      _this.$store.state.answer.answer = [];
+      _this.$store.state.answer.imgss = [];
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+          async: false,
+          params: {
+            weekname: weekId,
             classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
@@ -776,195 +857,116 @@ export default {
           }
         })
         .then(function(res) {
-          _this.valueWeek = res.data.data;
-          _this.currentWeek = _this.valueWeek[0];
-          // _this.currentWeekShow = true;
-          if (res.data.data.length == 0) {
-            _this.$store.state.answer.tabconwu = false;
-            _this.auditText = true;
-            _this.classShow = false;
+          _this.$store.state.answer.loading = false;
+          _this.beforeData = res.data.data;
+          // 循环整合数据结构
+          let tempArr = [];
+          for (let i = 0; i < _this.beforeData.length; i++) {
+            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+              _this.afterData.push({
+                classWeekType: _this.beforeData[i].classWeekType,
+                origin: [_this.beforeData[i]]
+              });
+              tempArr.push(_this.beforeData[i].classWeekType);
+            } else {
+              for (let j = 0; j < _this.afterData.length; j++) {
+                if (
+                  _this.afterData[j].classWeekType ==
+                  _this.beforeData[i].classWeekType
+                ) {
+                  _this.afterData[j].origin.push(_this.beforeData[i]);
+                  break;
+                }
+              }
+            }
           }
-          if (
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id == 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.$route.params.weeks_id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  let weekTypeId = _this.tabs[0].id;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.$route.params.weeks_id);
-                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
-                  _this.tab(0, weekTypeId);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else if (
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.$route.params.weeks_id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.$route.params.weeks_id);
-                  for (let i = 0; i < _this.tabs.length; i++) {
-                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
-                      _this.numnum = i;
-                    }
-                  }
-                  _this.$store.state.answer.imgWeekTypeId =
-                    _this.$route.params.weektype_id;
-                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else if (
-            _this.$route.params.weeks_id == 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.valueWeek[0].id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  _this.conShow = true;
-                  for (let i = 0; i < _this.tabs.length; i++) {
-                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
-                      _this.numnum = i;
-                    }
-                  }
-                  _this.$store.state.answer.imgWeekTypeId =
-                    _this.$route.params.weektype_id;
-                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.valueWeek[0].id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  let weekTypeId = _this.tabs[0].id;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
-                  _this.RetrieveTheTnswer(weekTypeId);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
+          // 将类型独立出来
+          for (var i = 0; i < _this.afterData.length; i++) {
+            const obj = {};
+            obj.contentType = _this.afterData[i].classWeekType;
+            _this.tabs.push(obj);
           }
+          // 将图片独立出来
+          for (var j = 0; j < _this.afterData[anIndex].origin.length; j++) {
+            const imgs = {};
+            imgs = _this.afterData[anIndex].origin[j].url;
+            _this.answerImgs.push(imgs);
+          }
+          _this.$store.state.answer.answer = [_this.afterData[anIndex]];
+          _this.$store.state.answer.imgss = _this.answerImgs;
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlList: function(rawList) {
+    // 根据URL地址栏上的存在类型时获取类型和答案
+    urlTypeAnswer(weekId) {
       const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
+      _this.$store.state.answer.answer = [];
+      _this.$store.state.answer.imgss = [];
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+          async: false,
+          params: {
+            weekname: weekId,
+            classinfoid: _this.$route.params.classinfo_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.beforeData = res.data.data;
+          // 循环整合数据结构
+          let tempArr = [];
+          for (let i = 0; i < _this.beforeData.length; i++) {
+            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+              _this.afterData.push({
+                classWeekType: _this.beforeData[i].classWeekType,
+                origin: [_this.beforeData[i]]
+              });
+              tempArr.push(_this.beforeData[i].classWeekType);
+            } else {
+              for (let j = 0; j < _this.afterData.length; j++) {
+                if (
+                  _this.afterData[j].classWeekType ==
+                  _this.beforeData[i].classWeekType
+                ) {
+                  _this.afterData[j].origin.push(_this.beforeData[i]);
+                  break;
+                }
+              }
+            }
+          }
+          // 将类型独立出来
+          for (var i = 0; i < _this.afterData.length; i++) {
+            const obj = {};
+            obj.contentType = _this.afterData[i].classWeekType;
+            _this.tabs.push(obj);
+          }
 
-      var imgUrlArray = rawList.url.split("|");
-      var outputList = [];
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        if (imgUrlArray[i].length != 0) {
-          outputList.push({
-            id: rawList.id,
-            contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
-            contents: rawList.contents
-            // conurl: rawList.conurl
-          });
-        }
-      }
-
-      return outputList;
-    },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlListCover: function(rawList) {
-      const _this = this;
-      var imgUrlArray = rawList.url.split("|");
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        if (imgUrlArray[i].length != 0) {
-          _this.outputLists.push(_this.URLport.ImgPath + imgUrlArray[i]);
-        }
-      }
-      return _this.outputLists;
+          for (let i = 0; i < _this.tabs.length; i++) {
+            if (_this.tabs[i].contentType == _this.$route.params.weektype_id) {
+              _this.numnum = i;
+              // 将图片独立出来
+              for (var j = 0; j < _this.afterData[i].origin.length; j++) {
+                const imgs = {};
+                imgs = _this.afterData[i].origin[j].url;
+                _this.answerImgs.push(imgs);
+              }
+              _this.$store.state.answer.answer = [_this.afterData[i]];
+              _this.$store.state.answer.imgss = _this.answerImgs;
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     //根据课程id检索课程订单
     Classinfos: function() {
@@ -1003,168 +1005,29 @@ export default {
     //每周课程周ID获取类型
     handleWeeks: function(classWeekId) {
       const _this = this;
+      _this.typeAnswer(classWeekId, 0);
       for (var i = 0; i < _this.valueWeek.length; i++) {
         if (classWeekId == _this.valueWeek[i].id) {
           _this.currentWeek = _this.valueWeek[i];
         }
       }
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-          async: false,
-          params: {
-            classweekid: classWeekId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          if (res.data.data.length == 0) {
-            _this.conShow = false;
-            _this.$store.state.answer.tabconwu = false;
-            _this.$store.state.answer.answer = [];
-            _this.$store.state.answer.imgss = [];
-          } else {
-            _this.tabs = res.data.data;
-            _this.conShow = true;
-            _this.$store.state.answer.imgWeekTypeId = _this.tabs[0].id;
-            console.log(_this.$store.state.answer.imgWeekTypeId);
-            _this.RetrieveTheTnswer(_this.tabs[0].id);
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
-      _this.$store.state.answer.imgWeekTypeId = classWeekTypeId;
-      _this.outputLists.length = 0;
-      _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.answer = [];
+      const answerImgs = [];
+      _this.$store.state.answer.answer = [_this.afterData[index]];
+      for (var j = 0; j < _this.afterData[index].origin.length; j++) {
+        const imgs = {};
+        imgs = _this.afterData[index].origin[j].url;
+        answerImgs.push(imgs);
+      }
+      _this.$store.state.answer.imgss = answerImgs;
       _this.numnum = index;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
-              _this.$store.state.answer.tabconwu = true;
-            }
-          }
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
-      // 跟地址栏上的ID总是慢一步，星期一来在解决吧
-      _this.outputLists.length = 0;
-      _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.answer = [];
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          _this.numnum = 0;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
-              _this.$store.state.answer.tabconwu = true;
-            }
-          }
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    bookmarks: function() {
-      const _this = this;
-      _this.bookmark = !_this.bookmark;
     },
     beOfUses: function() {
       const _this = this;

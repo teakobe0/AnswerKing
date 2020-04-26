@@ -1,3 +1,4 @@
+
 <style>
 .tabCon {
   width: 763px;
@@ -134,43 +135,37 @@
     </div>
 
     <div class="tabCon">
+      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
       <div
-        class="loading"
-        v-loading="this.$store.state.answer.loading"
-        element-loading-background="rgba(255, 255, 255)"
+        oncontextmenu="return false;"
+        ondragstart="return false;"
+        v-for="(items,index) in this.$store.state.answer.answer"
       >
-        <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
         <div
-          oncontextmenu="return false;"
-          ondragstart="return false;"
-          v-for="(items,index) in this.$store.state.answer.answer"
+          class="cover"
+          v-for="(item,indexs) in items.origin"
+          @mouseenter="onMouseOver(items,indexs)"
+          @mouseleave="onMouseout(items,indexs)"
+          @click="() => handleanwer(indexs)"
         >
-          <div
-            class="cover"
-            v-for="(item,indexs) in items.Imgs"
-            @mouseenter="onMouseOver(items,indexs)"
-            @mouseleave="onMouseout(items,indexs)"
-            @click="() => handleanwer(indexs)"
-          >
-            <el-button class="imgShow" size="mini" v-show="imgshow">
-              <router-link
-                :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+items.classWeekId+'/weektype/'+$store.state.answer.imgWeekTypeId+'/imgDetails/'+$store.state.answer.imgWeekTypeId"
-              >查看详情</router-link>
-            </el-button>
-            <img
-              style="width:100%;height:100%;filter: blur(1px);"
-              :src="item.contentUrl"
-              :alt="items.contents"
-            />
-          </div>
+          <el-button class="imgShow" size="mini" v-show="imgshow">
+            <router-link
+              :to="'/classes/'+$route.params.classes_id+'/content/'+item.classInfoTestId+'/weeks/'+item.classWeek+'/weektype/'+item.classWeekType+'/imgDetails/'+item.id"
+            >查看详情</router-link>
+          </el-button>
+          <img
+            style="width:100%;height:100%;filter: blur(1px);"
+            :src="item.url"
+            :alt="item.contents"
+          />
         </div>
-        <VueEasyLightbox
-          :visible="visible"
-          :imgs="this.$store.state.answer.imgss"
-          :index="index"
-          @hide="handleHide"
-        ></VueEasyLightbox>
       </div>
+      <VueEasyLightbox
+        :visible="visible"
+        :imgs="this.$store.state.answer.imgss"
+        :index="index"
+        @hide="handleHide"
+      ></VueEasyLightbox>
     </div>
     <div class="popContainer-wrap">
       <div class="popContainer" v-show="shade==true">
@@ -290,6 +285,7 @@ export default {
     //点击答案显示遮罩方法
     handleanwer: function(index) {
       const _this = this;
+
       event.preventDefault(); //阻止URL跳转方法
       if (localStorage.token) {
         if (_this.$store.state.loginPerson.loginPerson.role == "vip") {
@@ -339,4 +335,3 @@ export default {
   }
 };
 </script>
-

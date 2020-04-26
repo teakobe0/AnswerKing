@@ -2,6 +2,7 @@
 #file {
   /* background-color: #ebf5f424; */
   overflow: hidden;
+  min-height: 276px;
 }
 
 .file-con {

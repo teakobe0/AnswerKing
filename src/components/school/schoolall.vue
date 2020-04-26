@@ -1,6 +1,7 @@
 <style>
 #schoolall {
   /* background-color: #f0f0f0; */
+  min-height: 282px;
   overflow: hidden;
 }
 

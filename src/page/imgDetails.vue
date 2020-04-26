@@ -45,7 +45,7 @@
   margin-bottom: 20px !important;
   padding: 0px !important;
 }
-.thumbnail-bt a{
+.thumbnail-bt a {
   display: block;
   text-decoration: none;
   color: #3b3b3b;
@@ -147,7 +147,11 @@
     <div class="imgD-Con">
       <div class="serchDetailsContent-top">
         <div class="serchDetailsContent-top-info">
-          <h2><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">{{value.name}}</router-link></h2>
+          <h2>
+            <router-link
+              :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
+            >{{value.name}}</router-link>
+          </h2>
           <p>
             学校:
             <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
@@ -209,27 +213,30 @@
         </div>
       </div>
       <div class="imgD-xian"></div>
-      <div
-        class="thumbnail"
-        v-for="(items,index) in this.Answer"
-      >
+      <div class="thumbnail">
+        <!-- <div class="thumbnail" v-for="(items,index) in this.Answer"> -->
         <div class="thumbnail-text">
           所有文件
           <i class="el-icon-info" title="点击缩略图跳转"></i>
         </div>
-        <div class="thumbnail-img" v-for="(item,indexs) in items.Imgs">
+        <div class="thumbnail-img" v-for="(item,indexs) in answerImgs">
           <a :href="'#'+indexs">
-            <img :src="item.contentUrl" :alt="items.contents" />
+            <img :src="item.url" :alt="item.contents" />
           </a>
         </div>
-        <el-button class="thumbnail-bt"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">查看全部文件</router-link></el-button>
+        <el-button class="thumbnail-bt">
+          <router-link
+            :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
+          >查看全部文件</router-link>
+        </el-button>
       </div>
-      <div class="answer" v-for="(items,index) in this.Answer">
-        <div v-for="(item,indexs) in items.Imgs">
-          <img :src="item.contentUrl" :alt="items.contents" :id="indexs" />
+      <div class="answer">
+        <!-- <div class="answer" v-for="(items,index) in this.Answer"> -->
+        <div v-for="(item,indexs) in answerImgs">
+          <img :src="item.url" :alt="item.contents" :id="indexs" />
         </div>
         <div class="imgD-text">
-          <p>{{items.contents}}</p>
+          <p>{{this.Answer.contents}}</p>
         </div>
       </div>
     </div>
@@ -245,7 +252,7 @@
       <div class="UP" v-show="UPshow" @click="UPcilick">
         <i class="el-icon-caret-top"></i>
       </div>
-    </div> -->
+    </div>-->
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -285,7 +292,11 @@ export default {
       // 答案图片内容
       Answer: [],
       informations: {},
-      UPshow: false
+      UPshow: false,
+      beforeData: [],
+      afterData: [],
+      answerImgs: [],
+      tabs: []
     };
   },
   created: function() {
@@ -293,7 +304,7 @@ export default {
     // 获取课程信息
     _this.Getclass();
     _this.Classinfos();
-    _this.gainImg();
+    _this.typeAnswer();
   },
   mounted() {
     var _this = this;
@@ -310,7 +321,7 @@ export default {
         if (scrollTop >= 500) {
           _this.UPshow = true;
           $(".UP").addClass("animation fade-in");
-        }else {
+        } else {
           _this.UPshow = false;
         }
       }
@@ -627,35 +638,107 @@ export default {
       return outputList;
     },
     // 获取答案图片
-    gainImg() {
+    // gainImg() {
+    //   const _this = this;
+    //   _this
+    //     .axios({
+    //       method: "get",
+    //       url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
+    //       async: false,
+    //       params: {
+    //         classInfoTestId: _this.$route.params.imgDetails_id
+    //       },
+    //       xhrFields: {
+    //         withCredentials: true
+    //       },
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`
+    //       }
+    //     })
+    //     .then(function(res) {
+    //       _this.Answer = res.data.data;
+    //       for (var i = 0; i < _this.Answer.length; i++) {
+    //         if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+    //         } else {
+    //           _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+    //         }
+    //       }
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+    // 根据周和订单ID获取类型和答案
+    typeAnswer(weekId, anIndex) {
       const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
           async: false,
           params: {
-            classweektypeid: _this.$route.params.imgDetails_id
+            weekname: _this.$route.params.weeks_id,
+            classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
-          _this.Answer = res.data.data;
-          for (var i = 0; i < _this.Answer.length; i++) {
-            if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+          console.log(res);
+          _this.beforeData = res.data.data;
+          // 循环整合数据结构
+          let tempArr = [];
+          for (let i = 0; i < _this.beforeData.length; i++) {
+            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+              _this.afterData.push({
+                classWeekType: _this.beforeData[i].classWeekType,
+                origin: [_this.beforeData[i]],
+                contents: _this.beforeData[i].contents
+              });
+              tempArr.push(_this.beforeData[i].classWeekType);
             } else {
-              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              for (let j = 0; j < _this.afterData.length; j++) {
+                if (
+                  _this.afterData[j].classWeekType ==
+                  _this.beforeData[i].classWeekType
+                ) {
+                  _this.afterData[j].origin.push(_this.beforeData[i]);
+                  break;
+                }
+              }
             }
           }
+          // 将类型独立出来
+          for (var i = 0; i < _this.afterData.length; i++) {
+            const obj = {};
+            obj.contentType = _this.afterData[i].classWeekType;
+            _this.tabs.push(obj);
+          }
+          for (let i = 0; i < _this.tabs.length; i++) {
+            if (_this.tabs[i].contentType == _this.$route.params.weektype_id) {
+              // 将图片独立出来
+              for (var j = 0; j < _this.afterData[i].origin.length; j++) {
+                const imgs = { url: "", contents: "" };
+                imgs.contents = _this.afterData[i].origin[j].contents;
+                imgs.url = _this.afterData[i].origin[j].url;
+                _this.answerImgs.push(imgs);
+              }
+              _this.Answer = _this.afterData[i];
+              console.log(_this.answerImgs);
+            }
+          }
+          console.log(_this.Answer);
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    UPcilick(){
-      document.documentElement.scrollTop = 0
+    UPcilick() {
+      document.documentElement.scrollTop = 0;
     }
   }
 };
