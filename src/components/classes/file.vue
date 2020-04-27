@@ -181,7 +181,7 @@
           >
             <p class="course-goal">
               题库集得分:
-              <b>{{item.classinfo.totalGrade}}</b>
+              <b>{{item.classinfo.grade}}</b>
             </p>
             <p>
               <span>课程名称:</span>
@@ -279,6 +279,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           if (res.data.status == 2) {
             _this.infoShow = true;
           }

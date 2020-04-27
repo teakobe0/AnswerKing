@@ -97,8 +97,8 @@
 }
 
 .classes-con-course div:nth-last-child(2n + 0) {
-  float: left;
-  margin-right: 20px;
+  float: right;
+  margin-left: 20px;
 }
 
 .classes-con-course div a {

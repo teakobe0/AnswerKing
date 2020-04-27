@@ -116,7 +116,7 @@ export default {
             _this
               .axios({
                 method: "delete",
-                url: `${_this.URLport.serverPath}/UniversityTest/Del`,
+                url: `${_this.URLport.serverPath}/University/Del`,
                 async: false,
                 params: {
                   id: row.id
@@ -158,7 +158,7 @@ export default {
             _this
               .axios({
                 method: "delete",
-                url: `${_this.URLport.serverPath}/classTest/Del`,
+                url: `${_this.URLport.serverPath}/class/Del`,
                 async: false,
                 params: {
                   id: row.id
@@ -200,7 +200,7 @@ export default {
             _this
               .axios({
                 method: "delete",
-                url: `${_this.URLport.serverPath}/ClassInfoTest/Del`,
+                url: `${_this.URLport.serverPath}/ClassInfo/Del`,
                 async: false,
                 params: {
                   id: row.id
@@ -238,7 +238,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoTest/Action`,
+          url: `${_this.URLport.serverPath}/ClassInfo/Action`,
           async: false,
           xhrFields: {
             withCredentials: true

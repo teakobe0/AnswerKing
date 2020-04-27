@@ -4,7 +4,7 @@
   padding-bottom: 276px;
 }
 .ua-con {
-  /* margin-top: 80px; */
+  margin-top: 80px;
   /* height: 1000px; */
 }
 .ua-middle {
@@ -406,13 +406,12 @@
 <template>
   <div id="uploadAnswer">
     <homeNav></homeNav>
-    <UAQ></UAQ>
-    <div class="ua-con" v-show="this.$store.state.logo.uaShow">
+    <div class="ua-con">
       <el-steps
         :active="active"
         align-center
         finish-status="success"
-        style="width:1000px;margin:40px auto;margin-bottom: 40px;"
+        style="width:1000px;margin:120px auto;margin-bottom: 40px;"
       >
         <el-step title="编辑学校" icon="el-icon-edit"></el-step>
         <el-step title="编辑课程" icon="el-icon-s-order"></el-step>
@@ -422,14 +421,17 @@
         <div class="ua-middle">
           <div class="orderTitle" v-show="active == 2">
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.school}}
             </div>
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.course}}
             </div>
             <div class="share-subtitle-ti">
               <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
-              <span class="subtitle-span" v-show="subtitle == false">{{orderInfo.name}}
+              <span class="subtitle-span" v-show="subtitle == false">
+                {{orderInfo.name}}
                 <el-button
                   class="modification"
                   type="mini"
@@ -465,11 +467,11 @@
                   <span
                     class="SA-week"
                     v-show="active == 2 && item.show == false"
-                  >第{{item.classInfoContentTest.classWeek}}周&nbsp;-&nbsp;{{item.classInfoContentTest.classWeekType}}</span>
+                  >第{{item.classInfoContent.classWeek}}周&nbsp;-&nbsp;{{item.classInfoContent.classWeekType}}</span>
                   <div class="up-answer-week">
                     <el-select
                       v-show="active == 2 && item.show == true"
-                      v-model="item.classInfoContentTest.classWeek"
+                      v-model="item.classInfoContent.classWeek"
                       placeholder="请选择当前课程所在的周"
                       style="width:80px;"
                     >
@@ -484,7 +486,7 @@
                   <div class="up-answer-type">
                     <el-select
                       v-show="active == 2 && item.show == true"
-                      v-model="item.classInfoContentTest.classWeekType"
+                      v-model="item.classInfoContent.classWeekType"
                       placeholder="请选择当前课程的类型"
                       style="width:173px;"
                     >
@@ -510,19 +512,19 @@
                 <div v-show="active == 2 && item.show == false">
                   <div class="SA-topic">
                     <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
-                    <p v-show="item.classInfoContentTest.name == ''" style="color:#2a2a2a;">[暂无]</p>
+                    <p v-show="item.classInfoContent.name == ''" style="color:#2a2a2a;">[暂无]</p>
                     <p
-                      v-show="item.classInfoContentTest.name != ''"
-                    >{{item.classInfoContentTest.name}}</p>
+                      v-show="item.classInfoContent.name != ''"
+                    >{{item.classInfoContent.name}}</p>
                     <img :src="item.topicImg" alt />
                   </div>
 
                   <div class="SA-answer">
                     <span style="color:#ccc;margin-bottom:5px;display: block;">答案内容</span>
-                    <p v-show="item.classInfoContentTest.contents == ''" style="color:#2a2a2a;">[暂无]</p>
+                    <p v-show="item.classInfoContent.contents == ''" style="color:#2a2a2a;">[暂无]</p>
                     <p
-                      v-show="item.classInfoContentTest.contents != ''"
-                    >{{item.classInfoContentTest.contents}}</p>
+                      v-show="item.classInfoContent.contents != ''"
+                    >{{item.classInfoContent.contents}}</p>
                     <img :src="item.answerImg" alt />
                   </div>
                 </div>
@@ -532,23 +534,23 @@
                       <el-input
                         style="overflow-y: hidden;"
                         placeholder="请输入您的题目名称(选填)"
-                        v-model="item.classInfoContentTest.name"
+                        v-model="item.classInfoContent.name"
                       ></el-input>
-                      <!-- <el-input v-model="item.classInfoContentTest.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
+                      <!-- <el-input v-model="item.classInfoContent.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
                       <el-upload
                         class="upload-topic"
                         ref="answerArray"
                         :action="imgSite"
                         :headers="myHeaders"
                         :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
-                        :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.nameUrl)}"
+                        :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContent.id,item.classInfoContent.nameUrl)}"
                         :on-change="editTopicHandleChange"
                         :before-upload="editTopicHandlebeforeupload"
                         :file-list="item.topicUrlList"
                         :auto-upload="true"
                         :limit="uploadNum"
                         list-type="picture"
-                        :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
+                        :data="{classInfoId:item.classInfoContent.classInfoId}"
                       >
                         <el-button
                           slot="trigger"
@@ -563,7 +565,7 @@
                     <el-input
                       style="overflow-y: hidden;"
                       placeholder="请输入您的答案内容(选填)"
-                      v-model="item.classInfoContentTest.contents"
+                      v-model="item.classInfoContent.contents"
                     ></el-input>
                     <el-upload
                       class="upload-topic"
@@ -571,14 +573,14 @@
                       :action="imgSite"
                       :headers="myHeaders"
                       :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
-                      :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContentTest.id,item.classInfoContentTest.url)}"
+                      :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContent.id,item.classInfoContent.url)}"
                       :on-change="editAnswerHandleChange"
                       :before-upload="editAnswerHandlebeforeupload"
                       :file-list="item.answerUrlList"
                       :auto-upload="true"
                       :limit="uploadNum"
                       list-type="picture"
-                      :data="{classInfoTestId:item.classInfoContentTest.classInfoTestId}"
+                      :data="{classInfoId:item.classInfoContent.classInfoId}"
                     >
                       <el-button
                         slot="trigger"
@@ -767,7 +769,7 @@
                           :file-list="topicfileList"
                           :auto-upload="true"
                           :limit="uploadNum"
-                          :data="{classInfoTestId:this.classInfoTestId}"
+                          :data="{classInfoId:this.classInfoId}"
                           list-type="picture"
                         >
                           <el-button
@@ -797,7 +799,7 @@
                         :file-list="answerfileList"
                         :auto-upload="true"
                         :limit="uploadNum"
-                        :data="{classInfoTestId:this.classInfoTestId}"
+                        :data="{classInfoId:this.classInfoId}"
                         list-type="picture"
                       >
                         <el-button
@@ -815,6 +817,9 @@
                     </el-form-item>
                   </div>
                 </div>
+                <!-- <div class="nextcenter">
+                  <el-button style="margin-top: 20px;" @click="steplast" v-show="lastStep">上一步</el-button>
+                </div>-->
               </div>
               <!-- 编辑答案END -->
             </el-form>
@@ -973,17 +978,15 @@
 <script type="es6">
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-import UAQ from "@/components/public/uploadAnswerFaq.vue";
+
 export default {
   name: "uploadAnswer",
   components: {
     homeNav,
-    homeFooter,
-    UAQ
+    homeFooter
   },
   data() {
     return {
-      uaShow:true,
       subtitle: false,
       uploadNum: 1,
       active: 0,
@@ -992,7 +995,7 @@ export default {
       // 选择课程下一步
       seletchourse: {
         name: "",
-        UniversityTestId: 0
+        UniversityId: 0
       },
       // 标题Model
       orderInfo: {
@@ -1005,7 +1008,7 @@ export default {
       // 添加课程model
       addchourses: {
         name: "",
-        UniversityTestId: 0
+        UniversityId: 0
       },
       // 添加课程的验证规则
       chourserules: {
@@ -1040,11 +1043,9 @@ export default {
       upload: {
         school: "",
         schoolId: 0,
-        formerSchool:"",
-        formerSchoolId:0,
         course: "",
         courseId: 0,
-        type: "作业(Assignment)",
+        type: "作业(Asssignment)",
         week: 1,
         topic: "",
         topicUrl: "",
@@ -1103,7 +1104,7 @@ export default {
       type: "",
       typeoptions: [
         {
-          label: "作业(Assignment)"
+          label: "作业(Asssignment)"
         },
         {
           label: "测验(Quiz)"
@@ -1133,7 +1134,7 @@ export default {
       doupload: false,
       answerArray: [],
       // 订单ID
-      classInfoTestId: 0,
+      classInfoId: 0,
       // 答案图片
       answerFile: [],
       imgSite: this.URLport.serverPath + "/File/UploadImg",
@@ -1226,37 +1227,7 @@ export default {
     schoolNext(upload) {
       const _this = this;
       if (localStorage.getItem("token")) {
-       // _this.active = 1;
-        var school = {name:""};
-        school.name = _this.school.trim();
-        _this
-          .axios({
-            method: "post",
-            url: `${_this.URLport.serverPath}/UniversityTest/Add`,
-            async: false,
-            data: school,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.upload.school = res.data.data.name;
-              _this.upload.schoolId = res.data.data.id;
-              _this.active = 1;
-              // _this.upcourse = false;
-            } else {
-              _this.upload.school = res.data.data.name;
-              _this.upload.schoolId = res.data.data.id;
-              _this.active = 1;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
+        _this.active = 1;
       } else {
         _this.$message({
           message: "请登录之后操作",
@@ -1274,7 +1245,7 @@ export default {
             _this
               .axios({
                 method: "post",
-                url: `${_this.URLport.serverPath}/UniversityTest/Add`,
+                url: `${_this.URLport.serverPath}/University/Add`,
                 async: false,
                 data: _this.ruleForm,
                 xhrFields: {
@@ -1322,13 +1293,13 @@ export default {
       if (localStorage.getItem("token")) {
         var seletchourse = {};
         seletchourse.name = _this.course;
-        seletchourse.UniversityTestId = _this.upload.schoolId;
+        seletchourse.UniversityId = _this.upload.schoolId;
         seletchourse.id = _this.upload.courseId;
         _this.active = 2;
         _this
           .axios({
             method: "post",
-            url: `${_this.URLport.serverPath}/ClassTest/Add`,
+            url: `${_this.URLport.serverPath}/Class/Add`,
             async: false,
             data: seletchourse,
             xhrFields: {
@@ -1340,12 +1311,12 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              _this.upload.course = res.data.data.classtest.name;
+              _this.upload.course = res.data.data.clas.name;
               _this.active = 2;
-              _this.orderInfo.Name = res.data.data.classInfoTest.name;
-              _this.classInfoTestId = res.data.data.classInfoTest.id;
-              _this.serchingAnswer(_this.classInfoTestId);
-              _this.cacheAnswerId(_this.classInfoTestId);
+              _this.orderInfo.Name = res.data.data.classInfo.name;
+              _this.classInfoId = res.data.data.classInfo.id;
+              _this.serchingAnswer(_this.classInfoId);
+              _this.cacheAnswerId(_this.classInfoId);
             }
           })
           .catch(function(error) {
@@ -1363,13 +1334,13 @@ export default {
       const _this = this;
       if (localStorage.getItem("token")) {
         _this.addchourses.name = _this.addchourses.name.trim();
-        _this.addchourses.UniversityTestId = _this.upload.schoolId;
+        _this.addchourses.UniversityId = _this.upload.schoolId;
         _this.$refs[addchourses].validate(valid => {
           if (valid) {
             _this
               .axios({
                 method: "post",
-                url: `${_this.URLport.serverPath}/ClassTest/Add`,
+                url: `${_this.URLport.serverPath}/Class/Add`,
                 async: false,
                 data: _this.addchourses,
                 xhrFields: {
@@ -1380,14 +1351,15 @@ export default {
                 }
               })
               .then(function(res) {
+                console.log(res)
                 if (res.data.status == 1) {
-                  _this.upload.course = res.data.data.classtest.name;
-                  _this.upload.courseId = res.data.data.classtest.id;
+                  _this.upload.course = res.data.data.clas.name;
+                  _this.upload.courseId = res.data.data.clas.id;
                   _this.active = 2;
-                  _this.orderInfo.Name = res.data.data.classInfoTest.name;
-                  _this.classInfoTestId = res.data.data.classInfoTest.id;
-                  _this.serchingAnswer(_this.classInfoTestId);
-                  _this.cacheAnswerId(_this.classInfoTestId);
+                  _this.orderInfo.Name = res.data.data.classInfo.name;
+                  _this.classInfoId = res.data.data.classInfo.id;
+                  _this.serchingAnswer(_this.classInfoId);
+                  _this.cacheAnswerId(_this.classInfoId);
                   _this.$message({
                     message: "添加课程成功",
                     type: "success"
@@ -1421,11 +1393,11 @@ export default {
         var formData = {};
         formData.Name = _this.upload.topic;
         formData.NameUrl = _this.upload.topicUrl;
-        formData.UniversityTestId = _this.upload.schoolId;
+        formData.UniversityId = _this.upload.schoolId;
         formData.Url = _this.upload.answerUrl;
         formData.Contents = _this.upload.answer;
-        formData.ClassInfoTestId = _this.classInfoTestId;
-        formData.ClassTestId = _this.upload.courseId;
+        formData.ClassInfoId = _this.classInfoId;
+        formData.ClassId = _this.upload.courseId;
         formData.ClassWeek = _this.upload.week;
         formData.ClassWeekType = _this.upload.type;
         _this.formData = formData;
@@ -1440,7 +1412,7 @@ export default {
               _this
                 .axios({
                   method: "post",
-                  url: `${_this.URLport.serverPath}/ClassInfoContentTest/Add`,
+                  url: `${_this.URLport.serverPath}/ClassInfoContent/Add`,
                   async: false,
                   data: _this.formData,
                   xhrFields: {
@@ -1456,7 +1428,7 @@ export default {
                     _this.upload.Contents = "";
                     _this.topicfileList = [];
                     _this.answerfileList = [];
-                    _this.serchingAnswer(_this.classInfoTestId);
+                    _this.serchingAnswer(_this.classInfoId);
                     _this.upload.topic = "";
                     _this.upload.topicUrl = "";
                     _this.upload.answerUrl = "";
@@ -1489,16 +1461,16 @@ export default {
       }
     },
     // 检索当前订单的周数量
-    serchingWeek(classInfoTestId) {
+    serchingWeek(classInfoId) {
       const _this = this;
       _this.weekoptions = [{ label: 1 }];
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Week`,
           async: false,
           params: {
-            classInfoTestId: classInfoTestId
+            classInfoId: classInfoId
           },
           xhrFields: {
             withCredentials: true
@@ -1518,15 +1490,15 @@ export default {
         });
     },
     // 检索答案的方法
-    serchingAnswer(classInfoTestId) {
+    serchingAnswer(classInfoId) {
       const _this = this;
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/ClassInfoContents`,
           async: false,
           params: {
-            classInfoTestId: classInfoTestId
+            classInfoId: classInfoId
           },
           xhrFields: {
             withCredentials: true
@@ -1539,7 +1511,7 @@ export default {
           if (res.data.status == 1) {
             var answerArray = [];
             answerArray = res.data.data;
-            _this.serchingWeek(classInfoTestId);
+            _this.serchingWeek(classInfoId);
             for (var i = 0; i < answerArray.length; i++) {
               _this.$set(answerArray[i], "show", false);
               _this.$set(answerArray[i], "topicImg", []);
@@ -1549,44 +1521,45 @@ export default {
               _this.$set(answerArray[i], "topicCacheUrl", "");
               _this.$set(answerArray[i], "answerCacheUrl", "");
               if (
-                answerArray[i].classInfoContentTest.nameUrl.lastIndexOf(
+                answerArray[i].classInfoContent.nameUrl.lastIndexOf(
                   "jpg"
                 ) == -1 &&
-                answerArray[i].classInfoContentTest.nameUrl.lastIndexOf(
+                answerArray[i].classInfoContent.nameUrl.lastIndexOf(
                   "png"
                 ) == -1
               ) {
                 answerArray[i].topicUrlList = [];
               } else {
                 answerArray[i].topicImg =
-                  answerArray[i].classInfoContentTest.nameUrl;
-                const a = answerArray[i].classInfoContentTest.nameUrl.split(
+                  answerArray[i].classInfoContent.nameUrl;
+                const a = answerArray[i].classInfoContent.nameUrl.split(
                   "/"
                 );
                 answerArray[i].topicCacheUrl =
                   "/" + a[3] + "/" + a[4] + "/" + a[5];
                 answerArray[i].topicUrlList.push({
-                  url: answerArray[i].classInfoContentTest.nameUrl
+                  url: answerArray[i].classInfoContent.nameUrl
                 });
               }
               if (
-                answerArray[i].classInfoContentTest.url.lastIndexOf("jpg") ==
+                answerArray[i].classInfoContent.url.lastIndexOf("jpg") ==
                   -1 &&
-                answerArray[i].classInfoContentTest.url.lastIndexOf("png") == -1
+                answerArray[i].classInfoContent.url.lastIndexOf("png") == -1
               ) {
                 answerArray[i].answerUrlList = [];
               } else {
                 answerArray[i].answerImg =
-                  answerArray[i].classInfoContentTest.url;
-                const b = answerArray[i].classInfoContentTest.url.split("/");
+                  answerArray[i].classInfoContent.url;
+                const b = answerArray[i].classInfoContent.url.split("/");
                 answerArray[i].answerCacheUrl =
                   "/" + b[3] + "/" + b[4] + "/" + b[5];
                 answerArray[i].answerUrlList.push({
-                  url: answerArray[i].classInfoContentTest.url
+                  url: answerArray[i].classInfoContent.url
                 });
               }
             }
             _this.answerArray = answerArray;
+            console.log(_this.answerArray)
           }
         })
         .catch(function(error) {
@@ -1621,7 +1594,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/RemoveImg`,
           async: false,
           params: {
             id: 0,
@@ -1658,7 +1631,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/RemoveImg`,
           async: false,
           params: {
             id: 0,
@@ -1717,12 +1690,12 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 3) {
+          if (queryString.length >= 1) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/UniversityTest/UniversityTests`,
+                url: `${_this.URLport.serverPath}/University/Universitys`,
                 async: false,
                 params: {
                   name: valuestr
@@ -1732,22 +1705,21 @@ export default {
                 }
               })
               .then(function(res) {
+                console.log(res);
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
                       results.push({
                         value: res.data.data[i].name,
                         type: "大学",
-                        id: res.data.data[i].id,
-                        clientId:res.data.data[i].clientId,
+                        id: res.data.data[i].id
                       });
                     }
                   }
                 } else {
                   results.push({ value: "", type: null });
-                  
                 }
-                
+
                 cb(results);
               })
               .catch(function(error) {
@@ -1760,16 +1732,9 @@ export default {
     // 选择学校下拉框其中一条学校触发
     SchoolHandleSelectauto(value) {
       const _this = this;
-      if(value.clientId != undefined){
-        // 新库
-        _this.upload.schoolId = value.id;
-        _this.upload.school = value.value;
-        _this.upload.formerSchoolId = 0;
-      }else {
-        // 旧库
-        _this.upload.school = value.value;
-        _this.upload.formerSchoolId = value.id;
-      }
+
+      _this.upload.schoolId = value.id;
+      _this.upload.school = value.value;
       if (value.type != null) _this.schooldisabled = false;
     },
     // 离开学校输入框焦点触发
@@ -1781,7 +1746,7 @@ export default {
         _this.school = "";
       }
     },
-    // 课程输入框触发
+    // 选择课程输入框触发
     courseQuerySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -1791,17 +1756,16 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 2) {
+          if (queryString.length >= 1) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/ClassTest/ClassTests`,
+                url: `${_this.URLport.serverPath}/Class/Classes`,
                 async: false,
                 params: {
                   name: valuestr,
-                  universityId: _this.upload.formerSchoolId,
-                  universityTestId: _this.upload.schoolId
+                  universityId: _this.upload.schoolId
                 },
                 xhrFields: {
                   withCredentials: true
@@ -1814,8 +1778,7 @@ export default {
                       results.push({
                         value: res.data.data[i].name,
                         type: "课程",
-                        id: res.data.data[i].id,
-                        clientId:res.data.data[i].clientId,
+                        id: res.data.data[i].id
                       });
                     }
                   }
@@ -1835,16 +1798,8 @@ export default {
     // 选择下拉框中其中的一条课程触发
     courseHandleSelectauto(value) {
       const _this = this;
-     
-      if(value.clientId == undefined){
-        // 旧库
-        _this.upload.course = value.value;
-        _this.upload.courseId = 0;
-      }else {
-        // 新库
-        _this.upload.courseId = value.id;
-        _this.upload.course = value.value;
-      }
+      _this.upload.courseId = value.id;
+      _this.upload.course = value.value;
       if (value.type != null) _this.coursedisabled = false;
     },
     // 离开课程输入框焦点触发
@@ -1873,10 +1828,10 @@ export default {
           _this
             .axios({
               method: "delete",
-              url: `${_this.URLport.serverPath}/classInfoContentTest/Del`,
+              url: `${_this.URLport.serverPath}/classInfoContent/Del`,
               async: false,
               params: {
-                id: item.classInfoContentTest.id
+                id: item.classInfoContent.id
               },
               xhrFields: {
                 withCredentials: true
@@ -1887,7 +1842,7 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
-                _this.serchingAnswer(_this.classInfoTestId);
+                _this.serchingAnswer(_this.classInfoId);
                 _this.$message({
                   message: "删除答案成功",
                   type: "success"
@@ -1910,18 +1865,18 @@ export default {
       const _this = this;
       if (localStorage.getItem("token")) {
         var formData = {};
-        formData.Name = item.classInfoContentTest.name;
+        formData.Name = item.classInfoContent.name;
         formData.NameUrl = item.topicCacheUrl;
-        formData.UniversityTestId = item.classInfoContentTest.universityTestId;
-        formData.Contents = item.classInfoContentTest.contents;
+        formData.UniversityId = item.classInfoContent.universityId;
+        formData.Contents = item.classInfoContent.contents;
         formData.Url = item.answerCacheUrl;
         formData.ClientId = _this.clientId;
-        formData.ClassInfoTestId = item.classInfoContentTest.classInfoTestId;
-        formData.ClassTestId = item.classInfoContentTest.classTestId;
-        formData.ClassWeek = item.classInfoContentTest.classWeek;
-        formData.ClassWeekType = item.classInfoContentTest.classWeekType;
-        formData.Id = item.classInfoContentTest.id;
-        formData.createTime = item.classInfoContentTest.createTime;
+        formData.ClassInfoId = item.classInfoContent.classInfoId;
+        formData.ClassId = item.classInfoContent.classId;
+        formData.ClassWeek = item.classInfoContent.classWeek;
+        formData.ClassWeekType = item.classInfoContent.classWeekType;
+        formData.Id = item.classInfoContent.id;
+        formData.createTime = item.classInfoContent.createTime;
         _this.editformData = formData;
         if (formData.Url == "" && formData.Contents == "") {
           _this.$message({
@@ -1932,7 +1887,7 @@ export default {
           _this
             .axios({
               method: "put",
-              url: `${_this.URLport.serverPath}/classInfoContentTest/Edit`,
+              url: `${_this.URLport.serverPath}/classInfoContent/Edit`,
               async: false,
               data: _this.editformData,
               xhrFields: {
@@ -1944,7 +1899,7 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
-                _this.serchingAnswer(_this.editformData.ClassInfoTestId);
+                _this.serchingAnswer(_this.editformData.ClassInfoId);
                 _this.$message({
                   message: "修改答案成功",
                   type: "success"
@@ -1974,7 +1929,7 @@ export default {
       _this
         .axios({
           method: "put",
-          url: `${_this.URLport.serverPath}/ClassInfoTest/Edit`,
+          url: `${_this.URLport.serverPath}/ClassInfo/Edit`,
           async: false,
           data: _this.orderKong,
           xhrFields: {
@@ -2012,7 +1967,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/RemoveImg`,
           async: false,
           params: {
             id: id,
@@ -2062,7 +2017,7 @@ export default {
       _this
         .axios({
           method: "delete",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/RemoveImg`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/RemoveImg`,
           async: false,
           params: {
             id: id,
@@ -2096,13 +2051,13 @@ export default {
     editAnswerHandlebeforeupload(file) {
       const _this = this;
     },
-    // 获取题库集信息
+    // 修改题库集获取信息
     cacheAnswerId(id) {
       const _this = this;
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoTest/GetClassInfoTest`,
+          url: `${_this.URLport.serverPath}/ClassInfo/GetClassInfo`,
           async: false,
           params: {
             id: id
@@ -2119,7 +2074,7 @@ export default {
             _this.orderInfo.name = res.data.data.cict.name;
             _this.orderKong = res.data.data.cict;
             if (_this.$route.query.type == 3) {
-              _this.classInfoTestId = res.data.data.cict.id;
+              _this.classInfoId = res.data.data.cict.id;
               _this.upload.course = res.data.data.clas;
               _this.upload.school = res.data.data.university;
               _this.serchingAnswer(res.data.data.cict.id);
@@ -2136,7 +2091,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/UniversityTest/GetUniversityTest`,
+          url: `${_this.URLport.serverPath}/University/GetUniversity`,
           async: false,
           params: {
             id: id
@@ -2162,7 +2117,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassTest/GetClassTest`,
+          url: `${_this.URLport.serverPath}/Class/GetClass`,
           async: false,
           params: {
             id: id
@@ -2175,8 +2130,8 @@ export default {
           }
         })
         .then(function(res) {
-          _this.editchourses.name = res.data.data.classTest.name;
-          _this.editchourses.school = res.data.data.universityName;
+          _this.editchourses.name = res.data.data.name;
+          _this.editchourses.school = res.data.data.university;
           _this.coursekong = res.data.data;
         })
         .catch(function(error) {
@@ -2193,7 +2148,7 @@ export default {
           _this
             .axios({
               method: "put",
-              url: `${_this.URLport.serverPath}/UniversityTest/Edit`,
+              url: `${_this.URLport.serverPath}/University/Edit`,
               async: false,
               data: _this.schoolKong,
               xhrFields: {
@@ -2210,6 +2165,11 @@ export default {
                   message: "修改学校成功",
                   type: "success"
                 });
+              }else {
+                _this.$message({
+                  message: "该学校名称已经存在",
+                  type: "error"
+                });
               }
             })
             .catch(function(error) {
@@ -2224,15 +2184,15 @@ export default {
     editCourseNext(editchourses, item) {
       const _this = this;
       var a = item.name.trim();
-      _this.coursekong.classTest.name = a;
+      _this.coursekong.name = a;
       _this.$refs[editchourses].validate(valid => {
         if (valid) {
           _this
             .axios({
               method: "put",
-              url: `${_this.URLport.serverPath}/ClassTest/Edit`,
+              url: `${_this.URLport.serverPath}/Class/Edit`,
               async: false,
-              data: _this.coursekong.classTest,
+              data: _this.coursekong,
               xhrFields: {
                 withCredentials: true
               },
@@ -2246,6 +2206,11 @@ export default {
                 _this.$message({
                   message: "修改课程成功",
                   type: "success"
+                });
+              }else {
+                _this.$message({
+                  message: "该课程名称已经存在",
+                  type: "error"
                 });
               }
             })
@@ -2283,10 +2248,10 @@ export default {
       _this
         .axios({
           method: "put",
-          url: `${_this.URLport.serverPath}/ClassinfoTest/Change`,
+          url: `${_this.URLport.serverPath}/Classinfo/Change`,
           async: false,
           params: {
-            id: Number(_this.classInfoTestId)
+            id: Number(_this.classInfoId)
           },
           xhrFields: {
             withCredentials: true

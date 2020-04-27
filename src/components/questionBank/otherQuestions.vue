@@ -25,7 +25,7 @@
       <el-carousel-item v-for="item in courses" :key="item.id">
         <img :src="item.Imgs" alt />
         <h3>{{className}}</h3>
-        <p>分数:{{item.classinfo.totalGrade}}</p>
+        <p>分数:{{item.classinfo.grade}}</p>
         <button
           @click="skipclass(item.classinfo.classId,item.classinfo.id)"
         >

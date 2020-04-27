@@ -646,8 +646,8 @@ export default {
         //   classWeekType: "测验(Quiz)",
         //   origin: [
         //     {
-        //       classInfoTestId: 219,
-        //       classTestId: 23,
+        //       classInfoId: 219,
+        //       classId: 23,
         //       classWeek: 1,
         //       classWeekType: "测验(Quiz)",
         //       clientId: 0,
@@ -662,13 +662,13 @@ export default {
         //       name: "",
         //       nameUrl: "",
         //       refId: 446,
-        //       universityTestId: 58,
+        //       universityId: 58,
         //       url:
         //         "http://192.168.1.32:8086/uploads/16001/15001/Quiz/1600115001Quiz55154.png"
         //     },
         //     {
-        //       classInfoTestId: 219,
-        //       classTestId: 23,
+        //       classInfoId: 219,
+        //       classId: 23,
         //       classWeek: 1,
         //       classWeekType: "测验(Quiz)",
         //       clientId: 0,
@@ -683,7 +683,7 @@ export default {
         //       name: "",
         //       nameUrl: "",
         //       refId: 446,
-        //       universityTestId: 58,
+        //       universityId: 58,
         //       url:
         //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz90021.png"
         //     }
@@ -693,8 +693,8 @@ export default {
         //   classWeekType: "考试(Quiz)",
         //   origin: [
         //     {
-        //       classInfoTestId: 219,
-        //       classTestId: 23,
+        //       classInfoId: 219,
+        //       classId: 23,
         //       classWeek: 1,
         //       classWeekType: "测验(Quiz)",
         //       clientId: 0,
@@ -709,13 +709,13 @@ export default {
         //       name: "",
         //       nameUrl: "",
         //       refId: 446,
-        //       universityTestId: 58,
+        //       universityId: 58,
         //       url:
         //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz90021.png"
         //     },
         //     {
-        //       classInfoTestId: 219,
-        //       classTestId: 23,
+        //       classInfoId: 219,
+        //       classId: 23,
         //       classWeek: 1,
         //       classWeekType: "测验(Quiz)",
         //       clientId: 0,
@@ -730,7 +730,7 @@ export default {
         //       name: "",
         //       nameUrl: "",
         //       refId: 446,
-        //       universityTestId: 58,
+        //       universityId: 58,
         //       url:
         //         "http://192.168.1.32:8086/uploads/16001/24001/Quiz/1600124001Quiz77746.png"
         //     }
@@ -785,16 +785,17 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Week`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Week`,
           async: false,
           params: {
-            classInfoTestId: _this.$route.params.classinfo_id
+            classInfoId: _this.$route.params.classinfo_id
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
+          console.log(res)
           for (let i = 1; i <= res.data.data.length; i++) {
             const obj = {};
             obj.id = i;
@@ -846,7 +847,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
           async: false,
           params: {
             weekname: weekId,
@@ -857,6 +858,7 @@ export default {
           }
         })
         .then(function(res) {
+          
           _this.$store.state.answer.loading = false;
           _this.beforeData = res.data.data;
           // 循环整合数据结构
@@ -910,7 +912,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
           async: false,
           params: {
             weekname: weekId,
