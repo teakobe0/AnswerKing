@@ -596,7 +596,7 @@ export default {
   data() {
     return {
       value: [],
-      value1: 1,
+      value1: 0,
       valueWeek: [],
       Id: "",
       Answer: [],
@@ -795,41 +795,46 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
-          for (let i = 1; i <= res.data.data.length; i++) {
+          console.log(res);
+          for (let i = 0; i < res.data.data.length; i++) {
             const obj = {};
-            obj.id = i;
+            obj.id = res.data.data[i];
             _this.valueWeek.push(obj);
           }
+          
           _this.currentWeek = _this.valueWeek[0];
+          console.log(res.data.data.length);
           if (res.data.data.length == 0) {
             _this.$store.state.answer.tabconwu = false;
             _this.auditText = true;
             _this.classShow = false;
-          }
-          if (
-            // 有周ID没有类型时进入
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id == 0
-          ) {
-            _this.typeAnswer(_this.$route.params.weeks_id, 0);
-            _this.value1 = Number(_this.$route.params.weeks_id);
-          } else if (
-            // 有周ID和有类型时进入
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this.urlTypeAnswer(_this.$route.params.weeks_id);
-            _this.value1 = Number(_this.$route.params.weeks_id);
-          } else if (
-            // 没有周ID有类型时进入
-            _this.$route.params.weeks_id == 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this.urlTypeAnswer(_this.valueWeek[0].id);
+            // _this.value1 = 1;
           } else {
-            // 周ID和类型都没有时进入
-            _this.typeAnswer(_this.valueWeek[0].id, 0);
+            _this.value1 = _this.valueWeek[0].id;
+            if (
+              // 有周ID没有类型时进入
+              _this.$route.params.weeks_id != 0 &&
+              _this.$route.params.weektype_id == 0
+            ) {
+              _this.typeAnswer(_this.$route.params.weeks_id, 0);
+              _this.value1 = Number(_this.$route.params.weeks_id);
+            } else if (
+              // 有周ID和有类型时进入
+              _this.$route.params.weeks_id != 0 &&
+              _this.$route.params.weektype_id != 0
+            ) {
+              _this.urlTypeAnswer(_this.$route.params.weeks_id);
+              _this.value1 = Number(_this.$route.params.weeks_id);
+            } else if (
+              // 没有周ID有类型时进入
+              _this.$route.params.weeks_id == 0 &&
+              _this.$route.params.weektype_id != 0
+            ) {
+              _this.urlTypeAnswer(_this.valueWeek[0].id);
+            } else {
+              // 周ID和类型都没有时进入
+              _this.typeAnswer(_this.valueWeek[0].id, 0);
+            }
           }
         })
         .catch(function(error) {
@@ -858,7 +863,6 @@ export default {
           }
         })
         .then(function(res) {
-          
           _this.$store.state.answer.loading = false;
           _this.beforeData = res.data.data;
           // 循环整合数据结构

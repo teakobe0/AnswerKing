@@ -406,7 +406,8 @@
 <template>
   <div id="uploadAnswer">
     <homeNav></homeNav>
-    <div class="ua-con">
+    <UAQ></UAQ>
+    <div class="ua-con" v-show="this.$store.state.logo.uaShow">
       <el-steps
         :active="active"
         align-center
@@ -421,12 +422,10 @@
         <div class="ua-middle">
           <div class="orderTitle" v-show="active == 2">
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
-              {{upload.school}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
             </div>
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
-              {{upload.course}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
             </div>
             <div class="share-subtitle-ti">
               <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
@@ -978,12 +977,13 @@
 <script type="es6">
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-
+import UAQ from "@/components/public/uploadAnswerFaq.vue";
 export default {
   name: "uploadAnswer",
   components: {
     homeNav,
-    homeFooter
+    homeFooter,
+    UAQ
   },
   data() {
     return {

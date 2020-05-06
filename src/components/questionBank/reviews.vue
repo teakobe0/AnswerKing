@@ -610,6 +610,7 @@ export default {
     },
     // 新增2级评论
     submitReview: function(model) {
+      console.log(model)
       const _this = this;
       if (localStorage.token) {
         if (_this.personalVipEmail) {

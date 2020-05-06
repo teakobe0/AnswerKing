@@ -168,8 +168,7 @@ export default {
           _this.ids = a[1];
           _this.classinfoid = a[2];
           _this.$router.push({
-            path: "/serchDetailsContent",
-            query: { id: a[1], classInfoId: a[2] }
+            path: '/classes/'+a[1]+'/content/'+a[2]+'/weeks/'+0+'/weektype/'+0,
           });
           _this.$message({
             message: "删除成功",

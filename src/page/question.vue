@@ -421,7 +421,15 @@ export default {
         ],
         Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
-      qlList: [],
+      qlList: [
+        {
+          title:"123",
+          content:"123",
+          endTime:"1995-03-12",
+          currency:"123"
+        },
+        
+      ],
       qlShade: false,
       qlreplyShade: false,
       value1: "",
@@ -458,7 +466,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
+            // _this.qlList = res.data.data.data;
             console.log(res);
           }
         })
@@ -485,7 +493,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
+            // _this.qlList = res.data.data.data;
           }
         })
         .catch(function(error) {
@@ -511,7 +519,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
+            // _this.qlList = res.data.data.data;
           }
         })
         .catch(function(error) {

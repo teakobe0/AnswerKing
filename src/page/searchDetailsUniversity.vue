@@ -39,7 +39,7 @@
 .un-top-info {
   float: left;
   width: 83%;
-  height: 140px;
+  min-height: 140px;
   padding: 25px 40px;
   overflow: hidden;
 }
@@ -110,6 +110,7 @@
         <div class="university-top">
           <div class="un-top-img">
             <img src="../assets/schoolAll.png" alt>
+            <!-- <img :src="value.image" alt> -->
           </div>
           <div class="un-top-info">
             <h2>{{value.name}}</h2>

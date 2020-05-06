@@ -643,10 +643,10 @@ export default {
     //   _this
     //     .axios({
     //       method: "get",
-    //       url: `${_this.URLport.serverPath}/ClassInfoContentTest/ClassInfoContentTests`,
+    //       url: `${_this.URLport.serverPath}/ClassInfoContent/ClassInfoContents`,
     //       async: false,
     //       params: {
-    //         classInfoTestId: _this.$route.params.imgDetails_id
+    //         classInfoId: _this.$route.params.imgDetails_id
     //       },
     //       xhrFields: {
     //         withCredentials: true
@@ -677,7 +677,7 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContentTest/Types`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
           async: false,
           params: {
             weekname: _this.$route.params.weeks_id,

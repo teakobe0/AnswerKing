@@ -150,7 +150,7 @@
         >
           <el-button class="imgShow" size="mini" v-show="imgshow">
             <router-link
-              :to="'/classes/'+$route.params.classes_id+'/content/'+item.classInfoTestId+'/weeks/'+item.classWeek+'/weektype/'+item.classWeekType+'/imgDetails/'+item.id"
+              :to="'/classes/'+$route.params.classes_id+'/content/'+item.classInfoId+'/weeks/'+item.classWeek+'/weektype/'+item.classWeekType+'/imgDetails/'+item.id"
             >查看详情</router-link>
           </el-button>
           <img

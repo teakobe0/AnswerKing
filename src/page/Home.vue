@@ -1149,7 +1149,7 @@ export default {
           url: `${_this.URLport.serverPath}/University/GetUniversitys`,
           async: false,
           params: {
-            name: "美国",
+            name: "",
             state: ""
           },
           xhrFields: {
