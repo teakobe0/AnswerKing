@@ -285,6 +285,7 @@ export default {
           _this.$store.state.modified.Name = res.data.data.name;
           if (res.data.data.image.length > 26) {
             _this.imageUrl = res.data.data.image;
+            
             _this.headShow = true;
           } else {
             _this.headShow = false;

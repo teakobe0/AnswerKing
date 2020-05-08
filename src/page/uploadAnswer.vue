@@ -211,6 +211,11 @@
   position: absolute;
   top: 15px;
   right: 0px;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+}
+.SA-topic img:hover {
+  border: 1px solid #409efe;
 }
 .SA-answer {
   padding-top: 12px;
@@ -236,6 +241,11 @@
   position: absolute;
   top: 15px;
   right: 0px;
+  cursor: pointer;
+  border: 1px solid #f0f0f0;
+}
+.SA-answer img:hover {
+  border: 1px solid #409efe;
 }
 .SA-edit {
   position: absolute;
@@ -401,6 +411,91 @@
   overflow: hidden;
   box-shadow: 0 0 6px rgba(239, 239, 239, 0.3);
 }
+/* 图片悬窗 */
+.suspend-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 26, 26, 0.65);
+  z-index: 999;
+}
+.suspend-img img {
+  width: 800px;
+  height: 800px;
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  margin-left: -400px;
+  margin-top: -400px;
+}
+.suspend-img-re {
+  position: relative;
+  width: 800px;
+  height: 800px;
+  left: 50%;
+  top: 50%;
+  margin-left: -400px;
+  margin-top: -400px;
+}
+.suspendClose {
+  position: absolute;
+  right: -100px;
+  top: 40px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 30px;
+}
+/* 顶部跳转和底部跳转 */
+.page-component-up {
+  background-color: #fff;
+  position: fixed;
+  right: 100px;
+  bottom: 150px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+}
+.page-component-ups {
+  background-color: #fff;
+  position: fixed;
+  right: 100px;
+  bottom: 100px;
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: 0.3s;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
+  z-index: 5;
+  text-decoration: none;
+
+}
+.page-component-ups i {
+  color: #409eff;
+  display: block;
+  line-height: 40px;
+  text-align: center;
+  font-size: 18px;
+}
+.page-component-ups i:hover {
+  color: red;
+}
+.page-component-up i:hover {
+  color: red;
+}
+.page-component-up i {
+  color: #409eff;
+  display: block;
+  line-height: 40px;
+  text-align: center;
+  font-size: 18px;
+}
 </style>
 
 <template>
@@ -422,10 +517,12 @@
         <div class="ua-middle">
           <div class="orderTitle" v-show="active == 2">
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.school}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.school}}
             </div>
             <div class="share-subtitle">
-              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>{{upload.course}}
+              <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
+              {{upload.course}}
             </div>
             <div class="share-subtitle-ti">
               <i class="el-icon-school" style="margin-right:10px;position: absolute;top:5px;"></i>
@@ -512,10 +609,8 @@
                   <div class="SA-topic">
                     <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
                     <p v-show="item.classInfoContent.name == ''" style="color:#2a2a2a;">[暂无]</p>
-                    <p
-                      v-show="item.classInfoContent.name != ''"
-                    >{{item.classInfoContent.name}}</p>
-                    <img :src="item.topicImg" alt />
+                    <p v-show="item.classInfoContent.name != ''">{{item.classInfoContent.name}}</p>
+                    <img :src="item.topicImg" alt @click="suspendImg(item.topicImg)" v-show="item.topicImg != '' "/>
                   </div>
 
                   <div class="SA-answer">
@@ -524,7 +619,7 @@
                     <p
                       v-show="item.classInfoContent.contents != ''"
                     >{{item.classInfoContent.contents}}</p>
-                    <img :src="item.answerImg" alt />
+                    <img :src="item.answerImg" alt @click="suspendImg(item.answerImg)" v-show="item.answerImg != '' "/>
                   </div>
                 </div>
                 <div v-show="active == 2 && item.show == true">
@@ -950,7 +1045,7 @@
               <!-- 修改课程END -->
             </el-form>
           </div>
-          <div class="addTopic" @click="addTopic" v-show="active == 2">
+          <div class="addTopic" id="addTopics"  @click="addTopic" v-show="active == 2">
             <p>+&nbsp;添加一个新的题目</p>
           </div>
           <div class="affirmQb" @click="affirmQb" v-show="active == 2">
@@ -969,6 +1064,20 @@
         </div>
         <img src="../assets/erweima.jpg" alt />
       </div>-->
+      <div>
+        <div class="page-component-up" @click="pageTop" v-show="topBottShow">
+          <i class="el-icon-caret-top"></i>
+        </div>
+        <a href="#addTopics" class="page-component-ups" @click="pageBottom" v-show="topBottShow">
+          <i class="el-icon-caret-bottom"></i>
+        </a>
+      </div>
+      <div class="suspend-img" v-show="suspendimgShow">
+        <div class="suspend-img-re">
+          <img :src="suImg" alt />
+          <div class="suspendClose el-icon-close" @click="CloseQuitBt"></div>
+        </div>
+      </div>
     </div>
     <homeFooter></homeFooter>
   </div>
@@ -1148,7 +1257,12 @@ export default {
       orderKong: {},
       lastStep: true,
       // 新题目展开隐藏
-      upAnswerShow: false
+      upAnswerShow: false,
+      // 图片悬窗
+      suspendimgShow: false,
+      suImg: "",
+      // 跳转顶部和底部的显示隐藏
+      topBottShow:false,
     };
   },
   beforeRouteUpdate(to, from, next) {},
@@ -1170,7 +1284,23 @@ export default {
       _this.cacheAnswerId(_this.$route.query.id);
     }
   },
+  mounted() {
+    const _this = this;
+    window.addEventListener("scroll", _this.handleScroll);
+  },
   methods: {
+    handleScroll(){
+      const _this = this;
+      var scrollTop =
+        window.pageYOffset ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop;
+      if (scrollTop > 300) {
+        _this.topBottShow = true;
+      } else if (scrollTop == 0) {
+        _this.topBottShow = false;
+      }
+    },
     // 获取个人信息
     gainpersonal: function() {
       const _this = this;
@@ -1351,7 +1481,7 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res)
+                console.log(res);
                 if (res.data.status == 1) {
                   _this.upload.course = res.data.data.clas.name;
                   _this.upload.courseId = res.data.data.clas.id;
@@ -1521,20 +1651,15 @@ export default {
               _this.$set(answerArray[i], "topicCacheUrl", "");
               _this.$set(answerArray[i], "answerCacheUrl", "");
               if (
-                answerArray[i].classInfoContent.nameUrl.lastIndexOf(
-                  "jpg"
-                ) == -1 &&
-                answerArray[i].classInfoContent.nameUrl.lastIndexOf(
-                  "png"
-                ) == -1
+                answerArray[i].classInfoContent.nameUrl.lastIndexOf("jpg") ==
+                  -1 &&
+                answerArray[i].classInfoContent.nameUrl.lastIndexOf("png") == -1
               ) {
                 answerArray[i].topicUrlList = [];
               } else {
                 answerArray[i].topicImg =
                   answerArray[i].classInfoContent.nameUrl;
-                const a = answerArray[i].classInfoContent.nameUrl.split(
-                  "/"
-                );
+                const a = answerArray[i].classInfoContent.nameUrl.split("/");
                 answerArray[i].topicCacheUrl =
                   "/" + a[3] + "/" + a[4] + "/" + a[5];
                 answerArray[i].topicUrlList.push({
@@ -1542,14 +1667,12 @@ export default {
                 });
               }
               if (
-                answerArray[i].classInfoContent.url.lastIndexOf("jpg") ==
-                  -1 &&
+                answerArray[i].classInfoContent.url.lastIndexOf("jpg") == -1 &&
                 answerArray[i].classInfoContent.url.lastIndexOf("png") == -1
               ) {
                 answerArray[i].answerUrlList = [];
               } else {
-                answerArray[i].answerImg =
-                  answerArray[i].classInfoContent.url;
+                answerArray[i].answerImg = answerArray[i].classInfoContent.url;
                 const b = answerArray[i].classInfoContent.url.split("/");
                 answerArray[i].answerCacheUrl =
                   "/" + b[3] + "/" + b[4] + "/" + b[5];
@@ -1559,7 +1682,7 @@ export default {
               }
             }
             _this.answerArray = answerArray;
-            console.log(_this.answerArray)
+            console.log(_this.answerArray);
           }
         })
         .catch(function(error) {
@@ -2165,7 +2288,7 @@ export default {
                   message: "修改学校成功",
                   type: "success"
                 });
-              }else {
+              } else {
                 _this.$message({
                   message: "该学校名称已经存在",
                   type: "error"
@@ -2207,7 +2330,7 @@ export default {
                   message: "修改课程成功",
                   type: "success"
                 });
-              }else {
+              } else {
                 _this.$message({
                   message: "该课程名称已经存在",
                   type: "error"
@@ -2266,11 +2389,30 @@ export default {
               message: "创建成功,工作人员正在审核内容。",
               type: "success"
             });
+            _this.$router.push({path:'/personalData/award'})
           }
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    suspendImg(item) {
+      const _this = this;
+      console.log(item);
+      _this.suImg = item;
+      _this.suspendimgShow = !_this.suspendimgShow;
+    },
+    CloseQuitBt(){
+      const _this = this;
+      _this.suspendimgShow = !_this.suspendimgShow;
+    },
+    pageTop() {
+      const _this = this;
+      window.scroll(0, 0);
+    },
+    pageBottom(){
+      const _this = this;
+
     }
   }
 };

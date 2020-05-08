@@ -170,10 +170,6 @@ export default {
           _this.$router.push({
             path: '/classes/'+a[1]+'/content/'+a[2]+'/weeks/'+0+'/weektype/'+0,
           });
-          _this.$message({
-            message: "删除成功",
-            type: "success"
-          });
           _this.gainmessage();
         })
         .catch(function(error) {

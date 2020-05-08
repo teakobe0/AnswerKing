@@ -795,15 +795,13 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           for (let i = 0; i < res.data.data.length; i++) {
             const obj = {};
             obj.id = res.data.data[i];
             _this.valueWeek.push(obj);
           }
-          
+
           _this.currentWeek = _this.valueWeek[0];
-          console.log(res.data.data.length);
           if (res.data.data.length == 0) {
             _this.$store.state.answer.tabconwu = false;
             _this.auditText = true;
@@ -863,43 +861,49 @@ export default {
           }
         })
         .then(function(res) {
-          _this.$store.state.answer.loading = false;
-          _this.beforeData = res.data.data;
-          // 循环整合数据结构
-          let tempArr = [];
-          for (let i = 0; i < _this.beforeData.length; i++) {
-            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
-              _this.afterData.push({
-                classWeekType: _this.beforeData[i].classWeekType,
-                origin: [_this.beforeData[i]]
-              });
-              tempArr.push(_this.beforeData[i].classWeekType);
+          if (res.data.status == 1) {
+            if (res.data.data.length == 0) {
+              _this.conShow = false;
             } else {
-              for (let j = 0; j < _this.afterData.length; j++) {
-                if (
-                  _this.afterData[j].classWeekType ==
-                  _this.beforeData[i].classWeekType
-                ) {
-                  _this.afterData[j].origin.push(_this.beforeData[i]);
-                  break;
+              _this.$store.state.answer.loading = false;
+              _this.beforeData = res.data.data;
+              // 循环整合数据结构
+              let tempArr = [];
+              for (let i = 0; i < _this.beforeData.length; i++) {
+                if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+                  _this.afterData.push({
+                    classWeekType: _this.beforeData[i].classWeekType,
+                    origin: [_this.beforeData[i]]
+                  });
+                  tempArr.push(_this.beforeData[i].classWeekType);
+                } else {
+                  for (let j = 0; j < _this.afterData.length; j++) {
+                    if (
+                      _this.afterData[j].classWeekType ==
+                      _this.beforeData[i].classWeekType
+                    ) {
+                      _this.afterData[j].origin.push(_this.beforeData[i]);
+                      break;
+                    }
+                  }
                 }
               }
+              // 将类型独立出来
+              for (var i = 0; i < _this.afterData.length; i++) {
+                const obj = {};
+                obj.contentType = _this.afterData[i].classWeekType;
+                _this.tabs.push(obj);
+              }
+              // 将图片独立出来
+              for (var j = 0; j < _this.afterData[anIndex].origin.length; j++) {
+                const imgs = {};
+                imgs = _this.afterData[anIndex].origin[j].url;
+                _this.answerImgs.push(imgs);
+              }
+              _this.$store.state.answer.answer = [_this.afterData[anIndex]];
+              _this.$store.state.answer.imgss = _this.answerImgs;
             }
           }
-          // 将类型独立出来
-          for (var i = 0; i < _this.afterData.length; i++) {
-            const obj = {};
-            obj.contentType = _this.afterData[i].classWeekType;
-            _this.tabs.push(obj);
-          }
-          // 将图片独立出来
-          for (var j = 0; j < _this.afterData[anIndex].origin.length; j++) {
-            const imgs = {};
-            imgs = _this.afterData[anIndex].origin[j].url;
-            _this.answerImgs.push(imgs);
-          }
-          _this.$store.state.answer.answer = [_this.afterData[anIndex]];
-          _this.$store.state.answer.imgss = _this.answerImgs;
         })
         .catch(function(error) {
           console.log(error);
@@ -927,46 +931,54 @@ export default {
           }
         })
         .then(function(res) {
-          _this.beforeData = res.data.data;
-          // 循环整合数据结构
-          let tempArr = [];
-          for (let i = 0; i < _this.beforeData.length; i++) {
-            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
-              _this.afterData.push({
-                classWeekType: _this.beforeData[i].classWeekType,
-                origin: [_this.beforeData[i]]
-              });
-              tempArr.push(_this.beforeData[i].classWeekType);
+          if (res.data.stsus == 1) {
+            if (res.data.data.length == 0) {
+              _this.conShow = false;
             } else {
-              for (let j = 0; j < _this.afterData.length; j++) {
-                if (
-                  _this.afterData[j].classWeekType ==
-                  _this.beforeData[i].classWeekType
-                ) {
-                  _this.afterData[j].origin.push(_this.beforeData[i]);
-                  break;
+              _this.beforeData = res.data.data;
+              // 循环整合数据结构
+              let tempArr = [];
+              for (let i = 0; i < _this.beforeData.length; i++) {
+                if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+                  _this.afterData.push({
+                    classWeekType: _this.beforeData[i].classWeekType,
+                    origin: [_this.beforeData[i]]
+                  });
+                  tempArr.push(_this.beforeData[i].classWeekType);
+                } else {
+                  for (let j = 0; j < _this.afterData.length; j++) {
+                    if (
+                      _this.afterData[j].classWeekType ==
+                      _this.beforeData[i].classWeekType
+                    ) {
+                      _this.afterData[j].origin.push(_this.beforeData[i]);
+                      break;
+                    }
+                  }
                 }
               }
-            }
-          }
-          // 将类型独立出来
-          for (var i = 0; i < _this.afterData.length; i++) {
-            const obj = {};
-            obj.contentType = _this.afterData[i].classWeekType;
-            _this.tabs.push(obj);
-          }
-
-          for (let i = 0; i < _this.tabs.length; i++) {
-            if (_this.tabs[i].contentType == _this.$route.params.weektype_id) {
-              _this.numnum = i;
-              // 将图片独立出来
-              for (var j = 0; j < _this.afterData[i].origin.length; j++) {
-                const imgs = {};
-                imgs = _this.afterData[i].origin[j].url;
-                _this.answerImgs.push(imgs);
+              // 将类型独立出来
+              for (var i = 0; i < _this.afterData.length; i++) {
+                const obj = {};
+                obj.contentType = _this.afterData[i].classWeekType;
+                _this.tabs.push(obj);
               }
-              _this.$store.state.answer.answer = [_this.afterData[i]];
-              _this.$store.state.answer.imgss = _this.answerImgs;
+
+              for (let i = 0; i < _this.tabs.length; i++) {
+                if (
+                  _this.tabs[i].contentType == _this.$route.params.weektype_id
+                ) {
+                  _this.numnum = i;
+                  // 将图片独立出来
+                  for (var j = 0; j < _this.afterData[i].origin.length; j++) {
+                    const imgs = {};
+                    imgs = _this.afterData[i].origin[j].url;
+                    _this.answerImgs.push(imgs);
+                  }
+                  _this.$store.state.answer.answer = [_this.afterData[i]];
+                  _this.$store.state.answer.imgss = _this.answerImgs;
+                }
+              }
             }
           }
         })
