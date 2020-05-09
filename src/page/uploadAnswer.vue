@@ -339,7 +339,7 @@
   line-height: 50px;
 }
 /* 添加一个新的题目按钮 */
-.addTopic {
+.addTopic p {
   width: 100%;
   height: 100px;
   background-color: #fff;
@@ -349,21 +349,22 @@
   font-weight: 700;
   font-size: 18px;
   cursor: pointer;
-  margin-bottom: 20px;
-  margin-top: 20px;
+  /* margin-bottom: 20px;
+  margin-top: 20px; */
   box-shadow: 0 0 6px rgba(239, 239, 239, 0.3);
   border-radius: 2px;
 }
-.addTopic:hover {
+.addTopic p:hover {
   color: #ffcd1f;
 }
-.addTopic:active {
+.addTopic p:active {
   color: #ffce1fe8;
 }
 /* 确认创建题库 */
 .affirmQb {
   width: 100%;
   height: 100px;
+  margin-top: 20px;
   background-color: #409efe;
   text-align: center;
   line-height: 100px;
@@ -474,7 +475,6 @@
   box-shadow: 0 0 6px rgba(0, 0, 0, 0.12);
   z-index: 5;
   text-decoration: none;
-
 }
 .page-component-ups i {
   color: #409eff;
@@ -555,146 +555,10 @@
             </div>
             <div class="miniAffirmQb" @click="affirmQb">确认创建</div>
           </div>
-          <!-- 展示创建过的订单开始 -->
-          <div v-show="active == 2">
-            <div class="showAnswer" v-for="(item,index) in answerArray">
-              <div class="SA-con">
-                <div class="SA-title">
-                  <span
-                    class="SA-week"
-                    v-show="active == 2 && item.show == false"
-                  >第{{item.classInfoContent.classWeek}}周&nbsp;-&nbsp;{{item.classInfoContent.classWeekType}}</span>
-                  <div class="up-answer-week">
-                    <el-select
-                      v-show="active == 2 && item.show == true"
-                      v-model="item.classInfoContent.classWeek"
-                      placeholder="请选择当前课程所在的周"
-                      style="width:80px;"
-                    >
-                      <el-option
-                        v-for="item in weekoptions"
-                        :key="item.label"
-                        :label="'第'+ item.label + '周'"
-                        :value="item.label"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                  <div class="up-answer-type">
-                    <el-select
-                      v-show="active == 2 && item.show == true"
-                      v-model="item.classInfoContent.classWeekType"
-                      placeholder="请选择当前课程的类型"
-                      style="width:173px;"
-                    >
-                      <el-option
-                        v-for="item in typeoptions"
-                        :key="item.label"
-                        :label="item.label"
-                        :value="item.label"
-                      ></el-option>
-                    </el-select>
-                  </div>
-                </div>
-                <div class="SA-edit">
-                  <i
-                    class="el-icon-circle-check edits"
-                    v-show="active == 2 && item.show == true"
-                    title="保存题目"
-                    @click="editstepupload(item)"
-                  ></i>
-                  <i class="el-icon-edit edits" @click="editAnswerShow(item)" title="编辑"></i>
-                  <i class="el-icon-delete delete" @click="editAnswerDelete(item)" title="删除"></i>
-                </div>
-                <div v-show="active == 2 && item.show == false">
-                  <div class="SA-topic">
-                    <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
-                    <p v-show="item.classInfoContent.name == ''" style="color:#2a2a2a;">[暂无]</p>
-                    <p v-show="item.classInfoContent.name != ''">{{item.classInfoContent.name}}</p>
-                    <img :src="item.topicImg" alt @click="suspendImg(item.topicImg)" v-show="item.topicImg != '' "/>
-                  </div>
-
-                  <div class="SA-answer">
-                    <span style="color:#ccc;margin-bottom:5px;display: block;">答案内容</span>
-                    <p v-show="item.classInfoContent.contents == ''" style="color:#2a2a2a;">[暂无]</p>
-                    <p
-                      v-show="item.classInfoContent.contents != ''"
-                    >{{item.classInfoContent.contents}}</p>
-                    <img :src="item.answerImg" alt @click="suspendImg(item.answerImg)" v-show="item.answerImg != '' "/>
-                  </div>
-                </div>
-                <div v-show="active == 2 && item.show == true">
-                  <div class="up-answer-topic">
-                    <div class="topic-con">
-                      <el-input
-                        style="overflow-y: hidden;"
-                        placeholder="请输入您的题目名称(选填)"
-                        v-model="item.classInfoContent.name"
-                      ></el-input>
-                      <!-- <el-input v-model="item.classInfoContent.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
-                      <el-upload
-                        class="upload-topic"
-                        ref="answerArray"
-                        :action="imgSite"
-                        :headers="myHeaders"
-                        :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
-                        :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,item.classInfoContent.id,item.classInfoContent.nameUrl)}"
-                        :on-change="editTopicHandleChange"
-                        :before-upload="editTopicHandlebeforeupload"
-                        :file-list="item.topicUrlList"
-                        :auto-upload="true"
-                        :limit="uploadNum"
-                        list-type="picture"
-                        :data="{classInfoId:item.classInfoContent.classInfoId}"
-                      >
-                        <el-button
-                          slot="trigger"
-                          size="small"
-                          type="primary"
-                          icon="el-icon-picture"
-                        >添加题目图片</el-button>
-                      </el-upload>
-                    </div>
-                  </div>
-                  <div class="up-answer-img">
-                    <el-input
-                      style="overflow-y: hidden;"
-                      placeholder="请输入您的答案内容(选填)"
-                      v-model="item.classInfoContent.contents"
-                    ></el-input>
-                    <el-upload
-                      class="upload-topic"
-                      ref="answerArray"
-                      :action="imgSite"
-                      :headers="myHeaders"
-                      :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
-                      :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,item.classInfoContent.id,item.classInfoContent.url)}"
-                      :on-change="editAnswerHandleChange"
-                      :before-upload="editAnswerHandlebeforeupload"
-                      :file-list="item.answerUrlList"
-                      :auto-upload="true"
-                      :limit="uploadNum"
-                      list-type="picture"
-                      :data="{classInfoId:item.classInfoContent.classInfoId}"
-                    >
-                      <el-button
-                        slot="trigger"
-                        size="small"
-                        type="primary"
-                        icon="el-icon-picture"
-                      >添加答案图片</el-button>
-                      <i
-                        slot="tip"
-                        class="el-upload__tip"
-                        style="margin-left:240px;color:#9c9c9c;display: inline-block;"
-                      >每次只能上传1张jpg/png的图片，且不超过2MB</i>
-                    </el-upload>
-                  </div>
-                </div>
-              </div>
-              <!-- 编辑现有答案 -->
-            </div>
+          <div class="addTopic" @click="addTopic" v-show="active == 2">
+            <p v-show="addTopicShow">+&nbsp;添加一个新的题目</p>
           </div>
-          <!-- 展示创建过的订单结束 -->
+          <!-- 顶部上传 -->
           <div class="up-upload">
             <el-form
               :model="upload"
@@ -820,7 +684,12 @@
                             :key="item.label"
                             :label="'第'+ item.label + '周'"
                             :value="item.label"
-                          ></el-option>
+                          >
+                            <span>第{{item.label}}周</span>
+                          </el-option>
+                          <!-- <div>
+                            <el-button type="mini" @click="addWeek" style="margin-top:6px;margin-left:11px;">添加</el-button>
+                          </div>-->
                         </el-select>
                       </el-form-item>
                     </div>
@@ -1045,10 +914,166 @@
               <!-- 修改课程END -->
             </el-form>
           </div>
-          <div class="addTopic" id="addTopics"  @click="addTopic" v-show="active == 2">
-            <p>+&nbsp;添加一个新的题目</p>
+          <!-- 展示创建过的订单开始 -->
+          <div v-show="active == 2">
+            <div>
+              <div class="showAnswer" v-for="(item,index) in answerArray">
+                {{item.week}}
+                <div v-for="(items,indexs) in item.list">
+                  <div class="SA-con">
+                    <div class="SA-title">
+                      <span
+                        class="SA-week"
+                        v-show="active == 2 && items.show == false"
+                      >第{{items.classWeek}}周&nbsp;-&nbsp;{{items.classWeekType}}</span>
+                      <div class="up-answer-week">
+                        <el-select
+                          v-show="active == 2 && items.show == true"
+                          v-model="items.classWeek"
+                          placeholder="请选择当前课程所在的周"
+                          style="width:80px;"
+                        >
+                          <el-option
+                            v-for="item in weekoptions"
+                            :key="item.label"
+                            :label="'第'+ item.label + '周'"
+                            :value="item.label"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                      <div class="up-answer-type">
+                        <el-select
+                          v-show="active == 2 && item.show == true"
+                          v-model="items.classWeekType"
+                          placeholder="请选择当前课程的类型"
+                          style="width:173px;"
+                        >
+                          <el-option
+                            v-for="item in typeoptions"
+                            :key="item.label"
+                            :label="item.label"
+                            :value="item.label"
+                          ></el-option>
+                        </el-select>
+                      </div>
+                      <div class="SA-edit">
+                        <i
+                          class="el-icon-circle-check edits"
+                          v-show="active == 2 && items.show == true"
+                          title="保存题目"
+                          @click="editstepupload(items)"
+                        ></i>
+                        <i class="el-icon-edit edits" @click="editAnswerShow(items)" title="编辑"></i>
+                        <i
+                          class="el-icon-delete delete"
+                          @click="editAnswerDelete(items)"
+                          title="删除"
+                        ></i>
+                      </div>
+                    </div>
+                    <div v-show="active == 2 && items.show == false">
+                      <div class="SA-topic">
+                        <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
+                        <p v-show="items.name == ''" style="color:#2a2a2a;">[暂无]</p>
+                        <p v-show="items.name != ''">{{items.name}}</p>
+                        <img
+                          :src="items.topicImg"
+                          alt
+                          @click="suspendImg(items.topicImg)"
+                          v-show="items.topicImg != '' "
+                        />
+                      </div>
+
+                      <div class="SA-answer">
+                        <span style="color:#ccc;margin-bottom:5px;display: block;">答案内容</span>
+                        <p v-show="items.contents == ''" style="color:#2a2a2a;">[暂无]</p>
+                        <p v-show="items.contents != ''">{{items.contents}}</p>
+                        <img
+                          :src="items.answerImg"
+                          alt
+                          @click="suspendImg(items.answerImg)"
+                          v-show="items.answerImg != '' "
+                        />
+                      </div>
+                    </div>
+                    <div v-show="active == 2 && items.show == true">
+                      <div class="up-answer-topic">
+                        <div class="topic-con">
+                          <el-input
+                            style="overflow-y: hidden;"
+                            placeholder="请输入您的题目名称(选填)"
+                            v-model="items.name"
+                          ></el-input>
+                          <!-- <el-input v-model="item.classInfoContent.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
+                          <el-upload
+                            class="upload-topic"
+                            ref="answerArray"
+                            :action="imgSite"
+                            :headers="myHeaders"
+                            :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
+                            :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,items.id,items.nameUrl)}"
+                            :on-change="editTopicHandleChange"
+                            :before-upload="editTopicHandlebeforeupload"
+                            :file-list="items.topicUrlList"
+                            :auto-upload="true"
+                            :limit="uploadNum"
+                            list-type="picture"
+                            :data="{classInfoId:items.classInfoId}"
+                          >
+                            <el-button
+                              slot="trigger"
+                              size="small"
+                              type="primary"
+                              icon="el-icon-picture"
+                            >添加题目图片</el-button>
+                          </el-upload>
+                        </div>
+                      </div>
+                      <div class="up-answer-img">
+                        <el-input
+                          style="overflow-y: hidden;"
+                          placeholder="请输入您的答案内容(选填)"
+                          v-model="items.contents"
+                        ></el-input>
+                        <el-upload
+                          class="upload-topic"
+                          ref="answerArray"
+                          :action="imgSite"
+                          :headers="myHeaders"
+                          :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
+                          :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,items.id,items.url)}"
+                          :on-change="editAnswerHandleChange"
+                          :before-upload="editAnswerHandlebeforeupload"
+                          :file-list="items.answerUrlList"
+                          :auto-upload="true"
+                          :limit="uploadNum"
+                          list-type="picture"
+                          :data="{classInfoId:items.classInfoId}"
+                        >
+                          <el-button
+                            slot="trigger"
+                            size="small"
+                            type="primary"
+                            icon="el-icon-picture"
+                          >添加答案图片</el-button>
+                          <i
+                            slot="tip"
+                            class="el-upload__tip"
+                            style="margin-left:240px;color:#9c9c9c;display: inline-block;"
+                          >每次只能上传1张jpg/png的图片，且不超过2MB</i>
+                        </el-upload>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- 编辑现有答案 -->
+              </div>
+            </div>
           </div>
-          <div class="affirmQb" @click="affirmQb" v-show="active == 2">
+          <!-- 展示创建过的订单结束 -->
+
+          <div class="affirmQb" @click="affirmQb" id="UPdown" v-show="active == 2">
             <p>确认创建</p>
           </div>
         </div>
@@ -1068,7 +1093,7 @@
         <div class="page-component-up" @click="pageTop" v-show="topBottShow">
           <i class="el-icon-caret-top"></i>
         </div>
-        <a href="#addTopics" class="page-component-ups" @click="pageBottom" v-show="topBottShow">
+        <a href="#UPdown" class="page-component-ups" @click="pageBottom" v-show="topBottShow">
           <i class="el-icon-caret-bottom"></i>
         </a>
       </div>
@@ -1262,7 +1287,9 @@ export default {
       suspendimgShow: false,
       suImg: "",
       // 跳转顶部和底部的显示隐藏
-      topBottShow:false,
+      topBottShow: false,
+      afterData: [],
+      addTopicShow: true
     };
   },
   beforeRouteUpdate(to, from, next) {},
@@ -1289,7 +1316,7 @@ export default {
     window.addEventListener("scroll", _this.handleScroll);
   },
   methods: {
-    handleScroll(){
+    handleScroll() {
       const _this = this;
       var scrollTop =
         window.pageYOffset ||
@@ -1539,6 +1566,7 @@ export default {
         } else {
           _this.$refs[upload].validate(valid => {
             if (valid) {
+              _this.addTopicShow = true;
               _this
                 .axios({
                   method: "post",
@@ -1593,7 +1621,7 @@ export default {
     // 检索当前订单的周数量
     serchingWeek(classInfoId) {
       const _this = this;
-      _this.weekoptions = [{ label: 1 }];
+      _this.weekoptions = [];
       _this
         .axios({
           method: "get",
@@ -1608,11 +1636,21 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            for (let i = 2; i <= res.data.data.length + 1; i++) {
+            // for (let i = 2; i <= res.data.data.length + 1; i++) {
+            //   const obj = {};
+            //   obj.label = i;
+            //   _this.weekoptions.push(obj);
+            // }
+            for (let i = 0; i < res.data.data.length; i++) {
               const obj = {};
-              obj.label = i;
+              obj.label = res.data.data[i];
               _this.weekoptions.push(obj);
             }
+            var b = _this.weekoptions.length;
+            var a = _this.weekoptions[b - 1].label;
+            _this.weekoptions.push({ label: a + 1 });
+            // console.log(a)
+            // console.log(_this.weekoptions)
           }
         })
         .catch(function(error) {
@@ -1622,6 +1660,7 @@ export default {
     // 检索答案的方法
     serchingAnswer(classInfoId) {
       const _this = this;
+      _this.afterData = [];
       _this
         .axios({
           method: "get",
@@ -1638,51 +1677,75 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res);
           if (res.data.status == 1) {
             var answerArray = [];
             answerArray = res.data.data;
             _this.serchingWeek(classInfoId);
             for (var i = 0; i < answerArray.length; i++) {
-              _this.$set(answerArray[i], "show", false);
-              _this.$set(answerArray[i], "topicImg", []);
-              _this.$set(answerArray[i], "topicUrlList", []);
-              _this.$set(answerArray[i], "answerImg", []);
-              _this.$set(answerArray[i], "answerUrlList", []);
-              _this.$set(answerArray[i], "topicCacheUrl", "");
-              _this.$set(answerArray[i], "answerCacheUrl", "");
-              if (
-                answerArray[i].classInfoContent.nameUrl.lastIndexOf("jpg") ==
-                  -1 &&
-                answerArray[i].classInfoContent.nameUrl.lastIndexOf("png") == -1
-              ) {
-                answerArray[i].topicUrlList = [];
-              } else {
-                answerArray[i].topicImg =
-                  answerArray[i].classInfoContent.nameUrl;
-                const a = answerArray[i].classInfoContent.nameUrl.split("/");
-                answerArray[i].topicCacheUrl =
-                  "/" + a[3] + "/" + a[4] + "/" + a[5];
-                answerArray[i].topicUrlList.push({
-                  url: answerArray[i].classInfoContent.nameUrl
-                });
-              }
-              if (
-                answerArray[i].classInfoContent.url.lastIndexOf("jpg") == -1 &&
-                answerArray[i].classInfoContent.url.lastIndexOf("png") == -1
-              ) {
-                answerArray[i].answerUrlList = [];
-              } else {
-                answerArray[i].answerImg = answerArray[i].classInfoContent.url;
-                const b = answerArray[i].classInfoContent.url.split("/");
-                answerArray[i].answerCacheUrl =
-                  "/" + b[3] + "/" + b[4] + "/" + b[5];
-                answerArray[i].answerUrlList.push({
-                  url: answerArray[i].classInfoContent.url
-                });
+              for (var j = 0; j < answerArray[i].list.length; j++) {
+                _this.$set(answerArray[i].list[j], "show", false);
+                _this.$set(answerArray[i].list[j], "topicImg", []);
+                _this.$set(answerArray[i].list[j], "topicUrlList", []);
+                _this.$set(answerArray[i].list[j], "answerImg", []);
+                _this.$set(answerArray[i].list[j], "answerUrlList", []);
+                _this.$set(answerArray[i].list[j], "topicCacheUrl", "");
+                _this.$set(answerArray[i].list[j], "answerCacheUrl", "");
+                if (
+                  answerArray[i].list[j].nameUrl.lastIndexOf("jpg") == -1 &&
+                  answerArray[i].list[j].nameUrl.lastIndexOf("png") == -1
+                ) {
+                  answerArray[i].list[j].topicUrlList = [];
+                } else {
+                  answerArray[i].list[j].topicImg =
+                    answerArray[i].list[j].nameUrl;
+                  const a = answerArray[i].list[j].nameUrl.split("/");
+                  answerArray[i].list[j].topicCacheUrl =
+                    "/" + a[3] + "/" + a[4] + "/" + a[5];
+                  answerArray[i].list[j].topicUrlList.push({
+                    url: answerArray[i].list[j].nameUrl
+                  });
+                }
+                if (
+                  answerArray[i].list[j].url.lastIndexOf("jpg") == -1 &&
+                  answerArray[i].list[j].url.lastIndexOf("png") == -1
+                ) {
+                  answerArray[i].list[j].answerUrlList = [];
+                } else {
+                  answerArray[i].list[j].answerImg = answerArray[i].list[j].url;
+                  const b = answerArray[i].list[j].url.split("/");
+                  answerArray[i].list[j].answerCacheUrl =
+                    "/" + b[3] + "/" + b[4] + "/" + b[5];
+                  answerArray[i].list[j].answerUrlList.push({
+                    url: answerArray[i].list[j].url
+                  });
+                }
               }
             }
             _this.answerArray = answerArray;
-            console.log(_this.answerArray);
+            //   // 循环整合数据结构
+            //     let tempArr = [];
+            //     for (let i = 0; i < answerArray.length; i++) {
+            //       if (tempArr.indexOf(answerArray[i].classInfoContent.classWeek) === -1) {
+            //         _this.afterData.push({
+            //           classWeek: answerArray[i].classInfoContent.classWeek,
+            //           origin: [answerArray[i]]
+            //         });
+            //         tempArr.push(answerArray[i].classInfoContent.classWeek);
+            //       } else {
+            //         for (let j = 0; j < _this.afterData.length; j++) {
+            //           if (
+            //             _this.afterData[j].classWeek ==
+            //             answerArray[i].classInfoContent.classWeek
+            //           ) {
+            //             _this.afterData[j].origin.push(answerArray[i]);
+            //             break;
+            //           }
+            //         }
+            //       }
+            //     }
+            //     // console.log(answerArray);
+            //     // console.log(_this.afterData)
           }
         })
         .catch(function(error) {
@@ -2358,11 +2421,14 @@ export default {
           type: "warning"
         });
       }
+      _this.addTopicShow = false;
       _this.upAnswerShow = true;
     },
     // 隐藏新的题目
     topicCancel() {
       const _this = this;
+      _this.addTopicShow = true;
+
       _this.upAnswerShow = false;
     },
     // 确认提交
@@ -2389,7 +2455,7 @@ export default {
               message: "创建成功,工作人员正在审核内容。",
               type: "success"
             });
-            _this.$router.push({path:'/personalData/award'})
+            _this.$router.push({ path: "/personalData/award" });
           }
         })
         .catch(function(error) {
@@ -2402,7 +2468,7 @@ export default {
       _this.suImg = item;
       _this.suspendimgShow = !_this.suspendimgShow;
     },
-    CloseQuitBt(){
+    CloseQuitBt() {
       const _this = this;
       _this.suspendimgShow = !_this.suspendimgShow;
     },
@@ -2410,9 +2476,30 @@ export default {
       const _this = this;
       window.scroll(0, 0);
     },
-    pageBottom(){
+    pageBottom() {
+      const _this = this;
+    },
+    // 自定义添加一个新的周
+    addWeek() {
       const _this = this;
 
+      _this
+        .$prompt("请输入您要添加的周", "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          inputPattern: /^\d+$|^\d+[.]?\d+$/,
+          inputErrorMessage: "请输入数字"
+        })
+        .then(({ value }) => {
+          _this.weekoptions.push({ label: value });
+          _this.upload.week = Number(value);
+          console.log(_this.upload.week);
+          _this.$message({
+            type: "success",
+            message: "添加第" + value + "周"
+          });
+        })
+        .catch(() => {});
     }
   }
 };
