@@ -931,7 +931,8 @@ export default {
           }
         })
         .then(function(res) {
-          if (res.data.stsus == 1) {
+          console.log(res)
+          if (res.data.status == 1) {
             if (res.data.data.length == 0) {
               _this.conShow = false;
             } else {

@@ -141,8 +141,8 @@
 }
 .SA-con {
   width: 1260px;
-  padding: 20px;
-  margin-top: 20px;
+  padding: 20px 20px 20px 20px;
+  margin-bottom: 10px;
   background-color: #fff;
   overflow: hidden;
   position: relative;
@@ -184,7 +184,7 @@
   color: #5051ad;
   vertical-align: text-bottom;
   font-size: 16px;
-  line-height: 50px;
+  line-height: 40px;
 }
 .SA-topic {
   padding-top: 12px;
@@ -249,7 +249,7 @@
 }
 .SA-edit {
   position: absolute;
-  top: 22px;
+  top: 30.5px;
   right: 20px;
 }
 .SA-edit i {
@@ -495,6 +495,30 @@
   line-height: 40px;
   text-align: center;
   font-size: 18px;
+}
+.showAnswer-week {
+  margin-top: 10px;
+  cursor:pointer;
+  background: #fff;
+  padding: 0 20px;
+  line-height: 40px;
+}
+.showAnswer-week:hover {
+  background: #f0f0f0;
+}
+.showAnswer-week:hover span {
+  color: #ffcd1f;
+}
+.showAnswer-week:hover i {
+  color: #ffcd1f;
+}
+.showAnswer-week span {
+  color:#409efe;
+}
+.showAnswer-week i {
+  float: right;
+  margin-top: 12px;
+  color:#409efe;
 }
 </style>
 
@@ -918,8 +942,16 @@
           <div v-show="active == 2">
             <div>
               <div class="showAnswer" v-for="(item,index) in answerArray">
-                {{item.week}}
-                <div v-for="(items,indexs) in item.list">
+                <div class="showAnswer-week" @click="fold(item,index)">
+                  <div>
+                    <span>Week{{item.week}}&nbsp;-&nbsp;{{item.listLength}}</span>
+                    <i class="el-icon-caret-bottom" v-show="item.shows == false"></i>
+                    <i class="el-icon-caret-top" v-show="item.shows == true"></i>
+                  </div>
+                  
+                </div>
+
+                <div v-for="(items,indexs) in item.list" v-show="item.shows">
                   <div class="SA-con">
                     <div class="SA-title">
                       <span
@@ -943,7 +975,7 @@
                       </div>
                       <div class="up-answer-type">
                         <el-select
-                          v-show="active == 2 && item.show == true"
+                          v-show="active == 2 && items.show == true"
                           v-model="items.classWeekType"
                           placeholder="请选择当前课程的类型"
                           style="width:173px;"
@@ -1010,8 +1042,8 @@
                             ref="answerArray"
                             :action="imgSite"
                             :headers="myHeaders"
-                            :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index)}"
-                            :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,items.id,items.nameUrl)}"
+                            :on-success="(response, file, fileList)=>{return editTopicHandleSuccess(response, file, fileList,index,indexs)}"
+                            :on-remove="(file, fileList)=>{return editTopicHandleRemove(file, fileList, index,items.id,items.nameUrl,indexs)}"
                             :on-change="editTopicHandleChange"
                             :before-upload="editTopicHandlebeforeupload"
                             :file-list="items.topicUrlList"
@@ -1040,8 +1072,8 @@
                           ref="answerArray"
                           :action="imgSite"
                           :headers="myHeaders"
-                          :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index)}"
-                          :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,items.id,items.url)}"
+                          :on-success="(response, file, fileList,url)=>{return editAnswerHandlesuccess(response, file, fileList,index,indexs)}"
+                          :on-remove="(file, fileList,id,url)=>{return editAnswerHandleRemove(file, fileList, index,items.id,items.url,indexs)}"
                           :on-change="editAnswerHandleChange"
                           :before-upload="editAnswerHandlebeforeupload"
                           :file-list="items.answerUrlList"
@@ -1251,7 +1283,11 @@ export default {
         }
       ],
       week: "",
-      weekoptions: [],
+      weekoptions: [
+        {
+          label:1
+        }
+      ],
       // 选择学校和填写学校的显示隐藏
       upschool: true,
       // 选择课程和填写课程的显示隐藏
@@ -1649,8 +1685,7 @@ export default {
             var b = _this.weekoptions.length;
             var a = _this.weekoptions[b - 1].label;
             _this.weekoptions.push({ label: a + 1 });
-            // console.log(a)
-            // console.log(_this.weekoptions)
+            console.log(_this.weekoptions)
           }
         })
         .catch(function(error) {
@@ -1677,12 +1712,14 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             var answerArray = [];
             answerArray = res.data.data;
             _this.serchingWeek(classInfoId);
             for (var i = 0; i < answerArray.length; i++) {
+              _this.$set(answerArray[i], "shows", false);
+              _this.$set(answerArray[i], "listLength", "");
+              answerArray[i].listLength = answerArray[i].list.length;
               for (var j = 0; j < answerArray[i].list.length; j++) {
                 _this.$set(answerArray[i].list[j], "show", false);
                 _this.$set(answerArray[i].list[j], "topicImg", []);
@@ -1722,30 +1759,10 @@ export default {
                 }
               }
             }
+            answerArray[0].shows = true;
             _this.answerArray = answerArray;
-            //   // 循环整合数据结构
-            //     let tempArr = [];
-            //     for (let i = 0; i < answerArray.length; i++) {
-            //       if (tempArr.indexOf(answerArray[i].classInfoContent.classWeek) === -1) {
-            //         _this.afterData.push({
-            //           classWeek: answerArray[i].classInfoContent.classWeek,
-            //           origin: [answerArray[i]]
-            //         });
-            //         tempArr.push(answerArray[i].classInfoContent.classWeek);
-            //       } else {
-            //         for (let j = 0; j < _this.afterData.length; j++) {
-            //           if (
-            //             _this.afterData[j].classWeek ==
-            //             answerArray[i].classInfoContent.classWeek
-            //           ) {
-            //             _this.afterData[j].origin.push(answerArray[i]);
-            //             break;
-            //           }
-            //         }
-            //       }
-            //     }
-            //     // console.log(answerArray);
-            //     // console.log(_this.afterData)
+          }else {
+            _this.answerArray = []
           }
         })
         .catch(function(error) {
@@ -2004,8 +2021,9 @@ export default {
     },
     // 删除答案
     editAnswerDelete(item) {
+      console.log(item)
       const _this = this;
-      this.$confirm("此操作将永久删除该答案, 是否继续?", "提示", {
+      _this.$confirm("此操作将永久删除该答案, 是否继续?", "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
@@ -2017,7 +2035,7 @@ export default {
               url: `${_this.URLport.serverPath}/classInfoContent/Del`,
               async: false,
               params: {
-                id: item.classInfoContent.id
+                id: item.id
               },
               xhrFields: {
                 withCredentials: true
@@ -2028,7 +2046,7 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
-                _this.serchingAnswer(_this.classInfoId);
+                _this.serchingAnswer(item.classInfoId);
                 _this.$message({
                   message: "删除答案成功",
                   type: "success"
@@ -2048,21 +2066,22 @@ export default {
     },
     // 打开编辑答案内的上传
     editstepupload(item) {
+      console.log(item)
       const _this = this;
       if (localStorage.getItem("token")) {
         var formData = {};
-        formData.Name = item.classInfoContent.name;
+        formData.Name = item.name;
         formData.NameUrl = item.topicCacheUrl;
-        formData.UniversityId = item.classInfoContent.universityId;
-        formData.Contents = item.classInfoContent.contents;
+        formData.UniversityId = item.universityId;
+        formData.Contents = item.contents;
         formData.Url = item.answerCacheUrl;
         formData.ClientId = _this.clientId;
-        formData.ClassInfoId = item.classInfoContent.classInfoId;
-        formData.ClassId = item.classInfoContent.classId;
-        formData.ClassWeek = item.classInfoContent.classWeek;
-        formData.ClassWeekType = item.classInfoContent.classWeekType;
-        formData.Id = item.classInfoContent.id;
-        formData.createTime = item.classInfoContent.createTime;
+        formData.ClassInfoId = item.classInfoId;
+        formData.ClassId = item.classId;
+        formData.ClassWeek = item.classWeek;
+        formData.ClassWeekType = item.classWeekType;
+        formData.Id = item.id;
+        formData.createTime = item.createTime;
         _this.editformData = formData;
         if (formData.Url == "" && formData.Contents == "") {
           _this.$message({
@@ -2139,16 +2158,16 @@ export default {
         });
     },
     // 编辑题目图片
-    editTopicHandleSuccess(res, file, fileList, index) {
+    editTopicHandleSuccess(res, file, fileList, index,indexs) {
       const _this = this;
-      _this.answerArray[index].topicCacheUrl = res.file;
+      _this.answerArray[index].list[indexs].topicCacheUrl = res.file;
     },
-    editTopicHandleRemove(file, fileList, idx, id, nameUrl) {
+    editTopicHandleRemove(file, fileList, idx, id, nameUrl,indexs) {
       const _this = this;
       const a = nameUrl.split("/");
       var nameUrls = "/" + a[3] + "/" + a[4] + "/" + a[5];
       if (nameUrl.length <= 26) {
-        nameUrls = _this.answerArray[idx].topicCacheUrl;
+        nameUrls = _this.answerArray[idx].list[indexs].topicCacheUrl;
       }
       _this
         .axios({
@@ -2168,8 +2187,8 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            _this.answerArray[idx].topicCacheUrl = "";
-            _this.answerArray[idx].topicImg = "";
+            _this.answerArray[idx].list[indexs].topicCacheUrl = "";
+            _this.answerArray[idx].list[indexs].topicImg = "";
           } else {
             _this.$message({
               message: "删除图片失败",
@@ -2188,17 +2207,19 @@ export default {
       const _this = this;
     },
     // 编辑答案图片
-    editAnswerHandlesuccess(res, file, fileList, index) {
+    editAnswerHandlesuccess(res, file, fileList, index,indexs) {
       const _this = this;
-      _this.answerArray[index].answerCacheUrl = res.file;
+      console.log(res)
+      console.log(indexs)
+      _this.answerArray[index].list[indexs].answerCacheUrl = res.file;
     },
     //
-    editAnswerHandleRemove(file, fileList, idx, id, url) {
+    editAnswerHandleRemove(file, fileList, idx, id, url,indexs) {
       const _this = this;
       const a = url.split("/");
       var answerUrl = "/" + a[3] + "/" + a[4] + "/" + a[5];
       if (url.length <= 26) {
-        answerUrl = _this.answerArray[idx].answerCacheUrl;
+        answerUrl = _this.answerArray[idx].list[indexs].answerCacheUrl;
       }
       _this
         .axios({
@@ -2218,8 +2239,8 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            _this.answerArray[idx].answerCacheUrl = "";
-            _this.answerArray[idx].answerImg = "";
+            _this.answerArray[idx].list[indexs].answerCacheUrl = "";
+            _this.answerArray[idx].list[indexs].answerImg = "";
           } else {
             _this.$message({
               message: "删除图片失败",
@@ -2500,6 +2521,10 @@ export default {
           });
         })
         .catch(() => {});
+    },
+    fold(item, index) {
+      const _this = this;
+      item.shows = !item.shows;
     }
   }
 };
