@@ -599,15 +599,15 @@
           <div class="ser-con-left">
             <div class="ser-left-deta">
               <div class="ser-left-deta-tit">
-                <p>找到属于你的学校与课程,为你</p>
-                <h1 class="home-heading">轻松获得准确、高效的QUIZ解答</h1>
+                <p>{{$t('home.title1')}}</p>
+                <h1 class="home-heading">{{$t('home.title2')}}</h1>
               </div>
               <div class="homeserch">
                 <el-autocomplete
                   class="inline-input"
                   v-model="state1"
                   :fetch-suggestions="querySearch"
-                  placeholder="查询你的课程或者学校，例如University of California"
+                  :placeholder="$t('home.input')"
                   @select="handleSelect"
                   @keyup.enter.native="handleEnter(state1)"
                   prefix-icon="el-icon-tickets"
@@ -1163,6 +1163,7 @@ export default {
           console.log(error);
         });
     },
+    
   },
   mounted() {
     const _this = this;

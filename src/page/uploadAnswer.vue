@@ -943,6 +943,7 @@
             <div>
               <div class="showAnswer" v-for="(item,index) in answerArray">
                 <div class="showAnswer-week" @click="fold(item,index)">
+                  
                   <div>
                     <span>Week{{item.week}}&nbsp;-&nbsp;{{item.listLength}}</span>
                     <i class="el-icon-caret-bottom" v-show="item.shows == false"></i>
@@ -1363,6 +1364,7 @@ export default {
       } else if (scrollTop == 0) {
         _this.topBottShow = false;
       }
+      // "vue-i18n": "^8.17.6",
     },
     // 获取个人信息
     gainpersonal: function() {

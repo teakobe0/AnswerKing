@@ -169,6 +169,8 @@
         <router-link to="/home">
           <img src="../../assets/logo.png" alt />
         </router-link>
+        <el-button @click="tabEn">en</el-button>
+        <el-button @click="tabZh">zh</el-button>
       </div>
       <el-menu
         class="el-menu-demo"
@@ -278,6 +280,12 @@ export default {
     }
   },
   methods: {
+    tabEn(){
+      this.$i18n.locale = 'en'
+    },
+    tabZh(){
+      this.$i18n.locale = 'zh'
+    },
     handleSelect(key, keyPath) {
     },
     gainmessage: function() {
