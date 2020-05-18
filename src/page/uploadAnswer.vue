@@ -533,9 +533,9 @@
         finish-status="success"
         style="width:1000px;margin:120px auto;margin-bottom: 40px;"
       >
-        <el-step title="编辑学校" icon="el-icon-edit"></el-step>
-        <el-step title="编辑课程" icon="el-icon-s-order"></el-step>
-        <el-step title="编辑答案" icon="el-icon-upload"></el-step>
+        <el-step :title="$t('upload.nav1')" icon="el-icon-edit"></el-step>
+        <el-step :title="$t('upload.nav2')" icon="el-icon-s-order"></el-step>
+        <el-step :title="$t('upload.nav3')" icon="el-icon-upload"></el-step>
       </el-steps>
       <div class="up-upload-back">
         <div class="ua-middle">
@@ -557,7 +557,7 @@
                   type="mini"
                   @click="modification"
                   v-show="subtitle == false"
-                >修改</el-button>
+                >{{$t('upload.Modify')}}</el-button>
               </span>
               <el-form
                 v-show="subtitle == true"
@@ -577,10 +577,10 @@
                 </el-form-item>
               </el-form>
             </div>
-            <div class="miniAffirmQb" @click="affirmQb">确认创建</div>
+            <div class="miniAffirmQb" @click="affirmQb">{{$t('upload.establish')}}</div>
           </div>
           <div class="addTopic" @click="addTopic" v-show="active == 2">
-            <p v-show="addTopicShow">+&nbsp;添加一个新的题目</p>
+            <p v-show="addTopicShow">+&nbsp;{{$t('upload.addtopic')}}</p>
           </div>
           <!-- 顶部上传 -->
           <div class="up-upload">
@@ -597,14 +597,14 @@
                 v-show="upschool == true && active == 0 && $route.query.type != 1"
               >
                 <div class="share-box">
-                  <p class="share-title">选择上传内容所属的大学</p>
+                  <p class="share-title">{{$t('upload.school1')}}</p>
                   <el-form-item prop="school">
                     <el-autocomplete
                       class="query-schoolserch"
                       v-model="school"
                       :fetch-suggestions="querySearch"
                       @select="SchoolHandleSelectauto"
-                      placeholder="请输入您需要查询的学校名称"
+                      :placeholder="$t('upload.school2')"
                       prefix-icon="el-icon-search"
                       :trigger-on-focus="false"
                       @blur="schoolBlur"
@@ -618,7 +618,7 @@
                           <span style="color:#878787;float:left;">{{item.value}}</span>
                           <span style="color:#878787;float:right;">{{item.type}}</span>
                         </div>
-                        <div v-show="item.type == null">没有找到对应的学校</div>
+                        <div v-show="item.type == null">{{$t('upload.school5')}}</div>
                       </template>
                     </el-autocomplete>
                   </el-form-item>
@@ -627,13 +627,13 @@
                   <span
                     style="margin-top: 20px;margin-right:20px;text-decoration:underline;color:#a2a2a2;cursor:pointer;"
                     @click="upschoolShow"
-                  >没有找到?点击这里添加一所新的学校</span>
+                  >{{$t('upload.school3')}}</span>
                   <el-button
                     style="margin-top: 20px;"
                     type="primary"
                     @click="schoolNext('upload')"
                     :disabled="schooldisabled"
-                  >下一步</el-button>
+                  >{{$t('upload.bottom')}}</el-button>
                 </div>
               </div>
 
@@ -649,14 +649,14 @@
                     <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
                     {{upload.school}}
                   </div>
-                  <div class="share-title">选择上传所属的课程</div>
+                  <div class="share-title">{{$t('upload.course1')}}</div>
                   <el-form-item prop="course">
                     <el-autocomplete
                       class="query-schoolserch"
                       v-model="course"
                       :fetch-suggestions="courseQuerySearch"
                       @select="courseHandleSelectauto"
-                      placeholder="请输入您需要查询的课程名称"
+                      :placeholder="$t('upload.course2')"
                       prefix-icon="el-icon-search"
                       :trigger-on-focus="false"
                       @blur="courseBlur"
@@ -670,24 +670,24 @@
                           <span style="color:#878787;float:left;">{{item.value}}</span>
                           <span style="color:#878787;float:right;">{{item.type}}</span>
                         </div>
-                        <div v-show="item.type == null">没有找到对应的课程</div>
+                        <div v-show="item.type == null">{{$t('upload.course5')}}</div>
                       </template>
                     </el-autocomplete>
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
-                  <el-button style="margin-top: 20px;" @click="steplast">上一步</el-button>
+                  <el-button style="margin-top: 20px;" @click="steplast">{{$t('upload.top')}}</el-button>
                   <el-button
                     style="margin-top: 20px;"
                     @click="upcourseShow"
                     title="没有找到?点击这里添加一门新的课程"
-                  >添加课程</el-button>
+                  >{{$t('upload.course3')}}</el-button>
                   <el-button
                     style="margin-top: 20px;"
                     type="primary"
                     @click="courseNext('upload')"
                     :disabled="coursedisabled"
-                  >下一步</el-button>
+                  >{{$t('upload.bottom')}}</el-button>
                 </div>
               </div>
               <!-- 选择课程END -->
@@ -734,15 +734,15 @@
                       </el-form-item>
                     </div>
                     <div class="up-answer-fn">
-                      <el-button size="small" @click="topicCancel" title="隐藏题目">取消</el-button>
-                      <el-button type="primary" size="small" @click="stepupload('upload')">保存题目</el-button>
+                      <el-button size="small" @click="topicCancel">{{$t('upload.cancel')}}</el-button>
+                      <el-button type="primary" size="small" @click="stepupload('upload')">{{$t('upload.topic')}}</el-button>
                     </div>
                   </div>
 
                   <div class="up-answer-topic">
                     <div class="topic-con">
                       <el-form-item prop="topic">
-                        <el-input v-model="upload.topic" placeholder="请输入您的题目名称(选填)"></el-input>
+                        <el-input v-model="upload.topic" :placeholder="$t('upload.optional1')"></el-input>
                       </el-form-item>
                       <el-form-item prop="topicUrl" ref="uploadTopicUrl">
                         <el-upload
@@ -764,14 +764,14 @@
                             size="small"
                             type="primary"
                             icon="el-icon-picture"
-                          >添加题目图片</el-button>
+                          >{{$t('upload.picture1')}}</el-button>
                         </el-upload>
                       </el-form-item>
                     </div>
                   </div>
                   <div class="up-answer-img">
                     <el-form-item prop="answer">
-                      <el-input v-model="upload.answer" placeholder="请输入您的答案内容(选填)"></el-input>
+                      <el-input v-model="upload.answer" :placeholder="$t('upload.optional2')"></el-input>
                     </el-form-item>
                     <el-form-item prop="answerUrl" ref="uploadAnswerUrl">
                       <el-upload
@@ -794,12 +794,12 @@
                           size="small"
                           type="primary"
                           icon="el-icon-picture"
-                        >添加答案图片</el-button>
+                        >{{$t('upload.picture2')}}</el-button>
                         <i
                           slot="tip"
                           class="el-upload__tip"
-                          style="margin-left:240px;color:#9c9c9c;display: inline-block;line-height: 0px;"
-                        >每次只能上传1张jpg/png的图片，且不超过2MB</i>
+                          style="color:#9c9c9c;display: inline-block;line-height: 0px;"
+                        >{{$t('upload.2mb')}}</i>
                       </el-upload>
                     </el-form-item>
                   </div>
@@ -820,21 +820,21 @@
             >
               <div class="up-school" v-show="upschool == false && active == 0">
                 <div class="share-box">
-                  <p class="share-title">添加一所新的大学</p>
+                  <p class="share-title">{{$t('upload.school6')}}</p>
                   <el-form-item prop="name">
                     <el-input
                       v-model="ruleForm.name"
-                      placeholder="输入您想要添加的大学名称,例如University of chicago"
+                      :placeholder="$t('upload.school7')"
                     ></el-input>
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
-                  <el-button style="margin-top: 20px;" @click="upschoolShow">取消</el-button>
+                  <el-button style="margin-top: 20px;" @click="upschoolShow">{{$t('upload.cancel')}}</el-button>
                   <el-button
                     style="margin-top: 20px;"
                     @click="addSchoolNext('ruleForm')"
                     type="primary"
-                  >添加学校</el-button>
+                  >{{$t('upload.school4')}}</el-button>
                 </div>
               </div>
               <!-- 手写学校END -->
@@ -853,18 +853,18 @@
                     <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
                     {{upload.school}}
                   </div>
-                  <div class="share-title">添加一门新的课程</div>
+                  <div class="share-title">{{$t('upload.course4')}}</div>
                   <el-form-item prop="name">
-                    <el-input v-model="addchourses.name" placeholder="输入您想要添加的课程名称,例如Photography"></el-input>
+                    <el-input v-model="addchourses.name" :placeholder="$t('upload.course6')"></el-input>
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
-                  <el-button style="margin-top: 20px;" @click="upcourseShow">取消</el-button>
+                  <el-button style="margin-top: 20px;" @click="upcourseShow">{{$t('upload.cancel')}}</el-button>
                   <el-button
                     style="margin-top: 20px;"
                     @click="addCourseNext('addchourses')"
                     type="primary"
-                  >添加课程</el-button>
+                  >{{$t('upload.course3')}}</el-button>
                 </div>
               </div>
               <!-- 手写课程END -->
@@ -880,9 +880,9 @@
             >
               <div class="up-school" v-show="$route.query.type == 1">
                 <div class="share-box">
-                  <p class="share-title">修改一所学校名称</p>
+                  <p class="share-title">{{$t('upload.school8')}}</p>
                   <el-form-item prop="name">
-                    <el-input v-model="editruleForm.name" placeholder="请填写您的学校名称"></el-input>
+                    <el-input v-model="editruleForm.name" :placeholder="$t('upload.school9')"></el-input>
                   </el-form-item>
                 </div>
                 <div class="nextcenter" v-show="$route.query.type == 1">
@@ -890,13 +890,13 @@
                     to="/personalData/award"
                     style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
                   >
-                    <el-button>取消</el-button>
+                    <el-button>{{$t('upload.cancel')}}</el-button>
                   </router-link>
                   <el-button
                     style="margin-top: 20px;"
                     @click="editSchoolNext('editruleForm',editruleForm)"
                     type="primary"
-                  >修改学校</el-button>
+                  >{{$t('upload.school10')}}</el-button>
                 </div>
               </div>
               <!-- 修改学校END -->
@@ -915,9 +915,9 @@
                     <i class="el-icon-school" style="margin-right:10px;vertical-align: bottom;"></i>
                     {{editchourses.school}}
                   </div>
-                  <p class="share-title">修改一门课程名称</p>
+                  <p class="share-title">{{$t('upload.course7')}}</p>
                   <el-form-item prop="name">
-                    <el-input v-model="editchourses.name" placeholder="请填写您的课程名称"></el-input>
+                    <el-input v-model="editchourses.name" :placeholder="$t('upload.course8')"></el-input>
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
@@ -925,14 +925,14 @@
                     to="/personalData/award"
                     style="text-decoration: none;color:#000;display: inline-block;margin-top: 20px;margin-right:10px;"
                   >
-                    <el-button>取消</el-button>
+                    <el-button>{{$t('upload.cancel')}}</el-button>
                   </router-link>
 
                   <el-button
                     style="margin-top: 20px;"
                     @click="editCourseNext('editchourses',editchourses)"
                     type="primary"
-                  >修改课程</el-button>
+                  >{{$t('upload.course9')}}</el-button>
                 </div>
               </div>
               <!-- 修改课程END -->
@@ -1092,7 +1092,7 @@
                           <i
                             slot="tip"
                             class="el-upload__tip"
-                            style="margin-left:240px;color:#9c9c9c;display: inline-block;"
+                            style="color:#9c9c9c;display: inline-block;"
                           >每次只能上传1张jpg/png的图片，且不超过2MB</i>
                         </el-upload>
                       </div>
@@ -1937,7 +1937,7 @@ export default {
     // 选择学校下拉框其中一条学校触发
     SchoolHandleSelectauto(value) {
       const _this = this;
-
+      console.log(value)
       _this.upload.schoolId = value.id;
       _this.upload.school = value.value;
       if (value.type != null) _this.schooldisabled = false;

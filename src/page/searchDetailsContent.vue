@@ -865,6 +865,7 @@ export default {
             if (res.data.data.length == 0) {
               _this.conShow = false;
             } else {
+              _this.conShow = true;
               _this.$store.state.answer.loading = false;
               _this.beforeData = res.data.data;
               // 循环整合数据结构

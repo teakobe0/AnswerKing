@@ -201,9 +201,9 @@
     <div class="school-con">
       <div class="school-query">
         <div class="query-con">
-          <h1 class="query-con-h1">按学校查找学习资源</h1>
+          <h1 class="query-con-h1">{{$t('schools.schools1')}}</h1>
 
-          <p class="query-con-describe">找到所有课程所需的学习资源。我们有数百万的学习文件，问题和答案以及辅导问题，以帮助您学习。</p>
+          <p class="query-con-describe">{{$t('schools.schools2')}}</p>
 
           <div class="query-con-search">
             <el-autocomplete
@@ -211,7 +211,7 @@
               v-model="state1"
               :fetch-suggestions="querySearch"
               @select="handleSelectauto"
-              placeholder="请输入您需要查询的学校名称"
+              :placeholder="$t('schools.schools3')"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
@@ -226,9 +226,9 @@
         </div>
       </div>
       <div class="find-school">
-        <h1 class="find-school-h1">找到你的学校</h1>
+        <h1 class="find-school-h1">{{$t('schools.schools4')}}</h1>
 
-        <p class="find-school-describe">从我们的学校和学院列表中选择，以找到您需要的学习资源。</p>
+        <p class="find-school-describe">{{$t('schools.schools5')}}</p>
 
         <div class="find-select">
           <div class="find-select-top">
@@ -297,7 +297,7 @@
             </ul>
           </div>
           <div @click="viewMore" class="viewmores" v-show="viewMores == true">
-            查看更多
+            {{$t('schools.schools6')}}
             <i class="el-icon-caret-bottom"></i>
           </div>
         </div>

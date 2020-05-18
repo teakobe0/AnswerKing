@@ -169,8 +169,9 @@
         <router-link to="/home">
           <img src="../../assets/logo.png" alt />
         </router-link>
-        <el-button @click="tabEn">en</el-button>
-        <el-button @click="tabZh">zh</el-button>
+        <el-button @click="tabEn">1</el-button>
+        <el-button @click="tabZh">2</el-button>
+        <el-button @click="tabKo">3</el-button>
       </div>
       <el-menu
         class="el-menu-demo"
@@ -182,25 +183,25 @@
       >
         <div></div>
         <el-menu-item index="1">
-          <router-link to="/schools">学校资源</router-link>
+          <router-link to="/schools">{{$t('nav.nav1')}}</router-link>
         </el-menu-item>
         <el-menu-item index="2">
-          <router-link to="/classesStudy">课程资源</router-link>
+          <router-link to="/classesStudy">{{$t('nav.nav2')}}</router-link>
         </el-menu-item>
         <el-menu-item index="3">
-          <router-link to="/member">成为会员</router-link>
+          <router-link to="/member">{{$t('nav.nav3')}}</router-link>
         </el-menu-item>
         <el-menu-item index="4">
-          <router-link to="/uploadAnswer">贡献资源</router-link>
+          <router-link to="/uploadAnswer">{{$t('nav.nav4')}}</router-link>
         </el-menu-item>
         <!-- <el-menu-item index="5">
           <router-link to="/question">问答中心</router-link>
         </el-menu-item> -->
         <el-menu-item index="6" v-if="$store.state.logo.show">
-          <router-link to="/login" style="width:56px;text-align: center;">登录</router-link>
+          <router-link to="/login" style="width:56px;text-align: center;">{{$t('nav.nav5')}}</router-link>
         </el-menu-item>
         <el-menu-item index="7" v-if="$store.state.logo.show">
-          <router-link class="homenav-resi" to="/register">注册</router-link>
+          <router-link class="homenav-resi" to="/register">{{$t('nav.nav6')}}</router-link>
         </el-menu-item>
         <el-submenu index="8" v-if="$store.state.logo.hide">
           <template slot="title">
@@ -210,11 +211,11 @@
             </router-link>
           </template>
           <el-menu-item index="2-1" class="perImg">
-            <router-link to="/personalData">个人信息</router-link>
+            <router-link to="/personalData">{{$t('nav.nav7')}}</router-link>
           </el-menu-item>
           <el-menu-item index="2-2" class="perImg">
             <router-link to="/personalData/inform">
-              查看回复
+              {{$t('nav.nav8')}}
               <span
                 v-show="this.$store.state.logo.message>=1"
               >({{this.$store.state.logo.message}})</span>
@@ -222,7 +223,7 @@
             </router-link>
           </el-menu-item>
           <el-menu-item index="2-3" class="perImg">
-            <a href="javascript:void(0)" @click="logout">注销</a>
+            <a href="javascript:void(0)" @click="logout">{{$t('nav.nav9')}}</a>
           </el-menu-item>
         </el-submenu>
       </el-menu>
@@ -285,6 +286,9 @@ export default {
     },
     tabZh(){
       this.$i18n.locale = 'zh'
+    },
+    tabKo(){
+      this.$i18n.locale = 'ko'
     },
     handleSelect(key, keyPath) {
     },
