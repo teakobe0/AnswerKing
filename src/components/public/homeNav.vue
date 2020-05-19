@@ -283,12 +283,17 @@ export default {
   methods: {
     tabEn(){
       this.$i18n.locale = 'en'
+      localStorage.setItem("lang", "en");
     },
     tabZh(){
       this.$i18n.locale = 'zh'
+      localStorage.setItem("lang", "zh");
+
     },
     tabKo(){
       this.$i18n.locale = 'ko'
+      localStorage.setItem("lang", "ko");
+
     },
     handleSelect(key, keyPath) {
     },

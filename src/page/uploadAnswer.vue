@@ -943,13 +943,11 @@
             <div>
               <div class="showAnswer" v-for="(item,index) in answerArray">
                 <div class="showAnswer-week" @click="fold(item,index)">
-                  
                   <div>
                     <span>Week{{item.week}}&nbsp;-&nbsp;{{item.listLength}}</span>
                     <i class="el-icon-caret-bottom" v-show="item.shows == false"></i>
                     <i class="el-icon-caret-top" v-show="item.shows == true"></i>
                   </div>
-                  
                 </div>
 
                 <div v-for="(items,indexs) in item.list" v-show="item.shows">
@@ -993,21 +991,21 @@
                         <i
                           class="el-icon-circle-check edits"
                           v-show="active == 2 && items.show == true"
-                          title="保存题目"
+                          :title="$t('upload.topic')"
                           @click="editstepupload(items)"
                         ></i>
-                        <i class="el-icon-edit edits" @click="editAnswerShow(items)" title="编辑"></i>
+                        <i class="el-icon-edit edits" @click="editAnswerShow(items)" :title="$t('upload.Edit')"></i>
                         <i
                           class="el-icon-delete delete"
                           @click="editAnswerDelete(items)"
-                          title="删除"
+                          :title="$t('upload.Delete')"
                         ></i>
                       </div>
                     </div>
                     <div v-show="active == 2 && items.show == false">
                       <div class="SA-topic">
-                        <span style="color:#ccc;margin-bottom:5px;display: block;">题目名称</span>
-                        <p v-show="items.name == ''" style="color:#2a2a2a;">[暂无]</p>
+                        <span style="color:#ccc;margin-bottom:5px;display: block;">{{$t('upload.title')}}</span>
+                        <p v-show="items.name == ''" style="color:#2a2a2a;">[{{$t('upload.nothave')}}]</p>
                         <p v-show="items.name != ''">{{items.name}}</p>
                         <img
                           :src="items.topicImg"
@@ -1018,8 +1016,8 @@
                       </div>
 
                       <div class="SA-answer">
-                        <span style="color:#ccc;margin-bottom:5px;display: block;">答案内容</span>
-                        <p v-show="items.contents == ''" style="color:#2a2a2a;">[暂无]</p>
+                        <span style="color:#ccc;margin-bottom:5px;display: block;">{{$t('upload.answer')}}</span>
+                        <p v-show="items.contents == ''" style="color:#2a2a2a;">[{{$t('upload.nothave')}}]</p>
                         <p v-show="items.contents != ''">{{items.contents}}</p>
                         <img
                           :src="items.answerImg"
@@ -1034,7 +1032,7 @@
                         <div class="topic-con">
                           <el-input
                             style="overflow-y: hidden;"
-                            placeholder="请输入您的题目名称(选填)"
+                            :placeholder="$t('upload.optional1')"
                             v-model="items.name"
                           ></el-input>
                           <!-- <el-input v-model="item.classInfoContent.name" placeholder="请输入您的题目名称(选填)"></el-input> -->
@@ -1058,14 +1056,14 @@
                               size="small"
                               type="primary"
                               icon="el-icon-picture"
-                            >添加题目图片</el-button>
+                            >{{$t('upload.picture1')}}</el-button>
                           </el-upload>
                         </div>
                       </div>
                       <div class="up-answer-img">
                         <el-input
                           style="overflow-y: hidden;"
-                          placeholder="请输入您的答案内容(选填)"
+                          :placeholder="$t('upload.optional2')"
                           v-model="items.contents"
                         ></el-input>
                         <el-upload
@@ -1088,12 +1086,12 @@
                             size="small"
                             type="primary"
                             icon="el-icon-picture"
-                          >添加答案图片</el-button>
+                          >{{$t('upload.picture2')}}</el-button>
                           <i
                             slot="tip"
                             class="el-upload__tip"
                             style="color:#9c9c9c;display: inline-block;"
-                          >每次只能上传1张jpg/png的图片，且不超过2MB</i>
+                          >{{$t('upload.2mb')}}</i>
                         </el-upload>
                       </div>
                     </div>
@@ -1107,7 +1105,7 @@
           <!-- 展示创建过的订单结束 -->
 
           <div class="affirmQb" @click="affirmQb" id="UPdown" v-show="active == 2">
-            <p>确认创建</p>
+            <p>{{$t('upload.establish')}}</p>
           </div>
         </div>
       </div>
