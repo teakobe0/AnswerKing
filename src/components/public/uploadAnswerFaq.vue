@@ -180,7 +180,7 @@
           <div class="uaq-m-c-n">
             <div v-for="(item,index) in tabs" :class="{active:index == num}" @click="tab(index)">
               <span>{{item.name}}</span>
-              <P>{{item.con}}123</P>
+              <P>{{item.con}}</P>
             </div>
           </div>
           <div class="uaq-m-c-t" v-show="num == 0">
@@ -266,6 +266,7 @@ export default {
   data() {
     return {
       uaq: true,
+      con: this.$t("upload.con3"),
       tabs: [
         {
           name: "ORGANIZE",
@@ -299,6 +300,14 @@ export default {
     uaShows() {
       const _this = this;
       this.$store.state.logo.uaShow = true;
+    }
+  },
+  computed:{
+
+  },
+  watch:{
+    '$i18n.locale'(){
+      this.tabs = [{name: "ORGANIZE",con: this.$t("upload.con1")},{name: "LEARN",con: this.$t("upload.con2")},{name: "SHARE",con: this.$t("upload.con3")}]
     }
   }
 };

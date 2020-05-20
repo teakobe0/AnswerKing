@@ -141,12 +141,12 @@
     <div class="classes-con">
       <div class="classes-con-info">
         <div style="margin-bottom:16px;">
-          <p>所有课程({{classeslength}})</p>
+          <p>{{$t('university.con3')}}({{classeslength}})</p>
           <!--<i>找到你的课程</i>-->
         </div>
 
         <div class="serchinput">
-          <el-input placeholder="请输入需要查询的课程(回车确认)" v-model="input1" @change="queryname" clearable>
+          <el-input :placeholder="$t('university.con4')" v-model="input1" @change="queryname" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
         </div>
@@ -161,7 +161,7 @@
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
           <router-link :to="/classes/+item.cla.id">{{item.cla.name}}</router-link>
-          <p>题库集:{{item.order}}</p>
+          <p>{{$t('university.con5')}}:{{item.order}}</p>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"

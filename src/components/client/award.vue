@@ -30,30 +30,30 @@
 <template>
   <div id="award">
     <div class="award-right">
-      <h3>我的贡献</h3>
+      <h3>{{$t('personal.nav6')}}</h3>
       <div class="MyAward">
         <el-table :data="tableData" border style="width: 100%">
-          <el-table-column fixed label="日期" width="150px">
+          <el-table-column fixed :label="$t('award.con1')" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime | formatDate}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" label="您创建的项目" width="560px"></el-table-column>
-          <el-table-column prop="type" label="类别" ></el-table-column>
-          <el-table-column prop="type" label="状态" >
+          <el-table-column prop="name" :label="$t('award.con2')" width="560px"></el-table-column>
+          <el-table-column prop="type" :label="$t('award.con3')" ></el-table-column>
+          <el-table-column prop="type" :label="$t('award.con4')" >
             <template slot-scope="scope">
               <span>{{ scope.row.statusType}}</span>
             </template>
           </el-table-column>
-          <el-table-column fixed="right" label="操作" width="100">
+          <el-table-column fixed="right" :label="$t('award.con5')" width="100">
             <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="mini">编辑</el-button>
+              <el-button @click="handleClick(scope.row)" type="text" size="mini">{{$t('award.con14')}}</el-button>
               <el-button
                 type="text"
                 size="mini"
                 style="color:#f95c5c;"
                 @click="handleDelete(scope.row)"
-              >删除</el-button>
+              >{{$t('award.con15')}}</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -107,9 +107,9 @@ export default {
     handleDelete(row) {
       const _this = this;
       if (row.type == "学校") {
-        this.$confirm("此操作将永久删除该学校, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+        _this.$confirm(_this.$t('award.con21'), _this.$t('award.con16'), {
+          confirmButtonText: _this.$t('basic.con14'),
+          cancelButtonText: _this.$t('basic.con13'),
           type: "warning"
         })
           .then(() => {
@@ -132,7 +132,7 @@ export default {
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
-                    message: "删除学校成功",
+                    message: _this.$t('award.con18'),
                     type: "success"
                   });
                 }
@@ -149,9 +149,9 @@ export default {
           });
       }
       if (row.type == "课程") {
-        this.$confirm("此操作将永久删除该课程, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+        _this.$confirm(_this.$t('award.con22'), _this.$t('award.con16'), {
+          confirmButtonText: _this.$t('basic.con14'),
+          cancelButtonText: _this.$t('basic.con13'),
           type: "warning"
         })
           .then(() => {
@@ -174,7 +174,7 @@ export default {
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
-                    message: "删除课程成功",
+                    message: _this.$t('award.con19'),
                     type: "success"
                   });
                 }
@@ -191,9 +191,9 @@ export default {
           });
       }
       if (row.type == "题库集") {
-        this.$confirm("此操作将永久删除该题库集, 是否继续?", "提示", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
+        _this.$confirm(_this.$t('award.con17'), _this.$t('award.con16'), {
+          confirmButtonText: _this.$t('basic.con14'),
+          cancelButtonText: _this.$t('basic.con13'),
           type: "warning"
         })
           .then(() => {
@@ -216,7 +216,7 @@ export default {
                 if (res.data.status == 1) {
                   _this.queryOrder();
                   _this.$message({
-                    message: "删除题库集成功",
+                    message: _this.$t('award.con20'),
                     type: "success"
                   });
                 }
@@ -253,24 +253,24 @@ export default {
             _this.$set(_this.tableData[i], "statusType", "");
             if(_this.tableData[i].type == "题库集"){
               if(_this.tableData[i].status == 0){
-                _this.tableData[i].statusType = "未创建"
+                _this.tableData[i].statusType = _this.$t('award.con9')
               }
               if(_this.tableData[i].status == 1){
-                _this.tableData[i].statusType = "全新未审核"
+                _this.tableData[i].statusType = _this.$t('award.con12')
               }
               if(_this.tableData[i].status == 2){
-                _this.tableData[i].statusType = "已审核"
+                _this.tableData[i].statusType = _this.$t('award.con11')
               }
               if(_this.tableData[i].status == 3){
-                _this.tableData[i].statusType = "修改未审核"
+                _this.tableData[i].statusType = _this.$t('award.con13')
               }
             }
             if(_this.tableData[i].type != "题库集"){
               if(_this.tableData[i].status == 0){
-                _this.tableData[i].statusType = "未审核"
+                _this.tableData[i].statusType = _this.$t('award.con10')
               }
               if(_this.tableData[i].status == 1){
-                _this.tableData[i].statusType = "已审核"
+                _this.tableData[i].statusType = _this.$t('award.con11')
               }
             }
           }
@@ -278,6 +278,11 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+    }
+  },
+  watch:{
+    '$i18n.locale'(){
+      this.queryOrder()
     }
   }
 };

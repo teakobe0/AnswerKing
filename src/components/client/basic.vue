@@ -90,11 +90,13 @@
   margin-top: 16px;
 }
 .encryptInput {
-  width: 910px !important;
+  width: 896px !important;
   margin-top: 16px !important;
 }
 .encryptButton {
   margin-left: 20px !important;
+  float: right !important;
+  margin-top: 16px !important;
 }
 .Integrals {
   /* line-height: 20px; */
@@ -123,15 +125,15 @@
     <div class="pd-con-head-right">
       <div class="head-right-top">
         <!-- <p class="right-top-title">个人信息</p> -->
-        <h3>个人信息</h3>
+        <h3>{{$t('personal.nav2')}}</h3>
         <p class="right-top-acctype">
-          <p class="acctypeEmail">邮箱:{{this.value.email}}</p>
+          <p class="acctypeEmail">{{$t('basic.con1')}}:{{this.value.email}}</p>
           
           <p class="acctypeVip">
-          账户类型:
+          {{$t('basic.con2')}}:
           <strong v-if="this.value.role != 'vip'">普通</strong>
-          <strong v-if="this.value.role == 'vip'">会员</strong>
-          <span style="margin-left:24px" v-if="this.value.role == 'vip'">到期时间:{{this.value.effectiveDate | formatDate}}</span>
+          <strong v-if="this.value.role == 'vip'">{{$t('basic.con3')}}</strong>
+          <span style="margin-left:24px" v-if="this.value.role == 'vip'">{{$t('basic.con4')}}:{{this.value.effectiveDate | formatDate}}</span>
 
           <span v-if="this.value.role != 'vip'">
            （ <router-link to="/personalData/vip">升级</router-link>）
@@ -141,35 +143,35 @@
         </p>
 
         <div class="right-top-warn" v-if="this.value.role != 'vip'">
-          <p>升级到高级会员获取更多。</p>
+          <p>{{$t('basic.con16')}}</p>
           <router-link to="/personalData/vip" style="text-decoration: none;color: #ffffff;">
-            <el-button class="warn-button" type="danger">现在升级</el-button>
+            <el-button class="warn-button" type="danger">{{$t('basic.con17')}}</el-button>
           </router-link>
         </div>
         <ul class="right-top-ul">
-          <li>名称:&nbsp;{{this.value.name}}</li>
-          <li>性别:&nbsp;{{this.value.sex}}</li>
-          <li>手机:&nbsp;{{this.value.tel}}</li>
-          <li>学校:&nbsp;{{this.value.school}}</li>
+          <li>{{$t('basic.con5')}}:&nbsp;{{this.value.name}}</li>
+          <li>{{$t('basic.con6')}}:&nbsp;{{this.value.sex}}</li>
+          <li>{{$t('basic.con7')}}:&nbsp;{{this.value.tel}}</li>
+          <li>{{$t('basic.con8')}}:&nbsp;{{this.value.school}}</li>
           <li>Q&nbsp;Q:&nbsp;{{this.value.qq}}</li>
-          <li v-if="this.value.birthday != '0001-01-01T00:00:00'">生日:&nbsp;{{this.value.birthday | formatDate}}</li>
-          <li v-if="this.value.birthday == '0001-01-01T00:00:00'">生日:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
+          <li v-if="this.value.birthday != '0001-01-01T00:00:00'">{{$t('basic.con9')}}:&nbsp;{{this.value.birthday | formatDate}}</li>
+          <li v-if="this.value.birthday == '0001-01-01T00:00:00'">{{$t('basic.con9')}}:&nbsp;{{'1901-01-01T00:00:00' | formatDate}}</li>
         </ul>
       </div>
       <div class="Integrals">
-        <p>鲸灵币:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
-        <el-button class="inButton" type="mini" @click="IntegralExchanges">兑换会员</el-button>
+        <p>{{$t('basic.con10')}}:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
+        <el-button class="inButton" type="mini" @click="IntegralExchanges">{{$t('basic.con11')}}</el-button>
       </div>
       <div class="InvitationCon" v-show="InvitationShow == true">
-        <p>您可以将下方地址发送给您的好友注册成为网站用户,注册成功我们将送您和您的好友各得7天VIP！享受无限制浏览！</p>
+        <p>{{$t('basic.con15')}}</p>
         <el-input class="encryptInput" v-model="input" placeholder="请输入内容"></el-input>
         <el-button class="encryptButton" @click="Invitation" v-clipboard:copy="copy" v-clipboard:success="onCopy" v-clipboard:error="onError">
-            粘贴
+            {{$t('basic.con19')}}
         </el-button>
       </div>
       
       <div class="InvitationCon" v-show="InvitationShow == false">
-        <p>您的邮箱还没有验证,<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">点击这里</span>验证邮箱获得7天会员,开启邀请好友继续获得7天会员功能!</p>
+        <p>{{$t('basic.con20')}}<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">{{$t('basic.con21')}}</span>{{$t('basic.con22')}}</p>
       </div>
       <!-- <div class="head-right-middle">
         <p class="right-middle-title">文件</p>

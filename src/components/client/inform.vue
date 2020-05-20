@@ -35,17 +35,17 @@
 <template>
   <div id="inform">
     <div class="inform-right">
-      <h3>通知信息</h3>
+      <h3>{{$t('personal.nav5')}}</h3>
       <div class="message">
-        <div style="text-align:center" v-show="dataNull == true">暂无数据</div>
+        <div style="text-align:center" v-show="dataNull == true">{{$t('inform.con1')}}</div>
         <div v-for="item in messages">
           <span class="sendname">{{item.sendname}}</span>
-          回复您：{{item.content}}
+          {{$t('inform.con2')}}：{{item.content}}
           <el-button
             @click="gomessage(item.contentsUrl,item.id)"
             style="float:right;"
             size="mini"
-          >查看</el-button>
+          >{{$t('inform.con3')}}</el-button>
         </div>
       </div>
     </div>
