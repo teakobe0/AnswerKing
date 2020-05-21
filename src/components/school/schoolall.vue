@@ -166,14 +166,14 @@
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
-            title="关注课程"
+            :title="$t('university.con10')"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
-            title="取消关注课程"
+            :title="$t('university.con11')"
           ></i>
         </div>
       </div>
@@ -365,7 +365,7 @@ export default {
             .then(function(res) {
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -397,7 +397,7 @@ export default {
             })
             .then(function(res) {
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -408,7 +408,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }

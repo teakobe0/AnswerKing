@@ -65,7 +65,7 @@
 }
 .popContainer .purchase {
   display: block;
-  width: 200px;
+  width: 280px;
   height: 50px;
   cursor: pointer;
   background-color: #ff9f32;
@@ -135,7 +135,7 @@
     </div>
 
     <div class="tabCon">
-      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">此项目无内容,去别处转转</p>
+      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">{{$t('content.con23')}}</p>
       <div
         oncontextmenu="return false;"
         ondragstart="return false;"
@@ -151,7 +151,7 @@
           <el-button class="imgShow" size="mini" v-show="imgshow">
             <router-link
               :to="'/classes/'+$route.params.classes_id+'/content/'+item.classInfoId+'/weeks/'+item.classWeek+'/weektype/'+item.classWeekType+'/imgDetails/'+item.id"
-            >查看详情</router-link>
+            >{{$t('content.con16')}}</router-link>
           </el-button>
           <img
             style="width:100%;height:100%;filter: blur(1px);"
@@ -170,7 +170,7 @@
     <div class="popContainer-wrap">
       <div class="popContainer" v-show="shade==true">
         <p class="time">{{content}}</p>
-        <p class="purchase" @click="joim">成为会员免除等待!</p>
+        <p class="purchase" @click="joim">{{$t('content.con24')}}</p>
         <div
           class="closeshade el-icon-close"
           @click="Closemask"
@@ -275,7 +275,8 @@ export default {
       return setTimeout(() => {
         if (_this.totalTime > 0) {
           _this.totalTime--;
-          _this.content = _this.totalTime + "s后可观看答案";
+          _this.content =
+            _this.totalTime + "s" + " " + _this.$t("content.con25");
           _this.clockTick();
         } else {
           _this.Closemask();
@@ -296,11 +297,14 @@ export default {
         } else {
           _this.shade = true;
           _this.totalTime = 30;
-          _this.content = _this.totalTime + "s后可观看答案";
+          _this.content =
+            _this.totalTime + "s" + " " + _this.$t("content.con25");
 
           _this.clock = window.setInterval(() => {
             _this.totalTime--;
-            _this.content = _this.totalTime + "s后可观看答案";
+            _this.content =
+              _this.totalTime + "s" + " " + _this.$t("content.con25");
+
             if (_this.totalTime < 1) {
               _this.content = "s后可观看答案";
               _this.totalTime = 30;

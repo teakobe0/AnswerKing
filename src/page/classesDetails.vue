@@ -451,7 +451,7 @@ export default {
               _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -477,7 +477,7 @@ export default {
             .then(function(res) {
               _this.attenDisabled = false;
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -488,7 +488,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }

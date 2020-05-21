@@ -6,14 +6,13 @@
   background-color: rgb(245, 245, 245);
   color: #000;
   font-size: 14px;
-  
+
   position: fixed;
   right: 10px;
   bottom: 10px;
   z-index: 999;
   padding: 15px;
   border-radius: 10px;
-
 }
 
 .com-img {
@@ -26,11 +25,10 @@
 .com-text {
   float: right;
   width: 250px;
-  height: 50px;
   font-size: 12px;
   position: relative;
 }
-.com-text i{
+.com-text i {
   position: absolute;
   right: -2px;
   top: -2px;
@@ -55,7 +53,6 @@
   padding: 20px;
   background-color: rgb(245, 245, 245);
   border-radius: 10px;
-
 }
 .Feedbackpage p {
   margin-bottom: 22px;
@@ -67,27 +64,32 @@
 }
 #submitss {
 }
-
 </style>
 
 <template>
   <div class="complain">
     <div class="com-button" v-if="this.$store.state.logo.contactUs">
-      
       <div class="com-img">
-        <img src="../../assets/comIcon.png" alt="">
+        <img src="../../assets/comIcon.png" alt />
       </div>
       <div class="com-text">
         <div>
-          CourseWhale课程鲸灵在线问答系统<br/>已经进入内侧阶段,请时刻关注网站最新动态!<br/>如有任何意见或建议<span style="text-decoration:underline;cursor: pointer;"  @click="comPageClick">请点击这里联系我们!</span>
+          {{$t('complain.con0')}}
+          <br />
+          {{$t('complain.con1')}}
+          <br />
+          {{$t('complain.con2')}}
+          <span
+            style="text-decoration:underline;cursor: pointer;"
+            @click="comPageClick"
+          >{{$t('complain.con3')}}!</span>
         </div>
         <i class="el-icon-close" @click="complainClick"></i>
       </div>
-      
-      </div>
+    </div>
     <div class="com-page" v-show="comPageShow">
       <div class="Feedbackpage">
-        <p>网站建议</p>
+        <p>{{$t('complain.con4')}}</p>
         <el-form
           :model="feedback"
           :rules="rules"
@@ -97,27 +99,31 @@
           @submit.native.prevent
         >
           <el-form-item style="margin-left: -50px;" prop="Name">
-            <el-input v-model="feedback.Name" placeholder="请输入主题(必填)"></el-input>
+            <el-input v-model="feedback.Name" :placeholder="$t('complain.con5')"></el-input>
           </el-form-item>
           <el-form-item style="margin-left: -50px;" prop="Content">
             <el-input
               type="textarea"
               v-model="feedback.Content"
-              placeholder="请输入您要提交的内容(必填)"
+              :placeholder="$t('complain.con6')"
               style="height:65px;"
             ></el-input>
           </el-form-item>
           <el-form-item style="margin-left: -50px;" prop="CreateBy">
-            <el-input v-model="feedback.CreateBy" placeholder="请输入您的姓名(选填)"></el-input>
+            <el-input v-model="feedback.CreateBy" :placeholder="$t('complain.con7')"></el-input>
           </el-form-item>
           <el-form-item style="margin-left: -50px;">
-            <el-button id="submits" type="info" @click="cancelForm('feedback')">取消</el-button>
+            <el-button
+              id="submits"
+              type="info"
+              @click="cancelForm('feedback')"
+            >{{$t('complain.con8')}}</el-button>
             <el-button
               id="submitss"
               type="primary"
               @click="submitForm('feedback')"
               :loading="loadings"
-            >提交</el-button>
+            >{{$t('complain.con9')}}</el-button>
           </el-form-item>
           <el-form-item style="margin-left: -50px;"></el-form-item>
         </el-form>
@@ -132,12 +138,12 @@ export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入内容"));
+        callback(new Error(this.$t("complain.con10")));
       }
       callback();
     };
     return {
-      comPageShow:false,
+      comPageShow: false,
       feedback: {
         Url: "",
         Name: "",
@@ -146,12 +152,26 @@ export default {
       },
       loadings: false,
       rules: {
-        Name: [{ required: true, message: "请输入主题", trigger: "blur" }],
+        Name: [
+          {
+            required: true,
+            message: this.$t("complain.con11"),
+            trigger: "blur"
+          }
+        ],
         Content: [
-          { required: true, message: "请填写您要提交的内容", trigger: "blur" }
+          {
+            required: true,
+            message: this.$t("complain.con12"),
+            trigger: "blur"
+          }
         ],
         CreateBy: [
-          { required: false, message: "请输入您的姓名", trigger: "blur" }
+          {
+            required: false,
+            message: this.$t("complain.con13"),
+            trigger: "blur"
+          }
         ]
       }
     };
@@ -164,7 +184,7 @@ export default {
       const _this = this;
       _this.$store.state.logo.contactUs = !_this.$store.state.logo.contactUs;
     },
-    comPageClick(){
+    comPageClick() {
       const _this = this;
       _this.comPageShow = !_this.comPageShow;
     },
@@ -186,7 +206,7 @@ export default {
             })
             .then(function(res) {
               _this.$message({
-                message: "提交成功!,感谢您对本网站的支持!",
+                message: _this.$t("complain.con14"),
                 type: "success"
               });
               _this.feedback.Name = "";
@@ -202,6 +222,33 @@ export default {
     cancelForm: function() {
       const _this = this;
       _this.comPageShow = !_this.comPageShow;
+    }
+  },
+  watch: {
+    "$i18n.locale"() {
+      this.rules = {
+        Name: [
+          {
+            required: true,
+            message: this.$t("complain.con11"),
+            trigger: "blur"
+          }
+        ],
+        Content: [
+          {
+            required: true,
+            message: this.$t("complain.con12"),
+            trigger: "blur"
+          }
+        ],
+        CreateBy: [
+          {
+            required: false,
+            message: this.$t("complain.con13"),
+            trigger: "blur"
+          }
+        ]
+      };
     }
   }
 };

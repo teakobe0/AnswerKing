@@ -279,7 +279,7 @@
               <img src="../../assets/笑脸.svg" alt>
             </div>-->
             <div class="reviewButton">
-              <el-button type="primary" size="mini" @click="addComment">评论</el-button>
+              <el-button type="primary" size="mini" @click="addComment">{{$t('content.con12')}}</el-button>
             </div>
           </div>
         </div>
@@ -301,11 +301,11 @@
         <div class="controlretext">
           <div class="MessageRetext" @click="opencontrol(index,item.id)">
             <!-- <img src="../../assets/留言.svg" alt> -->
-            <span>回复({{item.replies.length}})</span>
+            <span>{{$t('content.con14')}}({{item.replies.length}})</span>
           </div>
           <div class="deleteRetext" v-show="item.deleteshow == true" @click="deletecom(item.id)">
             <img src="../../assets/删除.svg" alt />
-            <span>删除</span>
+            <span>{{$t('content.con13')}}</span>
           </div>
         </div>
         <!-- 打开和关闭对别人的评论 -->
@@ -330,7 +330,7 @@
                   class="openMessageRetext"
                   @click="replyTwolevel(index,openitem.parentId,openitem.id,openitem.replyname)"
                 >
-                  <span>回复</span>
+                  <span>{{$t('content.con14')}}</span>
                   <!-- <img src="../../assets/留言.svg" alt> -->
                   <!-- <span>{{openitem.message}}</span> -->
                 </div>
@@ -340,7 +340,7 @@
                   @click="deletecom(openitem.id)"
                 >
                   <img src="../../assets/删除.svg" alt />
-                  <span>删除</span>
+                  <span>{{$t('content.con13')}}</span>
                 </div>
               </div>
             </div>
@@ -371,8 +371,12 @@
                   <img src="../../assets/笑脸.svg" alt>
                 </div>-->
                 <div class="reviewButton">
-                  <el-button type="info" size="mini" @click="cancel(index)">取消</el-button>
-                  <el-button type="primary" size="mini" @click="submitReview(item.model)">评论</el-button>
+                  <el-button type="info" size="mini" @click="cancel(index)">{{$t('content.con15')}}</el-button>
+                  <el-button
+                    type="primary"
+                    size="mini"
+                    @click="submitReview(item.model)"
+                  >{{$t('content.con12')}}</el-button>
                 </div>
               </div>
             </div>
@@ -415,7 +419,8 @@ export default {
       imageUrl: "",
       headShowLogin: false,
       // 判断这个是否验证过邮箱
-      personalVipEmail: false
+      personalVipEmail: false,
+      reply:'回复',
     };
   },
   created: function() {
@@ -423,9 +428,9 @@ export default {
     //获取个人信息
     _this.personal();
     if (localStorage.token) {
-      _this.placeholder = "请输入评论内容:";
+      _this.placeholder = _this.$t("content.con11");
     } else {
-      _this.placeholder = "请登录之后进行评论!";
+      _this.placeholder = _this.$t("content.con26");
     }
   },
   filters: {
@@ -562,7 +567,7 @@ export default {
           var pvalue = patt.test(_this.retext);
           if (pvalue) {
             _this.$message({
-              message: "请输入内容",
+              message: _this.$t('content.con30'),
               type: "warning"
             });
           } else {
@@ -586,7 +591,7 @@ export default {
               .then(function(res) {
                 _this.retext = "";
                 _this.$message({
-                  message: "评论成功",
+                  message: _this.$t('content.con31'),
                   type: "success"
                 });
                 _this.searching();
@@ -597,20 +602,20 @@ export default {
           }
         } else {
           _this.$message({
-            message: "请在个人中心验证邮箱之后评论",
+            message: _this.$t('content.con29'),
             type: "warning"
           });
         }
       } else {
         _this.$message({
-          message: "请登录之后评论",
+          message: _this.$t('content.con28'),
           type: "warning"
         });
       }
     },
     // 新增2级评论
     submitReview: function(model) {
-      console.log(model)
+      console.log(model);
       const _this = this;
       if (localStorage.token) {
         if (_this.personalVipEmail) {
@@ -618,7 +623,7 @@ export default {
           var pvalue = patt.test(model);
           if (pvalue) {
             _this.$message({
-              message: "请输入内容",
+              message: _this.$t('content.con30'),
               type: "warning"
             });
           } else {
@@ -654,13 +659,13 @@ export default {
           }
         } else {
           _this.$message({
-            message: "请在个人中心验证邮箱之后评论",
+            message: _this.$t('content.con29'),
             type: "warning"
           });
         }
       } else {
         _this.$message({
-          message: "请登录之后在进行评论",
+          message: _this.$t('content.con28'),
           type: "warning"
         });
       }
@@ -686,7 +691,7 @@ export default {
         .then(function(res) {
           _this.searching();
           _this.$message({
-            message: "删除成功",
+            message: _this.$t('content.con27'),
             type: "success"
           });
         })
@@ -709,13 +714,8 @@ export default {
       _this.replyOnelevelid = oneid.toString();
       _this.replyTwolevelid = twoid.toString();
       _this.comment[index].openreply = true;
-      _this.comment[index].model = "回复 " + name + ":";
+      _this.comment[index].model = _this.reply + ' '+ name + ":";
       _this.replyOneTwoid = oneid + "," + twoid;
-      // console.log(window.location.pathname);
-      // console.log(_this.replyOneTwoid);
-      // console.log(oneid);
-      // console.log(twoid);
-      // console.log(_this.comment[index].model);
     },
     //留言的方法
     opencontrol: function(indexs, id) {
@@ -734,7 +734,19 @@ export default {
     posVersion() {
       return this.$store.state.loginPerson.loginPerson;
     }
-  }
+  },
+  watch: {
+    "$i18n.locale"() {
+      const _this = this;
+      if (localStorage.token) {
+        _this.placeholder = _this.$t("content.con11");
+      } else {
+        _this.placeholder = _this.$t("content.con26");
+      }
+      _this.reply = _this.$t('content.con14');
+      
+    }
+  },
 };
 </script>
 

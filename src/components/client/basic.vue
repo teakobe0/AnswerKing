@@ -131,12 +131,12 @@
           
           <p class="acctypeVip">
           {{$t('basic.con2')}}:
-          <strong v-if="this.value.role != 'vip'">普通</strong>
+          <strong v-if="this.value.role != 'vip'">{{$t('basic.con23')}}</strong>
           <strong v-if="this.value.role == 'vip'">{{$t('basic.con3')}}</strong>
           <span style="margin-left:24px" v-if="this.value.role == 'vip'">{{$t('basic.con4')}}:{{this.value.effectiveDate | formatDate}}</span>
 
           <span v-if="this.value.role != 'vip'">
-           （ <router-link to="/personalData/vip">升级</router-link>）
+           （ <router-link to="/personalData/vip">{{$t('basic.con24')}}</router-link>）
           </span>
           </p>
           
@@ -159,7 +159,7 @@
         </ul>
       </div>
       <div class="Integrals">
-        <p>{{$t('basic.con10')}}:{{this.clientVipNum}}<i class="el-icon-info" title="通过贡献资源审核成功之后可以获得鲸灵币,鲸灵币可以用于兑换会员。"></i></p>
+        <p>{{$t('basic.con10')}}:{{this.clientVipNum}}<i class="el-icon-info" :title="$t('basic.con25')"></i></p>
         <el-button class="inButton" type="mini" @click="IntegralExchanges">{{$t('basic.con11')}}</el-button>
       </div>
       <div class="InvitationCon" v-show="InvitationShow == true">

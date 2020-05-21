@@ -292,7 +292,7 @@
                 <router-link
                   :to="'/university/'+item.university.id"
                 >{{item.university.name}}</router-link>
-                <div class="select-boo-num">{{item.number}}门课程</div>
+                <div class="select-boo-num">{{item.number}}{{$t('schools.schools7')}}</div>
               </li>
             </ul>
           </div>

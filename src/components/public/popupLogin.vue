@@ -73,19 +73,23 @@
           class="demo-ruleForm"
         >
           <el-form-item style="margin-left: -50px;" label prop="Username">
-            <el-input prefix-icon="el-icon-edit" v-model="ruleForm.Username" placeholder="输入邮箱地址"></el-input>
+            <el-input
+              prefix-icon="el-icon-edit"
+              v-model="ruleForm.Username"
+              :placeholder="$t('popupLogin.con1')"
+            ></el-input>
           </el-form-item>
           <el-form-item style="margin-left: -50px;" label prop="Password">
             <el-input
               prefix-icon="el-icon-goods"
               type="Password"
               v-model="ruleForm.Password"
-              placeholder="输入密码"
+              :placeholder="$t('popupLogin.con2')"
               @keyup.enter.native="submitForm('ruleForm')"
             ></el-input>
           </el-form-item>
           <div class="forgetpassword">
-            <router-link to="/forgetPassword">忘记密码？</router-link>
+            <router-link to="/forgetPassword">{{$t('popupLogin.con3')}}</router-link>
           </div>
 
           <el-form-item style="margin-left: -50px;">
@@ -95,11 +99,11 @@
               type="primary"
               @click="submitForm('ruleForm')"
               :loading="loadings"
-            >登录</el-button>
+            >{{$t('popupLogin.con4')}}</el-button>
           </el-form-item>
         </el-form>
-        <span>没有账号？</span>
-        <span class="login-resi" @click="loginShowHed">注册</span>
+        <span>{{$t('popupLogin.con5')}}</span>
+        <span class="login-resi" @click="loginShowHed">{{$t('popupLogin.con6')}}</span>
       </div>
       <div class="pop-miregoster" v-show="loginShow == false">
         <p class="brand">
@@ -114,14 +118,18 @@
           class="demo-ruleForm"
         >
           <el-form-item style="margin-left: -50px;" label prop="Email">
-            <el-input prefix-icon="el-icon-edit" v-model="reruleForm.Email" placeholder="输入邮箱地址"></el-input>
+            <el-input
+              prefix-icon="el-icon-edit"
+              v-model="reruleForm.Email"
+              :placeholder="$t('popupLogin.con1')"
+            ></el-input>
           </el-form-item>
           <el-form-item style="margin-left: -50px;" label prop="Password">
             <el-input
               prefix-icon="el-icon-goods"
               type="Password"
               v-model="reruleForm.Password"
-              placeholder="输入密码"
+              :placeholder="$t('popupLogin.con2')"
               autocomplete="off"
             ></el-input>
           </el-form-item>
@@ -130,7 +138,7 @@
               prefix-icon="el-icon-goods"
               type="Password"
               v-model="reruleForm.Passwords"
-              placeholder="再次输入密码"
+              :placeholder="$t('popupLogin.con7')"
               autocomplete="off"
               @keyup.enter.native="register('ruleForm')"
             ></el-input>
@@ -141,15 +149,15 @@
               id="regi"
               @click="register('reruleForm')"
               :loading="reloadings"
-            >注册</el-button>
+            >{{$t('popupLogin.con6')}}</el-button>
           </el-form-item>
         </el-form>
         <p class="termsOfService">
-          注册即代表同意
-          <router-link to="/termsOfService">《CourseWhale服务条款》</router-link>
+          {{$t('popupLogin.con8')}}
+          <router-link to="/termsOfService">{{$t('popupLogin.con9')}}</router-link>
         </p>
-        <span>已有账号？</span>
-        <span class="login-resi" @click="loginShowHed">登录</span>
+        <span>{{$t('popupLogin.con10')}}</span>
+        <span class="login-resi" @click="loginShowHed">{{$t('popupLogin.con4')}}</span>
       </div>
     </div>
   </div>
@@ -161,14 +169,14 @@ export default {
   data() {
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(this.$t("popupLogin.con15")));
       }
       callback();
     };
     //ES6中用箭头函授代替ES5中的function（）
     var revalidatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(this.$t("popupLogin.con15")));
       } else {
         if (this.reruleForm.Passwords !== "") {
           this.$refs.reruleForm.validateField("Passwords");
@@ -178,9 +186,9 @@ export default {
     };
     var revalidatePass2 = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(this.$t("popupLogin.con16")));
       } else if (value !== this.reruleForm.Password) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(this.$t("popupLogin.con17")));
       } else {
         callback();
       }
@@ -199,10 +207,14 @@ export default {
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          { required: true, message: "请输入用户名", trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("popupLogin.con11"),
+            trigger: "blur"
+          },
           {
             type: "email",
-            message: "请输入正确的邮箱地址",
+            message: this.$t("popupLogin.con12"),
             trigger: ["blur", "change"]
           }
         ],
@@ -217,10 +229,14 @@ export default {
       //rules是Element的表单验证规则
       rerules: {
         Email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("popupLogin.con11"),
+            trigger: "blur"
+          },
           {
             type: "email",
-            message: "请输入正确的邮箱地址",
+            message: this.$t("popupLogin.con12"),
             trigger: ["blur", "change"]
           }
         ],
@@ -239,6 +255,7 @@ export default {
       _this.popimg1 = !_this.popimg1;
     }, 3000);
   },
+
   methods: {
     // 登录方法
     submitForm(ruleForm) {
@@ -264,7 +281,7 @@ export default {
                 localStorage.token = res.data.data.token;
                 _this.$router.go(0);
                 _this.$message({
-                  message: "登录成功",
+                  message: _this.$t("popupLogin.con13"),
                   type: "success"
                 });
               } else {
@@ -309,7 +326,7 @@ export default {
                 localStorage.token = res.data.data.token;
                 _this.$router.go(0);
                 _this.$message({
-                  message: "注册成功",
+                  message: _this.$t("popupLogin.con14"),
                   type: "success"
                 });
               } else {
@@ -336,6 +353,15 @@ export default {
     popupShows() {
       const _this = this;
       _this.popups = false;
+    }
+  },
+  watch: {
+    "$i18n.locale"() {
+      const _this = this;
+      _this.rules.Username[0].message = _this.$t("popupLogin.con11");
+      _this.rules.Username[1].message = _this.$t("popupLogin.con12");
+      _this.rerules.Email[0].message = _this.$t("popupLogin.con11");
+      _this.rerules.Email[1].message = _this.$t("popupLogin.con12");
     }
   }
 };

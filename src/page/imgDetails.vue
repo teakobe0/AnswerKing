@@ -124,21 +124,21 @@
         <div class="crumbs-con">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/schools' }">
-              <span class="crumb">全部学校</span>
+              <span class="crumb">{{$t('Public.con1')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item :to="'/university/'+ value.universityId">
-              <span class="crumb">该校课程</span>
+              <span class="crumb">{{$t('Public.con3')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item :to="'/classes/'+$route.params.classes_id">
-              <span class="crumb">该课题库</span>
+              <span class="crumb">{{$t('Public.con5')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item
               :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
             >
-              <span class="crumb">当前题库</span>
+              <span class="crumb">{{$t('Public.con6')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-              <span style="color:rgb(228, 228, 228);">图片详情</span>
+              <span style="color:rgb(228, 228, 228);">{{$t('Public.con7')}}</span>
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -153,14 +153,14 @@
             >{{value.name}}</router-link>
           </h2>
           <p>
-            学校:
+            {{$t('classesDetail.con2')}}:
             <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
-            <span v-if="value.professor">教授:{{value.professor}}</span>
-            <span v-if="contributor == true">贡献者:</span>
+            <span v-if="value.professor">{{$t('classesDetail.con3')}}:{{value.professor}}</span>
+            <span v-if="contributor == true">{{$t('content.con1')}}:</span>
             <router-link
               :to="'/ownness/'+informations.classinfo.clientId"
               class="ownness-name"
-              :title="'访问'+ informations.clientname +'的个人资料'"
+              :title="$t('classesDetail.con15') + ' ' + informations.clientname + ' ' + $t('classesDetail.con16')"
               v-if="contributor == true"
             >
               <img ondragstart="return false;" :src="informations.clientimg" alt />
@@ -178,7 +178,7 @@
                 :disabled="attenDisabled"
               >
                 <i class="el-icon-star-off" v-if="value.attentions == false"></i>
-                关注
+                {{$t('classesDetail.con1')}}
               </el-button>
               <el-button
                 type="primary"
@@ -189,7 +189,7 @@
                 :disabled="attenDisabled"
               >
                 <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
-                关注
+                {{$t('classesDetail.con1')}}
               </el-button>
             </li>
             <li
@@ -199,14 +199,14 @@
               <el-button size="medium" @click="noUses" :disabled="disableds">
                 <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                 <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
-                没用({{informations.classinfo.noUse}})
+                {{$t('content.con3')}}({{informations.classinfo.noUse}})
               </el-button>
             </li>
             <li>
               <el-button size="medium" @click="beOfUses" :disabled="disableds">
                 <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                 <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
-                有用({{informations.classinfo.use}})
+                {{$t('content.con2')}}({{informations.classinfo.use}})
               </el-button>
             </li>
           </ul>
@@ -216,8 +216,8 @@
       <div class="thumbnail">
         <!-- <div class="thumbnail" v-for="(items,index) in this.Answer"> -->
         <div class="thumbnail-text">
-          所有文件
-          <i class="el-icon-info" title="点击缩略图跳转"></i>
+          {{$t('imgDetails.con1')}}
+          <i class="el-icon-info" :title="$t('imgDetails.con3')"></i>
         </div>
         <div class="thumbnail-img" v-for="(item,indexs) in answerImgs">
           <a :href="'#'+indexs">
@@ -227,7 +227,7 @@
         <el-button class="thumbnail-bt">
           <router-link
             :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
-          >查看全部文件</router-link>
+          >{{$t('imgDetails.con2')}}</router-link>
         </el-button>
       </div>
       <div class="answer">
@@ -569,7 +569,7 @@ export default {
               _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -603,7 +603,7 @@ export default {
             .then(function(res) {
               _this.attenDisabled = false;
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -614,7 +614,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }

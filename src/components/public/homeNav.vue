@@ -152,13 +152,43 @@
 .vipShow a:hover {
   color: rgb(35, 187, 233);
 }
+.language input {
+  width: 96px !important;
+  background-color: #4458b0 !important;
+  border: 0px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+}
+.nav .el-menu-item * {
+  vertical-align: baseline !important;
+}
+.select-option {
+  background-color: #4458b0 !important;
+  border: 0 !important;
+  color: #fff !important;
+  margin-top: 5px !important;
+}
+.select-option .popper__arrow {
+  display: none !important;
+}
+.select-option .el-select-dropdown__item {
+  color: #fff !important;
+}
+.select-option .el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: #36468d;
+}
 </style>
 
 <template>
   <div class="nav">
     <complain></complain>
     <div class="vipShow" v-if="this.$store.state.vip.vipShow">
-      您的会员权益将于&nbsp;{{endTime | formatDate}}&nbsp;截止!您可以选择<router-link to="/personalData/vip">充值</router-link>或通过<router-link to="/personalData/basic">邀请好友</router-link>和<router-link to="/uploadAnswer">贡献资料</router-link>继续享受会员!
+      您的会员权益将于&nbsp;{{endTime | formatDate}}&nbsp;截止!您可以选择
+      <router-link to="/personalData/vip">充值</router-link>或通过
+      <router-link to="/personalData/basic">邀请好友</router-link>和
+      <router-link to="/uploadAnswer">贡献资料</router-link>继续享受会员!
       <span @click="vipHandel">
         不在显示
         <i class="el-icon-close"></i>
@@ -169,9 +199,6 @@
         <router-link to="/home">
           <img src="../../assets/logo.png" alt />
         </router-link>
-        <el-button @click="tabEn">1</el-button>
-        <el-button @click="tabZh">2</el-button>
-        <el-button @click="tabKo">3</el-button>
       </div>
       <el-menu
         class="el-menu-demo"
@@ -194,15 +221,17 @@
         <el-menu-item index="4">
           <router-link to="/uploadAnswer">{{$t('nav.nav4')}}</router-link>
         </el-menu-item>
+
         <!-- <el-menu-item index="5">
           <router-link to="/question">问答中心</router-link>
-        </el-menu-item> -->
+        </el-menu-item>-->
         <el-menu-item index="6" v-if="$store.state.logo.show">
           <router-link to="/login" style="width:56px;text-align: center;">{{$t('nav.nav5')}}</router-link>
         </el-menu-item>
         <el-menu-item index="7" v-if="$store.state.logo.show">
           <router-link class="homenav-resi" to="/register">{{$t('nav.nav6')}}</router-link>
         </el-menu-item>
+
         <el-submenu index="8" v-if="$store.state.logo.hide">
           <template slot="title">
             <router-link to="/personalData" id="nickname">
@@ -226,6 +255,22 @@
             <a href="javascript:void(0)" @click="logout">{{$t('nav.nav9')}}</a>
           </el-menu-item>
         </el-submenu>
+        <el-menu-item index="9">
+          <el-select
+            v-model="value"
+            placeholder
+            class="language"
+            popper-class="select-option"
+            @change="handleWeeks"
+          >
+            <el-option
+              v-for="item in options"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            ></el-option>
+          </el-select>
+        </el-menu-item>
       </el-menu>
     </div>
   </div>
@@ -257,7 +302,22 @@ export default {
       personreviewsid: "",
       messageLength: 0,
       endTime: "",
-      activeIndex2: ""
+      activeIndex2: "",
+      options: [
+        {
+          value: "zh",
+          label: "中文"
+        },
+        {
+          value: "en",
+          label: "English"
+        },
+        {
+          value: "ko",
+          label: "한국어"
+        }
+      ],
+      value: "zh"
     };
   },
   created: function() {
@@ -272,6 +332,15 @@ export default {
       this.$store.state.logo.show = true;
       this.$store.state.logo.hide = false;
     }
+    if (localStorage.lang == "zh") {
+      _this.value = "zh"
+    }
+    if (localStorage.lang == "en") {
+      _this.value = "en"
+    }
+    if (localStorage.lang == "ko") {
+      _this.value = "ko"
+    }
     _this.gainpersonal();
   },
   filters: {
@@ -281,22 +350,22 @@ export default {
     }
   },
   methods: {
-    tabEn(){
-      this.$i18n.locale = 'en'
-      localStorage.setItem("lang", "en");
+    handleWeeks(item) {
+      const _this = this;
+      if (item == "zh") {
+        _this.$i18n.locale = "zh";
+        localStorage.setItem("lang", "zh");
+      }
+      if (item == "en") {
+        _this.$i18n.locale = "en";
+        localStorage.setItem("lang", "en");
+      }
+      if (item == "ko") {
+        _this.$i18n.locale = "ko";
+        localStorage.setItem("lang", "ko");
+      }
     },
-    tabZh(){
-      this.$i18n.locale = 'zh'
-      localStorage.setItem("lang", "zh");
-
-    },
-    tabKo(){
-      this.$i18n.locale = 'ko'
-      localStorage.setItem("lang", "ko");
-
-    },
-    handleSelect(key, keyPath) {
-    },
+    handleSelect(key, keyPath) {},
     gainmessage: function() {
       const _this = this;
       _this
@@ -414,7 +483,7 @@ export default {
     vipHandel() {
       const _this = this;
       _this.$store.state.vip.vipShow = false;
-    },
+    }
   },
   directives: {
     focus: {
