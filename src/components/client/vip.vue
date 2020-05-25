@@ -91,10 +91,8 @@
   border-bottom: 1px solid #dddddd;
 }
 .sweep div {
-  /* width: 75px; */
+  width: 75px;
   height: 41px;
-  display: inline-block;
-  padding: 0 20px;
   border-bottom: 3px solid #fc8321;
   font-size: 16px;
   color: #505050;
@@ -174,7 +172,7 @@
 <template>
   <div id="changePassword">
     <div class="pd-con-head-right">
-      <h3>{{$t('personal.nav8')}}</h3>
+      <h3>成为会员</h3>
       <div class="dredgevip">
         <ul>
           <li
@@ -185,10 +183,10 @@
             <p>{{item.name}}</p>
             <p>
               ${{item.Onprice}}
-              <span style="color:#a1a1a1;font-size:14px;">/{{$t('myvip.con1')}}</span>
+              <span style="color:#a1a1a1;font-size:14px;">/月</span>
             </p>
             <p>
-              <s>{{$t('myvip.con2')}}${{item.original}}</s>
+              <s>原价${{item.original}}</s>
             </p>
             <img src="../../assets/对勾.png" alt v-show="num==index" />
           </li>
@@ -198,7 +196,7 @@
       <!--<router-view/>-->
       <!--</div>-->
       <div class="sweep">
-        <div>{{$t('myvip.con3')}}</div>
+        <div>确认付款</div>
       </div>
       <div class="pay">
         <!-- <div class="pay-left"> -->
@@ -232,7 +230,7 @@
         <!-- <div class="dredgePay" @click="dredgePay">立即开通</div> -->
         <div id="paypal-button-container" class="paypal-button-container"></div>
       </div>
-      <div class="clauseText">{{$t('myvip.con4')}}</div>
+      <div class="clauseText">同意并接受《CourseWhale会员服务条款》</div>
     </div>
   </div>
 </template>
@@ -242,7 +240,8 @@ import { constants } from "crypto";
 
 export default {
   name: "changePassword",
-  components: {},
+  components: {
+  },
   data() {
     //在ES6中添加数据是在return{}中
     return {

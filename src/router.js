@@ -30,14 +30,9 @@ import classes from '@/page/classesDetails.vue'  //课程详情页面
 import member from '@/page/member.vue'  //会员
 import imgDetails from '@/page/imgDetails.vue'  //图片详情
 import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
-import question from '@/page/question.vue'  //问答大厅
-import questionDetails from '@/page/questionDetails.vue'  //问答大厅
-import emailVerify from '@/page/emailVerify.vue'  //邮箱验证
+
 
 import ownness from '@/components/client/ownness.vue'  //个人资料
-
-
-
 // Footer里的页面
 import termsOfService from '@/page/footerView/termsOfService.vue' //条款
 import company from '@/page/footerView/company.vue' //公司
@@ -51,7 +46,6 @@ import modifiedData from '@/components/client/modifiedData.vue'  //修改资料
 import changePassword from '@/components/client/changePassword.vue'  //修改密码
 import inform from '@/components/client/inform.vue'  //通知信息
 import attention from '@/components/client/attention.vue'  //我的关注
-import myQuestion from '@/components/client/myQuestion.vue'  //我的关注
 import vip from '@/components/client/vip.vue'  //购买会员
 import orderHistory from '@/components/client/orderHistory.vue'  //购买会员记录
 import award from '@/components/client/award.vue'  //上传奖励
@@ -168,11 +162,6 @@ export default new Router({
                     path: 'attention',      //设置跳转
                     name: 'attention',
                     component: attention,
-                },
-                {
-                    path: 'myQuestion',      //设置跳转
-                    name: 'myQuestion',
-                    component: myQuestion,
                 }
 
             ]
@@ -266,18 +255,6 @@ export default new Router({
         {
             path: '/uploadAnswer',      //设置跳转
             component: uploadAnswer
-        },
-        {
-            path: '/question',      //设置跳转
-            component: question
-        },
-        {
-            path: '/questionDetails',      //设置跳转
-            component: questionDetails
-        },
-        {
-            path: '/emailVerify',      //设置跳转
-            component: emailVerify
         },
 
     ]

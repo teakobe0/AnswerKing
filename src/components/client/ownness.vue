@@ -10,7 +10,7 @@
 .ownnessPage-title {
   width: 100%;
   height: 200px;
-  /* margin-top: 80px; */
+  margin-top: 80px;
 }
 .op-title-con {
   width: 1300px;

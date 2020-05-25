@@ -2,7 +2,6 @@
 #file {
   /* background-color: #ebf5f424; */
   overflow: hidden;
-  min-height: 276px;
 }
 
 .file-con {
@@ -172,7 +171,7 @@
 <template>
   <div id="file">
     <div class="file-con">
-      <div class="infoShows" v-if="infoShow == true">{{$t('classesDetail.con7')}}</div>
+      <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
       <div class="file-con-course" v-if="courseShow == true">
         <div v-for="(item,index) in value" @click="Information(item)">
           <router-link
@@ -180,16 +179,16 @@
             class="file-course-img"
           >
             <p class="course-goal">
-              {{$t('classesDetail.con8')}}:
-              <b>{{item.classinfo.grade}}</b>
+              题库集得分:
+              <b>{{item.classinfo.totalGrade}}</b>
             </p>
             <p>
-              <span>{{$t('classesDetail.con9')}}:</span>
+              <span>课程名称:</span>
               <br />
               <span>{{Names.name}}</span>
             </p>
             <p>
-              <span>{{$t('classesDetail.con10')}}:</span>
+              <span>学校名称:</span>
               <br />
               <span>{{Names.university}}</span>
             </p>
@@ -198,7 +197,7 @@
             <router-link
               @click.native="ownness(item.clientname,item.clientimg)"
               :to="'/ownness/'+item.classinfo.clientId"
-              :title="$t('classesDetail.con15') + ' ' + item.clientname + ' '+$t('classesDetail.con16')"
+              :title="'访问'+ item.clientname +'的个人资料'"
               class="ownness-name"
             >
               <img ondragstart="return false;" :src="item.clientimg" alt />
@@ -210,14 +209,14 @@
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
-            :title="$t('classesDetail.con17')"
+            title="关注题库集"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
-            :title="$t('classesDetail.con18')"
+            title="取消关注题库集"
           ></i>
         </div>
       </div>
@@ -279,7 +278,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           if (res.data.status == 2) {
             _this.infoShow = true;
           }
@@ -328,7 +326,7 @@ export default {
             .then(function(res) {
               _this.retrieveAttention();
               _this.$message({
-                message: _this.$t('classesDetail.con19'),
+                message: "关注成功",
                 type: "success"
               });
             })
@@ -361,7 +359,7 @@ export default {
             })
             .then(function(res) {
               _this.$message({
-                message: _this.$t('classesDetail.con20'),
+                message: "取消关注",
                 type: "success"
               });
               _this.retrieveAttention();
@@ -372,7 +370,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: _this.$t('classesDetail.con21'),
+          message: "请登录之后进行操作!",
           type: "warning"
         });
       }

@@ -7,7 +7,7 @@
     }
 
     .member-con {
-        /* margin-top: 80px; */
+        margin-top: 80px;
     }
 
     .member-title {
@@ -230,11 +230,10 @@
 <template>
     <div class="member">
         <homeNav msg="登录/注册"/>
-        <div v-title data-title="成为会员-CourseWhale"></div>
         <div class="member-con">
             <div class="member-title">
-                <p>{{$t('vip.title1')}}</p>
-                <p>{{$t('vip.title2')}}
+                <p>会员中心</p>
+                <p>4大专属特权,享受只属于你的与众不同,还在等什么？
                 </p>
             </div>
             <div class="member-Privilege">
@@ -242,46 +241,46 @@
                     <li>
                         <img src="../assets/心.svg" alt=""/>
 
-                        <p>{{$t('vip.con1')}}</p>
+                        <p>核心服务</p>
 
-                        <p>{{$t('vip.con2')}}</p>
+                        <p>同步享受海量学习资源</p>
 
-                        <p>{{$t('vip.con3')}}</p>
+                        <p>准确定位你的需求</p>
 
-                        <p>{{$t('vip.con4')}}</p>
+                        <p>导向结果</p>
                     </li>
                     <li>
                         <img src="../assets/增值.svg" alt=""/>
 
-                        <p>{{$t('vip.con1')}}</p>
+                        <p>核心服务</p>
 
-                        <p>{{$t('vip.con5')}}</p>
+                        <p>百所学校</p>
 
-                        <p>{{$t('vip.con6')}}</p>
+                        <p>相关课程即时更新</p>
 
-                        <p>{{$t('vip.con7')}}</p>
+                        <p>随时随地获取一手资料</p>
                     </li>
                     <li>
                         <img src="../assets/群组.svg" alt=""/>
 
-                        <p>{{$t('vip.con1')}}</p>
+                        <p>核心服务</p>
 
-                        <p>{{$t('vip.con8')}}</p>
+                        <p>锁定你的学校</p>
 
-                        <p>{{$t('vip.con9')}}</p>
+                        <p>提交课程</p>
 
-                        <p>{{$t('vip.con10')}}</p>
+                        <p>定制化服务</p>
                     </li>
                     <li>
                         <img src="../assets/教育.svg" alt=""/>
 
-                        <p>{{$t('vip.con11')}}</p>
+                        <p>互动学习</p>
 
-                        <p>{{$t('vip.con12')}}</p>
+                        <p>同步提高</p>
 
-                        <p>{{$t('vip.con13')}}</p>
+                        <p>同步贡献</p>
 
-                        <p>{{$t('vip.con14')}}</p>
+                        <p>同步分享</p>
                     </li>
                     <!-- <li>
                         <img src="../assets/教育1.svg" alt=""/>
@@ -299,23 +298,23 @@
             <div class="member-recruiting">
                 <p>JOIN US</p>
 
-                <p>{{$t('vip.zhaomu1')}}</p>
+                <p>会员招募计划</p>
 
                 <div>
                     <img src="../assets/hot.svg" alt=""/>
-                    <span>{{$t('vip.zhaomu2')}}</span>
-                    <span>{{$t('vip.zhaomu3')}}</span>
+                    <span>每月八日</span>
+                    <span>会员活动</span>
                 </div>
-                <p>{{$t('vip.zhaomu4')}}</p>
+                <p>每月八日组团充值会员优惠活动</p>
 
-                <p>{{$t('vip.zhaomu5')}}</p>
+                <p>3人抱团充值享受九五折</p>
 
-                <p>{{$t('vip.zhaomu6')}}</p>
+                <p>5人抱团享受九折优惠等</p>
             </div>
             <div class="member-join">
                 <div class="member-join-con">
                     <div class="purchase">
-                        <p @click="joinMember">{{$t('vip.join')}}!</p>
+                        <p @click="joinMember">立即加入会员!</p>
                     </div>
                     <!-- <div class="weixin">
                         <img src="../assets/微信.png" alt=""/>

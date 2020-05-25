@@ -23,7 +23,7 @@
 /* End hide from IE-mac */
 .school-con {
   width: 100%;
-  /* margin-top: 80px; */
+  margin-top: 80px;
 }
 
 .class-query {
@@ -221,9 +221,9 @@
     <div class="school-con">
       <div class="class-query">
         <div class="query-con">
-          <h1 class="query-con-h1">{{$t('classes.classes1')}}</h1>
+          <h1 class="query-con-h1">按课程查找学习资源</h1>
 
-          <p class="query-con-describe">{{$t('classes.classes2')}}</p>
+          <p class="query-con-describe">找到所有课程所需的学习资源。我们有数百万的学习文件，问题和答案以及辅导问题，以帮助您学习。</p>
 
           <div class="query-con-search">
             <el-autocomplete
@@ -231,7 +231,7 @@
               v-model="state1"
               :fetch-suggestions="querySearch"
               @select="handleSelectauto"
-              :placeholder="$t('classes.classes3')"
+              placeholder="请输入您需要查询的课程名称"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
@@ -246,14 +246,14 @@
         </div>
       </div>
       <div class="find-school">
-        <h1 class="find-school-h1">{{$t('classes.classes4')}}</h1>
+        <h1 class="find-school-h1">找到你的课程</h1>
 
-        <p class="find-school-describe">{{$t('classes.classes5')}}</p>
+        <p class="find-school-describe">从我们的课程列表中选择，以找到您需要的学习资源。</p>
 
         <div class="find-classes">
           <div class="find-serchinput">
             <el-input
-              :placeholder="$t('classes.classes6')"
+              placeholder="请输入需要查询的课程(回车确认)"
               v-model="input1"
               @change="GetClasses"
               clearable

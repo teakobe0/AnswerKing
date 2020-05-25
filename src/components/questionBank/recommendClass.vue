@@ -60,7 +60,7 @@
         <i class="el-icon-tickets"></i>
         <router-link :to="'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
         <span>{{item.cla.university}}</span>
-        <span>{{$t('content.con22')}}:{{item.order}}</span>
+        <span>题库:{{item.order}}</span>
       </li>
     </ul>
   </div>
