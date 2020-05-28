@@ -286,10 +286,7 @@ export default {
                 });
               } else {
                 _this.loadings = false;
-                _this.$message({
-                  message: res.data.msg,
-                  type: "error"
-                });
+                _this.$message.error(_this.$t('popupLogin.con18'));
               }
             })
             .catch(function(error) {

@@ -45,7 +45,7 @@
   margin-bottom: 20px !important;
   padding: 0px !important;
 }
-.thumbnail-bt a{
+.thumbnail-bt a {
   display: block;
   text-decoration: none;
   color: #3b3b3b;
@@ -95,7 +95,7 @@
   line-height: 30px;
 }
 .imgDetails-title {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 .UP {
   position: fixed;
@@ -124,21 +124,21 @@
         <div class="crumbs-con">
           <el-breadcrumb separator-class="el-icon-arrow-right">
             <el-breadcrumb-item :to="{ path: '/schools' }">
-              <span class="crumb">全部学校</span>
+              <span class="crumb">{{$t('Public.con1')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item :to="'/university/'+ value.universityId">
-              <span class="crumb">该校课程</span>
+              <span class="crumb">{{$t('Public.con3')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item :to="'/classes/'+$route.params.classes_id">
-              <span class="crumb">该课题库</span>
+              <span class="crumb">{{$t('Public.con5')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item
               :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
             >
-              <span class="crumb">当前题库</span>
+              <span class="crumb">{{$t('Public.con6')}}</span>
             </el-breadcrumb-item>
             <el-breadcrumb-item>
-              <span style="color:rgb(228, 228, 228);">图片详情</span>
+              <span style="color:rgb(228, 228, 228);">{{$t('Public.con7')}}</span>
             </el-breadcrumb-item>
           </el-breadcrumb>
         </div>
@@ -147,16 +147,20 @@
     <div class="imgD-Con">
       <div class="serchDetailsContent-top">
         <div class="serchDetailsContent-top-info">
-          <h2><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">{{value.name}}</router-link></h2>
+          <h2>
+            <router-link
+              :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
+            >{{value.name}}</router-link>
+          </h2>
           <p>
-            学校:
+            {{$t('classesDetail.con2')}}:
             <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
-            <span v-if="value.professor">教授:{{value.professor}}</span>
-            <span v-if="contributor == true">贡献者:</span>
+            <span v-if="value.professor">{{$t('classesDetail.con3')}}:{{value.professor}}</span>
+            <span v-if="contributor == true">{{$t('content.con1')}}:</span>
             <router-link
               :to="'/ownness/'+informations.classinfo.clientId"
               class="ownness-name"
-              :title="'访问'+ informations.clientname +'的个人资料'"
+              :title="$t('classesDetail.con15') + ' ' + informations.clientname + ' ' + $t('classesDetail.con16')"
               v-if="contributor == true"
             >
               <img ondragstart="return false;" :src="informations.clientimg" alt />
@@ -174,7 +178,7 @@
                 :disabled="attenDisabled"
               >
                 <i class="el-icon-star-off" v-if="value.attentions == false"></i>
-                关注
+                {{$t('classesDetail.con1')}}
               </el-button>
               <el-button
                 type="primary"
@@ -185,7 +189,7 @@
                 :disabled="attenDisabled"
               >
                 <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
-                关注
+                {{$t('classesDetail.con1')}}
               </el-button>
             </li>
             <li
@@ -195,45 +199,48 @@
               <el-button size="medium" @click="noUses" :disabled="disableds">
                 <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                 <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
-                没用({{informations.classinfo.noUse}})
+                {{$t('content.con3')}}({{informations.classinfo.noUse}})
               </el-button>
             </li>
             <li>
               <el-button size="medium" @click="beOfUses" :disabled="disableds">
                 <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                 <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
-                有用({{informations.classinfo.use}})
+                {{$t('content.con2')}}({{informations.classinfo.use}})
               </el-button>
             </li>
           </ul>
         </div>
       </div>
       <div class="imgD-xian"></div>
-      <div
-        class="thumbnail"
-        v-for="(items,index) in this.Answer"
-      >
+      <div class="thumbnail">
+        <!-- <div class="thumbnail" v-for="(items,index) in this.Answer"> -->
         <div class="thumbnail-text">
-          所有文件
-          <i class="el-icon-info" title="点击缩略图跳转"></i>
+          {{$t('imgDetails.con1')}}
+          <i class="el-icon-info" :title="$t('imgDetails.con3')"></i>
         </div>
-        <div class="thumbnail-img" v-for="(item,indexs) in items.Imgs">
+        <div class="thumbnail-img" v-for="(item,indexs) in answerImgs">
           <a :href="'#'+indexs">
-            <img :src="item.contentUrl" :alt="items.contents" />
+            <img :src="item.url" :alt="item.contents" />
           </a>
         </div>
-        <el-button class="thumbnail-bt"><router-link :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id">查看全部文件</router-link></el-button>
+        <el-button class="thumbnail-bt">
+          <router-link
+            :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+$route.params.weektype_id"
+          >{{$t('imgDetails.con2')}}</router-link>
+        </el-button>
       </div>
-      <div class="answer" v-for="(items,index) in this.Answer">
-        <div v-for="(item,indexs) in items.Imgs">
-          <img :src="item.contentUrl" :alt="items.contents" :id="indexs" />
+      <div class="answer">
+        <!-- <div class="answer" v-for="(items,index) in this.Answer"> -->
+        <div v-for="(item,indexs) in answerImgs">
+          <img :src="item.url" :alt="item.contents" :id="indexs" />
         </div>
         <div class="imgD-text">
-          <p>{{items.contents}}</p>
+          <p>{{this.Answer.contents}}</p>
         </div>
       </div>
     </div>
-    <div class="ClassesAdvertising">
+    <!-- <div class="ClassesAdvertising">
       <div>
         <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
         <p class="advertising-p2">
@@ -245,7 +252,7 @@
       <div class="UP" v-show="UPshow" @click="UPcilick">
         <i class="el-icon-caret-top"></i>
       </div>
-    </div>
+    </div>-->
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -285,7 +292,11 @@ export default {
       // 答案图片内容
       Answer: [],
       informations: {},
-      UPshow: false
+      UPshow: false,
+      beforeData: [],
+      afterData: [],
+      answerImgs: [],
+      tabs: []
     };
   },
   created: function() {
@@ -293,7 +304,7 @@ export default {
     // 获取课程信息
     _this.Getclass();
     _this.Classinfos();
-    _this.gainImg();
+    _this.typeAnswer();
   },
   mounted() {
     var _this = this;
@@ -310,7 +321,7 @@ export default {
         if (scrollTop >= 500) {
           _this.UPshow = true;
           $(".UP").addClass("animation fade-in");
-        }else {
+        } else {
           _this.UPshow = false;
         }
       }
@@ -558,7 +569,7 @@ export default {
               _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -592,7 +603,7 @@ export default {
             .then(function(res) {
               _this.attenDisabled = false;
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -603,7 +614,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }
@@ -627,26 +638,96 @@ export default {
       return outputList;
     },
     // 获取答案图片
-    gainImg() {
+    // gainImg() {
+    //   const _this = this;
+    //   _this
+    //     .axios({
+    //       method: "get",
+    //       url: `${_this.URLport.serverPath}/ClassInfoContent/ClassInfoContents`,
+    //       async: false,
+    //       params: {
+    //         classInfoId: _this.$route.params.imgDetails_id
+    //       },
+    //       xhrFields: {
+    //         withCredentials: true
+    //       },
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`
+    //       }
+    //     })
+    //     .then(function(res) {
+    //       _this.Answer = res.data.data;
+    //       for (var i = 0; i < _this.Answer.length; i++) {
+    //         if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+    //         } else {
+    //           _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+    //         }
+    //       }
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
+    // 根据周和订单ID获取类型和答案
+    typeAnswer(weekId, anIndex) {
       const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
           async: false,
           params: {
-            classweektypeid: _this.$route.params.imgDetails_id
+            weekname: _this.$route.params.weeks_id,
+            classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
-          _this.Answer = res.data.data;
-          for (var i = 0; i < _this.Answer.length; i++) {
-            if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
+          console.log(res);
+          _this.beforeData = res.data.data;
+          // 循环整合数据结构
+          let tempArr = [];
+          for (let i = 0; i < _this.beforeData.length; i++) {
+            if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+              _this.afterData.push({
+                classWeekType: _this.beforeData[i].classWeekType,
+                origin: [_this.beforeData[i]],
+                contents: _this.beforeData[i].contents
+              });
+              tempArr.push(_this.beforeData[i].classWeekType);
             } else {
-              _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
+              for (let j = 0; j < _this.afterData.length; j++) {
+                if (
+                  _this.afterData[j].classWeekType ==
+                  _this.beforeData[i].classWeekType
+                ) {
+                  _this.afterData[j].origin.push(_this.beforeData[i]);
+                  break;
+                }
+              }
+            }
+          }
+          // 将类型独立出来
+          for (var i = 0; i < _this.afterData.length; i++) {
+            const obj = {};
+            obj.contentType = _this.afterData[i].classWeekType;
+            _this.tabs.push(obj);
+          }
+          for (let i = 0; i < _this.tabs.length; i++) {
+            if (_this.tabs[i].contentType == _this.$route.params.weektype_id) {
+              // 将图片独立出来
+              for (var j = 0; j < _this.afterData[i].origin.length; j++) {
+                const imgs = { url: "", contents: "" };
+                imgs.contents = _this.afterData[i].origin[j].contents;
+                imgs.url = _this.afterData[i].origin[j].url;
+                _this.answerImgs.push(imgs);
+              }
+              _this.Answer = _this.afterData[i];
             }
           }
         })
@@ -654,8 +735,8 @@ export default {
           console.log(error);
         });
     },
-    UPcilick(){
-      document.documentElement.scrollTop = 0
+    UPcilick() {
+      document.documentElement.scrollTop = 0;
     }
   }
 };

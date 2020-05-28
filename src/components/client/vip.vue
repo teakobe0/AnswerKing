@@ -91,8 +91,10 @@
   border-bottom: 1px solid #dddddd;
 }
 .sweep div {
-  width: 75px;
+  /* width: 75px; */
   height: 41px;
+  display: inline-block;
+  padding: 0 20px;
   border-bottom: 3px solid #fc8321;
   font-size: 16px;
   color: #505050;
@@ -172,7 +174,7 @@
 <template>
   <div id="changePassword">
     <div class="pd-con-head-right">
-      <h3>成为会员</h3>
+      <h3>{{$t('personal.nav8')}}</h3>
       <div class="dredgevip">
         <ul>
           <li
@@ -183,10 +185,10 @@
             <p>{{item.name}}</p>
             <p>
               ${{item.Onprice}}
-              <span style="color:#a1a1a1;font-size:14px;">/月</span>
+              <span style="color:#a1a1a1;font-size:14px;">/{{$t('myvip.con1')}}</span>
             </p>
             <p>
-              <s>原价${{item.original}}</s>
+              <s>{{$t('myvip.con2')}}${{item.original}}</s>
             </p>
             <img src="../../assets/对勾.png" alt v-show="num==index" />
           </li>
@@ -196,7 +198,7 @@
       <!--<router-view/>-->
       <!--</div>-->
       <div class="sweep">
-        <div>确认付款</div>
+        <div>{{$t('myvip.con3')}}</div>
       </div>
       <div class="pay">
         <!-- <div class="pay-left"> -->
@@ -230,7 +232,7 @@
         <!-- <div class="dredgePay" @click="dredgePay">立即开通</div> -->
         <div id="paypal-button-container" class="paypal-button-container"></div>
       </div>
-      <div class="clauseText">同意并接受《CourseWhale会员服务条款》</div>
+      <div class="clauseText">{{$t('myvip.con4')}}</div>
     </div>
   </div>
 </template>
@@ -240,8 +242,7 @@ import { constants } from "crypto";
 
 export default {
   name: "changePassword",
-  components: {
-  },
+  components: {},
   data() {
     //在ES6中添加数据是在return{}中
     return {
@@ -294,7 +295,6 @@ export default {
             _this.paypal();
           })
           .catch(function(error) {
-            console.log(error);
             console.log("获取token失败");
           });
       } else {
@@ -360,21 +360,21 @@ export default {
         .render("#paypal-button-container");
     },
     open() {
-      this.$alert("支付成功!", "CourseWhale", {
-        confirmButtonText: "确定",
+      this.$alert(this.$t('myvip.con5'), "CourseWhale", {
+        confirmButtonText: this.$t('basic.con14'),
         callback: action => {
           this.$message({
             type: "success",
-            message: `支付成功!`
+            message: this.$t('myvip.con5')
           });
           this.$router.push({ path: "/personalData/basic" });
         }
       });
     },
     defeatedOpen() {
-      this.$confirm("支付失败!请重新支付或者联系客服帮您处理问题。", "提示", {
-        confirmButtonText: "重新支付",
-        cancelButtonText: "联系客服",
+      this.$confirm(this.$t('myvip.con6'), this.$t('award.con16'), {
+        confirmButtonText: this.$t('myvip.con7'),
+        cancelButtonText: this.$t('myvip.con8'),
         type: "warning"
       });
     },
@@ -401,7 +401,7 @@ export default {
       _this.$store.state.vip.succeed = true;
       console.log(_this.money);
       _this.$message({
-        message: "开通成功",
+        message: _this.$t('myvip.con9'),
         type: "success"
       });
       this.$router.push({ path: "/personalData/basic" });

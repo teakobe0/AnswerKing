@@ -1,4 +1,10 @@
 <style>
+.inform-right {
+  width: 1000px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 #inform h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -28,18 +34,18 @@
 
 <template>
   <div id="inform">
-    <div class="pd-con-head-right">
-      <h3>通知信息</h3>
+    <div class="inform-right">
+      <h3>{{$t('personal.nav5')}}</h3>
       <div class="message">
-        <div style="text-align:center" v-show="dataNull == true">暂无数据</div>
+        <div style="text-align:center" v-show="dataNull == true">{{$t('inform.con1')}}</div>
         <div v-for="item in messages">
           <span class="sendname">{{item.sendname}}</span>
-          回复您：{{item.content}}
+          {{$t('inform.con2')}}：{{item.content}}
           <el-button
             @click="gomessage(item.contentsUrl,item.id)"
             style="float:right;"
             size="mini"
-          >查看</el-button>
+          >{{$t('inform.con3')}}</el-button>
         </div>
       </div>
     </div>
@@ -162,12 +168,7 @@ export default {
           _this.ids = a[1];
           _this.classinfoid = a[2];
           _this.$router.push({
-            path: "/serchDetailsContent",
-            query: { id: a[1], classInfoId: a[2] }
-          });
-          _this.$message({
-            message: "删除成功",
-            type: "success"
+            path: '/classes/'+a[1]+'/content/'+a[2]+'/weeks/'+0+'/weektype/'+0,
           });
           _this.gainmessage();
         })

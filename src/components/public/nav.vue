@@ -223,20 +223,23 @@
                 </div>
                 <ul >
                     <li>
-                        <router-link to='/schools' :class="searchBarFixed == true ? 'Navcolora:hover' :''">学校资源</router-link>
+                        <router-link to='/schools' :class="searchBarFixed == true ? 'Navcolora:hover' :''">{{$t('nav.nav1')}}</router-link>
                     </li>
                     <li>
-                        <router-link to='/classesStudy' :class="searchBarFixed == true ? 'Navcolora:hover' :''">课程资源</router-link>
+                        <router-link to='/classesStudy' :class="searchBarFixed == true ? 'Navcolora:hover' :''">{{$t('nav.nav2')}}</router-link>
                     </li>
                     <li>
-                        <router-link to='/member'>成为会员</router-link>
+                        <router-link to='/member'>{{$t('nav.nav3')}}</router-link>
+                    </li>
+                    <li>
+                        <router-link to="/uploadAnswer">{{$t('nav.nav4')}}</router-link>
                     </li>
                     <li v-if="$store.state.logo.show">
-                        <router-link to='/login'>登录</router-link>
+                        <router-link to='/login'>{{$t('nav.nav5')}}</router-link>
 
                     </li>
                     <li v-if="$store.state.logo.show">
-                        <router-link class="Nav-resi" to='/register'>注册</router-link>
+                        <router-link class="Nav-resi" to='/register'>{{$t('nav.nav6')}}</router-link>
                     </li>
                     <li v-if="$store.state.logo.hide" >
                         <router-link to='/personalData' id="nicknames"><img src="../../assets/个人中心.svg" alt=""/><div :class="{messageRed:this.$store.state.logo.message>=1}"></div> </router-link>
@@ -244,9 +247,9 @@
                             <tr>
                                 <td>
                                     <ul>
-                                        <li><router-link to='/personalData'>个人信息</router-link></li>
-                                        <li><router-link to='/personalData/inform'>查看回复<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span> <div :class="{messageReds:this.$store.state.logo.message>=1}"></div> </router-link></li>
-                                        <li><a href="javascript:void(0)" @click="logout">注销</a></li>
+                                        <li><router-link to='/personalData'>{{$t('nav.nav7')}}</router-link></li>
+                                        <li><router-link to='/personalData/inform'>{{$t('nav.nav8')}}<span v-show="this.$store.state.logo.message>=1">({{this.$store.state.logo.message}})</span> <div :class="{messageReds:this.$store.state.logo.message>=1}"></div> </router-link></li>
+                                        <li><a href="javascript:void(0)" @click="logout">{{$t('nav.nav9')}}</a></li>
                                     </ul>
                                 </td>
                             </tr>

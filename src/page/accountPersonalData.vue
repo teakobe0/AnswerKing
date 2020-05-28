@@ -9,9 +9,9 @@
 .personalData-con {
   width: 1300px;
   margin: 0 auto;
-  margin-top: 80px;
+  /* margin-top: 80px; */
   overflow: hidden;
-  background-color:#fafafa;
+  background-color: #fafafa;
 }
 
 .pd-con-head {
@@ -85,6 +85,7 @@
   line-height: 50px;
   color: #666666;
   font-size: 14px;
+  position: relative;
 }
 
 .perSet li a:hover {
@@ -127,6 +128,8 @@
 }
 .head-imgs {
   position: relative;
+  width: 140px;
+  height: 140px;
 }
 .headShade {
   width: 140px;
@@ -140,7 +143,7 @@
 </style>
 
 <template>
-  <div id="personalData" v-title data-title="个人信息-CourseWhale">
+  <div id="personalData" v-title :data-title="$t('personal.nav2')+'-CourseWhale'">
     <homeNav></homeNav>
     <div class="personalData-con">
       <div class="pd-con-head">
@@ -164,46 +167,47 @@
             </div>
           </div>
         </div>
-        <div class="fasttrack">快速通道</div>
+        <div class="fasttrack">{{$t('personal.nav1')}}</div>
         <ul class="perSet">
           <li>
             <router-link to="/personalData/basic">
               <span>
-                <i class="el-icon-info"></i>个人信息
+                <i class="el-icon-info"></i>{{$t('personal.nav2')}}
               </span>
             </router-link>
           </li>
           <li>
             <router-link to="/personalData/modifiedData">
               <span>
-                <i class="el-icon-edit"></i>修改资料
+                <i class="el-icon-edit"></i>{{$t('personal.nav3')}}
               </span>
             </router-link>
           </li>
           <li>
             <router-link to="/personalData/changePassword">
               <span>
-                <i class="el-icon-setting"></i>修改密码
+                <i class="el-icon-setting"></i>{{$t('personal.nav4')}}
               </span>
             </router-link>
           </li>
           <li>
             <router-link to="/personalData/inform">
               <span>
-                <i class="el-icon-bell"></i>通知信息
+                <i class="el-icon-bell"></i>{{$t('personal.nav5')}}
                 <span
                   style="margin-left:0px;"
-                  v-show="this.$store.state.logo.message>=1"
+                  v-show="this.$store.state.logo.message>=1 && this.$i18n.locale != 'en'"
                 >({{this.$store.state.logo.message}})</span>
               </span>
             </router-link>
           </li>
-          <li><router-link to="/personalData/award"><span><i class="el-icon-upload"></i>我的贡献</span></router-link></li>
+          <li><router-link to="/personalData/award"><span><i class="el-icon-upload"></i>{{$t('personal.nav6')}}</span></router-link></li>
+          <!-- <li><router-link to="/personalData/myQuestion"><span><i class="el-icon-chat-line-round"></i>我的问答</span></router-link></li> -->
           <!-- <li><a href="javascript:0"><span><i class="el-icon-tickets"></i>文件</span></a></li> -->
           <li>
             <router-link to="/personalData/attention">
               <span>
-                <i class="el-icon-star-off"></i>我的关注
+                <i class="el-icon-star-off"></i>{{$t('personal.nav7')}}
               </span>
             </router-link>
           </li>
@@ -216,14 +220,14 @@
                     alt
                     style="width: 16px;height: 16px;line-height: 30px;vertical-align:middle"
                   />
-                </i>成为会员
+                </i>{{$t('personal.nav8')}}
               </span>
             </router-link>
           </li>
           <li>
             <router-link to="/personalData/orderHistory">
               <span>
-                <i class="el-icon-sold-out"></i>购买记录
+                <i class="el-icon-sold-out"></i>{{$t('personal.nav9')}}
               </span>
             </router-link>
           </li>
@@ -280,8 +284,9 @@ export default {
         })
         .then(function(res) {
           _this.$store.state.modified.Name = res.data.data.name;
-          if (res.data.data.image) {
-            _this.imageUrl = _this.URLport.ImgPath + res.data.data.image;
+          if (res.data.data.image.length > 26) {
+            _this.imageUrl = res.data.data.image;
+            
             _this.headShow = true;
           } else {
             _this.headShow = false;
@@ -309,11 +314,11 @@ export default {
     handleAvatarSuccess(res, file) {
       const _this = this;
       
-      _this.imageUrl = _this.URLport.ImgPath + res.data;
+      _this.imageUrl = res.data;
       _this.$store.state.loginPerson.loginPerson.image = res.data;
       _this.headShow = true;
       _this.$message({
-        message: "修改成功",
+        message: _this.$t('personal.nav10'),
         type: "success"
       });
     },
@@ -333,10 +338,10 @@ export default {
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$message.error("上传头像图片只能是 JPG/PNG 格式!");
+        this.$message.error(_this.$t('upload.u7'));
       }
       if (!isLt2M) {
-        this.$message.error("上传头像图片大小不能超过 2MB!");
+        this.$message.error(_this.$t('upload.u8'));
       }
       return isJPG && isLt2M;
     }

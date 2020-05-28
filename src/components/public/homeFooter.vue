@@ -63,51 +63,80 @@
   font-size: 12px;
   font-weight: 700;
 }
+.language input {
+  width: 110px !important;
+  background-color: #4458b0 !important;
+  border: 0px !important;
+  color: #fff !important;
+  font-size: 14px !important;
+  font-weight: 700 !important;
+  text-align: right !important;
+}
+.nav .el-menu-item * {
+  vertical-align: baseline !important;
+}
+.select-option {
+  background-color: #4458b0 !important;
+  border: 0 !important;
+  color: #fff !important;
+  margin-top: 5px !important;
+}
+.select-option .popper__arrow {
+  display: none !important;
+}
+.select-option .el-select-dropdown__item {
+  color: #fff !important;
+}
+.select-option .el-select-dropdown__item.hover,
+.el-select-dropdown__item:hover {
+  background-color: #36468d;
+}
+
 </style>
 
 <template>
   <div class="homeFooter">
     <div class="H-footer">
       <ul class="footer-1">
-        <li class="footer-title">功能</li>
+        <li class="footer-title">{{$t('footer.con1')}}</li>
         <li>
-          <router-link to="/home">首页</router-link>
+          <router-link to="/home">{{$t('footer.con4')}}</router-link>
         </li>
         <li>
-          <router-link to="/schools">学校资源</router-link>
+          <router-link to="/schools">{{$t('footer.con5')}}</router-link>
         </li>
         <li>
-          <router-link to="/classesStudy">课程资源</router-link>
+          <router-link to="/classesStudy">{{$t('footer.con6')}}</router-link>
         </li>
       </ul>
       <ul class="footer-2">
-        <li class="footer-title">帮助</li>
+        <li class="footer-title">{{$t('footer.con2')}}</li>
         <li>
-          <router-link class="homenav-resi" to="/register">注册</router-link>
+          <router-link to="/register">{{$t('footer.con7')}}</router-link>
         </li>
         <li>
-          <router-link to="/faq">帮助中心</router-link>
+          <router-link to="/faq">{{$t('footer.con8')}}</router-link>
         </li>
         <li>
-          <router-link to="/standardBehavior">行为准则</router-link>
+          <router-link to="/standardBehavior">{{$t('footer.con9')}}</router-link>
         </li>
         <li>
-          <router-link to="/termsOfService">条款</router-link>
+          <router-link to="/termsOfService">{{$t('footer.con10')}}</router-link>
         </li>
       </ul>
       <ul class="footer-3">
-        <li class="footer-title">简介</li>
+        <li class="footer-title">{{$t('footer.con3')}}</li>
         <li>
-          <router-link to="/company">关于我们</router-link>
+          <router-link to="/company">{{$t('footer.con11')}}</router-link>
         </li>
         <li>
-          <router-link to="/news">新闻</router-link>
+          <router-link to="/news">{{$t('footer.con12')}}</router-link>
         </li>
         <li>
-          <router-link to="/position">职位</router-link>
+          <router-link to="/position">{{$t('footer.con13')}}</router-link>
         </li>
       </ul>
-      <ul class="footer-4">
+      <ul class="footer-4" style="position: relative;">
         <li class="footer-title">CourseWhale</li>
         <li>
           <a href="https://twitter.com/coursewhale" title="Twitter" target="_blank">
@@ -125,7 +154,40 @@
 </template>
 
 <script type="es6">
+
 export default {
-  name: "homeFooter"
+  name: "homeFooter",
+  components: {
+    
+  },
+  data() {
+    return {
+      // options: [
+      //   {
+      //     value: "zh",
+      //     label: "中文",
+      //     img: zh
+      //   },
+      //   {
+      //     value: "en",
+      //     label: "English",
+      //     img: en
+      //   },
+      //   {
+      //     value: "ko",
+      //     label: "한국어",
+      //     img: ko
+      //   }
+      // ],
+      // value: "zh",
+    };
+  },
+  created: function() {
+    const _this = this;
+    
+  },
+  methods: {
+    
+  }
 };
 </script>

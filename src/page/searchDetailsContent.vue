@@ -7,7 +7,7 @@
 }
 
 .serchDetailsContent-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .Content-con-img {
@@ -51,11 +51,11 @@
   margin-top: 24px;
   margin-bottom: 8px;
 }
-.serchDetailsContent-top-info h2 a{
+.serchDetailsContent-top-info h2 a {
   text-decoration: none;
   color: #3b3b3b;
 }
-.serchDetailsContent-top-info h2 a:hover{
+.serchDetailsContent-top-info h2 a:hover {
   color: #fe2a93;
 }
 .serchDetailsContent-top-info p {
@@ -188,6 +188,7 @@
 .serchDetailsContent-tag-left {
   width: 100%;
   margin-top: 24px;
+  min-height: 40px;
   overflow: hidden;
   position: relative;
 }
@@ -195,6 +196,7 @@
 .serchDetailsContent-tag-right {
   width: 100%;
   margin-top: 5px;
+  min-height: 212px;
   overflow: hidden;
 }
 
@@ -386,7 +388,8 @@
 }
 .advertising .advertising-p2 {
   margin-top: 10px;
-  margin-left: 90px;
+  margin-left: 30px;
+  width:780px;
 }
 .advertising img {
   width: 70px;
@@ -407,16 +410,16 @@
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right">
               <el-breadcrumb-item :to="{ path: '/schools' }">
-                <span class="crumb">全部学校</span>
+                <span class="crumb">{{$t('Public.con1')}}</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item :to="'/university/'+ value.universityId">
-                <span class="crumb">该校课程</span>
+                <span class="crumb">{{$t('Public.con3')}}</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item :to="'/classes/'+$route.params.classes_id">
-                <span class="crumb">该课题库</span>
+                <span class="crumb">{{$t('Public.con5')}}</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
-                <span style="color:rgb(228, 228, 228);">当前题库</span>
+                <span style="color:rgb(228, 228, 228);">{{$t('Public.con6')}}</span>
               </el-breadcrumb-item>
             </el-breadcrumb>
           </div>
@@ -425,15 +428,15 @@
           <div class="serchDetailsContent-top-info">
             <h2>{{value.name}}</h2>
             <p>
-              学校:
+              {{$t('classesDetail.con2')}}:
               <router-link :to="'/university/'+value.universityId">{{value.university}}</router-link>
-              <span v-if="value.professor">教授:{{value.professor}}</span>
-              <span v-if="contributor == true">贡献者:</span>
+              <span v-if="value.professor">{{$t('classesDetail.con3')}}:{{value.professor}}</span>
+              <span v-if="contributor == true">{{$t('content.con1')}}:</span>
               <router-link
                 :to="'/ownness/'+informations.classinfo.clientId"
                 class="ownness-name"
                 @click="ownness"
-                :title="'访问'+ informations.clientname +'的个人资料'"
+                :title="$t('classesDetail.con15') + ' ' + informations.clientname + ' ' + $t('classesDetail.con16')"
                 v-if="contributor == true"
               >
                 <img ondragstart="return false;" :src="informations.clientimg" alt />
@@ -451,7 +454,7 @@
                   :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-off" v-if="value.attentions == false"></i>
-                  关注
+                  {{$t('content.con4')}}
                 </el-button>
                 <el-button
                   type="primary"
@@ -462,7 +465,7 @@
                   :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
-                  关注
+                  {{$t('content.con4')}}
                 </el-button>
               </li>
               <li
@@ -472,14 +475,14 @@
                 <el-button size="medium" @click="noUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan11" v-if="noUse == false"></i>
                   <i class="el-icon-thirddianzan2" v-if="noUse == true"></i>
-                  没用({{informations.classinfo.noUse}})
+                  {{$t('content.con3')}}({{informations.classinfo.noUse}})
                 </el-button>
               </li>
               <li>
                 <el-button size="medium" @click="beOfUses" :disabled="disableds">
                   <i class="el-icon-thirddianzan4" v-if="use == false"></i>
                   <i class="el-icon-thirddianzan3" v-if="use == true" style="color:#f52424"></i>
-                  有用({{informations.classinfo.use}})
+                  {{$t('content.con2')}}({{informations.classinfo.use}})
                 </el-button>
               </li>
             </ul>
@@ -490,8 +493,8 @@
         <div class="serchDetailsContent-tag-con clearfix">
           <div class="content-tag-con-left">
             <div class="serchDetailsContent-tag-left" v-if="classShow == true">
-              <div class="currentWeek" v-if="currentWeekShow == true">
-                {{'Week'+ currentWeek.no + '('+ currentWeek.grade + '分' + ')'}}
+              <div class="currentWeek">
+                {{'Week'+ currentWeek.id }}
                 <span></span>
               </div>
               <el-select
@@ -504,22 +507,22 @@
                 <el-option
                   v-for="item in valueWeek"
                   :key="item.id"
-                  :label="'第'+ item.no + '周' + '('+ item.grade + '分' + ')'"
+                  :label="$t('content.con5') + ' ' + item.id + ' ' + $t('content.con6')"
                   :value="item.id"
                 >
                   <router-link
                     :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+item.id+'/weektype/'+0"
                     style="width: 100%;height: 34px;display: block;text-decoration:none;color:#8492a6"
                   >
-                    <span style="float: left;">第{{ item.no }}周</span>
-                    <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span>
+                    <span style="float: left;">{{$t('content.con5')}}&nbsp;{{ item.id }}&nbsp;{{$t('content.con6')}}</span>
+                    <!-- <span style="float: right; color: #8492a6; font-size: 13px">({{ item.grade }})分</span> -->
                   </router-link>
                 </el-option>
               </el-select>
             </div>
             <div class="serchDetailsContent-tag-right">
-              <p class="underReview" v-if="conShow == false">本周暂无内容，请去其他周看看</p>
-              <p class="underReview" v-if="auditText == true">该题库正在审核中</p>
+              <p class="underReview" v-if="conShow == false">{{$t('content.con17')}}</p>
+              <p class="underReview" v-if="auditText == true">{{$t('classesDetail.con7')}}</p>
               <ul v-if="conShow == true">
                 <li
                   v-for="(item,index) in tabs"
@@ -527,10 +530,10 @@
                   @click="tab(index,item.id)"
                 >
                   <router-link
-                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+item.id"
+                    :to="'/classes/'+$route.params.classes_id+'/content/'+$route.params.classinfo_id+'/weeks/'+$route.params.weeks_id+'/weektype/'+item.contentType"
                   >
-                    {{item.contentType}}(
-                    <span style="color: #136bd3;">{{item.grade}}</span>分)
+                    {{item.contentType}}
+                    <!-- (<span style="color: #136bd3;">{{item.grade}}</span>分) -->
                   </router-link>
                 </li>
               </ul>
@@ -539,10 +542,10 @@
             </div>
             <div class="advertising">
               <div>
-                <p class="advertising-p1">没有找到您需要的答案吗？想得到更多的学习辅导服务吗？</p>
+                <p class="advertising-p1">{{$t('content.con18')}}</p>
                 <p class="advertising-p2">
-                  扫描二维码添加CourseWhale合作伙伴学业辅导的
-                  <b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
+                  {{$t('content.con19')}}
+                  <b style="color:#3ccece;">{{$t('content.con20')}}</b>{{$t('content.con21')}}
                 </p>
               </div>
               <img src="../assets/erweima.jpg" alt />
@@ -556,7 +559,7 @@
               :className="value.name"
               :classinfoss="classinfoss"
             ></otherQuestions>
-            <p class="content-tag-con-right-con-p">推荐课程</p>
+            <p class="content-tag-con-right-con-p">{{$t('content.con10')}}</p>
             <recommendClass v-if="recommendClassFlag" :universityId="value.universityId"></recommendClass>
           </div>
         </div>
@@ -597,31 +600,15 @@ export default {
       value1: 0,
       valueWeek: [],
       Id: "",
-      ClassWeeksId: "",
-      activeName: "first",
       Answer: [],
-      show: true,
-      dialogImageUrl: "",
-      dialogVisible: false,
-      fileListA: [],
       tabs: [],
       numnum: 0,
-      context: false,
-      conurl: false,
-      isChoose: false,
-      bookmark: false,
-      MouseOver: false,
-
-      movable: false,
-      retext: "",
-      openretext: "",
       useOnuse: {
         Id: "",
         type: "",
         check: ""
       },
       informations: {},
-      imageShow: true,
       // 有用没用
       use: false,
       noUse: false,
@@ -645,9 +632,7 @@ export default {
       attenDisabled: false,
       // 当前周
       currentWeek: [],
-      currentWeekShow: false,
       conShow: true,
-      outputLists: [],
       // 推荐课程子组件的显示
       recommendClassFlag: false,
       // 其他题库子组件的显示
@@ -655,17 +640,17 @@ export default {
       // 题库集订单传给子组件
       classinfoss: [],
       // 贡献者
-      contributors: {
-        name: "Monickers"
-      },
       attentionCon: [],
-      // 当前类型ID（为了图片查看详情页面获取图片用）
-      imgWeekTypeId: 0
+      answerImgs: [],
+      beforeData: [
+      ],
+      afterData: []
     };
   },
   created: function() {
     const _this = this;
     _this.Id = _this.$route.params.classes_id;
+
     // 获取课程信息
     _this.Getclass();
     // 获取每一周
@@ -707,9 +692,75 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassWeek/ClassWeeks`,
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Week`,
           async: false,
           params: {
+            classInfoId: _this.$route.params.classinfo_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          for (let i = 0; i < res.data.data.length; i++) {
+            const obj = {};
+            obj.id = res.data.data[i];
+            _this.valueWeek.push(obj);
+          }
+
+          _this.currentWeek = _this.valueWeek[0];
+          if (res.data.data.length == 0) {
+            _this.$store.state.answer.tabconwu = false;
+            _this.auditText = true;
+            _this.classShow = false;
+            // _this.value1 = 1;
+          } else {
+            _this.value1 = _this.valueWeek[0].id;
+            if (
+              // 有周ID没有类型时进入
+              _this.$route.params.weeks_id != 0 &&
+              _this.$route.params.weektype_id == 0
+            ) {
+              _this.typeAnswer(_this.$route.params.weeks_id, 0);
+              _this.value1 = Number(_this.$route.params.weeks_id);
+            } else if (
+              // 有周ID和有类型时进入
+              _this.$route.params.weeks_id != 0 &&
+              _this.$route.params.weektype_id != 0
+            ) {
+              _this.urlTypeAnswer(_this.$route.params.weeks_id);
+              _this.value1 = Number(_this.$route.params.weeks_id);
+            } else if (
+              // 没有周ID有类型时进入
+              _this.$route.params.weeks_id == 0 &&
+              _this.$route.params.weektype_id != 0
+            ) {
+              _this.urlTypeAnswer(_this.valueWeek[0].id);
+            } else {
+              // 周ID和类型都没有时进入
+              _this.typeAnswer(_this.valueWeek[0].id, 0);
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 根据周和订单ID获取类型和答案
+    typeAnswer(weekId, anIndex) {
+      const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
+      _this.$store.state.answer.answer = [];
+      _this.$store.state.answer.imgss = [];
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
+          async: false,
+          params: {
+            weekname: weekId,
             classinfoid: _this.$route.params.classinfo_id
           },
           xhrFields: {
@@ -717,196 +768,131 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
-          _this.valueWeek = res.data.data;
-          _this.currentWeek = _this.valueWeek[0];
-          _this.currentWeekShow = true;
-          if (res.data.data.length == 0) {
-            _this.$store.state.answer.tabconwu = false;
-            _this.auditText = true;
-            _this.classShow = false;
-          }
-          if (
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id == 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.$route.params.weeks_id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
+          if (res.data.status == 1) {
+            if (res.data.data.length == 0) {
+              _this.conShow = false;
+            } else {
+              _this.conShow = true;
+              _this.$store.state.answer.loading = false;
+              _this.beforeData = res.data.data;
+              // 循环整合数据结构
+              let tempArr = [];
+              for (let i = 0; i < _this.beforeData.length; i++) {
+                if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+                  _this.afterData.push({
+                    classWeekType: _this.beforeData[i].classWeekType,
+                    origin: [_this.beforeData[i]]
+                  });
+                  tempArr.push(_this.beforeData[i].classWeekType);
                 } else {
-                  _this.tabs = res.data.data;
-                  let weekTypeId = _this.tabs[0].id;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.$route.params.weeks_id);
-                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
-                  _this.tab(0, weekTypeId);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else if (
-            _this.$route.params.weeks_id != 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.$route.params.weeks_id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.$route.params.weeks_id);
-                  for (let i = 0; i < _this.tabs.length; i++) {
-                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
-                      _this.numnum = i;
+                  for (let j = 0; j < _this.afterData.length; j++) {
+                    if (
+                      _this.afterData[j].classWeekType ==
+                      _this.beforeData[i].classWeekType
+                    ) {
+                      _this.afterData[j].origin.push(_this.beforeData[i]);
+                      break;
                     }
                   }
-                  _this.$store.state.answer.imgWeekTypeId =
-                    _this.$route.params.weektype_id;
-                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
                 }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else if (
-            _this.$route.params.weeks_id == 0 &&
-            _this.$route.params.weektype_id != 0
-          ) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.valueWeek[0].id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  _this.conShow = true;
-                  for (let i = 0; i < _this.tabs.length; i++) {
-                    if (_this.tabs[i].id == _this.$route.params.weektype_id) {
-                      _this.numnum = i;
-                    }
-                  }
-                  _this.$store.state.answer.imgWeekTypeId =
-                    _this.$route.params.weektype_id;
-                  _this.tab(_this.numnum, _this.$route.params.weektype_id);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          } else {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-                async: false,
-                params: {
-                  classweekid: _this.valueWeek[0].id
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.data.length == 0) {
-                  _this.conShow = false;
-                  _this.$store.state.answer.tabconwu = false;
-                  _this.$store.state.answer.answer = [];
-                  _this.$store.state.answer.imgss = [];
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                } else {
-                  _this.tabs = res.data.data;
-                  let weekTypeId = _this.tabs[0].id;
-                  _this.conShow = true;
-                  _this.value1 = Number(_this.valueWeek[0].id);
-                  _this.$store.state.answer.imgWeekTypeId = weekTypeId;
-                  _this.RetrieveTheTnswer(weekTypeId);
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
+              }
+              // 将类型独立出来
+              for (var i = 0; i < _this.afterData.length; i++) {
+                const obj = {};
+                obj.contentType = _this.afterData[i].classWeekType;
+                _this.tabs.push(obj);
+              }
+              // 将图片独立出来
+              for (var j = 0; j < _this.afterData[anIndex].origin.length; j++) {
+                const imgs = {};
+                imgs = _this.afterData[anIndex].origin[j].url;
+                _this.answerImgs.push(imgs);
+              }
+              _this.$store.state.answer.answer = [_this.afterData[anIndex]];
+              _this.$store.state.answer.imgss = _this.answerImgs;
+            }
           }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlList: function(rawList) {
+    // 根据URL地址栏上的存在类型时获取类型和答案
+    urlTypeAnswer(weekId) {
       const _this = this;
+      _this.afterData = [];
+      _this.tabs = [];
+      _this.answerImgs = [];
+      _this.$store.state.answer.answer = [];
+      _this.$store.state.answer.imgss = [];
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/Types`,
+          async: false,
+          params: {
+            weekname: weekId,
+            classinfoid: _this.$route.params.classinfo_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            if (res.data.data.length == 0) {
+              _this.conShow = false;
+            } else {
+              _this.beforeData = res.data.data;
+              // 循环整合数据结构
+              let tempArr = [];
+              for (let i = 0; i < _this.beforeData.length; i++) {
+                if (tempArr.indexOf(_this.beforeData[i].classWeekType) === -1) {
+                  _this.afterData.push({
+                    classWeekType: _this.beforeData[i].classWeekType,
+                    origin: [_this.beforeData[i]]
+                  });
+                  tempArr.push(_this.beforeData[i].classWeekType);
+                } else {
+                  for (let j = 0; j < _this.afterData.length; j++) {
+                    if (
+                      _this.afterData[j].classWeekType ==
+                      _this.beforeData[i].classWeekType
+                    ) {
+                      _this.afterData[j].origin.push(_this.beforeData[i]);
+                      break;
+                    }
+                  }
+                }
+              }
+              // 将类型独立出来
+              for (var i = 0; i < _this.afterData.length; i++) {
+                const obj = {};
+                obj.contentType = _this.afterData[i].classWeekType;
+                _this.tabs.push(obj);
+              }
 
-      var imgUrlArray = rawList.url.split("|");
-      var outputList = [];
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        if (imgUrlArray[i].length != 0) {
-          outputList.push({
-            id: rawList.id,
-            contentUrl: _this.URLport.ImgPath + imgUrlArray[i],
-            contents: rawList.contents
-            // conurl: rawList.conurl
-          });
-        }
-      }
-
-      return outputList;
-    },
-    //将图片的ID和路径保存到outputList的方法
-    getUrlListCover: function(rawList) {
-      const _this = this;
-      var imgUrlArray = rawList.url.split("|");
-      for (var i = 0; i < imgUrlArray.length; i++) {
-        if (imgUrlArray[i].length != 0) {
-          _this.outputLists.push(_this.URLport.ImgPath + imgUrlArray[i]);
-        }
-      }
-      return _this.outputLists;
+              for (let i = 0; i < _this.tabs.length; i++) {
+                if (
+                  _this.tabs[i].contentType == _this.$route.params.weektype_id
+                ) {
+                  _this.numnum = i;
+                  // 将图片独立出来
+                  for (var j = 0; j < _this.afterData[i].origin.length; j++) {
+                    const imgs = {};
+                    imgs = _this.afterData[i].origin[j].url;
+                    _this.answerImgs.push(imgs);
+                  }
+                  _this.$store.state.answer.answer = [_this.afterData[i]];
+                  _this.$store.state.answer.imgss = _this.answerImgs;
+                }
+              }
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     //根据课程id检索课程订单
     Classinfos: function() {
@@ -945,168 +931,29 @@ export default {
     //每周课程周ID获取类型
     handleWeeks: function(classWeekId) {
       const _this = this;
+      _this.typeAnswer(classWeekId, 0);
       for (var i = 0; i < _this.valueWeek.length; i++) {
         if (classWeekId == _this.valueWeek[i].id) {
           _this.currentWeek = _this.valueWeek[i];
         }
       }
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/ClassWeekTypes`,
-          async: false,
-          params: {
-            classweekid: classWeekId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          if (res.data.data.length == 0) {
-            _this.conShow = false;
-            _this.$store.state.answer.tabconwu = false;
-            _this.$store.state.answer.answer = [];
-            _this.$store.state.answer.imgss = [];
-          } else {
-            _this.tabs = res.data.data;
-            _this.conShow = true;
-            _this.$store.state.answer.imgWeekTypeId = _this.tabs[0].id;
-            console.log(_this.$store.state.answer.imgWeekTypeId);
-            _this.RetrieveTheTnswer(_this.tabs[0].id);
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     //点击类型获取答案
     tab(index, classWeekTypeId) {
       const _this = this;
-      _this.$store.state.answer.imgWeekTypeId = classWeekTypeId;
-      _this.outputLists.length = 0;
-      _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.answer = [];
+      const answerImgs = [];
+      _this.$store.state.answer.answer = [_this.afterData[index]];
+      for (var j = 0; j < _this.afterData[index].origin.length; j++) {
+        const imgs = {};
+        imgs = _this.afterData[index].origin[j].url;
+        answerImgs.push(imgs);
+      }
+      _this.$store.state.answer.imgss = answerImgs;
       _this.numnum = index;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
-              _this.$store.state.answer.tabconwu = true;
-            }
-          }
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
     },
     //切换每周的时候默认触发第一个状态获取答案
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
-      // 跟地址栏上的ID总是慢一步，星期一来在解决吧
-      _this.outputLists.length = 0;
-      _this.$store.state.answer.loading = true;
-      _this.$store.state.answer.answer = [];
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfoContent/Contentls`,
-          async: false,
-          params: {
-            classweektypeid: classWeekTypeId
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          _this.Answer = res.data.data;
-          _this.$store.state.answer.loading = false;
-          _this.numnum = 0;
-          if (_this.Answer.length == 0) {
-            _this.$store.state.answer.tabconwu = true;
-          } else {
-            _this.$store.state.answer.tabconwu = false;
-          }
-          if (_this.Answer.length == 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-                _this.$store.state.answer.tabconwu = true;
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-          }
-          if (_this.Answer.length > 1) {
-            for (var i = 0; i < _this.Answer.length; i++) {
-              if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-              } else {
-                _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-                _this.imgss = _this.getUrlListCover(_this.Answer[i]);
-              }
-            }
-            if (
-              (_this.Answer[0].url == null && _this.Answer[1].url == null) ||
-              (_this.Answer[0].url == null &&
-                _this.Answer[1].url == null &&
-                _this.Answer[2].url == null)
-            ) {
-              _this.$store.state.answer.tabconwu = true;
-            }
-          }
-          _this.$store.state.answer.answer = _this.Answer;
-          _this.$store.state.answer.imgss = _this.imgss;
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    bookmarks: function() {
-      const _this = this;
-      _this.bookmark = !_this.bookmark;
     },
     beOfUses: function() {
       const _this = this;
@@ -1128,7 +975,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }
@@ -1153,7 +1000,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }
@@ -1186,7 +1033,7 @@ export default {
           console.log(error);
         });
     },
-    // 根据课程资料id检索该课程资料有用、没用
+    // 根据课程资料id检索该课程资料有用没用
     UseRecord: function() {
       const _this = this;
       if (localStorage.token) {
@@ -1292,7 +1139,7 @@ export default {
               _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -1326,7 +1173,7 @@ export default {
             .then(function(res) {
               _this.attenDisabled = false;
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -1337,7 +1184,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }

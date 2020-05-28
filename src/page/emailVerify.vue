@@ -46,22 +46,22 @@
 <template>
   <div class="emailVerify">
     <homeNav></homeNav>
-    <div v-title data-title="邮箱验证跳转-CourseWhale"></div>
+    <div v-title :data-title="$t('emailVerify.con0')+'-CourseWhale'"></div>
     <div class="ev-con" v-loading="loading">
       <div style="height:157px;" v-show="nullShow"></div>
       <div v-show="succendShow">
         <div class="ev-con-title">
           <img src="../assets/对勾2.png" alt />
           <div class="ev-t1">
-            <p class="ev-t1-p1">验证成功!</p>
-            <p class="ev-t1-p2">恭喜您获得7天会员!</p>
+            <p class="ev-t1-p1">{{$t('emailVerify.con1')}}</p>
+            <p class="ev-t1-p2">{{$t('emailVerify.con2')}}</p>
           </div>
         </div>
         <div class="ev-con-te">
-          <div style="margin-bottom:5px">页面将在{{num}}秒内跳转到首页!</div>
+          <div style="margin-bottom:5px">{{$t('emailVerify.con3')}}{{num}}{{$t('emailVerify.con4')}}</div>
           <div>
-            如果页面没有反应请
-            <router-link to="/home">点击这里</router-link>手动跳转
+            {{$t('emailVerify.con5')}}
+            <router-link to="/home">{{$t('emailVerify.con6')}}</router-link>{{$t('emailVerify.con7')}}
           </div>
         </div>
       </div>
@@ -70,15 +70,15 @@
         <div class="ev-con-title">
           <img src="../assets/错号.jpg" alt />
           <div class="ev-t1">
-            <p class="ev-t1-p1">验证失败!</p>
-            <p class="ev-t1-p2">您的账号已经验证过了!</p>
+            <p class="ev-t1-p1">{{$t('emailVerify.con8')}}</p>
+            <p class="ev-t1-p2">{{$t('emailVerify.con9')}}</p>
           </div>
         </div>
         <div class="ev-con-te">
-          <div style="margin-bottom:5px">页面将在{{denum}}秒内跳转到首页!</div>
+          <div style="margin-bottom:5px">{{$t('emailVerify.con3')}}{{denum}}{{$t('emailVerify.con4')}}!</div>
           <div>
-            如果页面没有反应请
-            <router-link to="/home">点击这里</router-link>手动跳转
+            {{$t('emailVerify.con5')}}
+            <router-link to="/home">{{$t('emailVerify.con6')}}</router-link>{{$t('emailVerify.con7')}}
           </div>
         </div>
       </div>

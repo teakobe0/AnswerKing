@@ -23,7 +23,7 @@
 /* End hide from IE-mac */
 .school-con {
   width: 100%;
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .school-query {
@@ -201,17 +201,17 @@
     <div class="school-con">
       <div class="school-query">
         <div class="query-con">
-          <h1 class="query-con-h1">按学校查找学习资源</h1>
+          <h1 class="query-con-h1">{{$t('schools.schools1')}}</h1>
 
-          <p class="query-con-describe">找到所有课程所需的学习资源。我们有数百万的学习文件，问题和答案以及辅导问题，以帮助您学习。</p>
+          <p class="query-con-describe">{{$t('schools.schools2')}}</p>
 
           <div class="query-con-search">
             <el-autocomplete
               class="query-searchbox"
               v-model="state1"
-              :fetch-suggestions="querySearch"
+              :fetch-suggestions="querySearchs"
               @select="handleSelectauto"
-              placeholder="请输入您需要查询的学校名称"
+              :placeholder="$t('schools.schools3')"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
@@ -226,9 +226,9 @@
         </div>
       </div>
       <div class="find-school">
-        <h1 class="find-school-h1">找到你的学校</h1>
+        <h1 class="find-school-h1">{{$t('schools.schools4')}}</h1>
 
-        <p class="find-school-describe">从我们的学校和学院列表中选择，以找到您需要的学习资源。</p>
+        <p class="find-school-describe">{{$t('schools.schools5')}}</p>
 
         <div class="find-select">
           <div class="find-select-top">
@@ -292,12 +292,12 @@
                 <router-link
                   :to="'/university/'+item.university.id"
                 >{{item.university.name}}</router-link>
-                <div class="select-boo-num">{{item.number}}门课程</div>
+                <div class="select-boo-num">{{item.number}}{{$t('schools.schools7')}}</div>
               </li>
             </ul>
           </div>
           <div @click="viewMore" class="viewmores" v-show="viewMores == true">
-            查看更多
+            {{$t('schools.schools6')}}
             <i class="el-icon-caret-bottom"></i>
           </div>
         </div>
@@ -331,16 +331,7 @@ export default {
       uns: [],
       country: [],
       state: [],
-      city: [
-        //{
-        //    value: '选项1',
-        //    label: '加利福尼亚州'
-        //},
-        //{
-        //    value: '选项2',
-        //    label: '加州'
-        //}
-      ],
+      city: [],
       pageSize: 40,
       queryString: "",
       loading: true,
@@ -390,6 +381,59 @@ export default {
       }
     },
     querySearch(queryString, cb) {
+      // const _this = this;
+      // var valuestr = queryString.trim();
+      // var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
+      // clearTimeout(_this.timeout);
+      // if (valuestr.length == 0) {
+      //   console.log("空格");
+      // } else {
+      //   _this.timeout = setTimeout(() => {
+      //     if (queryString.length >= 3) {
+      //       _this.inputLoad = true;
+      //       _this.state2 = queryString;
+      //       _this.queryString = queryString;
+      //       var results = [];
+      //       _this
+      //         .axios({
+      //           method: "get",
+      //           url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+      //           async: false,
+      //           params: {
+      //             name: valuestr
+      //           },
+      //           xhrFields: {
+      //             withCredentials: true
+      //           }
+      //         })
+      //         .then(function(res) {
+      //           if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+      //             for (var i = 0; i < 10; i++) {
+      //               if (res.data.data.ls[i]) {
+      //                 results.push({
+      //                   value: res.data.data.ls[i].university.name,
+      //                   type: "大学",
+      //                   class: "university",
+      //                   num: i,
+      //                   id: res.data.data.ls[i].university.id
+      //                 });
+      //               }
+      //             }
+      //           } else {
+      //             results.push({ value: _this.$t('schools.schools8') });
+      //           }
+
+      //           cb(results);
+      //         })
+      //         .catch(function(error) {
+      //           console.log(error);
+      //         });
+      //     }
+      //   }, 1000 * Math.random());
+      // }
+    },
+    // 学校输入框触发
+    querySearchs(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
@@ -398,15 +442,12 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 3) {
-            _this.inputLoad = true;
-            _this.state2 = queryString;
-            _this.queryString = queryString;
+          if (queryString.length >= 1) {
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+                url: `${_this.URLport.serverPath}/University/Universitys`,
                 async: false,
                 params: {
                   name: valuestr
@@ -416,20 +457,19 @@ export default {
                 }
               })
               .then(function(res) {
-                if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+                console.log(res);
+                if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data.ls[i]) {
+                    if (res.data.data[i]) {
                       results.push({
-                        value: res.data.data.ls[i].university.name,
-                        type: "大学",
-                        class: "university",
-                        num: i,
-                        id: res.data.data.ls[i].university.id
+                        value: res.data.data[i].name,
+                        type: _this.$t('upload.u10'),
+                        id: res.data.data[i].id
                       });
                     }
                   }
                 } else {
-                  results.push({ value: "没有找到对应的大学" });
+                  results.push({ value: _this.$t('schools.schools8'), type: null });
                 }
 
                 cb(results);
@@ -441,39 +481,8 @@ export default {
         }, 1000 * Math.random());
       }
     },
-    handleSelectauto(item) {
+    handleSelectauto() {
       const _this = this;
-      // _this.loading = this.$loading({
-      //   lock: true,
-      //   text: "加载中",
-      //   spinner: "el-icon-loading",
-      //   background: "rgba(0, 0, 0, 0.7)"
-      // });
-      // this.axios({
-      //   method: "get",
-      //   url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
-      //   async: false,
-      //   params: {
-      //     name: _this.queryString
-      //   },
-      //   xhrFields: {
-      //     withCredentials: true
-      //   }
-      // })
-      //   .then(function(res) {
-      //     //学校
-      //     if (item.class == "university") {
-      //       //学校
-      //       // _this.$router.push({
-      //       //   name: "schools/university",
-      //       //   params: { id: res.data.data.ls[item.num].university.id }
-      //       // });
-      //     }
-      //     _this.loading.close();
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
     },
     //根据国家 州/省份检索学校
     GetUniversitys: function(index) {
@@ -492,6 +501,7 @@ export default {
           }
         })
         .then(function(res) {
+          console.log(res)
           _this.alluniversitys = res.data.data;
           _this.loading = false;
           _this.viewMores = true;
