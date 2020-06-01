@@ -58,7 +58,7 @@
 
               <el-table-column fixed="right" label="操作" width="130">
                 <template slot-scope="scope">
-                  <el-button
+                  <!-- <el-button
                     v-show="scope.row.que.status == 1"
                     type="text"
                     size="mini"
@@ -70,7 +70,12 @@
                     size="mini"
                     disabled
                     title="竞拍者已经开始作答,禁止修改"
-                  >编辑</el-button>
+                  >编辑</el-button> -->
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="editQuiz(scope.row)"
+                  >修改</el-button>
                   <el-button type="text" size="mini" @click="evaluate">评价</el-button>
                   <el-button type="text" size="mini" @click="service">客服</el-button>
                 </template>

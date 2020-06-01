@@ -39,7 +39,7 @@
       <div class="message">
         <div style="text-align:center" v-show="dataNull == true">{{$t('inform.con1')}}</div>
         <div v-for="item in messages">
-          <span class="sendname">{{item.sendname}}</span>
+          <span class="sendname" v-show="item.sss == 1">{{item.sendname}}</span>
           {{$t('inform.con2')}}：{{item.content}}
           <el-button
             @click="gomessage(item.contentsUrl,item.id)"
@@ -133,6 +133,7 @@ export default {
           } else {
             for (var i = 0; i < _this.messages.length; i++) {
               _this.$set(_this.messages[i], "content", []);
+              _this.$set(_this.messages[i], "sss", 0);
               var a = _this.messages[i].contentsUrl.split(",");
               var b = a[0].split(":");
               if (b.length >= 2) {
@@ -141,7 +142,16 @@ export default {
               } else {
                 _this.messages[i].content = b[0];
               }
+              var regPos = / ^\d+$/;
+              if(regPos.test(a[a.length-1])){
+                _this.messages[i].sss = 1;
+              }else {
+                _this.messages[i].sss = 2;
+              }
             }
+            console.log(a.length-1)
+            console.log(regPos.test(a[2]))
+            console.log(_this.messages)
           }
         })
         .catch(function(error) {
@@ -170,6 +180,7 @@ export default {
           _this.$router.push({
             path: '/classes/'+a[1]+'/content/'+a[2]+'/weeks/'+0+'/weektype/'+0,
           });
+          
           _this.gainmessage();
         })
         .catch(function(error) {

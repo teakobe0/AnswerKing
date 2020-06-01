@@ -245,9 +245,9 @@
           <router-link to="/uploadAnswer">{{$t('nav.nav4')}}</router-link>
         </el-menu-item>
 
-        <!-- <el-menu-item index="5">
+        <el-menu-item index="5">
           <router-link to="/question">问答中心</router-link>
-        </el-menu-item>-->
+        </el-menu-item>
         <el-menu-item index="6" v-if="$store.state.logo.show">
           <router-link to="/login" style="width:56px;text-align: center;">{{$t('nav.nav5')}}</router-link>
         </el-menu-item>

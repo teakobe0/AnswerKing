@@ -304,7 +304,7 @@
           </el-form-item>
           <div style="overflow: hidden;">
             <div style="float:left;">
-              <div class="PR">答题时间</div>
+              <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
@@ -343,7 +343,7 @@
         <el-form :model="auction" :rules="auctionrules" ref="auction" class="demo-ruleForm">
           <div style="overflow: hidden;">
             <div style="float:left;">
-              <div class="PR">答题时间</div>
+              <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker v-model="auction.EndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
               </el-form-item>
@@ -422,12 +422,6 @@ export default {
         Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
       qlList: [
-        {
-          title:"123",
-          content:"123",
-          endTime:"1995-03-12",
-          currency:"123"
-        },
         
       ],
       qlShade: false,
@@ -466,7 +460,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            // _this.qlList = res.data.data.data;
+            _this.qlList = res.data.data.data;
             console.log(res);
           }
         })
@@ -493,7 +487,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            // _this.qlList = res.data.data.data;
+            _this.qlList = res.data.data.data;
           }
         })
         .catch(function(error) {
@@ -519,7 +513,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
-            // _this.qlList = res.data.data.data;
+            _this.qlList = res.data.data.data;
           }
         })
         .catch(function(error) {
@@ -562,6 +556,7 @@ export default {
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
                 _this.qlShade = !_this.qlShade;
+                _this.quizList();
                 _this.$message({
                   message: "发布成功",
                   type: "success"
@@ -593,7 +588,7 @@ export default {
       const _this = this;
       _this.qlreplyShade = !_this.qlreplyShade;
     },
-    // 竞拍确定
+    // 我要答竞拍确定
     auctionQl(auction) {
       const _this = this;
       _this.$refs[auction].validate(valid => {
@@ -615,12 +610,12 @@ export default {
               if (res.data.status == 1) {
                 _this.qlreplyShade = !_this.qlreplyShade;
                 _this.$message({
-                  message: "发布成功",
+                  message: "竞拍成功,请开始作答！",
                   type: "success"
                 });
               } else {
                 _this.$message({
-                  message: "发布失败",
+                  message: "竞拍失败！",
                   type: "error"
                 });
               }

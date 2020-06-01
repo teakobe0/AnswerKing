@@ -1210,7 +1210,7 @@ export default {
         schoolId: 0,
         course: "",
         courseId: 0,
-        type: "作业(Asssignment)",
+        type: "作业(Assignment)",
         week: 1,
         topic: "",
         topicUrl: "",
@@ -1269,7 +1269,7 @@ export default {
       type: "",
       typeoptions: [
         {
-          label: "作业(Asssignment)"
+          label: "作业(Assignment)"
         },
         {
           label: "测验(Quiz)"
