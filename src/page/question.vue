@@ -227,7 +227,7 @@
             </div>
             <div class="ql-ask-con" v-for="item in qlList">
               <h3>
-                <router-link to="/questionDetails">{{item.title}}</router-link>
+                <router-link :to="'/questionDetails/'+item.id">{{item.title}}</router-link>
               </h3>
               <div>{{item.content}}</div>
               <div class="ql-ask-reply">
@@ -239,16 +239,16 @@
                     @click="replyShade(item)"
                     @mousewheel.prevent
                   >我要答</el-button>
-                  <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
-                  <el-button type="text" icon="el-icon-time" class="ql-ask-reply-2">稍后答</el-button>
+                  <!-- <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
+                  <el-button type="text" icon="el-icon-time" class="ql-ask-reply-2">稍后答</el-button>-->
                 </div>
                 <div style="float:right;line-height:40px;color:#8590a6;">
                   <span style="margin-right:11px;">
-                    <i class="el-icon-time"></i>
+                    <i class="el-icon-time" title="截止日期"></i>
                     {{item.endTime | formatDate}}
                   </span>
                   <span>
-                    <i class="el-icon-coin"></i>
+                    <i class="el-icon-coin" title="悬赏金"></i>
                     {{item.currency}}
                   </span>
                 </div>
@@ -266,7 +266,7 @@
               @mousewheel.prevent
             >我要提问</el-button>
           </div>
-          <div class="ql-right-function">
+          <!-- <div class="ql-right-function">
             <a href="#">
               <div class="ql-right-fc1">
                 <i class="el-icon-star-on"></i>我关注的问题
@@ -279,7 +279,7 @@
               </div>
               <div class="ql-right-fc2">5</div>
             </a>
-          </div>
+          </div>-->
         </div>
       </div>
     </div>
@@ -353,7 +353,6 @@
               <el-form-item prop="Currency">
                 <el-input v-model="auction.Currency" placeholder="悬赏金(选填)" style="width:130px;"></el-input>
               </el-form-item>
-              
             </div>
           </div>
         </el-form>
@@ -408,7 +407,7 @@ export default {
       auction: {
         EndTime: new Date(),
         Currency: "",
-        QuestionId:""
+        QuestionId: ""
       },
       // 我要答表单验证
       auctionrules: {
@@ -421,9 +420,7 @@ export default {
         ],
         Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
-      qlList: [
-        
-      ],
+      qlList: [],
       qlShade: false,
       qlreplyShade: false,
       value1: "",
@@ -523,7 +520,15 @@ export default {
     // 我要提问按钮
     NewQuitBt() {
       const _this = this;
-      _this.qlShade = !_this.qlShade;
+      if (localStorage.getItem("token")) {
+        _this.qlShade = !_this.qlShade;
+      } else {
+        _this.$message({
+          message: "请登录之后提问",
+          type: "warning"
+        });
+      }
+      
     },
     // 隐藏我要提问
     CloseQuitBt() {
@@ -533,7 +538,6 @@ export default {
     // 发布问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
-      console.log(_this.QuestionsQuiz);
       _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this
@@ -577,11 +581,17 @@ export default {
     // 我要答显示遮罩按钮
     replyShade(item) {
       const _this = this;
-      console.log(item)
-      _this.auction.QuestionId = item.id;
-      _this.auction.EndTime = item.endTime;
-      _this.auction.Currency = item.currency;
-      _this.qlreplyShade = !_this.qlreplyShade;
+      if (localStorage.getItem("token")) {
+        _this.auction.QuestionId = item.id;
+        _this.auction.EndTime = item.endTime;
+        _this.auction.Currency = item.currency;
+        _this.qlreplyShade = !_this.qlreplyShade;
+      } else {
+        _this.$message({
+          message: "请登录之后竞拍",
+          type: "warning"
+        });
+      }
     },
     // 隐藏我要答
     CloseReplyShade() {
@@ -591,6 +601,7 @@ export default {
     // 我要答竞拍确定
     auctionQl(auction) {
       const _this = this;
+
       _this.$refs[auction].validate(valid => {
         if (valid) {
           _this

@@ -133,7 +133,7 @@ export default {
           } else {
             for (var i = 0; i < _this.messages.length; i++) {
               _this.$set(_this.messages[i], "content", []);
-              _this.$set(_this.messages[i], "sss", 0);
+              _this.$set(_this.messages[i], "type", 0);
               var a = _this.messages[i].contentsUrl.split(",");
               var b = a[0].split(":");
               if (b.length >= 2) {
@@ -142,16 +142,13 @@ export default {
               } else {
                 _this.messages[i].content = b[0];
               }
-              var regPos = / ^\d+$/;
+              var regPos = /^\+?[1-9][0-9]*$/;
               if(regPos.test(a[a.length-1])){
-                _this.messages[i].sss = 1;
+                _this.messages[i].type = 1;
               }else {
-                _this.messages[i].sss = 2;
+                _this.messages[i].type = 2;
               }
             }
-            console.log(a.length-1)
-            console.log(regPos.test(a[2]))
-            console.log(_this.messages)
           }
         })
         .catch(function(error) {

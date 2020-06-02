@@ -272,7 +272,7 @@ export default new Router({
             component: question
         },
         {
-            path: '/questionDetails',      //设置跳转
+            path: '/questionDetails/:question_id',      //设置跳转
             component: questionDetails
         },
         {

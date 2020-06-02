@@ -37,7 +37,7 @@
 .qd-title-right-1 {
   float: left;
   padding: 0 8px;
-  width: 84px;
+  /* width: 84px; */
 }
 .qd-title-right-1 p {
   color: #8590a6;
@@ -96,7 +96,6 @@
   margin-top: 11px !important;
   float: right;
   margin-bottom: 20px !important;
-
 }
 
 /* 编辑区域结束 */
@@ -136,7 +135,7 @@
 .autionShadeInfo img {
   width: 50px;
   height: 50px;
-  vertical-align: top;
+  vertical-align: middle;
   margin-right: 10px;
 }
 .auctionShade-con-Info {
@@ -148,11 +147,10 @@
 .auctionShade-con-TR {
   position: absolute;
   bottom: 16px;
-  left: 80px;
-
+  left: 170px;
 }
 .auctionShade-con-time {
-  margin-right: 10px;
+  margin-right: 0px;
 }
 .privateLetter {
   color: #cc8500;
@@ -172,22 +170,23 @@
       <div class="qd-title-back">
         <div class="qd-title">
           <div class="qd-title-left">
-            <h2>{{qlList.name}}</h2>
-            <p>{{qlList.nameCon}}</p>
+            <h2>{{qlList.que.title}}</h2>
+            <p>{{qlList.que.content}}</p>
+            <p class="date">{{d}}天{{h}}小时{{m}}分{{s}}秒</p>
           </div>
           <div class="qd-title-right">
             <div class="qd-title-right-1">
-              <p>关注者</p>
-              <div>100</div>
+              <p>截止日期</p>
+              <div>{{qlList.que.endTime | formatDate}}</div>
             </div>
-            <div class="qd-title-right-2">
+            <div class="qd-title-right-2" v-if="qlList.bls.length != 0">
               <p>竞拍者</p>
-              <div>20</div>
+              <div>{{qlList.bls.length}}</div>
             </div>
           </div>
           <div>
-            <el-button type="primary" size="medium" class="qd-attention">关注问题</el-button>
-            <el-button icon="el-icon-edit" size="medium" class="ql-an" @click="myAnswer">写回答</el-button>
+            <!-- <el-button type="primary" size="medium" class="qd-attention">关注问题</el-button> -->
+            <!-- <el-button icon="el-icon-edit" size="medium" class="ql-an" @click="myAnswer">写回答</el-button> -->
           </div>
         </div>
       </div>
@@ -206,22 +205,42 @@
         <div class="qd-auctionShade" v-show="auctionShow">
           <div class="auctionShade-con">
             <div class="auctionShade-con-Info">
-              <div v-for="item in autionInfo" class="autionShadeInfo">
-                <img src="../assets/5.jpg" alt />
-                <span>{{item.name}}</span>
-                <div class="auctionShade-con-TR">
-                  <span class="auctionShade-con-time el-icon-time">{{item.time | formatDate}}</span>
-                  <span class="auctionShade-con-reward el-icon-coin">{{item.rewardNum}}</span>
+              <div v-for="item in qlList.bls" class="autionShadeInfo">
+                <img src="../assets/5.jpg" alt v-show="item.image == null" />
+                <img :src="item.image" alt v-show="item.image != null" />
+                <span>
+                  <b>{{item.name}}</b>
+                </span>
+                <div class="auctionShade-con-TR" v-if="auctionClient">
+                  <span
+                    class="auctionShade-con-time el-icon-time"
+                  >{{item.bidding.endTime | formatDate}}</span>
                 </div>
-                <el-button type="primary"  size="mini" style="float:right;margin-top:0px;">选他答</el-button>
-                <i class="el-icon-chat-line-round privateLetter" style="float:right;margin-top:2px;margin-right: 11px;" title="发私信"></i>
+
+                <el-button
+                  type="primary"
+                  size="mini"
+                  style="float:right;margin-top:0px;"
+                  v-if="auctionClient"
+                  @click="auctions"
+                >选他答</el-button>
+                <i
+                  class="el-icon-chat-line-round privateLetter"
+                  style="float:right;margin-top:2px;margin-right: 11px;"
+                  v-if="auctionClient"
+                  title="通知留言"
+                ></i>
+                <span
+                  class="auctionShade-con-reward el-icon-coin"
+                  style="float:right;margin-top:5px;margin-right:11px;"
+                  v-if="auctionClient"
+                >{{item.bidding.currency}}</span>
               </div>
-<!--              <div class="closeAuctionShade el-icon-close" @click="auction"></div>-->
+              <!--              <div class="closeAuctionShade el-icon-close" @click="auction"></div>-->
             </div>
           </div>
         </div>
       </div>
-
     </div>
 
     <homeFooter></homeFooter>
@@ -288,92 +307,76 @@ export default {
         }
       },
       myValue: this.value,
-      qlList: {
-        name: "假如你很久没有见到喜欢的人了，你想对她说什么？",
-        nameCon:
-          "如题，如果只给你30秒的时间说出3部你觉得最好的电影，会是哪三部？30秒内想得到3部才算，超出时间的不能算",
-        answerNum: 70,
-        browseNum: 1001,
-        time: new Date()
-      },
+      qlList: {},
       qdeditShow: false,
       auctionShow: true,
       // 竞拍者信息
-      autionInfo: [
-        {
-          name: "小明",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        },
-        {
-          name: "小张",
-          time: new Date(),
-          rewardNum: 20
-        }
-      ]
+      autionInfo: [],
+      d: "",
+      h: "",
+      m: "",
+      s: "",
+      clientID: "",
+      // 判断当前登录人是否是竞拍者之一
+      auctionClient: false,
     };
   },
   created: function() {
     const _this = this;
+    _this.personal();
   },
   filters: {
     formatDate: function(time) {
       let date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd-hh:mm");
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     }
   },
   methods: {
-    onClick(e) {
-      this.$emit("onClick", e, tinymce);
+    countTime: function() {
+      //获取当前时间
+      var date = new Date();
+      var now = date.getTime();
+      //设置截止时间
+      var endDate = new Date("2020-6-3-23:23:23");
+      var end = endDate.getTime();
+      //时间差
+      var leftTime = end - now;
+      //定义变量 d,h,m,s保存倒计时的时间
+      if (leftTime >= 0) {
+        this.d = Math.floor(leftTime / 1000 / 60 / 60 / 24); //天数我没用到，暂且写上
+        this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+        this.m = Math.floor((leftTime / 1000 / 60) % 60);
+        this.s = Math.floor((leftTime / 1000) % 60);
+      }
+      //递归每秒调用countTime方法，显示动态时间效果
+      setTimeout(this.countTime, 1000);
     },
-    // 可以添加一些自己的自定义事件，如清空内容
-    clear() {
-      this.myValue = "";
+    personal: function() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            _this.clientID = res.data.data.id;
+            _this.QuDe();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        _this.QuDe();
+      }
     },
     // 写回答按钮
     myAnswer() {
@@ -384,7 +387,81 @@ export default {
     auction() {
       const _this = this;
       // _this.auctionShow = !_this.auctionShow;
-
+    },
+    // 检索问题详情
+    QuDe() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/Details`,
+          async: false,
+          params: {
+            questionid: _this.$route.params.question_id
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data;
+            console.log(_this.clientID);
+            // 确定登录人是否是竞拍者之一
+            for (var i = 0; i < _this.qlList.bls.length; i++) {
+              if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
+                _this.auctionClient = false;
+              }
+            }
+            // 确认登录人是否是提问者
+            if (_this.clientID == _this.qlList.que.createBy) {
+              _this.auctionClient = true;
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 选他答
+    auctions() {
+      const _this = this;
+      this.$prompt("请输入您的账号密码", "CourseWhale", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          // _this
+          //   .axios({
+          //     method: "get",
+          //     url: `${_this.URLport.serverPath}/Questions/Choose`,
+          //     async: false,
+          //     params: {
+          //       questionid: _this.$route.params.question_id,
+          //       clienid: "",
+          //       password: ""
+          //     },
+          //     xhrFields: {
+          //       withCredentials: true
+          //     },
+          //     headers: {
+          //       Authorization: `Bearer ${localStorage.getItem("token")}`
+          //     }
+          //   })
+          //   .then(function(res) {
+          //     if (res.data.status == 1) {
+          //       console.log(res);
+          // _this.$message({
+          //   type: "success",
+          //   message: "竞拍者已经可以开始作答!"
+          // });
+          //     }
+          //   })
+          //   .catch(function(error) {
+          //     console.log(error);
+          //   });
+        })
+        .catch(() => {});
     }
   },
   mounted() {
