@@ -128,6 +128,7 @@ export default {
         .then(function(res) {
           _this.$store.state.logo.message = res.data.data.length;
           _this.messages = res.data.data;
+          console.log(_this.messages)
           if (_this.messages.length == 0) {
             _this.dataNull = true;
           } else {

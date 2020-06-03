@@ -19,6 +19,13 @@
   margin-left: 0px !important;
   margin-right: 10px !important;
 }
+.myQuestion-con a {
+  text-decoration: none;
+  color: #606266;
+}
+.myQuestion-con a:hover {
+  color: #0b4ed4;
+}
 </style>
 
 
@@ -37,7 +44,7 @@
               </el-table-column>
               <el-table-column label="题目">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.que.title}}</span>
+                  <router-link :to="'/questionDetails/'+scope.row.que.id">{{ scope.row.que.title}}</router-link>
                 </template>
               </el-table-column>
               <el-table-column label="悬赏" width="70">
@@ -55,7 +62,11 @@
                   <span>{{ scope.row.que.endTime | formatDate}}</span>
                 </template>
               </el-table-column>
-
+              <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.type}}</span>
+                </template>
+              </el-table-column>
               <el-table-column fixed="right" label="操作" width="130">
                 <template slot-scope="scope">
                   <!-- <el-button
@@ -70,12 +81,8 @@
                     size="mini"
                     disabled
                     title="竞拍者已经开始作答,禁止修改"
-                  >编辑</el-button> -->
-                  <el-button
-                    type="text"
-                    size="mini"
-                    @click="editQuiz(scope.row)"
-                  >修改</el-button>
+                  >编辑</el-button>-->
+                  <el-button type="text" size="mini" @click="editQuiz(scope.row)">修改</el-button>
                   <el-button type="text" size="mini" @click="evaluate">评价</el-button>
                   <el-button type="text" size="mini" @click="service">客服</el-button>
                 </template>
@@ -146,11 +153,27 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="我的回答" name="first2">
+          <el-tab-pane label="我回答的问题" name="first2">
             <el-table :data="answerTableData" border style="width: 100%" v-if="answerShow">
-              <el-table-column label="回答日期" width="100">
+              <el-table-column label="发布日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.time | formatDate}}</span>
+                  <span>{{ scope.row.answer.createTime | formatDate}}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="题目">
+                <template slot-scope="scope">
+                  <router-link
+                    :to="'/questionDetails/'+scope.row.answer.questionId"
+                  >{{ scope.row.title}}</router-link>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-tab-pane>
+          <el-tab-pane label="我竞拍的问题" name="first3">
+            <el-table :data="auctionTableData" border style="width: 100%" v-if="auctionShow">
+              <el-table-column label="发布日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.answer.createTime | formatDate}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="题目">
@@ -158,16 +181,8 @@
                   <span>{{ scope.row.title}}</span>
                 </template>
               </el-table-column>
-              <el-table-column fixed="right" label="操作" width="120">
-                <template slot-scope="scope">
-                  <el-button type="text" size="mini">编辑</el-button>
-                  <el-button type="text" size="mini">评价</el-button>
-                  <el-button type="text" size="mini">客服</el-button>
-                </template>
-              </el-table-column>
             </el-table>
           </el-tab-pane>
-          <!-- <el-tab-pane label="我的关注" name="first3"></el-tab-pane> -->
         </el-tabs>
       </div>
     </div>
@@ -186,7 +201,7 @@ export default {
       quizShow: false,
       quizTableData: [],
       answerShow: false,
-      answerTableData: [ ],
+      answerTableData: [],
       QuestionsQuiz: {
         Title: "",
         Content: "",
@@ -209,6 +224,9 @@ export default {
         ],
         Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
+      // 我的竞拍
+      auctionTableData:[],
+      auctionShow:false,
       qlShade: false,
       evaluateShade: false,
       serviceShade: false
@@ -218,6 +236,7 @@ export default {
     const _this = this;
     _this.quizList();
     _this.answerList();
+    _this.auctionlist();
   },
   filters: {
     formatDate: function(time) {
@@ -246,7 +265,27 @@ export default {
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data;
             _this.quizShow = true;
-            console.log(_this.quizTableData);
+            for (var i = 0; i < _this.quizTableData.length; i++) {
+              _this.$set(_this.quizTableData[i], "type", "");
+              if(_this.quizTableData[i].que.status == 1){
+                _this.quizTableData[i].type = "保存"
+              } 
+              if(_this.quizTableData[i].que.status == 2){
+                _this.quizTableData[i].type = "正在竞拍"
+              } 
+              if(_this.quizTableData[i].que.status == 3){
+                _this.quizTableData[i].type = "回答中"
+              } 
+              if(_this.quizTableData[i].que.status == 4){
+                _this.quizTableData[i].type = "提交修改"
+              } 
+              if(_this.quizTableData[i].que.status == 5){
+                _this.quizTableData[i].type = "申请客服"
+              } 
+              if(_this.quizTableData[i].que.status == 6){
+                _this.quizTableData[i].type = "已完成"
+              } 
+            }
           }
         })
         .catch(function(error) {
@@ -268,10 +307,34 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.answerTableData = res.data.data;
             _this.answerShow = true;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    auctionlist(){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Bidding/MyBidding`,
+          async: false,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.auctionTableData = res.data.data;
+            _this.auctionShow = true;
           }
         })
         .catch(function(error) {

@@ -16,6 +16,7 @@
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   margin-bottom: 20px;
   background: #fff;
+  min-height: 140px;
 }
 .qd-title {
   width: 1300px;
@@ -90,12 +91,13 @@
   color: #8590a6;
 }
 .qd-edit {
-  width: 900px;
+  width: 1300px;
 }
 .qd-edit-submit {
   margin-top: 11px !important;
   float: right;
   margin-bottom: 20px !important;
+  margin-left: 10px !important;
 }
 
 /* 编辑区域结束 */
@@ -168,11 +170,11 @@
     <div v-title data-title="问答大厅-CourseWhale"></div>
     <div class="qd-con">
       <div class="qd-title-back">
-        <div class="qd-title">
+        <div class="qd-title" v-if="qlListShow">
           <div class="qd-title-left">
             <h2>{{qlList.que.title}}</h2>
             <p>{{qlList.que.content}}</p>
-            <p class="date">{{d}}天{{h}}小时{{m}}分{{s}}秒</p>
+            <p class="date" v-if="countdown">您已获得答题机会请开始作答!倒计时:{{d}}天{{h}}小时{{m}}分{{s}}秒</p>
           </div>
           <div class="qd-title-right">
             <div class="qd-title-right-1">
@@ -186,7 +188,13 @@
           </div>
           <div>
             <!-- <el-button type="primary" size="medium" class="qd-attention">关注问题</el-button> -->
-            <!-- <el-button icon="el-icon-edit" size="medium" class="ql-an" @click="myAnswer">写回答</el-button> -->
+            <el-button
+              icon="el-icon-edit"
+              size="medium"
+              class="ql-an"
+              @click="myAnswer"
+              v-if="auctionbuttonShow"
+            >竞拍</el-button>
           </div>
         </div>
       </div>
@@ -194,11 +202,12 @@
       <div class="qd-editCon">
         <div style="float: left">
           <div class="qd-editNull" v-show="qdeditShow == false">
-            <p>暂时还没有回答,快去回答吧!</p>
+            <p>暂时还没有回答,快去竞拍回答赢取鲸灵币吧!</p>
           </div>
           <div class="qd-edit" v-show="qdeditShow == true">
             <editor id="tinymce" v-model="value" :init="init"></editor>
-            <el-button type="primary" class="qd-edit-submit">提交回答</el-button>
+            <el-button type="primary" class="qd-edit-submit" @click="submit">提交回答</el-button>
+            <el-button type="primary" class="qd-edit-submit" @click="save">保存进度</el-button>
           </div>
         </div>
 
@@ -222,13 +231,14 @@
                   size="mini"
                   style="float:right;margin-top:0px;"
                   v-if="auctionClient"
-                  @click="auctions"
+                  @click="auctions(item.bidding.createBy)"
                 >选他答</el-button>
                 <i
                   class="el-icon-chat-line-round privateLetter"
                   style="float:right;margin-top:2px;margin-right: 11px;"
                   v-if="auctionClient"
                   title="通知留言"
+                  @click="inform(item.bidding)"
                 ></i>
                 <span
                   class="auctionShade-con-reward el-icon-coin"
@@ -255,11 +265,15 @@ import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
 import "tinymce/themes/silver";
-import "tinymce/plugins/image"; // 插入上传图片插件
-// import "tinymce/plugins/media"; // 插入视频插件
-import "tinymce/plugins/table"; // 插入表格插件
-import "tinymce/plugins/lists"; // 列表插件
-import "tinymce/plugins/wordcount"; // 字数统计插件
+import "tinymce/plugins/image";
+import "tinymce/plugins/link";
+import "tinymce/plugins/code";
+import "tinymce/plugins/table";
+import "tinymce/plugins/lists";
+import "tinymce/plugins/contextmenu";
+import "tinymce/plugins/wordcount";
+import "tinymce/plugins/colorpicker";
+import "tinymce/plugins/textcolor";
 
 export default {
   name: "questionDetails",
@@ -279,12 +293,13 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default: "lists image table wordcount"
+      default:
+        "link lists image code table colorpicker textcolor wordcount contextmenu"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "undo redo |  formatselect | bold italic forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | lists image media table | removeformat"
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat"
     }
   },
   data() {
@@ -302,8 +317,68 @@ export default {
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
         images_upload_handler: (blobInfo, success, failure) => {
-          const img = "data:image/jpeg;base64," + blobInfo.base64();
-          success(img);
+          // const img = "data:image/jpeg;base64," + blobInfo.base64();
+          // success(img);
+          let formData = new FormData();
+          // 服务端接收文件的参数名，文件数据，文件名
+          formData.append("questionId", this.$route.params.question_id);
+          formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+          this.axios({
+            method: "POST",
+            // 这里是你的上传地址
+            url: this.URLport.serverPath + "/File/Upload",
+            async: false,
+            data: formData,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+            .then(res => {
+              // 这里返回的是你图片的地址
+              success(res.data.file);
+            })
+            .catch(() => {
+              // failure("上传失败");
+            });
+          // axios({
+          //   method: "post",
+          //   url: `${_this.URLport.serverPath}/File/Upload`,
+          //   async: false,
+          //   data: formData,
+          //   xhrFields: {
+          //     withCredentials: true
+          //   },
+          //   headers: {
+          //     Authorization: `Bearer ${localStorage.getItem("token")}`
+          //   }
+          // })
+          //   .then(function(res) {
+          //     success(res.data.data.url);
+          //   })
+          //   .catch(function(error) {
+          //     console.log(error);
+          //   });
+
+          // 服务端接收文件的参数名，文件数据，文件名
+          // axios({
+          //   method: "POST",
+          //   // 这里是你的上传地址
+          //   url: "uploadimage",
+          //   data: formData
+          // })
+          //   .then(res => {
+          //     // 这里返回的是你图片的地址
+          //     success(res.data.url);
+          //   })
+          //   .catch(() => {
+          //     failure("上传失败");
+          //   });
+
+          console.log(blobInfo);
         }
       },
       myValue: this.value,
@@ -319,6 +394,13 @@ export default {
       clientID: "",
       // 判断当前登录人是否是竞拍者之一
       auctionClient: false,
+      endtime: "",
+      // 倒计时显示隐藏
+      countdown: false,
+      // 标题显示隐藏
+      qlListShow: false,
+      // 竞拍按钮显示隐藏
+      auctionbuttonShow: true
     };
   },
   created: function() {
@@ -332,12 +414,16 @@ export default {
     }
   },
   methods: {
+    formatDate: function(time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+    },
     countTime: function() {
       //获取当前时间
       var date = new Date();
       var now = date.getTime();
       //设置截止时间
-      var endDate = new Date("2020-6-3-23:23:23");
+      var endDate = new Date(this.endtime);
       var end = endDate.getTime();
       //时间差
       var leftTime = end - now;
@@ -347,6 +433,12 @@ export default {
         this.h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
         this.m = Math.floor((leftTime / 1000 / 60) % 60);
         this.s = Math.floor((leftTime / 1000) % 60);
+      }
+      if (leftTime <= 0) {
+        this.d = 0;
+        this.h = 0;
+        this.m = 0;
+        this.s = 0;
       }
       //递归每秒调用countTime方法，显示动态时间效果
       setTimeout(this.countTime, 1000);
@@ -381,7 +473,7 @@ export default {
     // 写回答按钮
     myAnswer() {
       const _this = this;
-      _this.qdeditShow = true;
+      // _this.qdeditShow = true;
     },
     // 显示竞拍者遮罩
     auction() {
@@ -406,7 +498,7 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data;
-            console.log(_this.clientID);
+            _this.qlListShow = true;
             // 确定登录人是否是竞拍者之一
             for (var i = 0; i < _this.qlList.bls.length; i++) {
               if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
@@ -417,6 +509,18 @@ export default {
             if (_this.clientID == _this.qlList.que.createBy) {
               _this.auctionClient = true;
             }
+            // 确实当前问题是否已经有人开始作答
+            if (_this.qlList.que.answerer == _this.clientID) {
+              _this.endtime = _this.formatDate(_this.qlList.que.endTime);
+              _this.auctionShow = false;
+              _this.qdeditShow = true;
+              _this.auctionbuttonShow = false;
+              _this.countdown = true;
+              _this.countTime();
+            }
+            if (_this.qlList.answer.content) {
+              _this.value = _this.qlList.answer.content;
+            }
           }
         })
         .catch(function(error) {
@@ -424,44 +528,182 @@ export default {
         });
     },
     // 选他答
-    auctions() {
+    auctions(clienid) {
       const _this = this;
       this.$prompt("请输入您的账号密码", "CourseWhale", {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
         .then(({ value }) => {
-          // _this
-          //   .axios({
-          //     method: "get",
-          //     url: `${_this.URLport.serverPath}/Questions/Choose`,
-          //     async: false,
-          //     params: {
-          //       questionid: _this.$route.params.question_id,
-          //       clienid: "",
-          //       password: ""
-          //     },
-          //     xhrFields: {
-          //       withCredentials: true
-          //     },
-          //     headers: {
-          //       Authorization: `Bearer ${localStorage.getItem("token")}`
-          //     }
-          //   })
-          //   .then(function(res) {
-          //     if (res.data.status == 1) {
-          //       console.log(res);
-          // _this.$message({
-          //   type: "success",
-          //   message: "竞拍者已经可以开始作答!"
-          // });
-          //     }
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error);
-          //   });
+          _this
+            .axios({
+              method: "get",
+              url: `${_this.URLport.serverPath}/Questions/Choose`,
+              async: false,
+              params: {
+                questionid: _this.$route.params.question_id,
+                clienid: clienid,
+                password: value
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.endtime = _this.formatDate(res.data.data);
+                _this.countdown = true;
+                _this.countTime();
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
         })
         .catch(() => {});
+    },
+    // 通知留言
+    inform(item) {
+      const _this = this;
+      console.log(item);
+
+      this.$prompt("请输入您要说的话", "CourseWhale", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          var json = {};
+          json.ReceiveId = item.createBy; //接收人ID
+          json.ContentsUrl = value; //通知内容
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Notice/Add`,
+              async: false,
+              data: json,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.$message({
+                  message: "发布成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发布失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {});
+    },
+    // 提交回答
+    submit() {
+      const _this = this;
+      // 如果这个答案保存过就把ID和CreateBy赋值如果是第一次就不赋值
+      var json = {};
+
+      if (_this.qlList.answer != null) {
+        json = _this.qlList.answer;
+        json.content = this.value; //答案内容
+        // json.Id = _this.qlList.answer.id; //答案ID
+        // json.CreateBy = _this.qlList.answer.createBy; //答题人ID
+      } else {
+        json.questionId = _this.$route.params.question_id; //问题ID
+        json.content = this.value; //答案内容
+        json.id = 0; //答案ID
+        json.createBy = 0; //答题人ID
+      }
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/Answer/Submit`,
+          async: false,
+          data: json,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.$message({
+              message: "发布成功",
+              type: "success"
+            });
+          } else {
+            _this.$message({
+              message: "发布失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 保存进度
+    save() {
+      const _this = this;
+      // 如果这个答案保存过就把ID和CreateBy赋值如果是第一次就不赋值
+      var json = {};
+
+      if (_this.qlList.answer != null) {
+        json = _this.qlList.answer;
+        json.content = this.value; //答案内容
+        // json.Id = _this.qlList.answer.id; //答案ID
+        // json.CreateBy = _this.qlList.answer.createBy; //答题人ID
+      } else {
+        json.questionId = _this.$route.params.question_id; //问题ID
+        json.content = this.value; //答案内容
+        json.id = 0; //答案ID
+        json.createBy = 0; //答题人ID
+      }
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/Answer/Add`,
+          async: false,
+          data: json,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          // if (res.data.status == 1) {
+          //   _this.$message({
+          //     message: "发布成功",
+          //     type: "success"
+          //   });
+          // } else {
+          //   _this.$message({
+          //     message: "发布失败",
+          //     type: "error"
+          //   });
+          // }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     }
   },
   mounted() {
@@ -470,6 +712,7 @@ export default {
   watch: {
     value(newValue) {
       this.myValue = newValue;
+      console.log(newValue);
     },
     myValue(newValue) {
       this.$emit("input", newValue);

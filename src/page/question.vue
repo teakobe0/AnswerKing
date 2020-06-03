@@ -491,7 +491,7 @@ export default {
           console.log(error);
         });
     },
-    // 高悬赏展示
+    // 高悬赏展示高悬赏展示
     topCurrency() {
       const _this = this;
       _this
@@ -607,7 +607,7 @@ export default {
           _this
             .axios({
               method: "post",
-              url: `${_this.URLport.serverPath}/Questions/AddBidding`,
+              url: `${_this.URLport.serverPath}/Bidding/Add`,
               async: false,
               data: _this.auction,
               xhrFields: {
@@ -626,7 +626,7 @@ export default {
                 });
               } else {
                 _this.$message({
-                  message: "竞拍失败！",
+                  message: res.data.msg,
                   type: "error"
                 });
               }
