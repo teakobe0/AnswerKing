@@ -33,7 +33,7 @@
   border-bottom: 1px solid #f6f6f6;
   padding-bottom: 22px;
 }
-.ql-ask-title-1 {
+.ql-ask-title div {
   display: inline-block;
   padding: 10px 20px;
   border-radius: 25px;
@@ -42,8 +42,11 @@
   margin-right: 22px;
   color: #444;
 }
-.ql-ask-title-1:hover {
-  background: rgba(0, 132, 255, 0.08);
+.ql-ask-title div:hover {
+  background: rgba(0,132,255,.08);
+}
+.qlasktitle0back{
+  background: rgba(0,132,255,.08) !important;
 }
 .ql-ask-con {
   width: 940px;
@@ -212,15 +215,15 @@
         <div class="ql-left">
           <div class="ql-ask">
             <div class="ql-ask-title">
-              <div class="ql-ask-title-1" @click="newTime">
+              <div :class="{qlasktitle0back:num==0}" @click="newTime">
                 <i class="el-icon-time"></i>
                 新提问
               </div>
-              <div class="ql-ask-title-1" @click="topCurrency">
+              <div :class="{qlasktitle0back:num==1}" @click="topCurrency">
                 <i class="el-icon-coin"></i>
                 高悬赏
               </div>
-              <div class="ql-ask-title-1">
+              <div :class="{qlasktitle0back:num==2}" @click="accomplish">
                 <i class="el-icon-s-opportunity"></i>
                 已完成
               </div>
@@ -424,12 +427,13 @@ export default {
       qlShade: false,
       qlreplyShade: false,
       value1: "",
-      value2: ""
+      value2: "",
+      num:0
     };
   },
   created: function() {
     const _this = this;
-    _this.quizList();
+    _this.newTime();
   },
   filters: {
     formatDate: function(time) {
@@ -468,6 +472,7 @@ export default {
     // 新提问展示
     newTime() {
       const _this = this;
+      _this.num = 0;
       _this
         .axios({
           method: "get",
@@ -494,6 +499,7 @@ export default {
     // 高悬赏展示高悬赏展示
     topCurrency() {
       const _this = this;
+      _this.num = 1;
       _this
         .axios({
           method: "get",
@@ -501,6 +507,33 @@ export default {
           async: false,
           params: {
             type: "currency",
+            pagenum: 1,
+            pagesize: 20
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data.data;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 已完成展示
+    accomplish() {
+      const _this = this;
+      _this.num = 2;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            type: "finish",
             pagenum: 1,
             pagesize: 20
           },
@@ -528,7 +561,6 @@ export default {
           type: "warning"
         });
       }
-      
     },
     // 隐藏我要提问
     CloseQuitBt() {

@@ -39,10 +39,14 @@
       <div class="message">
         <div style="text-align:center" v-show="dataNull == true">{{$t('inform.con1')}}</div>
         <div v-for="item in messages">
-          <span class="sendname" v-show="item.sss == 1">{{item.sendname}}</span>
-          {{$t('inform.con2')}}：{{item.content}}
+          <span class="sendname">{{item.sendname}}</span>
+          <span v-show="item.type == 1">{{$t('inform.con2')}}：</span>
+          <span v-show="item.type == 2">给您留言：</span>
+          <span>{{item.content}}</span>
+          
           <el-button
             @click="gomessage(item.contentsUrl,item.id)"
+            v-show="item.type == 1"
             style="float:right;"
             size="mini"
           >{{$t('inform.con3')}}</el-button>

@@ -82,9 +82,22 @@
                     disabled
                     title="竞拍者已经开始作答,禁止修改"
                   >编辑</el-button>-->
-                  <el-button type="text" size="mini" @click="editQuiz(scope.row)">修改</el-button>
-                  <el-button type="text" size="mini" @click="evaluate">评价</el-button>
-                  <el-button type="text" size="mini" @click="service">客服</el-button>
+                  <el-button type="text" size="mini" @click="editQuiz(scope.row)" v-show="scope.row.que.status <= 2">编辑</el-button>
+                  <el-button type="text" size="mini" @click="editQuiz(scope.row)" v-show="scope.row.que.status >= 3" disabled>编辑</el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="evaluate(scope.row.que.id)"
+                    v-show="scope.row.que.status >= 3"
+                  >评价</el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="evaluate(scope.row.que.id)"
+                    disabled
+                    v-show="scope.row.que.status <= 2"
+                  >评价</el-button>
+                  <el-button type="text" size="mini" @click="service(scope.row.que.id)">客服</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -137,14 +150,42 @@
                     size="medium"
                     @click="releaseQl('QuestionsQuiz')"
                   >发布问题</el-button>
+                  <el-button
+                    size="medium"
+                    @click="CloseQuitBt"
+                    style="margin-right:10px;float:right;"
+                  >取消</el-button>
                 </div>
 
-                <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div>
+                <!-- <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div> -->
               </div>
             </div>
             <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
               <div class="ql-editQuzi">
-                <div class="qlreleaseClose el-icon-close" @click="CloseEvaluate"></div>
+                <div style="min-height:117px;">
+                  <div style="float:left;">您的评价:</div>
+                  <el-switch
+                    style="display: block;float:right;"
+                    v-model="evaluateSwitch"
+                    active-color="#13ce66"
+                    inactive-color="#ff4949"
+                    active-text="好评"
+                    inactive-text="差评"
+                  ></el-switch>
+                  <el-input v-model="evaluateInput" style="margin-top:10px;margin-bottom:10px;"></el-input>
+                  <el-button
+                    style="float:right;"
+                    type="primary"
+                    size="medium"
+                    @click="evaluateCon"
+                  >确定</el-button>
+                  <el-button
+                    style="float:right;margin-right:10px;"
+                    size="medium"
+                    @click="CloseEvaluate"
+                  >取消</el-button>
+                </div>
+                <!-- <div class="qlreleaseClose el-icon-close" @click="CloseEvaluate"></div> -->
               </div>
             </div>
             <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
@@ -173,12 +214,14 @@
             <el-table :data="auctionTableData" border style="width: 100%" v-if="auctionShow">
               <el-table-column label="发布日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.answer.createTime | formatDate}}</span>
+                  <span>{{ scope.row.bidding.createTime | formatDate}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="题目">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.title}}</span>
+                  <router-link
+                    :to="'/questionDetails/'+scope.row.bidding.questionId"
+                  >{{ scope.row.title}}</router-link>
                 </template>
               </el-table-column>
             </el-table>
@@ -225,11 +268,15 @@ export default {
         Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
       },
       // 我的竞拍
-      auctionTableData:[],
-      auctionShow:false,
+      auctionTableData: [],
+      auctionShow: false,
       qlShade: false,
       evaluateShade: false,
-      serviceShade: false
+      serviceShade: false,
+      // 评价内容
+      evaluateInput: "",
+      evaluateSwitch: true,
+      evaluateId: 0
     };
   },
   created: function() {
@@ -267,24 +314,24 @@ export default {
             _this.quizShow = true;
             for (var i = 0; i < _this.quizTableData.length; i++) {
               _this.$set(_this.quizTableData[i], "type", "");
-              if(_this.quizTableData[i].que.status == 1){
-                _this.quizTableData[i].type = "保存"
-              } 
-              if(_this.quizTableData[i].que.status == 2){
-                _this.quizTableData[i].type = "正在竞拍"
-              } 
-              if(_this.quizTableData[i].que.status == 3){
-                _this.quizTableData[i].type = "回答中"
-              } 
-              if(_this.quizTableData[i].que.status == 4){
-                _this.quizTableData[i].type = "提交修改"
-              } 
-              if(_this.quizTableData[i].que.status == 5){
-                _this.quizTableData[i].type = "申请客服"
-              } 
-              if(_this.quizTableData[i].que.status == 6){
-                _this.quizTableData[i].type = "已完成"
-              } 
+              if (_this.quizTableData[i].que.status == 1) {
+                _this.quizTableData[i].type = "保存";
+              }
+              if (_this.quizTableData[i].que.status == 2) {
+                _this.quizTableData[i].type = "正在竞拍";
+              }
+              if (_this.quizTableData[i].que.status == 3) {
+                _this.quizTableData[i].type = "已回答";
+              }
+              if (_this.quizTableData[i].que.status == 4) {
+                _this.quizTableData[i].type = "提交修改";
+              }
+              if (_this.quizTableData[i].que.status == 5) {
+                _this.quizTableData[i].type = "申请客服";
+              }
+              if (_this.quizTableData[i].que.status == 6) {
+                _this.quizTableData[i].type = "已完成";
+              }
             }
           }
         })
@@ -316,7 +363,7 @@ export default {
           console.log(error);
         });
     },
-    auctionlist(){
+    auctionlist() {
       const _this = this;
       _this
         .axios({
@@ -400,18 +447,106 @@ export default {
         }
       });
     },
-    evaluate() {
+    evaluate(id) {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
+      _this.evaluateId = id;
+      _this.evaluateSwitch = true;
+    },
+    evaluateCon() {
+      const _this = this;
+      let grades = 5;
+      if (_this.evaluateSwitch == false) {
+        grades = 1;
+      }
+      console.log(_this.evaluateId);
+      _this
+        .axios({
+          method: "put",
+          url: `${_this.URLport.serverPath}/Questions/Evaluate`,
+          async: false,
+          params: {
+            questionid: _this.evaluateId,
+            content: _this.evaluateInput,
+            grade: grades
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.evaluateShade = !_this.evaluateShade;
+            _this.quizList();
+            _this.$message({
+              message: "评价成功",
+              type: "success"
+            });
+          } else {
+            _this.$message({
+              message: "评价失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    service(id) {
+      const _this = this;
+      // _this.serviceShade = !_this.serviceShade;
+      console.log(id);
+      this.$prompt("您要对客服说:", "CourseWhale", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          _this
+            .axios({
+              method: "put",
+              url: `${_this.URLport.serverPath}/Questions/ForService`,
+              async: false,
+              params: {
+                questionid: id,
+                reason: value
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.$message({
+                  message: "发送成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发送失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {});
     },
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
     },
-    service() {
-      const _this = this;
-      _this.serviceShade = !_this.serviceShade;
-    },
+
     CloseService() {
       const _this = this;
       _this.serviceShade = !_this.serviceShade;

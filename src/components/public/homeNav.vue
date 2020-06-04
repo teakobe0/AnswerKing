@@ -401,9 +401,9 @@ export default {
           }
         })
         .then(function(res) {
-          _this.$store.state.logo.message = res.data.data.length;
-          _this.messageLength = res.data.data.length;
           if (res.data.data.length >= 1) {
+            _this.$store.state.logo.message = res.data.data.length;
+            _this.messageLength = res.data.data.length;
             _this.ismessage = true;
           } else {
             _this.ismessage = false;
@@ -412,6 +412,7 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
+        setTimeout(this.gainmessage, 5000);
     },
     // 获取个人信息
     gainpersonal: function() {
