@@ -412,7 +412,7 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-        setTimeout(this.gainmessage, 5000);
+        // setTimeout(this.gainmessage, 5000);
     },
     // 获取个人信息
     gainpersonal: function() {

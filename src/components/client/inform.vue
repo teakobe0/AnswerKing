@@ -39,17 +39,39 @@
       <div class="message">
         <div style="text-align:center" v-show="dataNull == true">{{$t('inform.con1')}}</div>
         <div v-for="item in messages">
-          <span class="sendname">{{item.sendname}}</span>
-          <span v-show="item.type == 1">{{$t('inform.con2')}}：</span>
-          <span v-show="item.type == 2">给您留言：</span>
-          <span>{{item.content}}</span>
-          
-          <el-button
-            @click="gomessage(item.contentsUrl,item.id)"
-            v-show="item.type == 1"
-            style="float:right;"
-            size="mini"
-          >{{$t('inform.con3')}}</el-button>
+          <div style="float:left;width: 868px;">
+            <span class="sendname">{{item.sendname}}</span>
+            <span v-show="item.type == 1">{{$t('inform.con2')}}：</span>
+            <span v-show="item.type == 2">给您留言：</span>
+            <span>{{item.content}}</span>
+          </div>
+          <div style="float:right;">
+            <el-button
+              @click="del(item.id)"
+              v-show="item.type == 1"
+              style="float:right;margin-left:10px;"
+              size="mini"
+            >删除</el-button>
+            <el-button
+              @click="gomessage(item.contentsUrl,item.id)"
+              v-show="item.type == 1"
+              style="float:right;"
+              size="mini"
+            >{{$t('inform.con3')}}</el-button>
+
+            <el-button
+              @click="del(item.id)"
+              v-show="item.type == 2"
+              style="float:right;"
+              size="mini"
+            >删除</el-button>
+            <el-button
+              @click="inform(item.sendId,item.sendname)"
+              v-show="item.type == 2 && item.sendId != 0"
+              style="float:right;"
+              size="mini"
+            >回复</el-button>
+          </div>
         </div>
       </div>
     </div>
@@ -130,28 +152,34 @@ export default {
           }
         })
         .then(function(res) {
-          _this.$store.state.logo.message = res.data.data.length;
-          _this.messages = res.data.data;
-          console.log(_this.messages)
-          if (_this.messages.length == 0) {
-            _this.dataNull = true;
-          } else {
-            for (var i = 0; i < _this.messages.length; i++) {
-              _this.$set(_this.messages[i], "content", []);
-              _this.$set(_this.messages[i], "type", 0);
-              var a = _this.messages[i].contentsUrl.split(",");
-              var b = a[0].split(":");
-              if (b.length >= 2) {
-                b.splice(0, 1);
-                _this.messages[i].content = b[0];
-              } else {
-                _this.messages[i].content = b[0];
-              }
-              var regPos = /^\+?[1-9][0-9]*$/;
-              if(regPos.test(a[a.length-1])){
-                _this.messages[i].type = 1;
-              }else {
-                _this.messages[i].type = 2;
+          if (res.data.status == 1) {
+            _this.$store.state.logo.message = res.data.data.length;
+            _this.messages = res.data.data;
+            if (_this.messages.length == 0) {
+              _this.dataNull = true;
+            } else {
+              for (var i = 0; i < _this.messages.length; i++) {
+                _this.$set(_this.messages[i], "content", []);
+                _this.$set(_this.messages[i], "type", 0);
+                var a = _this.messages[i].contentsUrl.split(",");
+                var regPos = /^\+?[1-9][0-9]*$/;
+                if (regPos.test(a[a.length - 1])) {
+                  _this.messages[i].type = 1; //1代表这是从评论过来的
+                  var b = a[0].split(":");
+                  var c = [];
+                  for (var j = 1; j < a.length - 2; j++) {
+                    c.push(a[j]);
+                  }
+                  if (b.length >= 2) {
+                    b.splice(0, 1);
+                    _this.messages[i].content = b[0] + "," + c.join();
+                  } else {
+                    _this.messages[i].content = b[0] + "," + c.join();
+                  }
+                } else {
+                  _this.messages[i].type = 2; //2代表这是从问答留言过来的
+                  _this.messages[i].content = _this.messages[i].contentsUrl;
+                }
               }
             }
           }
@@ -162,6 +190,33 @@ export default {
     },
     // 跳转评论页面
     gomessage: function(url, ids) {
+      const _this = this;
+      // var c = "women,jiushi,234234m2,234,23,45";
+      // var a = c.split(",");
+      // // console.log(a)
+      // var b = [];
+      // var c = "";
+      // for (var i = 0; i < a.length - 2; i++) {
+      //   b.push(a[i]);
+      // }
+      // console.log(b.join());
+      // console.log(c);
+      var a = url.split(",");
+      // _this.ids = a[a,length-2];
+      // _this.classinfoid = a[a.length-1];
+      _this.$router.push({
+        path:
+          "/classes/" +
+          a[a.length - 2] +
+          "/content/" +
+          a[a.length - 1] +
+          "/weeks/" +
+          0 +
+          "/weektype/" +
+          0
+      });
+    },
+    del(ids) {
       const _this = this;
       _this
         .axios({
@@ -176,19 +231,58 @@ export default {
           }
         })
         .then(function(res) {
-          var a = url.split(",");
-          _this.ids = a[1];
-          _this.classinfoid = a[2];
-          _this.$router.push({
-            path: '/classes/'+a[1]+'/content/'+a[2]+'/weeks/'+0+'/weektype/'+0,
-          });
-          
           _this.gainmessage();
         })
         .catch(function(error) {
           console.log(error);
         });
     },
+    // 通知留言
+    inform(item, name) {
+      const _this = this;
+      console.log(item);
+
+      this.$prompt("对" + " " + name + " " + "留言:", "CourseWhale", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          var json = {};
+          json.ReceiveId = item; //接收人ID
+          json.ContentsUrl = value; //通知内容
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Notice/Add`,
+              async: false,
+              data: json,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.gainmessage();
+                _this.$message({
+                  message: "发布成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发布失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {});
+    }
   }
 };
 </script>

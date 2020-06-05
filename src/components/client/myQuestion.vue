@@ -67,7 +67,7 @@
                   <span>{{ scope.row.type}}</span>
                 </template>
               </el-table-column>
-              <el-table-column fixed="right" label="操作" width="130">
+              <el-table-column label="操作" width="190">
                 <template slot-scope="scope">
                   <!-- <el-button
                     v-show="scope.row.que.status == 1"
@@ -82,22 +82,39 @@
                     disabled
                     title="竞拍者已经开始作答,禁止修改"
                   >编辑</el-button>-->
-                  <el-button type="text" size="mini" @click="editQuiz(scope.row)" v-show="scope.row.que.status <= 2">编辑</el-button>
-                  <el-button type="text" size="mini" @click="editQuiz(scope.row)" v-show="scope.row.que.status >= 3" disabled>编辑</el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="editQuiz(scope.row)"
+                    v-show="scope.row.que.status <= 3"
+                  >编辑</el-button>
+                  <el-button type="text" size="mini" v-show="scope.row.que.status > 3" disabled>编辑</el-button>
                   <el-button
                     type="text"
                     size="mini"
                     @click="evaluate(scope.row.que.id)"
-                    v-show="scope.row.que.status >= 3"
+                    v-show="scope.row.que.status == 4"
                   >评价</el-button>
+                  <el-button type="text" size="mini" disabled v-show="scope.row.que.status != 4">评价</el-button>
                   <el-button
                     type="text"
                     size="mini"
-                    @click="evaluate(scope.row.que.id)"
+                    @click="service(scope.row.que.id)"
+                    v-show="scope.row.que.status == 7"
+                  >客服</el-button>
+                  <el-button type="text" size="mini" disabled v-show="scope.row.que.status != 7">客服</el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
+                    @click="commitchanges(scope.row.que.id)"
+                    v-show="scope.row.que.status == 4"
+                  >提交修改</el-button>
+                  <el-button
+                    type="text"
+                    size="mini"
                     disabled
-                    v-show="scope.row.que.status <= 2"
-                  >评价</el-button>
-                  <el-button type="text" size="mini" @click="service(scope.row.que.id)">客服</el-button>
+                    v-show="scope.row.que.status != 4"
+                  >提交修改</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -132,11 +149,11 @@
                       </el-form-item>
                     </div>
                     <div style="float:right;">
-                      <div class="PR">悬赏金</div>
+                      <div class="PR">鲸灵币</div>
                       <el-form-item prop="Currency">
                         <el-input
                           v-model="QuestionsQuiz.Currency"
-                          placeholder="悬赏金(选填)"
+                          placeholder="鲸灵币(选填)"
                           style="width:130px;"
                         ></el-input>
                       </el-form-item>
@@ -265,7 +282,7 @@ export default {
             trigger: "change"
           }
         ],
-        Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
+        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
       },
       // 我的竞拍
       auctionTableData: [],
@@ -321,16 +338,22 @@ export default {
                 _this.quizTableData[i].type = "正在竞拍";
               }
               if (_this.quizTableData[i].que.status == 3) {
-                _this.quizTableData[i].type = "已回答";
+                _this.quizTableData[i].type = "已选竞拍者";
               }
               if (_this.quizTableData[i].que.status == 4) {
-                _this.quizTableData[i].type = "提交修改";
+                _this.quizTableData[i].type = "已回答";
               }
               if (_this.quizTableData[i].que.status == 5) {
-                _this.quizTableData[i].type = "申请客服";
+                _this.quizTableData[i].type = "提交修改";
               }
               if (_this.quizTableData[i].que.status == 6) {
+                _this.quizTableData[i].type = "申请客服";
+              }
+              if (_this.quizTableData[i].que.status == 7) {
                 _this.quizTableData[i].type = "已完成";
+              }
+              if (_this.quizTableData[i].que.status == 8) {
+                _this.quizTableData[i].type = "已关闭";
               }
             }
           }
@@ -480,7 +503,6 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            _this.evaluateShade = !_this.evaluateShade;
             _this.quizList();
             _this.$message({
               message: "评价成功",
@@ -541,6 +563,43 @@ export default {
             });
         })
         .catch(() => {});
+    },
+    commitchanges(id) {
+      const _this = this;
+      _this
+        .axios({
+          method: "put",
+          url: `${_this.URLport.serverPath}/Questions/Edit`,
+          async: false,
+          params: {
+            questionid: id,
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.evaluateShade = !_this.evaluateShade;
+            _this.quizList();
+            _this.$message({
+              message: "评价成功",
+              type: "success"
+            });
+          } else {
+            _this.$message({
+              message: "评价失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     CloseEvaluate() {
       const _this = this;

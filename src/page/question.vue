@@ -251,7 +251,7 @@
                     {{item.endTime | formatDate}}
                   </span>
                   <span>
-                    <i class="el-icon-coin" title="悬赏金"></i>
+                    <i class="el-icon-coin" title="鲸灵币"></i>
                     {{item.currency}}
                   </span>
                 </div>
@@ -317,11 +317,11 @@
               </el-form-item>
             </div>
             <div style="float:right;">
-              <div class="PR">悬赏金</div>
+              <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model="QuestionsQuiz.Currency"
-                  placeholder="悬赏金(选填)"
+                  placeholder="鲸灵币(选填)"
                   style="width:130px;"
                 ></el-input>
               </el-form-item>
@@ -352,9 +352,9 @@
               </el-form-item>
             </div>
             <div style="float:right;">
-              <div class="PR">悬赏金</div>
+              <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
-                <el-input v-model="auction.Currency" placeholder="悬赏金(选填)" style="width:130px;"></el-input>
+                <el-input v-model="auction.Currency" placeholder="鲸灵币(选填)" style="width:130px;"></el-input>
               </el-form-item>
             </div>
           </div>
@@ -404,7 +404,7 @@ export default {
             trigger: "change"
           }
         ],
-        Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
+        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
       },
       // 我要答列表
       auction: {
@@ -421,7 +421,7 @@ export default {
             trigger: "change"
           }
         ],
-        Currency: [{ required: true, message: "请输入悬赏金", trigger: "blur" }]
+        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
       },
       qlList: [],
       qlShade: false,

@@ -77,6 +77,7 @@
   width: 1300px;
   margin: 0 auto;
   overflow: hidden;
+  margin-bottom: 20px;
   min-height: 320px;
 }
 .qd-editNull {
@@ -137,10 +138,21 @@
   border-bottom: 1px solid #f6f6f6;
 }
 .autionShadeInfo img {
-  width: 50px;
-  height: 50px;
-  vertical-align: middle;
+  width: 40px;
+  min-width: 40px;
+  min-height: 40px;
+  vertical-align: top;
   margin-right: 10px;
+  margin-top: 5px;
+}
+.autionShadeInfo b {
+  width: 110px;
+  font-size: 14px;
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin-top: 16px;
 }
 .auctionShade-con-Info {
   /*flex: 1 1;*/
@@ -151,7 +163,8 @@
 .auctionShade-con-TR {
   position: absolute;
   bottom: 16px;
-  left: 170px;
+  right: 20px;
+  font-size: 14px;
 }
 .auctionShade-con-time {
   margin-right: 0px;
@@ -169,19 +182,16 @@
   line-height: 320px;
   text-align: center;
   color: rgb(23, 114, 191);
-  position: absolute;
-  width: 1300px;
-  top: 230px;
-  left: 50%;
-  background: rgb(246, 246, 246);
-  margin-left: -650px;
 }
 .countTime {
   position: absolute;
   right: 0px;
-  bottom:0px;
+  bottom: 0px;
 }
 /* 竞拍遮罩区域结束 */
+.answerShow {
+  border: 1px solid #cac8c8;
+}
 </style>
 <template>
   <div class="questionDetails">
@@ -219,14 +229,16 @@
         </div>
       </div>
       <div class="qd-editCon">
-        <div class="nullLogin" v-if="nullLoginShow">登录之后查看答案</div>
+        
         <div style="width:1300px;min-height:320px;" v-if="qlListShow" v-loading="loading">
+          <div class="nullLogin" v-if="nullLoginShow">登录之后查看答案</div>
+          <div class="answerShow" v-show="answerShows" v-html="myValue"></div>
           <div style="float: left">
-            <div class="qd-editNull" v-show="qdeditShow == false">
+            <div class="qd-editNull" v-show="qdeditnullShow">
               <p>暂时还没有回答,快去竞拍回答赢取鲸灵币吧!</p>
             </div>
-            <div class="qd-edit" v-show="qdeditShow == true">
-              <editor id="tinymce" v-model="value" :init="init"></editor>
+            <div class="qd-edit" v-show="qdeditShow">
+              <editor id="tinymce" v-model="myValue" :init="init"></editor>
               <el-button
                 type="primary"
                 class="qd-edit-submit"
@@ -258,6 +270,7 @@
                   <div class="auctionShade-con-TR" v-if="auctionClient">
                     <span
                       class="auctionShade-con-time el-icon-time"
+                      title="截止日期"
                     >{{item.bidding.endTime | formatDate}}</span>
                   </div>
 
@@ -273,12 +286,13 @@
                     style="float:right;margin-top:2px;margin-right: 11px;"
                     v-if="auctionClient"
                     title="通知留言"
-                    @click="inform(item.bidding)"
+                    @click="inform(item.bidding,item.name)"
                   ></i>
                   <span
                     class="auctionShade-con-reward el-icon-coin"
-                    style="float:right;margin-top:5px;margin-right:11px;"
+                    style="float:right;margin-top:7px;margin-right:11px;font-size:14px;width:38px;"
                     v-if="auctionClient"
+                    title="悬赏金"
                   >{{item.bidding.currency}}</span>
                 </div>
               </div>
@@ -441,7 +455,11 @@ export default {
       savesubmitShow: true,
       // 加载中
       loading: true,
-      nullLoginShow: false
+      nullLoginShow: false,
+      // 答案展示
+      answerShows: false,
+      // 暂时没人回答
+      qdeditnullShow: true
     };
   },
   created: function() {
@@ -562,13 +580,15 @@ export default {
                 }
               }
 
-              if (_this.qlList.que.status >= 3) {
+              if (_this.qlList.que.status == 4 || _this.qlList.que.status >= 6) {
                 _this.auctionClient = false;
                 _this.auctionbuttonShow = false;
                 _this.auctionShow = false;
-                _this.qdeditShow = true;
+                _this.qdeditShow = false;
+                _this.qdeditnullShow = false;
                 _this.savesubmitShow = false;
-                console.log("我是提问者并且问题已经回答完");
+                _this.answerShows = true;
+                console.log("问题已经回答完");
               } else if (_this.clientID == _this.qlList.que.createBy) {
                 // 确认登录人是否是提问者
                 _this.auctionClient = true;
@@ -576,25 +596,36 @@ export default {
                 _this.qdeditShow = false;
                 _this.savesubmitShow = false;
                 console.log("我是提问者");
-              }
-
-              // 确认登录人是否是答题人
-              if (_this.qlList.que.answerer == _this.clientID) {
+              } else if (_this.qlList.que.answerer == _this.clientID) {
                 _this.endtime = _this.formatDate(_this.qlList.que.endTime);
                 _this.auctionShow = false;
                 _this.qdeditShow = true;
                 _this.auctionbuttonShow = false;
+                _this.qdeditnullShow = false;
                 _this.countdown = true;
                 _this.countTime();
                 console.log("我是答题人");
+              }else if(_this.qlList.que.status == 5 && _this.clientID == _this.qlList.que.answerer){
+                console.log("提交修改状态并且我是答题人")
+                _this.qdeditShow = true;
+                _this.savesubmitShow = true;
               }
+              // 确认登录人是否是答题人
+
               if (_this.qlList.answer != null) {
-                _this.value = _this.qlList.answer.content;
-                console.log("我是答题人");
+                _this.myValue = _this.qlList.answer.content;
+                console.log("有答案");
               }
             } else {
               _this.qdeditShow = false;
               _this.nullLoginShow = true;
+              _this.auctionClient = false;
+              _this.auctionbuttonShow = false;
+              _this.auctionShow = false;
+              _this.qdeditShow = false;
+              _this.qdeditnullShow = false;
+              _this.savesubmitShow = false;
+              _this.answerShows = false;
             }
           }
         })
@@ -630,9 +661,11 @@ export default {
             .then(function(res) {
               console.log(res);
               if (res.data.status == 1) {
-                _this.endtime = _this.formatDate(res.data.data);
-                _this.countdown = true;
-                _this.countTime();
+                _this.auctionClient = false;
+                _this.$message({
+                  message: "发布成功,竞拍者可以开始答题。",
+                  type: "success"
+                });
               }
             })
             .catch(function(error) {
@@ -642,11 +675,11 @@ export default {
         .catch(() => {});
     },
     // 通知留言
-    inform(item) {
+    inform(item, name) {
       const _this = this;
       console.log(item);
 
-      this.$prompt("请输入您要说的话", "CourseWhale", {
+      this.$prompt("对" + " " + name + " " + "留言:", "CourseWhale", {
         confirmButtonText: "确定",
         cancelButtonText: "取消"
       })
@@ -694,12 +727,12 @@ export default {
 
       if (_this.qlList.answer != null) {
         json = _this.qlList.answer;
-        json.content = this.value; //答案内容
+        json.content = this.myValue; //答案内容
         // json.Id = _this.qlList.answer.id; //答案ID
         // json.CreateBy = _this.qlList.answer.createBy; //答题人ID
       } else {
         json.questionId = _this.$route.params.question_id; //问题ID
-        json.content = this.value; //答案内容
+        json.content = this.myValue; //答案内容
         json.id = 0; //答案ID
         json.createBy = 0; //答题人ID
       }
@@ -786,7 +819,7 @@ export default {
   },
   beforeRouteLeave: function(to, from, next) {
     next(false);
-    if (this.value != "写回答...") {
+    if (this.value != "写回答..." && this.qdeditShow) {
       this.$confirm("离开本页面?请注意保存您的数据.", "CourseWhale", {
         distinguishCancelAndClose: true,
         confirmButtonText: "确定",
