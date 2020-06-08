@@ -23,7 +23,6 @@
 }
 .ql-ask {
   background-color: #fff;
-  padding: 0px 0px 22px 0px;
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
 }
 .ql-ask-title {
@@ -43,10 +42,10 @@
   color: #444;
 }
 .ql-ask-title div:hover {
-  background: rgba(0,132,255,.08);
+  background: rgba(0, 132, 255, 0.08);
 }
-.qlasktitle0back{
-  background: rgba(0,132,255,.08) !important;
+.qlasktitle0back {
+  background: rgba(0, 132, 255, 0.08) !important;
 }
 .ql-ask-con {
   width: 940px;
@@ -246,6 +245,8 @@
                   <el-button type="text" icon="el-icon-time" class="ql-ask-reply-2">稍后答</el-button>-->
                 </div>
                 <div style="float:right;line-height:40px;color:#8590a6;">
+                  <!-- <span v-show="item.status == 2">正在竞拍</span>
+                  <span v-show="item.status == 7">已完成</span>-->
                   <span style="margin-right:11px;">
                     <i class="el-icon-time" title="截止日期"></i>
                     {{item.endTime | formatDate}}
@@ -428,12 +429,16 @@ export default {
       qlreplyShade: false,
       value1: "",
       value2: "",
-      num:0
+      num: 0,
+      typeNum: "time",
+      pagenums: 1,
+      pagesizes: 5
     };
   },
   created: function() {
     const _this = this;
-    _this.newTime();
+    _this.quizList();
+    _this.handleScroll();
   },
   filters: {
     formatDate: function(time) {
@@ -441,7 +446,60 @@ export default {
       return formatDate(date, "yyyy-MM-dd-hh:mm");
     }
   },
+  mounted() {
+    var _this = this;
+    if (_this.$route.fullPath == "/question") {
+      // window.addEventListener("scroll", _this.handleScroll);
+    }
+
+    //window.addEventListener('scroll', function () {
+    //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
+    //    //console.log("文档高度" + document.body.offsetHeight); // 文档高度
+    //});
+  },
   methods: {
+    handleScroll() {
+      var _this = this;
+      if (_this.$route.fullPath == "/question") {
+        window.onscroll = function() {
+          var scrollTop =
+            document.documentElement.scrollTop || document.body.scrollTop;
+          var windowHeight =
+            document.documentElement.clientHeight || document.body.clientHeight;
+          var scrollHeight =
+            document.documentElement.scrollHeight || document.body.scrollHeight;
+
+          if (scrollTop + windowHeight == scrollHeight) {
+            _this
+              .axios({
+                method: "get",
+                url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+                async: false,
+                params: {
+                  type: _this.typeNum,
+                  pagenum: _this.pagenums++,
+                  pagesize: _this.pagesizes
+                },
+                xhrFields: {
+                  withCredentials: true
+                }
+              })
+              .then(function(res) {
+                if (res.data.status == 1) {
+                  if (res.data.data.data.length != 0) {
+                    for (var i = 0; i < res.data.data.data.length; i++) {
+                      _this.qlList.push(res.data.data.data[i]);
+                    }
+                  }
+                }
+              })
+              .catch(function(error) {
+                console.log(error);
+              });
+          }
+        };
+      }
+    },
     // 检索问题列表
     quizList() {
       const _this = this;
@@ -451,9 +509,9 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
           async: false,
           params: {
-            type: "",
-            pagenum: 1,
-            pagesize: 20
+            type: _this.typeNum,
+            pagenum: _this.pagenums,
+            pagesize: _this.pagesizes
           },
           xhrFields: {
             withCredentials: true
@@ -462,7 +520,6 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
-            console.log(res);
           }
         })
         .catch(function(error) {
@@ -473,82 +530,25 @@ export default {
     newTime() {
       const _this = this;
       _this.num = 0;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-          async: false,
-          params: {
-            type: "time",
-            pagenum: 1,
-            pagesize: 20
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      _this.typeNum = "time";
+      _this.pagenums = 1;
+      _this.quizList();
     },
     // 高悬赏展示高悬赏展示
     topCurrency() {
       const _this = this;
       _this.num = 1;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-          async: false,
-          params: {
-            type: "currency",
-            pagenum: 1,
-            pagesize: 20
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      _this.typeNum = "currency";
+      _this.pagenums = 1;
+      _this.quizList();
     },
     // 已完成展示
     accomplish() {
       const _this = this;
       _this.num = 2;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-          async: false,
-          params: {
-            type: "finish",
-            pagenum: 1,
-            pagesize: 20
-          },
-          xhrFields: {
-            withCredentials: true
-          }
-        })
-        .then(function(res) {
-          if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
+      _this.typeNum = "finish";
+      _this.pagenums = 1;
+      _this.quizList();
     },
     // 我要提问按钮
     NewQuitBt() {

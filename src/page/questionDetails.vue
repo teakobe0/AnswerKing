@@ -190,7 +190,9 @@
 }
 /* 竞拍遮罩区域结束 */
 .answerShow {
-  border: 1px solid #cac8c8;
+  border: 1px solid #e6e6e6;
+  min-height:318px;
+  background: #fff;
 }
 </style>
 <template>
