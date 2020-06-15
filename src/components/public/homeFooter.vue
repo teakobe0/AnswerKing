@@ -75,22 +75,7 @@
 .nav .el-menu-item * {
   vertical-align: baseline !important;
 }
-.select-option {
-  background-color: #4458b0 !important;
-  border: 0 !important;
-  color: #fff !important;
-  margin-top: 5px !important;
-}
-.select-option .popper__arrow {
-  display: none !important;
-}
-.select-option .el-select-dropdown__item {
-  color: #fff !important;
-}
-.select-option .el-select-dropdown__item.hover,
-.el-select-dropdown__item:hover {
-  background-color: #36468d;
-}
+
 
 </style>
 

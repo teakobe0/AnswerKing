@@ -327,7 +327,7 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            _this.quizTableData = res.data.data;
+            _this.quizTableData = res.data.data.data;
             _this.quizShow = true;
             for (var i = 0; i < _this.quizTableData.length; i++) {
               _this.$set(_this.quizTableData[i], "type", "");
@@ -504,6 +504,7 @@ export default {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizList();
+            _this.evaluateShade = false;
             _this.$message({
               message: "评价成功",
               type: "success"

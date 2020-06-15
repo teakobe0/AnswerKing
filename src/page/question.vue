@@ -31,6 +31,7 @@
   padding-top: 22px;
   border-bottom: 1px solid #f6f6f6;
   padding-bottom: 22px;
+  position: relative;
 }
 .ql-ask-title div {
   display: inline-block;
@@ -204,6 +205,18 @@
   font-size: 30px;
 }
 /* 我要答这招结束 */
+.topInput {
+  width: 108px !important;
+  background: #fff !important;
+  padding: 0px !important;
+  position: absolute !important;
+  right: 0px !important;
+  top: 22px !important;
+  margin-right: 0px !important;
+}
+.topInput .el-input__inner {
+  border-radius: 25px !important;
+}
 </style>
 <template>
   <div class="question">
@@ -226,7 +239,13 @@
                 <i class="el-icon-s-opportunity"></i>
                 已完成
               </div>
+              <div :class="{qlasktitle0back:num==3}" @click="Myquestion">
+                <i class="el-icon-s-opportunity"></i>
+                我的提问
+              </div>
+              <el-input class="topInput" v-model="topInput" placeholder="搜索" @change="topInputs"></el-input>
             </div>
+
             <div class="ql-ask-con" v-for="item in qlList">
               <h3>
                 <router-link :to="'/questionDetails/'+item.id">{{item.title}}</router-link>
@@ -239,6 +258,7 @@
                     size="medium"
                     class="ql-ask-reply-1"
                     @click="replyShade(item)"
+                    v-show="item.status != 7"
                     @mousewheel.prevent
                   >我要答</el-button>
                   <!-- <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
@@ -248,8 +268,8 @@
                   <!-- <span v-show="item.status == 2">正在竞拍</span>
                   <span v-show="item.status == 7">已完成</span>-->
                   <span style="margin-right:11px;">
-                    <i class="el-icon-time" title="截止日期"></i>
-                    {{item.endTime | formatDate}}
+                    <i class="el-icon-time" title="剩余时间"></i>
+                    {{item.Times}}
                   </span>
                   <span>
                     <i class="el-icon-coin" title="鲸灵币"></i>
@@ -299,12 +319,13 @@
             <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
           <el-form-item prop="Content" class="ql-editNameDetail">
-            <el-input
+            <!-- <el-input
               type="textarea"
               placeholder="输入问题背景、条件等详细信(选填)"
               v-model="QuestionsQuiz.Content"
               :autosize="{ minRows: 2, maxRows: 22}"
-            ></el-input>
+            ></el-input>-->
+            <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
           <div style="overflow: hidden;">
             <div style="float:left;">
@@ -376,14 +397,93 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { formatDate } from "@/common/js/date.js";
+import tinymce from "tinymce/tinymce";
+import Editor from "@tinymce/tinymce-vue";
+import "tinymce/themes/silver";
+import "tinymce/plugins/image";
+import "tinymce/plugins/link";
+import "tinymce/plugins/code";
+import "tinymce/plugins/table";
+import "tinymce/plugins/lists";
+import "tinymce/plugins/contextmenu";
+import "tinymce/plugins/wordcount";
+import "tinymce/plugins/colorpicker";
+import "tinymce/plugins/textcolor";
 export default {
   name: "question",
   components: {
     homeNav,
-    homeFooter
+    homeFooter,
+    Editor
+  },
+  props: {
+    value: {
+      type: String,
+      default: "写回答..."
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    plugins: {
+      type: [String, Array],
+      default:
+        "link lists image code table colorpicker textcolor wordcount contextmenu"
+    },
+    toolbar: {
+      type: [String, Array],
+      default:
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat"
+    }
   },
   data() {
     return {
+      init: {
+        language_url: "/tinymce/langs/zh_CN.js",
+        language: "zh_CN",
+        skin_url: "/tinymce/skins/ui/oxide",
+        // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
+        height: 300,
+        plugins: this.plugins,
+        toolbar: this.toolbar,
+        branding: false,
+        menubar: false,
+        // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
+        // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
+        images_upload_handler: (blobInfo, success, failure) => {
+          // const img = "data:image/jpeg;base64," + blobInfo.base64();
+          // success(img);
+          let formData = new FormData();
+          // 服务端接收文件的参数名，文件数据，文件名
+          // formData.append("questionId", this.$route.params.question_id);
+          formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+          this.axios({
+            method: "POST",
+            // 这里是你的上传地址
+            url: this.URLport.serverPath + "/File/Upload",
+            async: false,
+            data: formData,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+            .then(res => {
+              // 这里返回的是你图片的地址
+              success(res.data.file);
+            })
+            .catch(() => {
+              // failure("上传失败");
+            });
+
+          console.log(blobInfo);
+        }
+      },
+      myValue: this.value,
+      topInput: "",
       // 我要提问列表
       QuestionsQuiz: {
         Title: "",
@@ -451,7 +551,7 @@ export default {
     if (_this.$route.fullPath == "/question") {
       // window.addEventListener("scroll", _this.handleScroll);
     }
-
+    tinymce.init({});
     //window.addEventListener('scroll', function () {
     //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
     //    //console.log("文档高度" + document.body.offsetHeight); // 文档高度
@@ -520,11 +620,32 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
+            let date = new Date();
+            let now = date.getTime();
+            // //设置截止时间
+            // var endDate = new Date(this.endtime);
+            // // var endDate = new Date("2020-06-4 17:07:00");
+            // var end = endDate.getTime();
+            for (var i = 0; i < res.data.data.data.length; i++) {
+              _this.$set(_this.qlList[i], "Times", "");
+              let leftTime = new Date(_this.qlList[i].endTime).getTime() - now;
+              let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+              let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+              let m = Math.floor((leftTime / 1000 / 60) % 60);
+              _this.qlList[i].Times = d+'天'+h+'时'+m+'分'
+              console.log(_this.qlList[i]);
+              console.log(now);
+              console.log(new Date(_this.qlList[i].endTime).getTime());
+            }
           }
         })
         .catch(function(error) {
           console.log(error);
         });
+    },
+    formatDate: function(time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd-hh:mm");
     },
     // 新提问展示
     newTime() {
@@ -550,6 +671,10 @@ export default {
       _this.pagenums = 1;
       _this.quizList();
     },
+    Myquestion() {
+      const _this = this;
+      _this.num = 3;
+    },
     // 我要提问按钮
     NewQuitBt() {
       const _this = this;
@@ -570,6 +695,7 @@ export default {
     // 发布问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
+      _this.QuestionsQuiz.Content = _this.myValue;
       _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this
@@ -668,6 +794,17 @@ export default {
             });
         }
       });
+    },
+    topInputs() {
+      const _this = this;
+    }
+  },
+  watch: {
+    value(newValue) {
+      this.myValue = newValue;
+    },
+    myValue(newValue) {
+      this.$emit("input", newValue);
     }
   }
 };
