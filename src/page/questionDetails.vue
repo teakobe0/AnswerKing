@@ -92,6 +92,13 @@
   text-align: center;
   color: #8590a6;
 }
+.qd-editan {
+  width: 900px;
+  min-height: 300px;
+  margin-bottom: 20px;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+}
 .qd-edit {
   width: 1300px;
   margin-bottom: 20px;
@@ -191,7 +198,7 @@
 /* 竞拍遮罩区域结束 */
 .answerShow {
   border: 1px solid #e6e6e6;
-  min-height:318px;
+  min-height: 318px;
   background: #fff;
 }
 </style>
@@ -218,20 +225,9 @@
               <div>{{qlList.bls.length}}</div>
             </div>
           </div>
-          <div>
-            <!-- <el-button type="primary" size="medium" class="qd-attention">关注问题</el-button> -->
-            <!-- <el-button
-              icon="el-icon-edit"
-              size="medium"
-              class="ql-an"
-              @click="myAnswer"
-              v-if="auctionbuttonShow"
-            >竞拍</el-button>-->
-          </div>
         </div>
       </div>
       <div class="qd-editCon">
-        
         <div style="width:1300px;min-height:320px;" v-if="qlListShow" v-loading="loading">
           <div class="nullLogin" v-if="nullLoginShow">登录之后查看答案</div>
           <div class="answerShow" v-show="answerShows" v-html="myValue"></div>
@@ -239,6 +235,7 @@
             <div class="qd-editNull" v-show="qdeditnullShow">
               <p>暂时还没有回答,快去竞拍回答赢取鲸灵币吧!</p>
             </div>
+            <div class="qd-editan" v-show="editan" v-html="myValue"></div>
             <div class="qd-edit" v-show="qdeditShow">
               <editor id="tinymce" v-model="myValue" :init="init"></editor>
               <el-button
@@ -378,7 +375,7 @@ export default {
           this.axios({
             method: "POST",
             // 这里是你的上传地址
-            url: this.URLport.serverPath + "/File/Upload",
+            url: this.URLport.serverPath + "/File/UploadAnswer",
             async: false,
             data: formData,
             xhrFields: {
@@ -395,41 +392,6 @@ export default {
             .catch(() => {
               // failure("上传失败");
             });
-          // axios({
-          //   method: "post",
-          //   url: `${_this.URLport.serverPath}/File/Upload`,
-          //   async: false,
-          //   data: formData,
-          //   xhrFields: {
-          //     withCredentials: true
-          //   },
-          //   headers: {
-          //     Authorization: `Bearer ${localStorage.getItem("token")}`
-          //   }
-          // })
-          //   .then(function(res) {
-          //     success(res.data.data.url);
-          //   })
-          //   .catch(function(error) {
-          //     console.log(error);
-          //   });
-
-          // 服务端接收文件的参数名，文件数据，文件名
-          // axios({
-          //   method: "POST",
-          //   // 这里是你的上传地址
-          //   url: "uploadimage",
-          //   data: formData
-          // })
-          //   .then(res => {
-          //     // 这里返回的是你图片的地址
-          //     success(res.data.url);
-          //   })
-          //   .catch(() => {
-          //     failure("上传失败");
-          //   });
-
-          console.log(blobInfo);
         }
       },
       myValue: this.value,
@@ -451,8 +413,6 @@ export default {
       countdownText: false,
       // 标题显示隐藏
       qlListShow: false,
-      // 竞拍按钮显示隐藏
-      auctionbuttonShow: true,
       // 保存进度按钮显示隐藏
       savesubmitShow: true,
       // 加载中
@@ -461,7 +421,8 @@ export default {
       // 答案展示
       answerShows: false,
       // 暂时没人回答
-      qdeditnullShow: true
+      editan: false,
+      qdeditnullShow:true,
     };
   },
   created: function() {
@@ -563,11 +524,13 @@ export default {
         })
         .then(function(res) {
           // auctionClient 竞拍者栏的留言、选他答、时间、悬赏的隐藏
-          // auctionbuttonShow 竞拍按钮的隐藏
           // qdeditShow 编辑器的隐藏
           // savesubmitShow 保存进度提交的隐藏
           // countdown 倒计时的隐藏
           // auctionShow 竞拍者栏的整体隐藏
+          // answerShows 满屏答案的显示隐藏
+          // qdeditnullShow 左侧没有答案的框体
+          // editan 左侧有答案的框体
           if (res.data.status == 1) {
             _this.loading = false;
             _this.qlList = res.data.data;
@@ -581,38 +544,89 @@ export default {
                   console.log("我是竞拍者之一");
                 }
               }
-
-              if (_this.qlList.que.status == 4 || _this.qlList.que.status >= 6) {
-                _this.auctionClient = false;
-                _this.auctionbuttonShow = false;
-                _this.auctionShow = false;
-                _this.qdeditShow = false;
-                _this.qdeditnullShow = false;
-                _this.savesubmitShow = false;
-                _this.answerShows = true;
-                console.log("问题已经回答完");
-              } else if (_this.clientID == _this.qlList.que.createBy) {
-                // 确认登录人是否是提问者
+              // 我是提问者
+              if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status < 4){
+                _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = true; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = true; //左侧没有答案的框体
+                _this.editan = false;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                console.log("提问者小于4")
+              }else if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status < 7){
                 _this.auctionClient = true;
-                _this.auctionbuttonShow = false;
-                _this.qdeditShow = false;
-                _this.savesubmitShow = false;
-                console.log("我是提问者");
-              } else if (_this.qlList.que.answerer == _this.clientID) {
-                _this.endtime = _this.formatDate(_this.qlList.que.endTime);
-                _this.auctionShow = false;
-                _this.qdeditShow = true;
-                _this.auctionbuttonShow = false;
+                _this.auctionShow = true;
                 _this.qdeditnullShow = false;
-                _this.countdown = true;
-                _this.countTime();
-                console.log("我是答题人");
-              }else if(_this.qlList.que.status == 5 && _this.clientID == _this.qlList.que.answerer){
-                console.log("提交修改状态并且我是答题人")
-                _this.qdeditShow = true;
-                _this.savesubmitShow = true;
+                _this.editan = true;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                console.log("提问者小于7")
+              }else if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status >= 7){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.editan = false;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                _this.answerShows = true; //满屏答案的显示隐藏
+                console.log("提问者大于7")
               }
-              // 确认登录人是否是答题人
+              // 我是答题者
+              if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status <= 3){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.qdeditShow = true; //编辑器的隐藏
+                _this.savesubmitShow = true; //保存进度提交的隐藏
+                _this.countdown = true; //倒计时的隐藏
+                _this.answerShows = false; //满屏答案的显示隐藏
+                _this.endtime = _this.formatDate(_this.qlList.que.endTime);
+                _this.countTime();
+                console.log("答题者小于等于3")
+              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status == 5){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.qdeditShow = true; //编辑器的隐藏
+                _this.savesubmitShow = true; //保存进度提交的隐藏
+                _this.countdown = true; //倒计时的隐藏
+                _this.answerShows = false; //满屏答案的显示隐藏
+                _this.endtime = _this.formatDate(_this.qlList.que.endTime);
+                _this.countTime();
+                console.log("答题者等于5")
+              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status == 4){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.qdeditShow = true; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                _this.answerShows = false; //满屏答案的显示隐藏
+                console.log("答题者等于4")
+              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status > 5){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.editan = false;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                _this.answerShows = true; //满屏答案的显示隐藏
+                console.log("答题者大于5")
+              }
+              if(_this.qlList.que.status >= 7){
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionShow = false; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.editan = false;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                _this.answerShows = true; //满屏答案的显示隐藏
+              }
 
               if (_this.qlList.answer != null) {
                 _this.myValue = _this.qlList.answer.content;
@@ -622,7 +636,6 @@ export default {
               _this.qdeditShow = false;
               _this.nullLoginShow = true;
               _this.auctionClient = false;
-              _this.auctionbuttonShow = false;
               _this.auctionShow = false;
               _this.qdeditShow = false;
               _this.qdeditnullShow = false;
@@ -663,10 +676,15 @@ export default {
             .then(function(res) {
               console.log(res);
               if (res.data.status == 1) {
-                _this.auctionClient = false;
+                // _this.auctionClient = false;
                 _this.$message({
                   message: "发布成功,竞拍者可以开始答题。",
                   type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "error"
                 });
               }
             })
@@ -753,6 +771,7 @@ export default {
         })
         .then(function(res) {
           if (res.data.status == 1) {
+            _this.QuDe();
             _this.$message({
               message: "发布成功",
               type: "success"
@@ -776,12 +795,12 @@ export default {
 
       if (_this.qlList.answer != null) {
         json = _this.qlList.answer;
-        json.content = this.value; //答案内容
+        json.content = this.myValue; //答案内容
         // json.Id = _this.qlList.answer.id; //答案ID
         // json.CreateBy = _this.qlList.answer.createBy; //答题人ID
       } else {
         json.questionId = _this.$route.params.question_id; //问题ID
-        json.content = this.value; //答案内容
+        json.content = this.myValue; //答案内容
         json.id = 0; //答案ID
         json.createBy = 0; //答题人ID
       }
@@ -799,17 +818,17 @@ export default {
           }
         })
         .then(function(res) {
-          // if (res.data.status == 1) {
-          //   _this.$message({
-          //     message: "发布成功",
-          //     type: "success"
-          //   });
-          // } else {
-          //   _this.$message({
-          //     message: "发布失败",
-          //     type: "error"
-          //   });
-          // }
+          if (res.data.status == 1) {
+            _this.$message({
+              message: "保存成功",
+              type: "success"
+            });
+          } else {
+            _this.$message({
+              message: res.data.msg,
+              type: "error"
+            });
+          }
         })
         .catch(function(error) {
           console.log(error);

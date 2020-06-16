@@ -585,7 +585,6 @@ export default {
         .then(function(res) {
           console.log(res);
           if (res.data.status == 1) {
-            _this.evaluateShade = !_this.evaluateShade;
             _this.quizList();
             _this.$message({
               message: "评价成功",

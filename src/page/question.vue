@@ -52,9 +52,12 @@
   width: 940px;
   margin: 0 auto;
   padding-top: 22px;
+  position: relative;
 }
 .ql-ask-con h3 {
   margin-bottom: 11px;
+  width: 850px;
+  overflow: hidden;
 }
 .ql-ask-con h3 a {
   text-decoration: none;
@@ -217,6 +220,17 @@
 .topInput .el-input__inner {
   border-radius: 25px !important;
 }
+.myType {
+  position: absolute;
+  right: 0;
+  top: 22px;
+  color: rgb(133, 144, 166);
+}
+.ql-ask-ent {
+  min-height: 21px;
+  width: 850px;
+  overflow: hidden;
+}
 </style>
 <template>
   <div class="question">
@@ -239,18 +253,20 @@
                 <i class="el-icon-s-opportunity"></i>
                 已完成
               </div>
-              <div :class="{qlasktitle0back:num==3}" @click="Myquestion">
+              <div :class="{qlasktitle0back:num==3}" @click="Myquestion" v-if="myqus">
                 <i class="el-icon-s-opportunity"></i>
                 我的提问
               </div>
               <el-input class="topInput" v-model="topInput" placeholder="搜索" @change="topInputs"></el-input>
             </div>
-
-            <div class="ql-ask-con" v-for="item in qlList">
+            <!-- 没有登录时 -->
+            <div class="ql-ask-con" v-for="item in qlList" v-show="qlcon">
               <h3>
                 <router-link :to="'/questionDetails/'+item.id">{{item.title}}</router-link>
               </h3>
-              <div>{{item.content}}</div>
+              <!-- <div>{{item.content}}</div> -->
+              <div class="ql-ask-ent" v-html="item.content"></div>
+              <div class="myType">{{item.myType}}</div>
               <div class="ql-ask-reply">
                 <div style="float:left">
                   <el-button
@@ -265,8 +281,6 @@
                   <el-button type="text" icon="el-icon-time" class="ql-ask-reply-2">稍后答</el-button>-->
                 </div>
                 <div style="float:right;line-height:40px;color:#8590a6;">
-                  <!-- <span v-show="item.status == 2">正在竞拍</span>
-                  <span v-show="item.status == 7">已完成</span>-->
                   <span style="margin-right:11px;">
                     <i class="el-icon-time" title="剩余时间"></i>
                     {{item.Times}}
@@ -274,6 +288,46 @@
                   <span>
                     <i class="el-icon-coin" title="鲸灵币"></i>
                     {{item.currency}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <!-- 登陆之后问题列表 -->
+            <div class="ql-ask-con" v-for="item in myQlList" v-show="myQlcon">
+              <h3>
+                <router-link :to="'/questionDetails/'+item.que.id">{{item.que.title}}</router-link>
+              </h3>
+              <!-- <div>{{item.content}}</div> -->
+              <div class="ql-ask-ent" v-html="item.que.content"></div>
+              <div class="myType">{{item.bidd}}</div>
+              <div class="myType">{{item.myanswer}}</div>
+              <div class="myType">{{item.myque}}</div>
+              <div class="myType">{{item.type}}</div>
+              <div class="ql-ask-reply">
+                <div style="float:left">
+                  <el-button
+                    icon="el-icon-edit"
+                    size="medium"
+                    class="ql-ask-reply-1"
+                    @click="replyShade(item)"
+                    v-show="item.que.status != 7"
+                    @mousewheel.prevent
+                  >我要答</el-button>
+                  <!-- <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
+                  <el-button type="text" icon="el-icon-time" class="ql-ask-reply-2">稍后答</el-button>-->
+                </div>
+                <div style="float:right;line-height:40px;color:#8590a6;">
+                  <span style="margin-right:11px;" v-if="item.Times">
+                    <i class="el-icon-time" title="剩余时间"></i>
+                    {{item.Times}}
+                  </span>
+                  <span style="margin-right:11px;" v-if="!item.Times">
+                    <i class="el-icon-time" title="剩余时间"></i>
+                    {{item.que.endTime | formatDate}}
+                  </span>
+                  <span>
+                    <i class="el-icon-coin" title="鲸灵币"></i>
+                    {{item.que.currency}}
                   </span>
                 </div>
               </div>
@@ -290,20 +344,26 @@
               @mousewheel.prevent
             >我要提问</el-button>
           </div>
-          <!-- <div class="ql-right-function">
-            <a href="#">
+          <div class="ql-right-function" v-if="myqus">
+            <router-link to="/personalData/myQuestion">
               <div class="ql-right-fc1">
-                <i class="el-icon-star-on"></i>我关注的问题
+                <i class="el-icon-star-off"></i>竞拍中
               </div>
-              <div class="ql-right-fc2">10</div>
-            </a>
-            <a href="#">
+              <div class="ql-right-fc2">{{auctions}}</div>
+            </router-link>
+            <router-link to="/personalData/myQuestion">
               <div class="ql-right-fc1">
-                <i class="el-icon-time"></i>稍后答
+                <i class="el-icon-time"></i>待回答
               </div>
-              <div class="ql-right-fc2">5</div>
-            </a>
-          </div>-->
+              <div class="ql-right-fc2">{{toAnswer}}</div>
+            </router-link>
+            <router-link to="/personalData/myQuestion">
+              <div class="ql-right-fc1">
+                <i class="el-icon-circle-check"></i>已回答
+              </div>
+              <div class="ql-right-fc2">{{haveToAnswer}}</div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -455,13 +515,12 @@ export default {
           // success(img);
           let formData = new FormData();
           // 服务端接收文件的参数名，文件数据，文件名
-          // formData.append("questionId", this.$route.params.question_id);
           formData.append("file", blobInfo.blob(), blobInfo.filename());
 
           this.axios({
             method: "POST",
             // 这里是你的上传地址
-            url: this.URLport.serverPath + "/File/Upload",
+            url: this.URLport.serverPath + "/File/UploadQuestion",
             async: false,
             data: formData,
             xhrFields: {
@@ -532,12 +591,23 @@ export default {
       num: 0,
       typeNum: "time",
       pagenums: 1,
-      pagesizes: 5
+      pagesizes: 5,
+      clientID: 0,
+      myqus: false,
+      qlcon: false,
+      qlData: false,
+      quizTableData: [],
+      // 当前登录人问题相关数量
+      auctions: 0,
+      toAnswer: 0,
+      haveToAnswer: 0,
+      myQlList: [],
+      myQlcon: false
     };
   },
   created: function() {
     const _this = this;
-    _this.quizList();
+    _this.personal();
     _this.handleScroll();
   },
   filters: {
@@ -570,39 +640,169 @@ export default {
             document.documentElement.scrollHeight || document.body.scrollHeight;
 
           if (scrollTop + windowHeight == scrollHeight) {
-            _this
-              .axios({
-                method: "get",
-                url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-                async: false,
-                params: {
-                  type: _this.typeNum,
-                  pagenum: _this.pagenums++,
-                  pagesize: _this.pagesizes
-                },
-                xhrFields: {
-                  withCredentials: true
-                }
-              })
-              .then(function(res) {
-                if (res.data.status == 1) {
-                  if (res.data.data.data.length != 0) {
+            if (localStorage.token && _this.num != 3) {
+              _this.myQlcon = true;
+              _this.myqus = true;
+              _this
+                .axios({
+                  method: "get",
+                  url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
+                  async: false,
+                  params: {
+                    type: _this.typeNum,
+                    pagenum: ++_this.pagenums,
+                    pagesize: _this.pagesizes
+                  },
+                  xhrFields: {
+                    withCredentials: true
+                  },
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                  }
+                })
+                .then(function(res) {
+                  if (res.data.status == 1) {
+                    // _this.myQlList.push(res.data.data.data);
+                    let a = [];
+                    a = res.data.data.data;
+                    let date = new Date();
+                    let now = date.getTime();
                     for (var i = 0; i < res.data.data.data.length; i++) {
-                      _this.qlList.push(res.data.data.data[i]);
+                      _this.$set(a[i], "Times", "");
+                      let leftTime = new Date(a[i].que.endTime).getTime() - now;
+                      let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                      let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                      let m = Math.floor((leftTime / 1000 / 60) % 60);
+                      _this.myQlList[i].Times =
+                        "还剩" + d + "天" + h + "时" + m + "分";
+                      _this.myQlList.push(a[i]);
                     }
                   }
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            } else if (!localStorage.token && _this.num != 3) {
+              _this
+                .axios({
+                  method: "get",
+                  url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+                  async: false,
+                  params: {
+                    type: _this.typeNum,
+                    pagenum: ++_this.pagenums,
+                    pagesize: _this.pagesizes
+                  },
+                  xhrFields: {
+                    withCredentials: true
+                  }
+                })
+                .then(function(res) {
+                  if (res.data.status == 1) {
+                    if (res.data.data.data.length != 0) {
+                      for (var i = 0; i < res.data.data.data.length; i++) {
+                        _this.qlList.push(res.data.data.data[i]);
+                      }
+                    }
+                  }
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            } else if (localStorage.token && _this.num == 3) {
+              _this
+                .axios({
+                  method: "get",
+                  url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+                  async: false,
+                  params: {
+                    name: _this.topInput,
+                    pagenum: ++_this.pagenums,
+                    pagesize: _this.pagesizes
+                  },
+                  xhrFields: {
+                    withCredentials: true
+                  },
+                  headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                  }
+                })
+                .then(function(res) {
+                  if (res.data.status == 1) {
+                    let a = [];
+                    a = res.data.data.data;
+                    for (var i = 0; i < a.length; i++) {
+                      a[i].type = "";
+                      if (a[i].que.status == 1) {
+                        a[i].type = "保存";
+                      }
+                      if (a[i].que.status == 2) {
+                        a[i].type = "正在竞拍";
+                      }
+                      if (a[i].que.status == 3) {
+                        a[i].type = "已选竞拍者";
+                      }
+                      if (a[i].que.status == 4) {
+                        a[i].type = "已回答";
+                      }
+                      if (a[i].que.status == 5) {
+                        a[i].type = "提交修改";
+                      }
+                      if (a[i].que.status == 6) {
+                        a[i].type = "申请客服";
+                      }
+                      if (a[i].que.status == 7) {
+                        a[i].type = "已完成";
+                      }
+                      if (a[i].que.status == 8) {
+                        a[i].type = "已关闭";
+                      }
+                      _this.myQlList.push(a[i]);
+                    }
+                    console.log(a);
+
+                    console.log(_this.myQlList);
+                  }
+                })
+                .catch(function(error) {
+                  console.log(error);
+                });
+            }
           }
         };
       }
     },
-    // 检索问题列表
+    personal: function() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            _this.clientID = res.data.data.id;
+            _this.myquizList();
+            _this.QuestionsStatus();
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else {
+        _this.quizList();
+      }
+    },
+    //  没有登录时检索问题列表
     quizList() {
       const _this = this;
+      _this.qlcon = true;
       _this
         .axios({
           method: "get",
@@ -611,7 +811,8 @@ export default {
           params: {
             type: _this.typeNum,
             pagenum: _this.pagenums,
-            pagesize: _this.pagesizes
+            pagesize: _this.pagesizes,
+            name: _this.topInput
           },
           xhrFields: {
             withCredentials: true
@@ -622,20 +823,58 @@ export default {
             _this.qlList = res.data.data.data;
             let date = new Date();
             let now = date.getTime();
-            // //设置截止时间
-            // var endDate = new Date(this.endtime);
-            // // var endDate = new Date("2020-06-4 17:07:00");
-            // var end = endDate.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.qlList[i], "Times", "");
+              _this.$set(_this.qlList[i], "myType", "");
               let leftTime = new Date(_this.qlList[i].endTime).getTime() - now;
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
-              _this.qlList[i].Times = d+'天'+h+'时'+m+'分'
-              console.log(_this.qlList[i]);
-              console.log(now);
-              console.log(new Date(_this.qlList[i].endTime).getTime());
+              _this.qlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 登录之后检索问题列表
+    myquizList() {
+      const _this = this;
+      _this.myQlcon = true;
+      _this.myqus = true;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
+          async: false,
+          params: {
+            type: _this.typeNum,
+            pagenum: _this.pagenums,
+            pagesize: _this.pagesizes,
+            name: _this.topInput
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.myQlList = res.data.data.data;
+            let date = new Date();
+            let now = date.getTime();
+            for (var i = 0; i < res.data.data.data.length; i++) {
+              _this.$set(_this.myQlList[i], "Times", "");
+              let leftTime =
+                new Date(_this.myQlList[i].que.endTime).getTime() - now;
+              let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+              let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+              let m = Math.floor((leftTime / 1000 / 60) % 60);
+              _this.myQlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
             }
           }
         })
@@ -653,7 +892,13 @@ export default {
       _this.num = 0;
       _this.typeNum = "time";
       _this.pagenums = 1;
-      _this.quizList();
+      // _this.qlcon = true;
+      // _this.qlData = false;
+      if (localStorage.token) {
+        _this.myquizList();
+      } else {
+        _this.quizList();
+      }
     },
     // 高悬赏展示高悬赏展示
     topCurrency() {
@@ -661,7 +906,13 @@ export default {
       _this.num = 1;
       _this.typeNum = "currency";
       _this.pagenums = 1;
-      _this.quizList();
+      // _this.qlcon = true;
+      // _this.qlData = false;
+      if (localStorage.token) {
+        _this.myquizList();
+      } else {
+        _this.quizList();
+      }
     },
     // 已完成展示
     accomplish() {
@@ -669,11 +920,72 @@ export default {
       _this.num = 2;
       _this.typeNum = "finish";
       _this.pagenums = 1;
-      _this.quizList();
+      // _this.qlcon = true;
+      // _this.qlData = false;
+      if (localStorage.token) {
+        _this.myquizList();
+      } else {
+        _this.quizList();
+      }
     },
+    // 我的提问
     Myquestion() {
       const _this = this;
       _this.num = 3;
+      // _this.qlcon = false;
+      // _this.qlData = true;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+          async: false,
+          params: {
+            pagenum: _this.pagenums,
+            pagesize: _this.pagesizes,
+            name: _this.topInput
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.myQlList = res.data.data.data;
+            for (var i = 0; i < _this.myQlList.length; i++) {
+              _this.$set(_this.myQlList[i], "type", "");
+              if (_this.myQlList[i].que.status == 1) {
+                _this.myQlList[i].type = "保存";
+              }
+              if (_this.myQlList[i].que.status == 2) {
+                _this.myQlList[i].type = "正在竞拍";
+              }
+              if (_this.myQlList[i].que.status == 3) {
+                _this.myQlList[i].type = "已选竞拍者";
+              }
+              if (_this.myQlList[i].que.status == 4) {
+                _this.myQlList[i].type = "已回答";
+              }
+              if (_this.myQlList[i].que.status == 5) {
+                _this.myQlList[i].type = "提交修改";
+              }
+              if (_this.myQlList[i].que.status == 6) {
+                _this.myQlList[i].type = "申请客服";
+              }
+              if (_this.myQlList[i].que.status == 7) {
+                _this.myQlList[i].type = "已完成";
+              }
+              if (_this.myQlList[i].que.status == 8) {
+                _this.myQlList[i].type = "已关闭";
+              }
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     // 我要提问按钮
     NewQuitBt() {
@@ -696,53 +1008,63 @@ export default {
     releaseQl(QuestionsQuiz) {
       const _this = this;
       _this.QuestionsQuiz.Content = _this.myValue;
-      _this.$refs[QuestionsQuiz].validate(valid => {
-        if (valid) {
-          _this
-            .axios({
-              method: "post",
-              url: `${_this.URLport.serverPath}/Questions/Add`,
-              async: false,
-              data: _this.QuestionsQuiz,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              if (res.data.status == 1) {
-                _this.QuestionsQuiz.Title = "";
-                _this.QuestionsQuiz.Content = "";
-                _this.QuestionsQuiz.EndTime = new Date();
-                _this.QuestionsQuiz.Currency = "";
-                _this.qlShade = !_this.qlShade;
-                _this.quizList();
-                _this.$message({
-                  message: "发布成功",
-                  type: "success"
-                });
-              } else {
-                _this.$message({
-                  message: "发布失败",
-                  type: "error"
-                });
-              }
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-        }
-      });
+      let date = new Date();
+      let now = date.getTime();
+      let leftTime = new Date(_this.QuestionsQuiz.EndTime).getTime() - now;
+      let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+      let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+      console.log(d)
+      console.log(h)
+      if(d<0 || h<2){
+        console.log("最少两个小时")
+      }
+      // _this.$refs[QuestionsQuiz].validate(valid => {
+      //   if (valid) {
+      //     _this
+      //       .axios({
+      //         method: "post",
+      //         url: `${_this.URLport.serverPath}/Questions/Add`,
+      //         async: false,
+      //         data: _this.QuestionsQuiz,
+      //         xhrFields: {
+      //           withCredentials: true
+      //         },
+      //         headers: {
+      //           Authorization: `Bearer ${localStorage.getItem("token")}`
+      //         }
+      //       })
+      //       .then(function(res) {
+      //         if (res.data.status == 1) {
+      //           _this.QuestionsQuiz.Title = "";
+      //           _this.QuestionsQuiz.Content = "";
+      //           _this.QuestionsQuiz.EndTime = new Date();
+      //           _this.QuestionsQuiz.Currency = "";
+      //           _this.qlShade = !_this.qlShade;
+      //           _this.myquizList();
+      //           _this.$message({
+      //             message: "发布成功",
+      //             type: "success"
+      //           });
+      //         } else {
+      //           _this.$message({
+      //             message: "发布失败",
+      //             type: "error"
+      //           });
+      //         }
+      //       })
+      //       .catch(function(error) {
+      //         console.log(error);
+      //       });
+      //   }
+      // });
     },
     // 我要答显示遮罩按钮
     replyShade(item) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        _this.auction.QuestionId = item.id;
-        _this.auction.EndTime = item.endTime;
-        _this.auction.Currency = item.currency;
+        _this.auction.QuestionId = item.que.id;
+        _this.auction.EndTime = item.que.endTime;
+        _this.auction.Currency = item.que.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
@@ -795,8 +1117,169 @@ export default {
         }
       });
     },
+    // 搜索
     topInputs() {
       const _this = this;
+
+      if (localStorage.token && _this.num != 3) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
+            async: false,
+            params: {
+              type: _this.typeNum,
+              pagenum: _this.pagenums,
+              pagesize: _this.pagesizes,
+              name: _this.topInput
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            if (res.data.status == 1) {
+              _this.myQlList = res.data.data.data;
+              let date = new Date();
+              let now = date.getTime();
+              for (var i = 0; i < res.data.data.data.length; i++) {
+                _this.$set(_this.myQlList[i], "Times", "");
+                let leftTime =
+                  new Date(_this.myQlList[i].que.endTime).getTime() - now;
+                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                let m = Math.floor((leftTime / 1000 / 60) % 60);
+                _this.myQlList[i].Times =
+                  "还剩" + d + "天" + h + "时" + m + "分";
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else if (!localStorage.token && _this.num != 3) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+            async: false,
+            params: {
+              type: _this.typeNum,
+              pagenum: _this.pagenums,
+              pagesize: _this.pagesizes,
+              name: _this.topInput
+            },
+            xhrFields: {
+              withCredentials: true
+            }
+          })
+          .then(function(res) {
+            console.log(res);
+            if (res.data.status == 1) {
+              _this.qlList = res.data.data.data;
+              let date = new Date();
+              let now = date.getTime();
+              for (var i = 0; i < res.data.data.data.length; i++) {
+                _this.$set(_this.qlList[i], "Times", "");
+                _this.$set(_this.qlList[i], "myType", "");
+                let leftTime =
+                  new Date(_this.qlList[i].endTime).getTime() - now;
+                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                let m = Math.floor((leftTime / 1000 / 60) % 60);
+                _this.qlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else if (localStorage.token && _this.num == 3) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+            async: false,
+            params: {
+              pagenum: _this.pagenums,
+              pagesize: _this.pagesizes,
+              name: _this.topInput
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.myQlList = res.data.data.data;
+              for (var i = 0; i < a.length; i++) {
+                a[i].type = "";
+                if (a[i].que.status == 1) {
+                  a[i].type = "保存";
+                }
+                if (a[i].que.status == 2) {
+                  a[i].type = "正在竞拍";
+                }
+                if (a[i].que.status == 3) {
+                  a[i].type = "已选竞拍者";
+                }
+                if (a[i].que.status == 4) {
+                  a[i].type = "已回答";
+                }
+                if (a[i].que.status == 5) {
+                  a[i].type = "提交修改";
+                }
+                if (a[i].que.status == 6) {
+                  a[i].type = "申请客服";
+                }
+                if (a[i].que.status == 7) {
+                  a[i].type = "已完成";
+                }
+                if (a[i].que.status == 8) {
+                  a[i].type = "已关闭";
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    // 检索当前登录人问题的情况数量
+    QuestionsStatus() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/Status`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.auctions = res.data.data.bnum;
+              _this.toAnswer = res.data.data.nonum;
+              _this.haveToAnswer = res.data.data.answernum;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
   },
   watch: {
