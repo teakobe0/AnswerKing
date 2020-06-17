@@ -26,6 +26,21 @@
 .myQuestion-con a:hover {
   color: #0b4ed4;
 }
+.mynextpage {
+  text-align: center;
+  margin-top: 20px;
+}
+.mynextpage .el-pagination button:disabled {
+  background-color: #fafafa !important;
+}
+.mynextpage .el-pagination .btn-next,
+.el-pagination .btn-prev {
+  background-color: #fafafa !important;
+}
+.mynextpage .el-dialog,
+.el-pager li {
+  background-color: #fafafa !important;
+}
 </style>
 
 
@@ -210,6 +225,17 @@
                 <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
               </div>
             </div>
+            <div class="mynextpage">
+              <div class="block">
+                <el-pagination
+                  @size-change="handleSizeChange"
+                  @current-change="handleCurrentChange"
+                  :page-size="pagesizes"
+                  layout="total, prev, pager, next"
+                  :total="pageTotal"
+                ></el-pagination>
+              </div>
+            </div>
           </el-tab-pane>
           <el-tab-pane label="我回答的问题" name="first2">
             <el-table :data="answerTableData" border style="width: 100%" v-if="answerShow">
@@ -293,7 +319,10 @@ export default {
       // 评价内容
       evaluateInput: "",
       evaluateSwitch: true,
-      evaluateId: 0
+      evaluateId: 0,
+      pagenums: 1,
+      pagesizes: 13,
+      pageTotal: 0
     };
   },
   created: function() {
@@ -309,14 +338,21 @@ export default {
     }
   },
   methods: {
-    // 检索问题列表
-    quizList() {
+    handleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+    },
+    handleCurrentChange(val) {
       const _this = this;
+      console.log(`当前页: ${val}`);
       _this
         .axios({
           method: "get",
           url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
           async: false,
+          params: {
+            pagenum: val,
+            pagesize: _this.pagesizes
+          },
           xhrFields: {
             withCredentials: true
           },
@@ -328,6 +364,120 @@ export default {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data.data;
+            _this.quizShow = true;
+            for (var i = 0; i < _this.quizTableData.length; i++) {
+              _this.$set(_this.quizTableData[i], "type", "");
+              if (_this.quizTableData[i].que.status == 1) {
+                _this.quizTableData[i].type = "保存";
+              }
+              if (_this.quizTableData[i].que.status == 2) {
+                _this.quizTableData[i].type = "正在竞拍";
+              }
+              if (_this.quizTableData[i].que.status == 3) {
+                _this.quizTableData[i].type = "已选竞拍者";
+              }
+              if (_this.quizTableData[i].que.status == 4) {
+                _this.quizTableData[i].type = "已回答";
+              }
+              if (_this.quizTableData[i].que.status == 5) {
+                _this.quizTableData[i].type = "提交修改";
+              }
+              if (_this.quizTableData[i].que.status == 6) {
+                _this.quizTableData[i].type = "申请客服";
+              }
+              if (_this.quizTableData[i].que.status == 7) {
+                _this.quizTableData[i].type = "已完成";
+              }
+              if (_this.quizTableData[i].que.status == 8) {
+                _this.quizTableData[i].type = "已关闭";
+              }
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    nextpages() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+          async: false,
+          params: {
+            pagenum: ++_this.pagenums,
+            pagesize: _this.pagesizes
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            let a = [];
+            a = res.data.data.data;
+            for (var i = 0; i < a.length; i++) {
+              a[i].type = "";
+              if (a[i].que.status == 1) {
+                a[i].type = "保存";
+              }
+              if (a[i].que.status == 2) {
+                a[i].type = "正在竞拍";
+              }
+              if (a[i].que.status == 3) {
+                a[i].type = "已选竞拍者";
+              }
+              if (a[i].que.status == 4) {
+                a[i].type = "已回答";
+              }
+              if (a[i].que.status == 5) {
+                a[i].type = "提交修改";
+              }
+              if (a[i].que.status == 6) {
+                a[i].type = "申请客服";
+              }
+              if (a[i].que.status == 7) {
+                a[i].type = "已完成";
+              }
+              if (a[i].que.status == 8) {
+                a[i].type = "已关闭";
+              }
+              _this.quizTableData.push(a[i]);
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 检索问题列表
+    quizList() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+          async: false,
+          params: {
+            pagenum: _this.pagenums,
+            pagesize: _this.pagesizes
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.quizTableData = res.data.data.data;
+            _this.pageTotal = res.data.data.pageTotal;
             _this.quizShow = true;
             for (var i = 0; i < _this.quizTableData.length; i++) {
               _this.$set(_this.quizTableData[i], "type", "");
@@ -573,7 +723,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/Edit`,
           async: false,
           params: {
-            questionid: id,
+            questionid: id
           },
           xhrFields: {
             withCredentials: true

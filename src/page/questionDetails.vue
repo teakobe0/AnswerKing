@@ -213,7 +213,7 @@
           <p class="countTime" v-if="countdownText">时间已到您不能在更改答案内容。</p>
           <div class="qd-title-left">
             <h2>{{qlList.que.title}}</h2>
-            <p>{{qlList.que.content}}</p>
+            <p v-html="qlList.que.content"></p>
           </div>
           <div class="qd-title-right">
             <div class="qd-title-right-1">
@@ -277,7 +277,7 @@
                     type="primary"
                     size="mini"
                     style="float:right;margin-top:0px;"
-                    v-if="auctionClient"
+                    v-if="auctionbutton"
                     @click="auctions(item.bidding.createBy)"
                   >选他答</el-button>
                   <i
@@ -407,6 +407,7 @@ export default {
       clientID: "",
       // 判断当前登录人是否是竞拍者之一
       auctionClient: false,
+      auctionbutton: false,
       endtime: "",
       // 倒计时显示隐藏
       countdown: false,
@@ -422,7 +423,7 @@ export default {
       answerShows: false,
       // 暂时没人回答
       editan: false,
-      qdeditnullShow:true,
+      qdeditnullShow: true
     };
   },
   created: function() {
@@ -541,30 +542,56 @@ export default {
               for (var i = 0; i < _this.qlList.bls.length; i++) {
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
                   _this.auctionClient = false;
+                  _this.auctionbutton = false;
                   console.log("我是竞拍者之一");
                 }
               }
               // 我是提问者
-              if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status < 4){
+              if (
+                _this.clientID == _this.qlList.que.createBy &&
+                _this.qlList.que.status < 3
+              ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = true;
                 _this.auctionShow = true; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = true; //左侧没有答案的框体
                 _this.editan = false;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
-                console.log("提问者小于4")
-              }else if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status < 7){
+                console.log("提问者小于3");
+              } else if (
+                _this.clientID == _this.qlList.que.createBy &&
+                _this.qlList.que.status < 4
+              ) {
+                _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
+                _this.auctionShow = true; //竞拍者栏的整体隐藏
+                _this.qdeditnullShow = true; //左侧没有答案的框体
+                _this.editan = false;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                console.log("提问者小于4");
+              } else if (
+                _this.clientID == _this.qlList.que.createBy &&
+                _this.qlList.que.status < 7
+              ) {
                 _this.auctionClient = true;
+                _this.auctionbutton = false;
                 _this.auctionShow = true;
                 _this.qdeditnullShow = false;
                 _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
-                console.log("提问者小于7")
-              }else if(_this.clientID == _this.qlList.que.createBy && _this.qlList.que.status >= 7){
+                console.log("提问者小于7");
+              } else if (
+                _this.clientID == _this.qlList.que.createBy &&
+                _this.qlList.que.status >= 7
+              ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = false;
@@ -572,11 +599,15 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
-                console.log("提问者大于7")
+                console.log("提问者大于7");
               }
               // 我是答题者
-              if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status <= 3){
+              if (
+                _this.clientID == _this.qlList.que.answerer &&
+                _this.qlList.que.status <= 3
+              ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.qdeditShow = true; //编辑器的隐藏
@@ -585,9 +616,13 @@ export default {
                 _this.answerShows = false; //满屏答案的显示隐藏
                 _this.endtime = _this.formatDate(_this.qlList.que.endTime);
                 _this.countTime();
-                console.log("答题者小于等于3")
-              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status == 5){
+                console.log("答题者小于等于3");
+              } else if (
+                _this.clientID == _this.qlList.que.answerer &&
+                _this.qlList.que.status == 5
+              ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.qdeditShow = true; //编辑器的隐藏
@@ -596,18 +631,26 @@ export default {
                 _this.answerShows = false; //满屏答案的显示隐藏
                 _this.endtime = _this.formatDate(_this.qlList.que.endTime);
                 _this.countTime();
-                console.log("答题者等于5")
-              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status == 4){
+                console.log("答题者等于5");
+              } else if (
+                _this.clientID == _this.qlList.que.answerer &&
+                _this.qlList.que.status == 4
+              ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.qdeditShow = true; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
-                console.log("答题者等于4")
-              }else if(_this.clientID ==_this.qlList.que.answerer && _this.qlList.que.status > 5){
+                console.log("答题者等于4");
+              } else if (
+                _this.clientID == _this.qlList.que.answerer &&
+                _this.qlList.que.status > 5
+              ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = false;
@@ -615,10 +658,11 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
-                console.log("答题者大于5")
+                console.log("答题者大于5");
               }
-              if(_this.qlList.que.status >= 7){
+              if (_this.qlList.que.status >= 7) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = false;
@@ -636,6 +680,7 @@ export default {
               _this.qdeditShow = false;
               _this.nullLoginShow = true;
               _this.auctionClient = false;
+              _this.auctionbutton = false;
               _this.auctionShow = false;
               _this.qdeditShow = false;
               _this.qdeditnullShow = false;

@@ -57,7 +57,7 @@
 .ql-ask-con h3 {
   margin-bottom: 11px;
   width: 850px;
-  overflow: hidden;
+  min-height: 25px;
 }
 .ql-ask-con h3 a {
   text-decoration: none;
@@ -209,7 +209,7 @@
 }
 /* 我要答这招结束 */
 .topInput {
-  width: 108px !important;
+  width: 140px !important;
   background: #fff !important;
   padding: 0px !important;
   position: absolute !important;
@@ -229,7 +229,30 @@
 .ql-ask-ent {
   min-height: 21px;
   width: 850px;
-  overflow: hidden;
+}
+.nextpage {
+  text-align: center;
+  font-size: 35px;
+  line-height: 40px;
+  color: #76839b;
+  cursor: pointer;
+  margin-top: 20px;
+}
+.nextpage:hover {
+  color: #4888ff;
+  font-size: 40px;
+}
+.nextpage:active {
+  color: #0059ff;
+}
+.nextpage span {
+  position: relative;
+  top: -10px;
+  height: 0px;
+  display: inline-block;
+}
+.el-picker-panel .el-button--text {
+  visibility: hidden !important;
 }
 </style>
 <template>
@@ -257,7 +280,13 @@
                 <i class="el-icon-s-opportunity"></i>
                 我的提问
               </div>
-              <el-input class="topInput" v-model="topInput" placeholder="搜索" @change="topInputs"></el-input>
+              <el-input
+                class="topInput"
+                v-model="topInput"
+                placeholder="搜索"
+                @change="topInputs"
+                clearable
+              ></el-input>
             </div>
             <!-- 没有登录时 -->
             <div class="ql-ask-con" v-for="item in qlList" v-show="qlcon">
@@ -310,7 +339,7 @@
                     size="medium"
                     class="ql-ask-reply-1"
                     @click="replyShade(item)"
-                    v-show="item.que.status != 7"
+                    v-show="!item.type"
                     @mousewheel.prevent
                   >我要答</el-button>
                   <!-- <el-button type="text" icon="el-icon-plus" class="ql-ask-reply-2">关注问题</el-button>
@@ -333,8 +362,10 @@
               </div>
             </div>
           </div>
+          <div class="nextpage" @click="nextpages">
+            <span>...</span>
+          </div>
         </div>
-
         <div class="ql-right">
           <div class="ql-right-quit">
             <el-button
@@ -395,6 +426,12 @@
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
                   placeholder="选择日期时间"
+                  :picker-options="{
+                    disabledDate: time => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    },
+                    selectableRange: startTimeRange
+                  }"
                 ></el-date-picker>
               </el-form-item>
             </div>
@@ -430,7 +467,18 @@
             <div style="float:left;">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
-                <el-date-picker v-model="auction.EndTime" type="datetime" placeholder="选择日期时间"></el-date-picker>
+                <el-date-picker
+                  v-model="auction.EndTime"
+                  type="datetime"
+                  class="auTime"
+                  placeholder="选择日期时间"
+                  :picker-options="{
+                    disabledDate: time => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    },
+                    selectableRange: austartTimeRange
+                  }"
+                ></el-date-picker>
               </el-form-item>
             </div>
             <div style="float:right;">
@@ -488,12 +536,12 @@ export default {
     plugins: {
       type: [String, Array],
       default:
-        "link lists image code table colorpicker textcolor wordcount contextmenu"
+        "link lists image table colorpicker textcolor wordcount contextmenu"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat"
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image | removeformat"
     }
   },
   data() {
@@ -547,7 +595,7 @@ export default {
       QuestionsQuiz: {
         Title: "",
         Content: "",
-        EndTime: new Date(),
+        EndTime: "",
         Currency: ""
       },
       // 我要提问表单验证
@@ -559,6 +607,7 @@ export default {
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
           {
+            type: "date",
             required: true,
             message: "请选择日期",
             trigger: "change"
@@ -568,7 +617,7 @@ export default {
       },
       // 我要答列表
       auction: {
-        EndTime: new Date(),
+        EndTime: "",
         Currency: "",
         QuestionId: ""
       },
@@ -591,7 +640,7 @@ export default {
       num: 0,
       typeNum: "time",
       pagenums: 1,
-      pagesizes: 5,
+      pagesizes: 15,
       clientID: 0,
       myqus: false,
       qlcon: false,
@@ -602,7 +651,9 @@ export default {
       toAnswer: 0,
       haveToAnswer: 0,
       myQlList: [],
-      myQlcon: false
+      myQlcon: false,
+      startTimeRange: "",
+      austartTimeRange: ""
     };
   },
   created: function() {
@@ -614,6 +665,35 @@ export default {
     formatDate: function(time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd-hh:mm");
+    },
+    sendTimeDate: function(date) {
+      if (!!date) {
+        var nowDate =
+          new Date(date).getFullYear() +
+          "-" +
+          (new Date(date).getMonth() + 1 < 10
+            ? "0" + (new Date(date).getMonth() + 1)
+            : new Date(date).getMonth() + 1) +
+          "-" +
+          (new Date(date).getDate(date) < 10
+            ? "0" + new Date(date).getDate(date)
+            : new Date(date).getDate(date));
+        var nowTime =
+          (new Date(date).getHours() < 10
+            ? "0" + new Date(date).getHours()
+            : new Date(date).getHours()) +
+          ":" +
+          (new Date(date).getMinutes() < 10
+            ? "0" + new Date(date).getMinutes()
+            : new Date(date).getMinutes()) +
+          ":" +
+          (new Date(date).getSeconds() < 10
+            ? "0" + new Date(date).getSeconds()
+            : new Date(date).getSeconds());
+        return nowDate + " " + nowTime;
+      } else {
+        return "";
+      }
     }
   },
   mounted() {
@@ -862,7 +942,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.myQlList = res.data.data.data;
             let date = new Date();
@@ -932,6 +1011,7 @@ export default {
     Myquestion() {
       const _this = this;
       _this.num = 3;
+      _this.pagenums = 1;
       // _this.qlcon = false;
       // _this.qlData = true;
       _this
@@ -1011,52 +1091,60 @@ export default {
       let date = new Date();
       let now = date.getTime();
       let leftTime = new Date(_this.QuestionsQuiz.EndTime).getTime() - now;
-      let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-      let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-      console.log(d)
-      console.log(h)
-      if(d<0 || h<2){
-        console.log("最少两个小时")
-      }
-      // _this.$refs[QuestionsQuiz].validate(valid => {
-      //   if (valid) {
-      //     _this
-      //       .axios({
-      //         method: "post",
-      //         url: `${_this.URLport.serverPath}/Questions/Add`,
-      //         async: false,
-      //         data: _this.QuestionsQuiz,
-      //         xhrFields: {
-      //           withCredentials: true
-      //         },
-      //         headers: {
-      //           Authorization: `Bearer ${localStorage.getItem("token")}`
-      //         }
-      //       })
-      //       .then(function(res) {
-      //         if (res.data.status == 1) {
-      //           _this.QuestionsQuiz.Title = "";
-      //           _this.QuestionsQuiz.Content = "";
-      //           _this.QuestionsQuiz.EndTime = new Date();
-      //           _this.QuestionsQuiz.Currency = "";
-      //           _this.qlShade = !_this.qlShade;
-      //           _this.myquizList();
-      //           _this.$message({
-      //             message: "发布成功",
-      //             type: "success"
-      //           });
-      //         } else {
-      //           _this.$message({
-      //             message: "发布失败",
-      //             type: "error"
-      //           });
-      //         }
-      //       })
-      //       .catch(function(error) {
-      //         console.log(error);
-      //       });
+      let h = Math.floor(leftTime / (3600 * 1000));
+      // console.log(h);
+
+      // _this.$refs.QuestionsQuiz.validateField("EndTime", errMsg => {
+      //   if (errMsg) {
+      //     console.log("请保证选择的时间在2小时以上");
+      //      _this.$refs.QuestionsQuiz.clearValidate("EndTime")
+      //   } else {
+      //     if (h < 2) {
+      //       return errMsg = false;
+      //       _this.$refs.QuestionsQuiz.clearValidate("EndTime")
+      //     }
+      //     console.log("校验通过");
       //   }
       // });
+      _this.$refs[QuestionsQuiz].validate(valid => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Questions/Add`,
+              async: false,
+              data: _this.QuestionsQuiz,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.QuestionsQuiz.Title = "";
+                _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.EndTime = new Date();
+                _this.QuestionsQuiz.Currency = "";
+                _this.qlShade = !_this.qlShade;
+                _this.myquizList();
+                _this.$message({
+                  message: "发布成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发布失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      });
     },
     // 我要答显示遮罩按钮
     replyShade(item) {
@@ -1141,7 +1229,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             if (res.data.status == 1) {
               _this.myQlList = res.data.data.data;
               let date = new Date();
@@ -1280,9 +1367,190 @@ export default {
             console.log(error);
           });
       }
+    },
+    nextpages() {
+      const _this = this;
+      if (localStorage.token && _this.num != 3) {
+        _this.myQlcon = true;
+        _this.myqus = true;
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
+            async: false,
+            params: {
+              type: _this.typeNum,
+              pagenum: ++_this.pagenums,
+              pagesize: _this.pagesizes
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              // _this.myQlList.push(res.data.data.data);
+              let a = [];
+              a = res.data.data.data;
+              let date = new Date();
+              let now = date.getTime();
+              for (var i = 0; i < res.data.data.data.length; i++) {
+                _this.$set(a[i], "Times", "");
+                let leftTime = new Date(a[i].que.endTime).getTime() - now;
+                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                let m = Math.floor((leftTime / 1000 / 60) % 60);
+                _this.myQlList[i].Times =
+                  "还剩" + d + "天" + h + "时" + m + "分";
+                _this.myQlList.push(a[i]);
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else if (!localStorage.token && _this.num != 3) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+            async: false,
+            params: {
+              type: _this.typeNum,
+              pagenum: ++_this.pagenums,
+              pagesize: _this.pagesizes
+            },
+            xhrFields: {
+              withCredentials: true
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              if (res.data.data.data.length != 0) {
+                for (var i = 0; i < res.data.data.data.length; i++) {
+                  _this.qlList.push(res.data.data.data[i]);
+                }
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      } else if (localStorage.token && _this.num == 3) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+            async: false,
+            params: {
+              name: _this.topInput,
+              pagenum: ++_this.pagenums,
+              pagesize: _this.pagesizes
+            },
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              let a = [];
+              a = res.data.data.data;
+              for (var i = 0; i < a.length; i++) {
+                a[i].type = "";
+                if (a[i].que.status == 1) {
+                  a[i].type = "保存";
+                }
+                if (a[i].que.status == 2) {
+                  a[i].type = "正在竞拍";
+                }
+                if (a[i].que.status == 3) {
+                  a[i].type = "已选竞拍者";
+                }
+                if (a[i].que.status == 4) {
+                  a[i].type = "已回答";
+                }
+                if (a[i].que.status == 5) {
+                  a[i].type = "提交修改";
+                }
+                if (a[i].que.status == 6) {
+                  a[i].type = "申请客服";
+                }
+                if (a[i].que.status == 7) {
+                  a[i].type = "已完成";
+                }
+                if (a[i].que.status == 8) {
+                  a[i].type = "已关闭";
+                }
+                _this.myQlList.push(a[i]);
+              }
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
   },
   watch: {
+    "QuestionsQuiz.EndTime": {
+      immediate: true,
+      handler(newValue, oldValue) {
+        const _this = this;
+        if (newValue) {
+          let newva = this.$options.filters["sendTimeDate"](
+            new Date(newValue).getTime()
+          );
+          let nowDate = this.$options.filters["sendTimeDate"](
+            new Date().getTime() + 7200000
+          ); // 2小时之后的时间(我是因业务要求,这里可以随意调整时间)
+          let dt = nowDate.split(" ");
+          let st = "";
+          if (newva.split(" ")[0] == dt[0]) {
+            // 是今天,选择 的时间开始为此刻的时分秒
+            st = dt[1];
+          } else {
+            // 明天及以后从0时开始
+            st = "00:00:00";
+          }
+          this.startTimeRange = st + " - 23:59:59";
+          console.log(this.startTimeRange);
+          // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
+          // //否则为：00:00:00- 23:59:59
+        }
+      }
+    },
+    "auction.EndTime": {
+      immediate: true,
+      handler(newValue, oldValue) {
+        const _this = this;
+        if (newValue) {
+          let newva = _this.$options.filters["sendTimeDate"](
+            new Date(newValue).getTime()
+          );
+          let nowDate = _this.$options.filters["sendTimeDate"](
+            new Date().getTime() + 7200000
+          ); // 2小时之后的时间(我是因业务要求,这里可以随意调整时间)
+          let dt = nowDate.split(" ");
+          let st = "";
+          if (newva.split(" ")[0] == dt[0]) {
+            // 是今天,选择 的时间开始为此刻的时分秒
+            st = dt[1];
+          } else {
+            // 明天及以后从0时开始
+            st = "00:00:00";
+          }
+          _this.austartTimeRange = st + " - 23:59:59";
+          // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
+          // //否则为：00:00:00- 23:59:59
+        }
+      }
+    },
     value(newValue) {
       this.myValue = newValue;
     },
