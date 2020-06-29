@@ -1208,7 +1208,7 @@ export default {
     // 搜索
     topInputs() {
       const _this = this;
-
+      _this.pagenums = 1;
       if (localStorage.token && _this.num != 3) {
         _this
           .axios({
@@ -1265,7 +1265,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             if (res.data.status == 1) {
               _this.qlList = res.data.data.data;
               let date = new Date();

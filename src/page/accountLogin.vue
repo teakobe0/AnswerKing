@@ -10,7 +10,7 @@
   background-image: url(../assets/347985.jpg);
   background-color: #dfdfdf;
   background-repeat: no-repeat;
-  background-position:left center;
+  background-position: left center;
   background-size: cover;
   margin: 0 auto;
   width: 100%;
@@ -36,7 +36,6 @@
 }
 
 .brand {
-  
   /* height: 50px; */
 }
 .brand span {
@@ -45,7 +44,6 @@
   color: #4458b0;
   margin-bottom: 20px;
   vertical-align: middle;
-  
 }
 .brand img {
   width: 40px;
@@ -168,13 +166,13 @@ export default {
   name: "login",
   components: {
     Nav,
-    Footer,
+    Footer
   },
   data() {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con15')));
+        callback(new Error(this.$t("popupLogin.con15")));
       }
       callback();
     };
@@ -184,21 +182,32 @@ export default {
       ruleForm: {
         Email: "",
         Password: "",
-        Username:""
+        Username: ""
       },
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          { required: true, message: this.$t('popupLogin.con11'), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("popupLogin.con11"),
+            trigger: "blur"
+          },
           {
             type: "email",
-            message: this.$t('popupLogin.con12'),
+            message: this.$t("popupLogin.con12"),
             trigger: ["blur", "change"]
           }
         ],
         Password: [{ required: true, validator: validatePass, trigger: "blur" }]
       }
     };
+  },
+  created: function() {
+    const _this = this;
+    if (!localStorage.SkipPath) {
+      localStorage.SkipPath = '/'
+    }
+    
   },
   //页面的方法还是写在methods{}中
   methods: {
@@ -223,16 +232,16 @@ export default {
               if (res.data.status == 1) {
                 // _this.loadings = false;
                 _this.$message({
-                  message: _this.$t('popupLogin.con13'),
+                  message: _this.$t("popupLogin.con13"),
                   type: "success"
                 });
                 //_this.$store.state.logo.show = false;
                 //_this.$store.state.logo.hide = true;
                 if (localStorage.SkipPath != "/login") {
                   _this.$router.push({
-                    path: localStorage.SkipPath,
+                    path: localStorage.SkipPath
                   });
-                }else {
+                } else {
                   _this.$router.push({ path: "/uploadAnswer" });
                 }
               }
@@ -240,7 +249,7 @@ export default {
             .catch(function(error) {
               console.log(error);
               _this.loadings = false;
-              _this.$message.error(_this.$t('popupLogin.con18'));
+              _this.$message.error(_this.$t("popupLogin.con18"));
             });
         } else {
           console.log("error submit!!");
