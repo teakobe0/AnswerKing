@@ -737,12 +737,12 @@ export default {
           if (res.data.status == 1) {
             _this.quizList();
             _this.$message({
-              message: "评价成功",
+              message: "回答者可以开始补充回答。",
               type: "success"
             });
           } else {
             _this.$message({
-              message: "评价失败",
+              message: "提交修改失败",
               type: "error"
             });
           }

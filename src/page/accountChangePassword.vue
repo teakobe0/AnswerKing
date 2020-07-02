@@ -108,7 +108,7 @@ export default {
             console.log(res);
             _this.loadings = false;
             if (res.data.status == 1) {
-              _this.$alert(_this.$t('popupLogin.con255'), "CourseWhale", {
+              _this.$alert(_this.$t('popupLogin.con25'), "CourseWhale", {
                 confirmButtonText: _this.$t('basic.con14'),
                 callback: action => {
                   _this.$message({

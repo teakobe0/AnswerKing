@@ -203,7 +203,6 @@ export default {
     };
   },
   created: function() {
-    const _this = this;
     if (!localStorage.SkipPath) {
       localStorage.SkipPath = '/'
     }

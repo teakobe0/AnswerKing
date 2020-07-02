@@ -214,7 +214,16 @@
           <div class="qd-title-left">
             <h2>{{qlList.que.title}}</h2>
             <p v-html="qlList.que.content"></p>
+            <el-button
+            icon="el-icon-edit"
+            size="mini"
+            class="ql-ask-reply-1"
+            @click="replyShade(qlList)"
+            v-if="replyShadeShow"
+            @mousewheel.prevent
+          >竞拍</el-button>
           </div>
+          
           <div class="qd-title-right">
             <div class="qd-title-right-1">
               <p>截止日期</p>
@@ -301,6 +310,42 @@
       </div>
     </div>
 
+    <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
+      <div class="ql-editReply">
+        <h3>选择您向提问人提出的时间和赏金要求</h3>
+        <el-form :model="auction" :rules="auctionrules" ref="auction" class="demo-ruleForm">
+          <div style="overflow: hidden;">
+            <div style="float:left;">
+              <div class="PR">答题截止时间</div>
+              <el-form-item prop="EndTime">
+                <el-date-picker
+                  v-model="auction.EndTime"
+                  type="datetime"
+                  class="auTime"
+                  placeholder="选择日期时间"
+                  :picker-options="{
+                    disabledDate: time => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    },
+                    selectableRange: austartTimeRange
+                  }"
+                ></el-date-picker>
+              </el-form-item>
+            </div>
+            <div style="float:right;">
+              <div class="PR">鲸灵币</div>
+              <el-form-item prop="Currency">
+                <el-input v-model="auction.Currency" placeholder="鲸灵币(选填)" style="width:130px;"></el-input>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+        <div style="overflow:hidden">
+          <el-button class="releaseQl" type="primary" size="medium" @click="auctionQl('auction')">提交</el-button>
+        </div>
+        <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
+      </div>
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -423,7 +468,27 @@ export default {
       answerShows: false,
       // 暂时没人回答
       editan: false,
-      qdeditnullShow: true
+      qdeditnullShow: true,
+      qlreplyShade: false,
+      // 我要答列表
+      auction: {
+        EndTime: "",
+        Currency: "",
+        QuestionId: ""
+      },
+      // 我要答表单验证
+      auctionrules: {
+        EndTime: [
+          {
+            required: true,
+            message: "请选择日期",
+            trigger: "change"
+          }
+        ],
+        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
+      },
+      austartTimeRange: "",
+      replyShadeShow:true
     };
   },
   created: function() {
@@ -433,7 +498,36 @@ export default {
   filters: {
     formatDate: function(time) {
       let date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
+      return formatDate(date, "yyyy-MM-dd-hh:mm");
+    },
+    sendTimeDate: function(date) {
+      if (!!date) {
+        var nowDate =
+          new Date(date).getFullYear() +
+          "-" +
+          (new Date(date).getMonth() + 1 < 10
+            ? "0" + (new Date(date).getMonth() + 1)
+            : new Date(date).getMonth() + 1) +
+          "-" +
+          (new Date(date).getDate(date) < 10
+            ? "0" + new Date(date).getDate(date)
+            : new Date(date).getDate(date));
+        var nowTime =
+          (new Date(date).getHours() < 10
+            ? "0" + new Date(date).getHours()
+            : new Date(date).getHours()) +
+          ":" +
+          (new Date(date).getMinutes() < 10
+            ? "0" + new Date(date).getMinutes()
+            : new Date(date).getMinutes()) +
+          ":" +
+          (new Date(date).getSeconds() < 10
+            ? "0" + new Date(date).getSeconds()
+            : new Date(date).getSeconds());
+        return nowDate + " " + nowTime;
+      } else {
+        return "";
+      }
     }
   },
   methods: {
@@ -502,11 +596,6 @@ export default {
       const _this = this;
       // _this.qdeditShow = true;
     },
-    // 显示竞拍者遮罩
-    auction() {
-      const _this = this;
-      // _this.auctionShow = !_this.auctionShow;
-    },
     // 检索问题详情
     QuDe() {
       const _this = this;
@@ -543,6 +632,7 @@ export default {
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
                   _this.auctionClient = false;
                   _this.auctionbutton = false;
+                  
                   console.log("我是竞拍者之一");
                 }
               }
@@ -559,6 +649,7 @@ export default {
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
+                _this.replyShadeShow = false;
                 console.log("提问者小于3");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
@@ -572,6 +663,7 @@ export default {
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
+                _this.replyShadeShow = false;
                 console.log("提问者小于4");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
@@ -585,6 +677,7 @@ export default {
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
+                _this.replyShadeShow = false;
                 console.log("提问者小于7");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
@@ -599,8 +692,10 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
                 console.log("提问者大于7");
               }
+
               // 我是答题者
               if (
                 _this.clientID == _this.qlList.que.answerer &&
@@ -614,6 +709,7 @@ export default {
                 _this.savesubmitShow = true; //保存进度提交的隐藏
                 _this.countdown = true; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
                 _this.endtime = _this.formatDate(_this.qlList.que.endTime);
                 _this.countTime();
                 console.log("答题者小于等于3");
@@ -629,6 +725,7 @@ export default {
                 _this.savesubmitShow = true; //保存进度提交的隐藏
                 _this.countdown = true; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
                 _this.endtime = _this.formatDate(_this.qlList.que.endTime);
                 _this.countTime();
                 console.log("答题者等于5");
@@ -644,6 +741,7 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
                 console.log("答题者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.answerer &&
@@ -658,8 +756,10 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
                 console.log("答题者大于5");
               }
+              // 当问题已完成
               if (_this.qlList.que.status >= 7) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -670,6 +770,7 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
+                _this.replyShadeShow = false;
               }
 
               if (_this.qlList.answer != null) {
@@ -686,6 +787,7 @@ export default {
               _this.qdeditnullShow = false;
               _this.savesubmitShow = false;
               _this.answerShows = false;
+              _this.replyShadeShow = false;
             }
           }
         })
@@ -721,7 +823,7 @@ export default {
             .then(function(res) {
               console.log(res);
               if (res.data.status == 1) {
-                // _this.auctionClient = false;
+                _this.auctionbutton = false;
                 _this.$message({
                   message: "发布成功,竞拍者可以开始答题。",
                   type: "success"
@@ -878,7 +980,66 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    }
+    },
+    replyShade(item){
+      const _this = this;
+      console.log(item)
+      if (localStorage.getItem("token")) {
+        _this.auction.QuestionId = item.que.id;
+        _this.auction.EndTime = item.que.endTime;
+        _this.auction.Currency = item.que.currency;
+        _this.qlreplyShade = !_this.qlreplyShade;
+      } else {
+        _this.$message({
+          message: "请登录之后竞拍",
+          type: "warning"
+        });
+      }
+    },
+    // 隐藏我要答
+    CloseReplyShade() {
+      const _this = this;
+      _this.qlreplyShade = !_this.qlreplyShade;
+    },
+    // 我要答竞拍确定
+    auctionQl(auction) {
+      const _this = this;
+      _this.$refs[auction].validate(valid => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Bidding/Add`,
+              async: false,
+              data: _this.auction,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.qlreplyShade = !_this.qlreplyShade;
+                _this.QuDe();
+                _this.$message({
+                  message: "竞拍成功。",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      });
+    },
   },
   mounted() {
     tinymce.init({});
@@ -901,6 +1062,32 @@ export default {
     }
   },
   watch: {
+    "auction.EndTime": {
+      immediate: true,
+      handler(newValue, oldValue) {
+        const _this = this;
+        if (newValue) {
+          let newva = _this.$options.filters["sendTimeDate"](
+            new Date(newValue).getTime()
+          );
+          let nowDate = _this.$options.filters["sendTimeDate"](
+            new Date().getTime() + 7200000
+          ); // 2小时之后的时间(我是因业务要求,这里可以随意调整时间)
+          let dt = nowDate.split(" ");
+          let st = "";
+          if (newva.split(" ")[0] == dt[0]) {
+            // 是今天,选择 的时间开始为此刻的时分秒
+            st = dt[1];
+          } else {
+            // 明天及以后从0时开始
+            st = "00:00:00";
+          }
+          _this.austartTimeRange = st + " - 23:59:59";
+          // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
+          // //否则为：00:00:00- 23:59:59
+        }
+      }
+    },
     value(newValue) {
       this.myValue = newValue;
     },

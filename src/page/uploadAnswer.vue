@@ -1602,7 +1602,6 @@ export default {
         } else {
           _this.$refs[upload].validate(valid => {
             if (valid) {
-              _this.addTopicShow = true;
               _this
                 .axios({
                   method: "post",
@@ -2442,7 +2441,7 @@ export default {
           type: "warning"
         });
       }
-      _this.addTopicShow = false;
+      // _this.addTopicShow = false;
       _this.upAnswerShow = true;
     },
     // 隐藏新的题目

@@ -43,7 +43,7 @@
             <span class="sendname">{{item.sendname}}</span>
             <span v-show="item.type == 1">{{$t('inform.con2')}}：</span>
             <span v-show="item.type == 2">给您留言：</span>
-            <span>{{item.content}}</span>
+            <span v-html="item.content"></span>
           </div>
           <div style="float:right;">
             <el-button

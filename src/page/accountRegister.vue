@@ -175,6 +175,11 @@ export default {
       decrypt: 0
     };
   },
+  created: function() {
+    if (!localStorage.SkipPath) {
+      localStorage.SkipPath = '/'
+    }
+  },
   //页面的方法还是写在methods{}中
   methods: {
     register(ruleForm) {

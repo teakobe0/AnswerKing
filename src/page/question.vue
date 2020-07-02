@@ -1092,20 +1092,6 @@ export default {
       let now = date.getTime();
       let leftTime = new Date(_this.QuestionsQuiz.EndTime).getTime() - now;
       let h = Math.floor(leftTime / (3600 * 1000));
-      // console.log(h);
-
-      // _this.$refs.QuestionsQuiz.validateField("EndTime", errMsg => {
-      //   if (errMsg) {
-      //     console.log("请保证选择的时间在2小时以上");
-      //      _this.$refs.QuestionsQuiz.clearValidate("EndTime")
-      //   } else {
-      //     if (h < 2) {
-      //       return errMsg = false;
-      //       _this.$refs.QuestionsQuiz.clearValidate("EndTime")
-      //     }
-      //     console.log("校验通过");
-      //   }
-      // });
       _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this
