@@ -349,7 +349,8 @@ export default {
           img: ko
         }
       ],
-      value: "zh"
+      value: "zh",
+      times: ""
     };
   },
   created: function() {
@@ -428,7 +429,39 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-        // setTimeout(this.gainmessage, 5000);
+    },
+    gainmessages: function() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Notice/Notices`,
+          async: false,
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          if (res.data.data.length >= 1) {
+            _this.$store.state.logo.message = res.data.data.length;
+            if (res.data.data.length > _this.messageLength) {
+              _this.$notify.info({
+                title: "消息",
+                message: "您有新的消息,请注意查收"
+              });
+              _this.messageLength = res.data.data.length;
+            }
+            _this.ismessage = true;
+          } else {
+            _this.ismessage = false;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     // 获取个人信息
     gainpersonal: function() {
@@ -461,6 +494,7 @@ export default {
             _this.$store.state.loginPerson.loginPerson = res.data.data;
             _this.personreviewsid = res.data.data.id;
             _this.gainmessage();
+            _this.times = setInterval(_this.gainmessages, 5000);
           })
           .catch(function(error) {
             localStorage.removeItem("token");
@@ -533,6 +567,9 @@ export default {
   },
   mounted() {
     window.addEventListener("scroll", this.handleScroll);
+  },
+  beforeDestroy() {
+    clearInterval(this.times);
   }
 };
 </script>

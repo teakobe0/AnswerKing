@@ -172,9 +172,9 @@ export default {
                   }
                   if (b.length >= 2) {
                     b.splice(0, 1);
-                    _this.messages[i].content = b[0] + "," + c.join();
+                    _this.messages[i].content = b[0] + c.join();
                   } else {
-                    _this.messages[i].content = b[0] + "," + c.join();
+                    _this.messages[i].content = b[0] + c.join();
                   }
                 } else {
                   _this.messages[i].type = 2; //2代表这是从问答留言过来的
@@ -182,6 +182,7 @@ export default {
                 }
               }
             }
+            console.log(_this.messages)
           }
         })
         .catch(function(error) {

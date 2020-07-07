@@ -101,6 +101,7 @@
 .ql-right-function {
   box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
   padding: 22px 0px 22px 0px;
+  margin-bottom: 22px;
 }
 .ql-right-function a {
   text-decoration: none;
@@ -122,6 +123,11 @@
 .ql-right-function a .ql-right-fc2 {
   float: right;
 }
+.ql-right-function p {
+  padding-left: 22px;
+  line-height: 40px;
+  color: rgb(118, 131, 155);
+}
 /* 右边功能部分结束 */
 /* 我要提问遮罩开始 */
 .shadeClose {
@@ -139,11 +145,11 @@
   right: 0;
   bottom: 0;
   background: rgba(26, 26, 26, 0.65);
-  z-index: 999;
+  z-index: 100;
 }
 .ql-editQuzi {
-  width: 540px;
-  padding: 20px;
+  width: 560px;
+  padding: 20px 20px 30px 20px;
   margin: 0 auto;
   background-color: #fff;
   position: relative;
@@ -184,7 +190,7 @@
   right: 0;
   bottom: 0;
   background: rgba(26, 26, 26, 0.65);
-  z-index: 999;
+  z-index: 100;
 }
 .ql-editReply {
   width: 540px;
@@ -254,6 +260,34 @@
 .el-picker-panel .el-button--text {
   visibility: hidden !important;
 }
+.el-dialog__header {
+  position: relative !important; 
+}
+.ql-shade .el-dialog {
+  width:90% !important;
+  margin-top: 4vh !important;
+  margin-bottom: 0px !important;
+}
+.ql-shade .el-dialog img {
+  height:500px !important;
+}
+.ql-shade .el-upload--picture-card {
+  border: 0px !important;
+  width: 30px !important;
+  height: 30px !important;
+  line-height: 0px !important;
+}
+.ql-shade .el-upload-list--picture-card .el-upload-list__item{
+  width: 50px !important;
+  height: 50px !important;
+}
+.ql-shade .el-upload-list--picture-card .el-upload-list__item-actions{
+  font-size: 12px !important;
+}
+.upImg {
+  text-align: right;
+  margin-bottom: 11px;
+}
 </style>
 <template>
   <div class="question">
@@ -268,15 +302,19 @@
                 <i class="el-icon-time"></i>
                 新提问
               </div>
-              <div :class="{qlasktitle0back:num==1}" @click="topCurrency">
+              <div :class="{qlasktitle0back:num==1}" @click="newTimes">
+                <i class="el-icon-time"></i>
+                快结束
+              </div>
+              <div :class="{qlasktitle0back:num==2}" @click="topCurrency">
                 <i class="el-icon-coin"></i>
                 高悬赏
               </div>
-              <div :class="{qlasktitle0back:num==2}" @click="accomplish">
+              <div :class="{qlasktitle0back:num==3}" @click="accomplish">
                 <i class="el-icon-s-opportunity"></i>
                 已完成
               </div>
-              <div :class="{qlasktitle0back:num==3}" @click="Myquestion" v-if="myqus">
+              <div :class="{qlasktitle0back:num==4}" @click="Myquestion" v-if="myqus">
                 <i class="el-icon-s-opportunity"></i>
                 我的提问
               </div>
@@ -375,7 +413,9 @@
               @mousewheel.prevent
             >我要提问</el-button>
           </div>
+
           <div class="ql-right-function" v-if="myqus">
+            <p>我提出的问题</p>
             <router-link to="/personalData/myQuestion">
               <div class="ql-right-fc1">
                 <i class="el-icon-star-off"></i>竞拍中
@@ -395,6 +435,27 @@
               <div class="ql-right-fc2">{{haveToAnswer}}</div>
             </router-link>
           </div>
+          <div class="ql-right-function" v-if="myqus">
+            <p>我参与的问题</p>
+            <router-link to="/personalData/myQuestion">
+              <div class="ql-right-fc1">
+                <i class="el-icon-star-off"></i>竞拍中
+              </div>
+              <div class="ql-right-fc2">{{paAuctions}}</div>
+            </router-link>
+            <router-link to="/personalData/myQuestion">
+              <div class="ql-right-fc1">
+                <i class="el-icon-time"></i>待回答
+              </div>
+              <div class="ql-right-fc2">{{paToAnswer}}</div>
+            </router-link>
+            <router-link to="/personalData/myQuestion">
+              <div class="ql-right-fc1">
+                <i class="el-icon-circle-check"></i>已回答
+              </div>
+              <div class="ql-right-fc2">{{paHaveToAnswer}}</div>
+            </router-link>
+          </div>
         </div>
       </div>
     </div>
@@ -409,6 +470,27 @@
           <el-form-item prop="Title" class="ql-editQuziTi">
             <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
+          <el-upload action="#" list-type="picture-card" :auto-upload="false" class="upImg">
+            <i slot="default" class="el-icon-picture" title="添加图片"></i>
+            <div slot="file" slot-scope="{file}">
+              <img class="el-upload-list__item-thumbnail" :src="file.url" alt />
+              <span class="el-upload-list__item-actions">
+                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
+                  <i class="el-icon-zoom-in"></i>
+                </span>
+                <span
+                  v-if="!disableds"
+                  class="el-upload-list__item-delete"
+                  @click="handleRemove(file)"
+                >
+                  <i class="el-icon-delete"></i>
+                </span>
+              </span>
+            </div>
+          </el-upload>
+          <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+            <img width="100%" :src="dialogImageUrl" alt />
+          </el-dialog>
           <el-form-item prop="Content" class="ql-editNameDetail">
             <!-- <el-input
               type="textarea"
@@ -416,6 +498,8 @@
               v-model="QuestionsQuiz.Content"
               :autosize="{ minRows: 2, maxRows: 22}"
             ></el-input>-->
+
+            <!-- 富文本 -->
             <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
           <div style="overflow: hidden;">
@@ -508,11 +592,7 @@ import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
 import "tinymce/themes/silver";
-import "tinymce/plugins/image";
-import "tinymce/plugins/link";
 import "tinymce/plugins/code";
-import "tinymce/plugins/table";
-import "tinymce/plugins/lists";
 import "tinymce/plugins/contextmenu";
 import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
@@ -535,13 +615,12 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default:
-        "link lists image table colorpicker textcolor wordcount contextmenu"
+      default: "colorpicker textcolor wordcount contextmenu"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image | removeformat"
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor"
     }
   },
   data() {
@@ -638,7 +717,7 @@ export default {
       value1: "",
       value2: "",
       num: 0,
-      typeNum: "time",
+      typeNum: "new",
       pagenums: 1,
       pagesizes: 15,
       clientID: 0,
@@ -646,14 +725,21 @@ export default {
       qlcon: false,
       qlData: false,
       quizTableData: [],
-      // 当前登录人问题相关数量
+      // 当前登录人提出的问题数量
       auctions: 0,
       toAnswer: 0,
       haveToAnswer: 0,
+      // 当前登录人参与的问题数量
+      paAuctions: 0,
+      paToAnswer: 0,
+      paHaveToAnswer: 0,
       myQlList: [],
       myQlcon: false,
       startTimeRange: "",
-      austartTimeRange: ""
+      austartTimeRange: "",
+      dialogImageUrl: "",
+      dialogVisible: false,
+      disableds: false
     };
   },
   created: function() {
@@ -871,6 +957,7 @@ export default {
             _this.clientID = res.data.data.id;
             _this.myquizList();
             _this.QuestionsStatus();
+            _this.AnswerStatus();
           })
           .catch(function(error) {
             console.log(error);
@@ -969,7 +1056,21 @@ export default {
     newTime() {
       const _this = this;
       _this.num = 0;
-      _this.typeNum = "time";
+      _this.typeNum = "new";
+      _this.pagenums = 1;
+      // _this.qlcon = true;
+      // _this.qlData = false;
+      if (localStorage.token) {
+        _this.myquizList();
+      } else {
+        _this.quizList();
+      }
+    },
+    // 新提问展示
+    newTimes() {
+      const _this = this;
+      _this.num = 1;
+      _this.typeNum = "retime";
       _this.pagenums = 1;
       // _this.qlcon = true;
       // _this.qlData = false;
@@ -982,7 +1083,7 @@ export default {
     // 高悬赏展示高悬赏展示
     topCurrency() {
       const _this = this;
-      _this.num = 1;
+      _this.num = 2;
       _this.typeNum = "currency";
       _this.pagenums = 1;
       // _this.qlcon = true;
@@ -996,7 +1097,7 @@ export default {
     // 已完成展示
     accomplish() {
       const _this = this;
-      _this.num = 2;
+      _this.num = 3;
       _this.typeNum = "finish";
       _this.pagenums = 1;
       // _this.qlcon = true;
@@ -1010,7 +1111,7 @@ export default {
     // 我的提问
     Myquestion() {
       const _this = this;
-      _this.num = 3;
+      _this.num = 4;
       _this.pagenums = 1;
       // _this.qlcon = false;
       // _this.qlData = true;
@@ -1325,14 +1426,14 @@ export default {
           });
       }
     },
-    // 检索当前登录人问题的情况数量
+    // 检索当前登录人我提出的问题数量
     QuestionsStatus() {
       const _this = this;
       if (localStorage.token) {
         _this
           .axios({
             method: "get",
-            url: `${_this.URLport.serverPath}/Questions/Status`,
+            url: `${_this.URLport.serverPath}/Questions/QuestionStatus`,
             async: false,
             xhrFields: {
               withCredentials: true
@@ -1346,6 +1447,34 @@ export default {
               _this.auctions = res.data.data.bnum;
               _this.toAnswer = res.data.data.nonum;
               _this.haveToAnswer = res.data.data.answernum;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+     // 检索当前登录人参与的问题数量
+    AnswerStatus() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/AnswerStatus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.paAuctions = res.data.data.bnum;
+              _this.paToAnswer = res.data.data.nonum;
+              _this.paHaveToAnswer = res.data.data.answernum;
             }
           })
           .catch(function(error) {
@@ -1480,6 +1609,16 @@ export default {
             console.log(error);
           });
       }
+    },
+    handleRemove(file) {
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
     }
   },
   watch: {

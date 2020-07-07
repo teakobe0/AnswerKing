@@ -201,6 +201,30 @@
   min-height: 318px;
   background: #fff;
 }
+.DeupImg {
+  margin-bottom: 10px;
+  text-align: right;
+}
+.DeupImg .el-upload--picture-card {
+  border: 0 !important;
+  width: 50px !important;
+  height: 50px !important;
+  line-height: 60px !important;
+  background-color: #f6f6f6 !important;
+}
+.DeupImg .el-upload-list--picture-card .el-upload-list__item-actions {
+  font-size: 12px !important;
+}
+.DeupImg .el-upload-list--picture-card .el-upload-list__item {
+  width: 50px !important;
+  height: 50px !important;
+}
+.qd-edit .el-dialog {
+  margin-top: 4vh !important;
+}
+.button1 {
+  margin-right: 10px !important;
+}
 </style>
 <template>
   <div class="questionDetails">
@@ -215,15 +239,35 @@
             <h2>{{qlList.que.title}}</h2>
             <p v-html="qlList.que.content"></p>
             <el-button
-            icon="el-icon-edit"
-            size="mini"
-            class="ql-ask-reply-1"
-            @click="replyShade(qlList)"
-            v-if="replyShadeShow"
-            @mousewheel.prevent
-          >竞拍</el-button>
+              icon="el-icon-edit"
+              size="mini"
+              class="ql-ask-reply-1 button1"
+              @click="replyShade(qlList)"
+              v-if="replyShadeShow"
+            >竞拍</el-button>
+            <el-button
+              size="mini"
+              class="ql-ask-reply-1 button1"
+              @click="editShade(qlList)"
+              v-show="editS"
+            >编辑</el-button>
+            <!-- <el-button type="text" size="mini" v-show="qlList.que.status > 3" disabled>编辑</el-button> -->
+            <el-button
+              size="mini"
+              class="ql-ask-reply-1 button1"
+              @click="evaluate(qlList)"
+              v-show="evaluateS"
+            >评价</el-button>
+            <!-- <el-button type="text" size="mini" disabled v-show="qlList.que.status != 4">评价</el-button> -->
+            <el-button
+              size="mini"
+              class="ql-ask-reply-1 button1"
+              @click="service(qlList.que.id)"
+              v-show="serviceS"
+            >申请客服</el-button>
+            <!-- <el-button type="text" size="mini" disabled v-show="qlList.que.status != 6">客服</el-button> -->
           </div>
-          
+
           <div class="qd-title-right">
             <div class="qd-title-right-1">
               <p>截止日期</p>
@@ -246,7 +290,32 @@
             </div>
             <div class="qd-editan" v-show="editan" v-html="myValue"></div>
             <div class="qd-edit" v-show="qdeditShow">
+              <el-upload action="#" list-type="picture-card" :auto-upload="false" class="DeupImg">
+                <i slot="default" class="el-icon-picture" title="添加图片附件"></i>
+                <div slot="file" slot-scope="{file}">
+                  <img class="el-upload-list__item-thumbnail" :src="file.url" alt />
+                  <span class="el-upload-list__item-actions">
+                    <span
+                      class="el-upload-list__item-preview"
+                      @click="handlePictureCardPreview(file)"
+                    >
+                      <i class="el-icon-zoom-in"></i>
+                    </span>
+                    <span
+                      v-if="!disableds"
+                      class="el-upload-list__item-delete"
+                      @click="handleRemove(file)"
+                    >
+                      <i class="el-icon-delete"></i>
+                    </span>
+                  </span>
+                </div>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+                <img width="100%" :src="dialogImageUrl" alt />
+              </el-dialog>
               <editor id="tinymce" v-model="myValue" :init="init"></editor>
+
               <el-button
                 type="primary"
                 class="qd-edit-submit"
@@ -346,6 +415,80 @@
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
       </div>
     </div>
+
+    <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
+      <div class="ql-editQuzi">
+        <el-form
+          :model="QuestionsQuiz"
+          :rules="QuestionsQuizrules"
+          ref="QuestionsQuiz"
+          class="demo-ruleForm"
+        >
+          <el-form-item prop="Title" class="ql-editQuziTi">
+            <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
+          </el-form-item>
+          <el-form-item prop="Content" class="ql-editNameDetail">
+            <editor id="tinymces" v-model="myValues" :init="inits"></editor>
+          </el-form-item>
+          <div style="overflow: hidden;">
+            <div style="float:left;">
+              <div class="PR">答题时间</div>
+              <el-form-item prop="EndTime">
+                <el-date-picker
+                  v-model="QuestionsQuiz.EndTime"
+                  type="datetime"
+                  placeholder="选择日期时间"
+                ></el-date-picker>
+              </el-form-item>
+            </div>
+            <div style="float:right;">
+              <div class="PR">鲸灵币</div>
+              <el-form-item prop="Currency">
+                <el-input
+                  v-model="QuestionsQuiz.Currency"
+                  placeholder="鲸灵币(选填)"
+                  style="width:130px;"
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+        <div style="overflow:hidden">
+          <el-button
+            class="releaseQl"
+            type="primary"
+            size="medium"
+            @click="releaseQl('QuestionsQuiz')"
+          >发布问题</el-button>
+          <el-button size="medium" @click="CloseQuitBt" style="margin-right:10px;float:right;">取消</el-button>
+        </div>
+
+        <!-- <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div> -->
+      </div>
+    </div>
+    <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
+      <div class="ql-editQuzi">
+        <div style="min-height:117px;">
+          <div style="float:left;">您的评价:</div>
+          <el-switch
+            style="display: block;float:right;"
+            v-model="evaluateSwitch"
+            active-color="#13ce66"
+            inactive-color="#ff4949"
+            active-text="好评"
+            inactive-text="差评"
+          ></el-switch>
+          <el-input v-model="evaluateInput" style="margin-top:10px;margin-bottom:10px;"></el-input>
+          <el-button style="float:right;" type="primary" size="medium" @click="evaluateCon">确定</el-button>
+          <el-button style="float:right;margin-right:10px;" size="medium" @click="CloseEvaluate">取消</el-button>
+        </div>
+      </div>
+    </div>
+    <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
+      <div class="ql-editQuzi">
+        <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
+      </div>
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -358,11 +501,7 @@ import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
 import "tinymce/themes/silver";
-import "tinymce/plugins/image";
-import "tinymce/plugins/link";
 import "tinymce/plugins/code";
-import "tinymce/plugins/table";
-import "tinymce/plugins/lists";
 import "tinymce/plugins/contextmenu";
 import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
@@ -380,19 +519,22 @@ export default {
       type: String,
       default: "写回答..."
     },
+    values: {
+      type: String,
+      default: "写回答..."
+    },
     disabled: {
       type: Boolean,
       default: false
     },
     plugins: {
       type: [String, Array],
-      default:
-        "link lists image code table colorpicker textcolor wordcount contextmenu"
+      default: "colorpicker textcolor wordcount contextmenu"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image code | removeformat"
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor"
     }
   },
   data() {
@@ -440,6 +582,49 @@ export default {
         }
       },
       myValue: this.value,
+      inits: {
+        language_url: "/tinymce/langs/zh_CN.js",
+        language: "zh_CN",
+        skin_url: "/tinymce/skins/ui/oxide",
+        // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
+        height: 300,
+        plugins: this.plugins,
+        toolbar: this.toolbar,
+        branding: false,
+        menubar: false,
+        // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
+        // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
+        images_upload_handler: (blobInfo, success, failure) => {
+          // const img = "data:image/jpeg;base64," + blobInfo.base64();
+          // success(img);
+          let formData = new FormData();
+          // 服务端接收文件的参数名，文件数据，文件名
+          formData.append("questionId", this.$route.params.question_id);
+          formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+          this.axios({
+            method: "POST",
+            // 这里是你的上传地址
+            url: this.URLport.serverPath + "/File/UploadAnswer",
+            async: false,
+            data: formData,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+            .then(res => {
+              // 这里返回的是你图片的地址
+              success(res.data.file);
+            })
+            .catch(() => {
+              // failure("上传失败");
+            });
+        }
+      },
+      myValues: this.values,
       qlList: {},
       qdeditShow: false,
       auctionShow: true,
@@ -488,7 +673,43 @@ export default {
         Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
       },
       austartTimeRange: "",
-      replyShadeShow:true
+      replyShadeShow: true,
+      dialogImageUrl: "",
+      dialogVisible: false,
+      disableds: false,
+      // 编辑评价客服
+      qlShade: false,
+      evaluateShade: false,
+      serviceShade: false,
+      editS:false,
+      evaluateS:false,
+      serviceS:false,
+      // 评价内容
+      evaluateInput: "",
+      evaluateSwitch: true,
+      evaluateId: 0,
+      QuestionsQuiz: {
+        Title: "",
+        Content: "",
+        EndTime: "",
+        Currency: ""
+      },
+      // 编辑提问表单验证
+      QuestionsQuizrules: {
+        Title: [
+          { required: true, message: "请输入标题", trigger: "blur" },
+          { min: 4, message: "最少输入4个字", trigger: "blur" }
+        ],
+        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+        EndTime: [
+          {
+            required: true,
+            message: "请选择日期",
+            trigger: "change"
+          }
+        ],
+        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
+      }
     };
   },
   created: function() {
@@ -621,6 +842,7 @@ export default {
           // answerShows 满屏答案的显示隐藏
           // qdeditnullShow 左侧没有答案的框体
           // editan 左侧有答案的框体
+          // 1:保存 2：正在竞拍 3：已选竞拍者，4：已回答，5：申请客服，6：已完成,7:已关闭
           if (res.data.status == 1) {
             _this.loading = false;
             _this.qlList = res.data.data;
@@ -632,10 +854,13 @@ export default {
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
                   _this.auctionClient = false;
                   _this.auctionbutton = false;
-                  
+
                   console.log("我是竞拍者之一");
                 }
               }
+      //         editS:false,
+              // evaluateS:false,
+             // serviceS:false,
               // 我是提问者
               if (
                 _this.clientID == _this.qlList.que.createBy &&
@@ -650,10 +875,11 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
+                _this.editS = true;
                 console.log("提问者小于3");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
-                _this.qlList.que.status < 4
+                _this.qlList.que.status == 3
               ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -664,10 +890,11 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
-                console.log("提问者小于4");
+                _this.editS = true;
+                console.log("提问者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
-                _this.qlList.que.status < 7
+                _this.qlList.que.status == 4
               ) {
                 _this.auctionClient = true;
                 _this.auctionbutton = false;
@@ -678,10 +905,25 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
-                console.log("提问者小于7");
+                _this.evaluateS = true;
+                console.log("提问者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.createBy &&
-                _this.qlList.que.status >= 7
+                _this.qlList.que.status == 5
+              ) {
+                _this.auctionClient = true;
+                _this.auctionbutton = false;
+                _this.auctionShow = true;
+                _this.qdeditnullShow = false;
+                _this.editan = true;
+                _this.qdeditShow = false; //编辑器的隐藏
+                _this.savesubmitShow = false; //保存进度提交的隐藏
+                _this.countdown = false; //倒计时的隐藏
+                _this.replyShadeShow = false;
+                console.log("提问者等于5");
+              } else if (
+                _this.clientID == _this.qlList.que.createBy &&
+                _this.qlList.que.status >= 6
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -693,7 +935,8 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
-                console.log("提问者大于7");
+                _this.serviceS = true;
+                console.log("提问者大于6");
               }
 
               // 我是答题者
@@ -715,22 +958,6 @@ export default {
                 console.log("答题者小于等于3");
               } else if (
                 _this.clientID == _this.qlList.que.answerer &&
-                _this.qlList.que.status == 5
-              ) {
-                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
-                _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
-                _this.qdeditnullShow = false; //左侧没有答案的框体
-                _this.qdeditShow = true; //编辑器的隐藏
-                _this.savesubmitShow = true; //保存进度提交的隐藏
-                _this.countdown = true; //倒计时的隐藏
-                _this.answerShows = false; //满屏答案的显示隐藏
-                _this.replyShadeShow = false;
-                _this.endtime = _this.formatDate(_this.qlList.que.endTime);
-                _this.countTime();
-                console.log("答题者等于5");
-              } else if (
-                _this.clientID == _this.qlList.que.answerer &&
                 _this.qlList.que.status == 4
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
@@ -745,7 +972,7 @@ export default {
                 console.log("答题者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.answerer &&
-                _this.qlList.que.status > 5
+                _this.qlList.que.status == 5
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -757,10 +984,10 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
-                console.log("答题者大于5");
+                console.log("答题者等于5");
               }
               // 当问题已完成
-              if (_this.qlList.que.status >= 7) {
+              if (_this.qlList.que.status >= 6) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
@@ -771,6 +998,7 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
+                console.log("问题已完成");
               }
 
               if (_this.qlList.answer != null) {
@@ -844,47 +1072,66 @@ export default {
     // 通知留言
     inform(item, name) {
       const _this = this;
-      console.log(item);
-
-      this.$prompt("对" + " " + name + " " + "留言:", "CourseWhale", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消"
-      })
-        .then(({ value }) => {
-          var json = {};
-          json.ReceiveId = item.createBy; //接收人ID
-          json.ContentsUrl = value; //通知内容
-          _this
-            .axios({
-              method: "post",
-              url: `${_this.URLport.serverPath}/Notice/Add`,
-              async: false,
-              data: json,
-              xhrFields: {
-                withCredentials: true
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
-            })
-            .then(function(res) {
-              if (res.data.status == 1) {
-                _this.$message({
-                  message: "发布成功",
-                  type: "success"
-                });
-              } else {
-                _this.$message({
-                  message: "发布失败",
-                  type: "error"
-                });
-              }
-            })
-            .catch(function(error) {
-              console.log(error);
-            });
-        })
-        .catch(() => {});
+      // _this
+      //   .axios({
+      //     method: "get",
+      //     url: `${_this.URLport.serverPath}/Notice/ChatRecords`,
+      //     async: false,
+      //     params:{
+      //       receiveid: item.createBy
+      //     },
+      //     xhrFields: {
+      //       withCredentials: true
+      //     },
+      //     headers: {
+      //       Authorization: `Bearer ${localStorage.getItem("token")}`
+      //     }
+      //   })
+      //   .then(function(res) {
+          
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
+      // this.$prompt("对" + " " + name + " " + "留言:", "CourseWhale", {
+      //   confirmButtonText: "确定",
+      //   cancelButtonText: "取消"
+      // })
+      //   .then(({ value }) => {
+      //     var json = {};
+      //     json.ReceiveId = item.createBy; //接收人ID
+      //     json.ContentsUrl = value; //通知内容
+      //     _this
+      //       .axios({
+      //         method: "post",
+      //         url: `${_this.URLport.serverPath}/Notice/Add`,
+      //         async: false,
+      //         data: json,
+      //         xhrFields: {
+      //           withCredentials: true
+      //         },
+      //         headers: {
+      //           Authorization: `Bearer ${localStorage.getItem("token")}`
+      //         }
+      //       })
+      //       .then(function(res) {
+      //         if (res.data.status == 1) {
+      //           _this.$message({
+      //             message: "发送成功",
+      //             type: "success"
+      //           });
+      //         } else {
+      //           _this.$message({
+      //             message: "发送失败",
+      //             type: "error"
+      //           });
+      //         }
+      //       })
+      //       .catch(function(error) {
+      //         console.log(error);
+      //       });
+      //   })
+      //   .catch(() => {});
     },
     // 提交回答
     submit() {
@@ -981,9 +1228,10 @@ export default {
           console.log(error);
         });
     },
-    replyShade(item){
+    // 竞拍按钮
+    replyShade(item) {
       const _this = this;
-      console.log(item)
+      console.log(item);
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.id;
         _this.auction.EndTime = item.que.endTime;
@@ -996,6 +1244,120 @@ export default {
         });
       }
     },
+    // 编辑按钮
+    editShade(list) {
+      const _this = this;
+      _this.QuestionsQuiz.Title = list.que.title;
+      _this.QuestionsQuiz.Content = list.que.content;
+      _this.myValues = list.que.content;
+      _this.QuestionsQuiz.EndTime = list.que.endTime;
+      _this.QuestionsQuiz.Currency = list.que.currency;
+      _this.QuestionsQuiz.id = list.que.id;
+      _this.qlShade = !_this.qlShade;
+      console.log(this.$route.params.question_id);
+      // this.$route.params.question_id = 10;
+    },
+    CloseQuitBt() {
+      const _this = this;
+      _this.qlShade = !_this.qlShade;
+    },
+    // 评价按钮
+    evaluate(id) {
+      const _this = this;
+      _this.evaluateShade = !_this.evaluateShade;
+      _this.evaluateId = id;
+      _this.evaluateSwitch = true;
+    },
+    evaluateCon() {
+      const _this = this;
+      let grades = 5;
+      if (_this.evaluateSwitch == false) {
+        grades = 1;
+      }
+      console.log(_this.evaluateId);
+      _this
+        .axios({
+          method: "put",
+          url: `${_this.URLport.serverPath}/Questions/Evaluate`,
+          async: false,
+          params: {
+            questionid: _this.evaluateId,
+            content: _this.evaluateInput,
+            grade: grades
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          console.log(res);
+          if (res.data.status == 1) {
+            _this.quizList();
+            _this.evaluateShade = false;
+            _this.$message({
+              message: "评价成功",
+              type: "success"
+            });
+          } else {
+            _this.$message({
+              message: "评价失败",
+              type: "error"
+            });
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    // 申请客服按钮
+    service(id) {
+      const _this = this;
+      // _this.serviceShade = !_this.serviceShade;
+      console.log(id);
+      this.$prompt("您要对客服说:", "CourseWhale", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消"
+      })
+        .then(({ value }) => {
+          _this
+            .axios({
+              method: "put",
+              url: `${_this.URLport.serverPath}/Questions/ForService`,
+              async: false,
+              params: {
+                questionid: id,
+                reason: value
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.$message({
+                  message: "发送成功",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: "发送失败",
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        })
+        .catch(() => {});
+    },
     // 隐藏我要答
     CloseReplyShade() {
       const _this = this;
@@ -1004,14 +1366,74 @@ export default {
     // 我要答竞拍确定
     auctionQl(auction) {
       const _this = this;
-      _this.$refs[auction].validate(valid => {
+      console.log(auction)
+      // _this.$refs[auction].validate(valid => {
+      //   if (valid) {
+      //     _this
+      //       .axios({
+      //         method: "post",
+      //         url: `${_this.URLport.serverPath}/Bidding/Add`,
+      //         async: false,
+      //         data: _this.auction,
+      //         xhrFields: {
+      //           withCredentials: true
+      //         },
+      //         headers: {
+      //           Authorization: `Bearer ${localStorage.getItem("token")}`
+      //         }
+      //       })
+      //       .then(function(res) {
+      //         if (res.data.status == 1) {
+      //           _this.qlreplyShade = !_this.qlreplyShade;
+      //           _this.QuDe();
+      //           _this.replyShadeShow = false;
+      //           _this.$message({
+      //             message: "竞拍成功。",
+      //             type: "success"
+      //           });
+      //         } else {
+      //           _this.$message({
+      //             message: res.data.msg,
+      //             type: "error"
+      //           });
+      //         }
+      //       })
+      //       .catch(function(error) {
+      //         console.log(error);
+      //       });
+      //   }
+      // });
+    },
+    handleRemove(file) {
+      console.log(file);
+    },
+    handlePictureCardPreview(file) {
+      this.dialogImageUrl = file.url;
+      this.dialogVisible = true;
+    },
+    handleDownload(file) {
+      console.log(file);
+    },
+    CloseEvaluate() {
+      const _this = this;
+      _this.evaluateShade = !_this.evaluateShade;
+    },
+    CloseService() {
+      const _this = this;
+      _this.serviceShade = !_this.serviceShade;
+    },
+    // 编辑发布问题
+    releaseQl(QuestionsQuiz) {
+      const _this = this;
+      _this.QuestionsQuiz.Content = _this.myValues;
+      _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this
             .axios({
               method: "post",
-              url: `${_this.URLport.serverPath}/Bidding/Add`,
+              url: `${_this.URLport.serverPath}/Questions/Add`,
               async: false,
-              data: _this.auction,
+              data: _this.QuestionsQuiz,
               xhrFields: {
                 withCredentials: true
               },
@@ -1021,15 +1443,22 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
-                _this.qlreplyShade = !_this.qlreplyShade;
-                _this.QuDe();
+                _this.QuestionsQuiz.Title = "";
+                _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.EndTime = new Date();
+                _this.QuestionsQuiz.Currency = "";
+                _this.qlShade = !_this.qlShade;
                 _this.$message({
-                  message: "竞拍成功。",
+                  message: "发布成功,将跳转到新页面",
                   type: "success"
                 });
+                _this.$router.push({
+                  path: "/questionDetails/" + res.data.data.id
+                });
+                _this.$router.go(0);
               } else {
                 _this.$message({
-                  message: res.data.msg,
+                  message: "发布失败",
                   type: "error"
                 });
               }
@@ -1039,7 +1468,7 @@ export default {
             });
         }
       });
-    },
+    }
   },
   mounted() {
     tinymce.init({});

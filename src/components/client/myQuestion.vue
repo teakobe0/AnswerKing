@@ -82,7 +82,7 @@
                   <span>{{ scope.row.type}}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="190">
+              <el-table-column label="操作" width="130">
                 <template slot-scope="scope">
                   <!-- <el-button
                     v-show="scope.row.que.status == 1"
@@ -115,21 +115,9 @@
                     type="text"
                     size="mini"
                     @click="service(scope.row.que.id)"
-                    v-show="scope.row.que.status == 7"
+                    v-show="scope.row.que.status == 6"
                   >客服</el-button>
-                  <el-button type="text" size="mini" disabled v-show="scope.row.que.status != 7">客服</el-button>
-                  <el-button
-                    type="text"
-                    size="mini"
-                    @click="commitchanges(scope.row.que.id)"
-                    v-show="scope.row.que.status == 4"
-                  >提交修改</el-button>
-                  <el-button
-                    type="text"
-                    size="mini"
-                    disabled
-                    v-show="scope.row.que.status != 4"
-                  >提交修改</el-button>
+                  <el-button type="text" size="mini" disabled v-show="scope.row.que.status != 6">客服</el-button>
                 </template>
               </el-table-column>
             </el-table>
@@ -145,12 +133,13 @@
                     <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
                   </el-form-item>
                   <el-form-item prop="Content" class="ql-editNameDetail">
-                    <el-input
+                    <!-- <el-input
                       type="textarea"
                       placeholder="输入问题背景、条件等详细信(选填)"
                       v-model="QuestionsQuiz.Content"
                       :autosize="{ minRows: 2, maxRows: 22}"
-                    ></el-input>
+                    ></el-input> -->
+                    <editor id="tinymce" v-model="myValue" :init="init"></editor>
                   </el-form-item>
                   <div style="overflow: hidden;">
                     <div style="float:left;">
@@ -276,13 +265,90 @@
 </template>
 <script type="es6">
 import { formatDate } from "@/common/js/date.js";
-
+import tinymce from "tinymce/tinymce";
+import Editor from "@tinymce/tinymce-vue";
+import "tinymce/themes/silver";
+import "tinymce/plugins/image";
+import "tinymce/plugins/link";
+import "tinymce/plugins/code";
+import "tinymce/plugins/table";
+import "tinymce/plugins/lists";
+import "tinymce/plugins/contextmenu";
+import "tinymce/plugins/wordcount";
+import "tinymce/plugins/colorpicker";
+import "tinymce/plugins/textcolor";
 export default {
   name: "myQuestion",
-  components: {},
+  components: {
+    Editor
+  },
+  props: {
+    value: {
+      type: String,
+      default: "写回答..."
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    plugins: {
+      type: [String, Array],
+      default:
+        "link lists image table colorpicker textcolor wordcount contextmenu"
+    },
+    toolbar: {
+      type: [String, Array],
+      default:
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image | removeformat"
+    }
+  },
   data() {
     //在ES6中添加数据是在return{}中
     return {
+      init: {
+        language_url: "/tinymce/langs/zh_CN.js",
+        language: "zh_CN",
+        skin_url: "/tinymce/skins/ui/oxide",
+        // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
+        height: 300,
+        plugins: this.plugins,
+        toolbar: this.toolbar,
+        branding: false,
+        menubar: false,
+        // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
+        // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
+        images_upload_handler: (blobInfo, success, failure) => {
+          // const img = "data:image/jpeg;base64," + blobInfo.base64();
+          // success(img);
+          let formData = new FormData();
+          // 服务端接收文件的参数名，文件数据，文件名
+          formData.append("file", blobInfo.blob(), blobInfo.filename());
+
+          this.axios({
+            method: "POST",
+            // 这里是你的上传地址
+            url: this.URLport.serverPath + "/File/UploadQuestion",
+            async: false,
+            data: formData,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+            .then(res => {
+              // 这里返回的是你图片的地址
+              success(res.data.file);
+            })
+            .catch(() => {
+              // failure("上传失败");
+            });
+
+          console.log(blobInfo);
+        }
+      },
+      myValue: this.value,
       activeName: "first",
       quizShow: false,
       quizTableData: [],
@@ -380,15 +446,12 @@ export default {
                 _this.quizTableData[i].type = "已回答";
               }
               if (_this.quizTableData[i].que.status == 5) {
-                _this.quizTableData[i].type = "提交修改";
-              }
-              if (_this.quizTableData[i].que.status == 6) {
                 _this.quizTableData[i].type = "申请客服";
               }
-              if (_this.quizTableData[i].que.status == 7) {
+              if (_this.quizTableData[i].que.status == 6) {
                 _this.quizTableData[i].type = "已完成";
               }
-              if (_this.quizTableData[i].que.status == 8) {
+              if (_this.quizTableData[i].que.status == 7) {
                 _this.quizTableData[i].type = "已关闭";
               }
             }
@@ -435,15 +498,12 @@ export default {
                 a[i].type = "已回答";
               }
               if (a[i].que.status == 5) {
-                a[i].type = "提交修改";
-              }
-              if (a[i].que.status == 6) {
                 a[i].type = "申请客服";
               }
-              if (a[i].que.status == 7) {
+              if (a[i].que.status == 6) {
                 a[i].type = "已完成";
               }
-              if (a[i].que.status == 8) {
+              if (a[i].que.status == 7) {
                 a[i].type = "已关闭";
               }
               _this.quizTableData.push(a[i]);
@@ -494,15 +554,12 @@ export default {
                 _this.quizTableData[i].type = "已回答";
               }
               if (_this.quizTableData[i].que.status == 5) {
-                _this.quizTableData[i].type = "提交修改";
-              }
-              if (_this.quizTableData[i].que.status == 6) {
                 _this.quizTableData[i].type = "申请客服";
               }
-              if (_this.quizTableData[i].que.status == 7) {
+              if (_this.quizTableData[i].que.status == 6) {
                 _this.quizTableData[i].type = "已完成";
               }
-              if (_this.quizTableData[i].que.status == 8) {
+              if (_this.quizTableData[i].que.status == 7) {
                 _this.quizTableData[i].type = "已关闭";
               }
             }
@@ -564,13 +621,12 @@ export default {
     // 编辑提问
     editQuiz(list) {
       const _this = this;
-      console.log(list);
       _this.QuestionsQuiz.Title = list.que.title;
       _this.QuestionsQuiz.Content = list.que.content;
+      _this.myValue = list.que.content;
       _this.QuestionsQuiz.EndTime = list.que.endTime;
       _this.QuestionsQuiz.Currency = list.que.currency;
       _this.QuestionsQuiz.id = list.que.id;
-      console.log(_this.QuestionsQuiz);
       _this.qlShade = !_this.qlShade;
     },
     CloseQuitBt() {
@@ -579,6 +635,7 @@ export default {
     },
     releaseQl(QuestionsQuiz) {
       const _this = this;
+      _this.QuestionsQuiz.Content = _this.myValue;
       _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this
@@ -596,11 +653,10 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
-                // _this.QuestionsQuiz.Title = "";
-                // _this.QuestionsQuiz.Content = "";
-                // _this.QuestionsQuiz.EndTime = new Date();
-                // _this.QuestionsQuiz.Currency = "";
-                // _this.QuestionsQuiz.id = "";
+                _this.QuestionsQuiz.Title = "";
+                _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.EndTime = new Date();
+                _this.QuestionsQuiz.Currency = "";
                 _this.qlShade = !_this.qlShade;
                 _this.quizList();
                 _this.$message({
@@ -762,6 +818,14 @@ export default {
     },
     handleClick() {
       const _this = this;
+    }
+  },
+  watch:{
+    value(newValue) {
+      this.myValue = newValue;
+    },
+    myValue(newValue) {
+      this.$emit("input", newValue);
     }
   }
 };

@@ -10,7 +10,7 @@
   position: fixed;
   right: 10px;
   bottom: 10px;
-  z-index: 999;
+  z-index: 10;
   padding: 15px;
   border-radius: 10px;
 }
