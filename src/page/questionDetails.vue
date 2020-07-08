@@ -427,6 +427,24 @@
           <el-form-item prop="Title" class="ql-editQuziTi">
             <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
+          <el-upload
+            :action="imgSite"
+            :headers="myHeaders"
+            list-type="picture-card"
+            :auto-upload="true"
+            class="upImg"
+            multiple
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :file-list="quefileList"
+          >
+            <i slot="default" class="el-icon-picture" title="添加图片"></i>
+          </el-upload>
+          <el-dialog :visible.sync="queVisible" :modal-append-to-body="false">
+            <img width="100%" :src="queImageUrl" alt />
+          </el-dialog>
           <el-form-item prop="Content" class="ql-editNameDetail">
             <editor id="tinymces" v-model="myValues" :init="inits"></editor>
           </el-form-item>
@@ -681,9 +699,9 @@ export default {
       qlShade: false,
       evaluateShade: false,
       serviceShade: false,
-      editS:false,
-      evaluateS:false,
-      serviceS:false,
+      editS: false,
+      evaluateS: false,
+      serviceS: false,
       // 评价内容
       evaluateInput: "",
       evaluateSwitch: true,
@@ -692,7 +710,8 @@ export default {
         Title: "",
         Content: "",
         EndTime: "",
-        Currency: ""
+        Currency: "",
+        Img: ""
       },
       // 编辑提问表单验证
       QuestionsQuizrules: {
@@ -709,7 +728,25 @@ export default {
           }
         ],
         Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
-      }
+      },
+      // 图片
+      imgSite: this.URLport.serverPath + "/File/UploadQuestion",
+      myHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      queImageUrl:
+        "http://192.168.1.51:8086/QuestionImg/20200708/b907fbd3-665c-4b75-9005-de2f8f50cec1.png",
+      queVisible: false,
+      quefileList: [
+        {
+          url:
+            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+        },
+        {
+          url:
+            "https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100"
+        }
+      ]
     };
   },
   created: function() {
@@ -846,21 +883,23 @@ export default {
           if (res.data.status == 1) {
             _this.loading = false;
             _this.qlList = res.data.data;
+
             _this.qlListShow = true;
             _this.nullLoginShow = false;
+            // _this.queImageUrl = _this.qlList.que.img;
             if (localStorage.token) {
               // 确定登录人是否是竞拍者之一
               for (var i = 0; i < _this.qlList.bls.length; i++) {
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
                   _this.auctionClient = false;
                   _this.auctionbutton = false;
-
+                  _this.replyShadeShow = false;
                   console.log("我是竞拍者之一");
                 }
               }
-      //         editS:false,
+              //         editS:false,
               // evaluateS:false,
-             // serviceS:false,
+              // serviceS:false,
               // 我是提问者
               if (
                 _this.clientID == _this.qlList.que.createBy &&
@@ -1088,7 +1127,7 @@ export default {
       //     }
       //   })
       //   .then(function(res) {
-          
+
       //   })
       //   .catch(function(error) {
       //     console.log(error);
@@ -1253,10 +1292,21 @@ export default {
       _this.QuestionsQuiz.EndTime = list.que.endTime;
       _this.QuestionsQuiz.Currency = list.que.currency;
       _this.QuestionsQuiz.id = list.que.id;
-      _this.qlShade = !_this.qlShade;
-      console.log(this.$route.params.question_id);
+      // _this.QuestionsQuiz.img = list.que.img;
+      var b = [];
+      var a = list.que.img.split("|")
+      
+      for(var i = 0; i<a.length;i++){
+        _this.$set(b[i],"url","")
+        b[i].url = a[i]
+      }
+      console.log(a)
+      console.log(b)
+      // _this.qlShade = !_this.qlShade;
+      // console.log(this.$route.params.question_id);
       // this.$route.params.question_id = 10;
     },
+    // 编辑取消
     CloseQuitBt() {
       const _this = this;
       _this.qlShade = !_this.qlShade;
@@ -1366,43 +1416,42 @@ export default {
     // 我要答竞拍确定
     auctionQl(auction) {
       const _this = this;
-      console.log(auction)
-      // _this.$refs[auction].validate(valid => {
-      //   if (valid) {
-      //     _this
-      //       .axios({
-      //         method: "post",
-      //         url: `${_this.URLport.serverPath}/Bidding/Add`,
-      //         async: false,
-      //         data: _this.auction,
-      //         xhrFields: {
-      //           withCredentials: true
-      //         },
-      //         headers: {
-      //           Authorization: `Bearer ${localStorage.getItem("token")}`
-      //         }
-      //       })
-      //       .then(function(res) {
-      //         if (res.data.status == 1) {
-      //           _this.qlreplyShade = !_this.qlreplyShade;
-      //           _this.QuDe();
-      //           _this.replyShadeShow = false;
-      //           _this.$message({
-      //             message: "竞拍成功。",
-      //             type: "success"
-      //           });
-      //         } else {
-      //           _this.$message({
-      //             message: res.data.msg,
-      //             type: "error"
-      //           });
-      //         }
-      //       })
-      //       .catch(function(error) {
-      //         console.log(error);
-      //       });
-      //   }
-      // });
+      _this.$refs[auction].validate(valid => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Bidding/Add`,
+              async: false,
+              data: _this.auction,
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              if (res.data.status == 1) {
+                _this.qlreplyShade = !_this.qlreplyShade;
+                _this.QuDe();
+                _this.replyShadeShow = false;
+                _this.$message({
+                  message: "竞拍成功。",
+                  type: "success"
+                });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "error"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }
+      });
     },
     handleRemove(file) {
       console.log(file);
@@ -1447,6 +1496,7 @@ export default {
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
+                _this.QuestionsQuiz.Img = "";
                 _this.qlShade = !_this.qlShade;
                 _this.$message({
                   message: "发布成功,将跳转到新页面",
@@ -1468,6 +1518,53 @@ export default {
             });
         }
       });
+    },
+    handleRemove(file, fileList) {
+      const _this = this;
+
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/Questions/RemoveImg`,
+          async: false,
+          params: {
+            questionid: 0,
+            imgurl: file.response.file
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          var imgurl = "";
+          for (let i = 0; i < fileList.length; i++) {
+            imgurl = imgurl + "|" + fileList[i].response.file;
+          }
+          _this.QuestionsQuiz.Img = imgurl.slice(1);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    handlePictureCardPreview(file) {
+      this.queImageUrl = file.url;
+      this.queVisible = true;
+      console.log(file);
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      const _this = this;
+      console.log(fileList);
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
+      _this.QuestionsQuiz.Img = imgurl.slice(1);
+    },
+    beforeAvatarUpload(file) {
+      console.log(file);
     }
   },
   mounted() {

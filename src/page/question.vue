@@ -261,15 +261,15 @@
   visibility: hidden !important;
 }
 .el-dialog__header {
-  position: relative !important; 
+  position: relative !important;
 }
 .ql-shade .el-dialog {
-  width:90% !important;
+  width: 90% !important;
   margin-top: 4vh !important;
   margin-bottom: 0px !important;
 }
 .ql-shade .el-dialog img {
-  height:500px !important;
+  height: 500px !important;
 }
 .ql-shade .el-upload--picture-card {
   border: 0px !important;
@@ -277,16 +277,26 @@
   height: 30px !important;
   line-height: 0px !important;
 }
-.ql-shade .el-upload-list--picture-card .el-upload-list__item{
+.ql-shade .el-upload-list--picture-card .el-upload-list__item {
   width: 50px !important;
   height: 50px !important;
 }
-.ql-shade .el-upload-list--picture-card .el-upload-list__item-actions{
+.ql-shade .el-upload-list--picture-card .el-upload-list__item-actions {
   font-size: 12px !important;
 }
 .upImg {
   text-align: right;
   margin-bottom: 11px;
+}
+.newAnswer {
+  padding: 0px 20px;
+  line-height: 40px;
+  background: #90e5ff8f;
+  text-align: center;
+  cursor: pointer;
+}
+.newAnswer:hover {
+  background: #2ebbe68f;
 }
 </style>
 <template>
@@ -326,8 +336,14 @@
                 clearable
               ></el-input>
             </div>
+            <div
+              class="newAnswer"
+              @click="newAnswerClick"
+              v-show="newAnswerShow"
+            >有新的问题{{newAnswerNum}}条,点击查看!</div>
             <!-- 没有登录时 -->
             <div class="ql-ask-con" v-for="item in qlList" v-show="qlcon">
+              <div>有新的问题进入请点击进入</div>
               <h3>
                 <router-link :to="'/questionDetails/'+item.id">{{item.title}}</router-link>
               </h3>
@@ -470,27 +486,25 @@
           <el-form-item prop="Title" class="ql-editQuziTi">
             <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
           </el-form-item>
-          <el-upload action="#" list-type="picture-card" :auto-upload="false" class="upImg">
+
+          <el-upload
+            :action="imgSite"
+            :headers="myHeaders"
+            list-type="picture-card"
+            :auto-upload="true"
+            class="upImg"
+            multiple
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+          >
             <i slot="default" class="el-icon-picture" title="添加图片"></i>
-            <div slot="file" slot-scope="{file}">
-              <img class="el-upload-list__item-thumbnail" :src="file.url" alt />
-              <span class="el-upload-list__item-actions">
-                <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">
-                  <i class="el-icon-zoom-in"></i>
-                </span>
-                <span
-                  v-if="!disableds"
-                  class="el-upload-list__item-delete"
-                  @click="handleRemove(file)"
-                >
-                  <i class="el-icon-delete"></i>
-                </span>
-              </span>
-            </div>
           </el-upload>
           <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
+
           <el-form-item prop="Content" class="ql-editNameDetail">
             <!-- <el-input
               type="textarea"
@@ -675,7 +689,8 @@ export default {
         Title: "",
         Content: "",
         EndTime: "",
-        Currency: ""
+        Currency: "",
+        Img: ""
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
@@ -737,15 +752,25 @@ export default {
       myQlcon: false,
       startTimeRange: "",
       austartTimeRange: "",
+      // 新问题出现之后
+      newAnswerNum: 0,
+      newAnswerTime: new Date(),
+      newAnswer: "",
+      newAnswerShow: false,
+      // 图片
+      imgSite: this.URLport.serverPath + "/File/UploadQuestion",
+      myHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
       dialogImageUrl: "",
       dialogVisible: false,
-      disableds: false
     };
   },
   created: function() {
     const _this = this;
     _this.personal();
     _this.handleScroll();
+    _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
     formatDate: function(time) {
@@ -794,6 +819,72 @@ export default {
     //});
   },
   methods: {
+    // 获取最新的问题数量
+    answerNum() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/GetNumber`,
+          async: false,
+          params: {
+            time: _this.newAnswerTime
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.data.num > 0) {
+            _this.newAnswerNum = res.data.data.num + _this.newAnswerNum;
+            _this.newAnswerShow = true;
+            _this.newAnswerTime = res.data.data.datetime;
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    newAnswerClick() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/GetNewQuestion`,
+          async: false,
+          params: {
+            time: _this.newAnswerTime
+          },
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          if (res.data.status == 1) {
+            _this.newAnswerShow = false;
+            _this.newAnswerNum = 0;
+            _this.newAnswerTime = new Date();
+            let myQlList = res.data.data;
+            let date = new Date();
+            let now = date.getTime();
+            if (localStorage.token) {
+              for (let i = 0; i < res.data.data.length; i++) {
+                _this.$set(myQlList[i], "Times", "");
+                let leftTime =
+                  new Date(myQlList[i].que.endTime).getTime() - now;
+                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                let m = Math.floor((leftTime / 1000 / 60) % 60);
+                myQlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+                _this.myQlList.unshift(myQlList[i]);
+              }
+            }
+          }
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
     handleScroll() {
       var _this = this;
       if (_this.$route.fullPath == "/question") {
@@ -1214,6 +1305,7 @@ export default {
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
+                _this.QuestionsQuiz.Img = "";
                 _this.qlShade = !_this.qlShade;
                 _this.myquizList();
                 _this.$message({
@@ -1454,7 +1546,7 @@ export default {
           });
       }
     },
-     // 检索当前登录人参与的问题数量
+    // 检索当前登录人参与的问题数量
     AnswerStatus() {
       const _this = this;
       if (localStorage.token) {
@@ -1610,16 +1702,57 @@ export default {
           });
       }
     },
-    handleRemove(file) {
-      console.log(file);
+    handleRemove(file, fileList) {
+      const _this = this;
+      
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/Questions/RemoveImg`,
+          async: false,
+          params: {
+            questionid: 0,
+            imgurl: file.response.file
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          var imgurl = "";
+          for (let i = 0; i < fileList.length; i++) {
+            imgurl = imgurl + "|" + fileList[i].response.file;
+          }
+          _this.QuestionsQuiz.Img = imgurl.slice(1);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
     },
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
+      console.log(file);
     },
-    handleDownload(file) {
+    handleAvatarSuccess(res, file, fileList) {
+      const _this = this;
+      console.log(fileList);
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
+      _this.QuestionsQuiz.Img = imgurl.slice(1);
+      
+    },
+    beforeAvatarUpload(file) {
       console.log(file);
     }
+  },
+  beforeDestroy() {
+    clearInterval(this.newAnswer);
   },
   watch: {
     "QuestionsQuiz.EndTime": {
