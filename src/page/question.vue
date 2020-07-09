@@ -343,7 +343,6 @@
             >有新的问题{{newAnswerNum}}条,点击查看!</div>
             <!-- 没有登录时 -->
             <div class="ql-ask-con" v-for="item in qlList" v-show="qlcon">
-              <div>有新的问题进入请点击进入</div>
               <h3>
                 <router-link :to="'/questionDetails/'+item.id">{{item.title}}</router-link>
               </h3>
