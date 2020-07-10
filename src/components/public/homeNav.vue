@@ -232,7 +232,7 @@
             v-show="value == 'en'"
           />
           <img
-            src="../../assets/韩国.svg"
+            src="../../assets/韩国.jpg"
             alt
             style="width:20px;position: absolute;top: 10px;left: 15px;"
             v-show="value == 'ko'"
@@ -304,14 +304,13 @@ import { formatDate } from "@/common/js/date.js";
 import complain from "@/components/public/complain.vue";
 import zh from "../../assets/中国.svg";
 import en from "../../assets/美国.svg";
-import ko from "../../assets/韩国.svg";
+import ko from "../../assets/韩国.jpg";
 export default {
   name: "Nav",
   components: {
     complain,
     zh,
     en,
-    ko
   },
   props: {
     msg: String
@@ -449,8 +448,8 @@ export default {
             _this.$store.state.logo.message = res.data.data.length;
             if (res.data.data.length > _this.messageLength) {
               _this.$notify.info({
-                title: "消息",
-                message: "您有新的消息,请注意查收"
+                title: res.data.data[res.data.data.length-1].sendname + '说:',
+                message: res.data.data[res.data.data.length-1].contentsUrl
               });
               _this.messageLength = res.data.data.length;
             }

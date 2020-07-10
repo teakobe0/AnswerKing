@@ -497,6 +497,7 @@
             :before-upload="beforeAvatarUpload"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
+            :file-list="fileList"
           >
             <i slot="default" class="el-icon-picture" title="添加图片"></i>
           </el-upload>
@@ -763,12 +764,15 @@ export default {
       },
       dialogImageUrl: "",
       dialogVisible: false,
+      fileList: [],
+      Questionsnum: "",
+      Answernum: ""
     };
   },
   created: function() {
     const _this = this;
     _this.personal();
-    _this.handleScroll();
+    // _this.handleScroll();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
@@ -809,7 +813,7 @@ export default {
   mounted() {
     var _this = this;
     if (_this.$route.fullPath == "/question") {
-      // window.addEventListener("scroll", _this.handleScroll);
+      window.addEventListener("scroll", this.handleScroll);
     }
     tinymce.init({});
     //window.addEventListener('scroll', function () {
@@ -1026,6 +1030,8 @@ export default {
             }
           }
         };
+      } else {
+        return;
       }
     },
     personal: function() {
@@ -1048,6 +1054,8 @@ export default {
             _this.myquizList();
             _this.QuestionsStatus();
             _this.AnswerStatus();
+            // _this.Questionsnum = setInterval(_this.QuestionsStatus, 15000);
+            // _this.Answernum = setInterval(_this.AnswerStatus, 15000);
           })
           .catch(function(error) {
             console.log(error);
@@ -1278,6 +1286,7 @@ export default {
     // 发布问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
+      clearInterval(this.newAnswer);
       _this.QuestionsQuiz.Content = _this.myValue;
       let date = new Date();
       let now = date.getTime();
@@ -1300,11 +1309,18 @@ export default {
             })
             .then(function(res) {
               if (res.data.status == 1) {
+                // _this.QuestionsQuiz = [];
                 _this.QuestionsQuiz.Title = "";
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
+                setTimeout(function() {
+                  _this.newAnswerTime = new Date();
+                  _this.newAnswer = setInterval(_this.answerNum, 5000);
+                }, 15000);
                 _this.QuestionsQuiz.Currency = "";
                 _this.QuestionsQuiz.Img = "";
+                _this.myValue = "写回答...";
+                _this.fileList = [];
                 _this.qlShade = !_this.qlShade;
                 _this.myquizList();
                 _this.$message({
@@ -1703,7 +1719,7 @@ export default {
     },
     handleRemove(file, fileList) {
       const _this = this;
-      
+
       _this
         .axios({
           method: "delete",
@@ -1744,7 +1760,6 @@ export default {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
-      
     },
     beforeAvatarUpload(file) {
       console.log(file);
@@ -1752,6 +1767,11 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
+    clearInterval(this.QuestionsStatus);
+    clearInterval(this.AnswerStatus);
+    // this.handleScroll().unbind();
+    window.removeEventListener("scroll", this.handleScroll);
+    console.log(this.$route);
   },
   watch: {
     "QuestionsQuiz.EndTime": {

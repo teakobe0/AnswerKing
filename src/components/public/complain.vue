@@ -70,7 +70,7 @@
   <div class="complain">
     <div class="com-button" v-if="this.$store.state.logo.contactUs">
       <div class="com-img">
-        <img src="../../assets/comIcon.png" alt />
+        <img src="../../assets/comIcon.jpg" alt />
       </div>
       <div class="com-text">
         <div>

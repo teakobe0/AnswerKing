@@ -31,10 +31,32 @@ router.beforeEach((to, from, next) => {
 
 
 //引入element
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-Vue.use(ElementUI)
+// import ElementUI from 'element-ui'
+// import 'element-ui/lib/theme-chalk/index.css'
+// Vue.use(ElementUI)
+import { Button, Select,Input,Autocomplete,Menu,Option,MenuItem,Submenu,Steps,Step,Form,FormItem,Upload,Message,MessageBox,Loading,Notification } from 'element-ui';
+Vue.use(Button);
+Vue.use(Select);
+Vue.use(Input);
+Vue.use(Autocomplete);
+Vue.use(Menu);
+Vue.use(Option);
+Vue.use(MenuItem);
+Vue.use(Submenu);
+Vue.use(Steps);
+Vue.use(Step);
+Vue.use(Form);
+Vue.use(FormItem);
+Vue.use(Upload);
 
+
+
+Vue.use(Loading.directive);
+
+Vue.prototype.$notify = Notification;
+Vue.prototype.$loading = Loading.service;
+Vue.prototype.$msgbox = MessageBox;
+Vue.prototype.$message = Message;
 
 
 import VueClipboard from 'vue-clipboard2'

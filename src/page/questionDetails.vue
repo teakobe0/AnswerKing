@@ -295,12 +295,6 @@
     <div v-title data-title="问答大厅-CourseWhale"></div>
     <div class="qd-con">
       <div class="qd-title-back">
-        <i
-          class="el-icon-chat-line-round privateLetter"
-          style="float:right;margin-top:2px;margin-right: 11px;"
-          title="通知留言"
-          @click="informQuizzer(qlList.que)"
-        ></i>
         <div class="qd-title" v-if="qlListShow">
           <p class="countTime" v-if="countdown">倒计时:{{d}}天{{h}}小时{{m}}分{{s}}秒</p>
 
@@ -334,6 +328,13 @@
               @click="service(qlList.que.question.id)"
               v-show="serviceS"
             >申请客服</el-button>
+            <i
+              class="el-icon-chat-line-round privateLetter"
+              style="margin-top:2px;margin-right: 11px;"
+              title="通知留言"
+              v-show="inforQuiz"
+              @click="informQuizzer(qlList.que)"
+            ></i>
           </div>
 
           <div class="qd-title-right">
@@ -600,6 +601,7 @@
           <div id="chatConss" class="chatCon">
             <div class="chatCons" v-for="item in ChatRecordArray">
               <img :src="item.img" alt />
+              <span>{{item.notice.createTime}}</span>
               <span>{{item.notice.contentsUrl}}</span>
             </div>
           </div>
@@ -626,11 +628,12 @@
           <div id="chatCons" class="chatCon">
             <div class="chatCons" v-for="item in quizzerChatRecordArray">
               <img :src="item.img" alt />
+              <span style="font-size:14px;color:#131313;margin-top:0px">{{item.notice.createTime | formatDate}}</span>
               <span>{{item.notice.contentsUrl}}</span>
             </div>
           </div>
           <div class="chatSend">
-            <el-input v-model="quizzerchatSends" style="width:480px;margin-right:10px"></el-input>
+            <el-input v-model="quizzerchatSends" style="width:480px;margin-right:10px" @keyup.enter.native="quizzerChatSendHead"></el-input>
             <el-button @click="quizzerChatSendHead">发送</el-button>
           </div>
         </div>
@@ -886,8 +889,9 @@ export default {
       quizzerChatRecords: false,
       timeChat: "",
       timeChatss: "",
-      submitAnss:false,
-      editors:false
+      submitAnss: false,
+      editors: false,
+      inforQuiz: false
     };
   },
   created: function() {
@@ -897,7 +901,7 @@ export default {
   filters: {
     formatDate: function(time) {
       let date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd-hh:mm");
+      return formatDate(date, "yyyy-MM dd-hh:mm");
     },
     sendTimeDate: function(date) {
       if (!!date) {
@@ -1031,9 +1035,11 @@ export default {
             if (localStorage.token) {
               for (var i = 0; i < _this.qlList.als.length; i++) {
                 _this.$set(_this.qlList.als[i], "images", []);
-                var a = _this.qlList.als[i].img.split("|");
-                for (var j = 0; j < a.length; j++) {
-                  _this.qlList.als[i].images.push({ url: a[j] });
+                if (_this.qlList.als[i].img) {
+                  var a = _this.qlList.als[i].img.split("|");
+                  for (var j = 0; j < a.length; j++) {
+                    _this.qlList.als[i].images.push({ url: a[j] });
+                  }
                 }
               }
               console.log(_this.qlList);
@@ -1043,6 +1049,7 @@ export default {
                   _this.auctionClient = false;
                   _this.auctionbutton = false;
                   _this.replyShadeShow = false;
+                  _this.inforQuiz = true;
                   console.log("我是竞拍者之一");
                 }
               }
@@ -1149,6 +1156,7 @@ export default {
                 _this.countdown = true; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
+                _this.inforQuiz = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
@@ -1164,11 +1172,13 @@ export default {
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.submitAnss = true;
                 _this.qdeditShow = true; //编辑器的隐藏
+                _this.editors = false;
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = true;
                 _this.countdown = true; //倒计时的隐藏
                 _this.answerShows = false; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
+                _this.inforQuiz = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
@@ -1190,6 +1200,7 @@ export default {
                 _this.countdown = true; //倒计时的隐藏
                 _this.answerShows = true; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
+                _this.inforQuiz = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
@@ -1467,8 +1478,6 @@ export default {
       const _this = this;
       // 如果这个答案保存过就把ID和CreateBy赋值如果是第一次就不赋值
       var json = {};
-
-      console.log("没答案");
       json.questionId = _this.$route.params.question_id; //问题ID
       json.content = this.myValue; //答案内容
       // json.id = 0; //答案ID
@@ -1509,6 +1518,7 @@ export default {
     // 保存进度
     save() {
       const _this = this;
+      _this.replenishShow = false;
       _this.editors = true;
       _this.savesubmitShow = true;
     },
@@ -1538,10 +1548,13 @@ export default {
       _this.QuestionsQuiz.Currency = list.que.question.currency;
       _this.QuestionsQuiz.id = list.que.question.id;
       _this.QuestionsQuiz.Img = list.que.question.img;
-      var a = list.que.question.img.split("|");
-      for (var i = 0; i < a.length; i++) {
-        _this.quefileList.push({ url: a[i], response: { file: a[i] } });
+      if (list.que.question.img) {
+        var a = list.que.question.img.split("|");
+        for (var i = 0; i < a.length; i++) {
+          _this.quefileList.push({ url: a[i], response: { file: a[i] } });
+        }
       }
+
       _this.qlShade = !_this.qlShade;
     },
     // 编辑取消
@@ -1748,7 +1761,6 @@ export default {
     releaseQl(QuestionsQuiz) {
       const _this = this;
       _this.QuestionsQuiz.Content = _this.myValues;
-      console.log(_this.QuestionsQuiz);
       _this.$refs[QuestionsQuiz].validate(valid => {
         if (valid) {
           _this

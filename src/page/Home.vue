@@ -1144,18 +1144,14 @@ export default {
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/University/GetUniversitys`,
+          url: `${_this.URLport.serverPath}/University/UniversityNum`,
           async: false,
-          params: {
-            name: "",
-            state: ""
-          },
           xhrFields: {
             withCredentials: true
           }
         })
         .then(function(res) {
-          _this.universityNum = res.data.data.length;
+          _this.universityNum = res.data.data;
         })
         .catch(function(error) {
           console.log(error);

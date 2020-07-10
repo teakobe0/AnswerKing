@@ -132,14 +132,26 @@
                   <el-form-item prop="Title" class="ql-editQuziTi">
                     <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
                   </el-form-item>
+                  <el-upload
+                    :action="imgSite"
+                    :headers="myHeaders"
+                    list-type="picture-card"
+                    :auto-upload="true"
+                    class="upImg"
+                    multiple
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove"
+                    :file-list="quefileList"
+                  >
+                    <i slot="default" class="el-icon-picture" title="添加图片"></i>
+                  </el-upload>
+                  <el-dialog :visible.sync="queVisible" :modal-append-to-body="false">
+                    <img width="100%" :src="queImageUrl" alt />
+                  </el-dialog>
                   <el-form-item prop="Content" class="ql-editNameDetail">
-                    <!-- <el-input
-                      type="textarea"
-                      placeholder="输入问题背景、条件等详细信(选填)"
-                      v-model="QuestionsQuiz.Content"
-                      :autosize="{ minRows: 2, maxRows: 22}"
-                    ></el-input> -->
-                    <editor id="tinymce" v-model="myValue" :init="init"></editor>
+                    <editor id="tinymces" v-model="myValue" :init="init"></editor>
                   </el-form-item>
                   <div style="overflow: hidden;">
                     <div style="float:left;">
@@ -256,6 +268,11 @@
                   >{{ scope.row.title}}</router-link>
                 </template>
               </el-table-column>
+              <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                  <span>{{scope.row.bstatus}}</span>
+                </template>
+              </el-table-column>
             </el-table>
           </el-tab-pane>
         </el-tabs>
@@ -358,7 +375,8 @@ export default {
         Title: "",
         Content: "",
         EndTime: "",
-        Currency: ""
+        Currency: "",
+        Img: ""
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
@@ -388,7 +406,15 @@ export default {
       evaluateId: 0,
       pagenums: 1,
       pagesizes: 13,
-      pageTotal: 0
+      pageTotal: 0,
+      // 图片
+      imgSite: this.URLport.serverPath + "/File/UploadQuestion",
+      myHeaders: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      },
+      queImageUrl: "",
+      queVisible: false,
+      quefileList: []
     };
   },
   created: function() {
@@ -627,10 +653,19 @@ export default {
       _this.QuestionsQuiz.EndTime = list.que.endTime;
       _this.QuestionsQuiz.Currency = list.que.currency;
       _this.QuestionsQuiz.id = list.que.id;
+      _this.QuestionsQuiz.Img = list.que.img;
+      if (list.que.img) {
+        var a = list.que.img.split("|");
+        for (var i = 0; i < a.length; i++) {
+          _this.quefileList.push({ url: a[i], response: { file: a[i] } });
+        }
+      }
+
       _this.qlShade = !_this.qlShade;
     },
     CloseQuitBt() {
       const _this = this;
+      _this.quefileList = [];
       _this.qlShade = !_this.qlShade;
     },
     releaseQl(QuestionsQuiz) {
@@ -657,6 +692,7 @@ export default {
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
+                _this.QuestionsQuiz.Img = "";
                 _this.qlShade = !_this.qlShade;
                 _this.quizList();
                 _this.$message({
@@ -818,9 +854,56 @@ export default {
     },
     handleClick() {
       const _this = this;
+    },
+    handleRemove(file, fileList) {
+      const _this = this;
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/Questions/RemoveImg`,
+          async: false,
+          params: {
+            questionid: _this.$route.params.question_id,
+            imgurl: file.response.file
+          },
+          xhrFields: {
+            withCredentials: true
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`
+          }
+        })
+        .then(function(res) {
+          var imgurl = "";
+          for (let i = 0; i < fileList.length; i++) {
+            imgurl = imgurl + "|" + fileList[i].response.file;
+          }
+          _this.QuestionsQuiz.Img = imgurl.slice(1);
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    handlePictureCardPreview(file) {
+      this.queImageUrl = file.url;
+      this.queVisible = true;
+      console.log(file);
+    },
+    handleAvatarSuccess(res, file, fileList) {
+      const _this = this;
+      console.log(fileList);
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
+      _this.QuestionsQuiz.Img = imgurl.slice(1);
+      console.log(_this.QuestionsQuiz.Img);
+    },
+    beforeAvatarUpload(file) {
+      console.log(file);
     }
   },
-  watch:{
+  watch: {
     value(newValue) {
       this.myValue = newValue;
     },
