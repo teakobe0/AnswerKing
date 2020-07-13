@@ -221,11 +221,11 @@
                 <!-- <div class="qlreleaseClose el-icon-close" @click="CloseEvaluate"></div> -->
               </div>
             </div>
-            <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
+            <!-- <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
               <div class="ql-editQuzi">
                 <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
               </div>
-            </div>
+            </div> -->
             <div class="mynextpage">
               <div class="block">
                 <el-pagination
@@ -284,12 +284,9 @@
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
+import "tinymce/icons/default/icons.min.js";
 import "tinymce/themes/silver";
-import "tinymce/plugins/image";
-import "tinymce/plugins/link";
 import "tinymce/plugins/code";
-import "tinymce/plugins/table";
-import "tinymce/plugins/lists";
 import "tinymce/plugins/contextmenu";
 import "tinymce/plugins/wordcount";
 import "tinymce/plugins/colorpicker";
@@ -310,13 +307,12 @@ export default {
     },
     plugins: {
       type: [String, Array],
-      default:
-        "link lists image table colorpicker textcolor wordcount contextmenu"
+      default: "colorpicker textcolor wordcount contextmenu"
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor | alignleft aligncenter alignright alignjustify | bullist numlist | outdent indent blockquote | undo redo | link unlink image | removeformat"
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor"
     }
   },
   data() {
@@ -399,7 +395,6 @@ export default {
       auctionShow: false,
       qlShade: false,
       evaluateShade: false,
-      serviceShade: false,
       // 评价内容
       evaluateInput: "",
       evaluateSwitch: true,
@@ -764,7 +759,6 @@ export default {
     },
     service(id) {
       const _this = this;
-      // _this.serviceShade = !_this.serviceShade;
       console.log(id);
       this.$prompt("您要对客服说:", "CourseWhale", {
         confirmButtonText: "确定",
@@ -846,11 +840,7 @@ export default {
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
-    },
-
-    CloseService() {
-      const _this = this;
-      _this.serviceShade = !_this.serviceShade;
+      
     },
     handleClick() {
       const _this = this;

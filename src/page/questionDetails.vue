@@ -224,6 +224,7 @@
 }
 .button1 {
   margin-right: 10px !important;
+  margin-left:0px !important;
 }
 /* 聊天记录面板 */
 .chatTitle {
@@ -586,11 +587,11 @@
         </div>
       </div>
     </div>
-    <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
+    <!-- <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
       <div class="ql-editQuzi">
         <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
       </div>
-    </div>
+    </div> -->
     <div class="ql-shade" v-show="ChatRecords">
       <div class="ql-editQuzi">
         <div style="height:550px">
@@ -601,7 +602,7 @@
           <div id="chatConss" class="chatCon">
             <div class="chatCons" v-for="item in ChatRecordArray">
               <img :src="item.img" alt />
-              <span>{{item.notice.createTime}}</span>
+              <span>{{item.notice.createTime | formatDate}}</span>
               <span>{{item.notice.contentsUrl}}</span>
             </div>
           </div>
@@ -609,7 +610,7 @@
             <el-input
               v-model="chatSends"
               style="width:480px;margin-right:10px"
-              @change="chatSendChange"
+              @keyup.enter.native="chatSendHead"
             ></el-input>
             <el-button @click="chatSendHead">发送</el-button>
           </div>
@@ -652,6 +653,7 @@ import homeFooter from "@/components/public/homeFooter.vue";
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
+import "tinymce/icons/default/icons.min.js";
 import "tinymce/themes/silver";
 import "tinymce/plugins/code";
 import "tinymce/plugins/contextmenu";
@@ -834,7 +836,6 @@ export default {
       // 编辑评价客服
       qlShade: false,
       evaluateShade: false,
-      serviceShade: false,
       editS: false,
       evaluateS: false,
       serviceS: false,
@@ -901,7 +902,7 @@ export default {
   filters: {
     formatDate: function(time) {
       let date = new Date(time);
-      return formatDate(date, "yyyy-MM dd-hh:mm");
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     sendTimeDate: function(date) {
       if (!!date) {
@@ -1617,7 +1618,6 @@ export default {
     // 申请客服按钮
     service(id) {
       const _this = this;
-      // _this.serviceShade = !_this.serviceShade;
       console.log(id);
       this.$prompt("您要对客服说:", "CourseWhale", {
         confirmButtonText: "确定",
@@ -1752,10 +1752,6 @@ export default {
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
-    },
-    CloseService() {
-      const _this = this;
-      _this.serviceShade = !_this.serviceShade;
     },
     // 编辑发布问题
     releaseQl(QuestionsQuiz) {

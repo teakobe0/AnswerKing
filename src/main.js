@@ -34,7 +34,38 @@ router.beforeEach((to, from, next) => {
 // import ElementUI from 'element-ui'
 // import 'element-ui/lib/theme-chalk/index.css'
 // Vue.use(ElementUI)
-import { Button, Select,Input,Autocomplete,Menu,Option,MenuItem,Submenu,Steps,Step,Form,FormItem,Upload,Message,MessageBox,Loading,Notification } from 'element-ui';
+import {
+  Button,
+  Select, 
+  Input, 
+  Autocomplete, 
+  Menu, 
+  Option, 
+  MenuItem, 
+  Submenu, 
+  Steps, 
+  Step, 
+  Form, 
+  FormItem, 
+  Upload, 
+  Message, 
+  MessageBox, 
+  Loading, 
+  Notification, 
+  Breadcrumb, 
+  BreadcrumbItem,
+  Switch,
+  Dialog,
+  DatePicker,
+  Pagination,
+  Carousel,
+  CarouselItem,
+  Table,
+  TableColumn,
+  Tabs,
+  TabPane,
+  Col,
+} from 'element-ui';
 Vue.use(Button);
 Vue.use(Select);
 Vue.use(Input);
@@ -48,6 +79,19 @@ Vue.use(Step);
 Vue.use(Form);
 Vue.use(FormItem);
 Vue.use(Upload);
+Vue.use(Breadcrumb);
+Vue.use(BreadcrumbItem);
+Vue.use(Switch);
+Vue.use(Dialog);
+Vue.use(DatePicker);
+Vue.use(Pagination);
+Vue.use(Carousel);
+Vue.use(CarouselItem);
+Vue.use(Table);
+Vue.use(TableColumn);
+Vue.use(Tabs);
+Vue.use(TabPane);
+Vue.use(Col);
 
 
 
@@ -57,6 +101,7 @@ Vue.prototype.$notify = Notification;
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$message = Message;
+Vue.prototype.$prompt = MessageBox.prompt;
 
 
 import VueClipboard from 'vue-clipboard2'
