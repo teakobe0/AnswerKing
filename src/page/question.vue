@@ -11,16 +11,117 @@
               Coursewhale课程鲸灵为全球学子打造的社交问答平台，
               <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强
             </p>
-            <el-input v-model="topInput" placeholder="搜索" @change="topInputs" clearable style="width:700px"></el-input>
-
+            <el-input
+              v-model="topInput"
+              placeholder="搜索"
+              @change="topInputs"
+              clearable
+              style="width:700px"
+            ></el-input>
           </div>
           <div class="qltconright">
-            <img src="../assets/问答1.png" alt="">
+            <img src="../assets/问答1.png" alt />
           </div>
         </div>
       </div>
       <div class="ql-body">
-        
+        <div class="qlBodyCon">
+          <div class="qlBodyLeft">
+            <div :class="{qlBodyConActive:num == 0}" @click="newTime">最新</div>
+            <div :class="{qlBodyConActive:num == 2}" @click="topCurrency">最高悬赏</div>
+            <div :class="{qlBodyConActive:num == 1}" @click="newTimes">即将结束</div>
+          </div>
+          <div class="qlBodyMei">
+            <!-- 没登录 -->
+            <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
+              <div class="qlBodyMeiConLeft">
+                <div>
+                  <span class="qlBodyI">{{item.question.currency}}鲸灵币</span>
+                </div>
+                <h4>
+                  <router-link :to="'/questionDetails/'+item.question.id">{{item.question.title}}</router-link>
+                </h4>
+                <div class="qlBodyImg">
+                  <img :src="item.qimage" alt />
+                  {{item.qname}}
+                  <span>{{item.Times}}</span>
+                </div>
+                <div class="qlBodyMeiConRight" @click="replyShade(item)">
+                  <div class="qlBodyMeiConRightTable">
+                    <div>
+                      参与
+                      <br />竞拍
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- 登录时 -->
+            <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
+              <div class="qlBodyMeiConLeft">
+                <div>
+                  <span class="qlBodyU" v-show="item.bidd != null">{{item.bidd}}</span>
+                  <span class="qlBodyU" v-show="item.myanswer != null">{{item.myanswer}}</span>
+                  <span class="qlBodyU" v-show="item.myque != null">{{item.myque}}</span>
+                  <span class="qlBodyI">{{item.que.currency}}鲸灵币</span>
+                </div>
+                <h4>
+                  <router-link :to="'/questionDetails/'+item.que.id">{{item.que.title}}</router-link>
+                </h4>
+                <div class="qlBodyImg">
+                  <img :src="item.qimage" alt />
+                  {{item.qname}}
+                  <span>{{item.Times}}</span>
+                </div>
+                <div class="qlBodyMeiConRight" @click="replyShade(item)">
+                  <div class="qlBodyMeiConRightTable">
+                    <div>
+                      参与
+                      <br />竞拍
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="qlBodyRight">
+            <el-button
+              type="primary"
+              icon="el-icon-plus"
+              class="ql-right-quitBT"
+              @click="NewQuitBt"
+              @mousewheel.prevent
+            >提一个新问题</el-button>
+            <div class="qlBodyRightTop">
+              <div>
+                <div class="qlBodyRightTitle">
+                  <img class="qlBodyRightI1" src="../assets/问答3.jpg" alt />
+                  <span>我的提问</span>
+                  <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
+                </div>
+                <div class="qlBodyRightBott">
+                  <div>竞拍中<span>{{auctions}}</span></div>
+                  <div>待回答<span>{{toAnswer}}</span></div>
+                  <div>已回答<span>{{haveToAnswer}}</span></div>
+                </div>
+              </div>
+            </div>
+            <div class="qlBodyRightTop">
+              <div>
+                <div class="qlBodyRightTitle">
+                  <img class="qlBodyRightI1" src="../assets/问答4.jpg" alt />
+                  <span>我的回答</span>
+                  <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
+                </div>
+                <div class="qlBodyRightBott">
+                  <div>竞拍中<span>{{paAuctions}}</span></div>
+                  <div>待回答<span>{{paToAnswer}}</span></div>
+                  <div>已回答<span>{{paHaveToAnswer}}</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
@@ -151,7 +252,7 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-import questionCss from "../pageCss/questionCss.css";
+import questionCss from "../pageCss/page/questionCss.css";
 
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
@@ -644,7 +745,8 @@ export default {
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.qlList[i], "Times", "");
               _this.$set(_this.qlList[i], "myType", "");
-              let leftTime = new Date(_this.qlList[i].endTime).getTime() - now;
+              let leftTime =
+                new Date(_this.qlList[i].question.endTime).getTime() - now;
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
@@ -703,7 +805,7 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd-hh:mm");
     },
-    // 新提问展示
+    // 最新展示
     newTime() {
       const _this = this;
       _this.num = 0;
@@ -717,7 +819,7 @@ export default {
         _this.quizList();
       }
     },
-    // 新提问展示
+    // 即将结束展示
     newTimes() {
       const _this = this;
       _this.num = 1;
@@ -731,7 +833,7 @@ export default {
         _this.quizList();
       }
     },
-    // 高悬赏展示高悬赏展示
+    // 高悬赏展示
     topCurrency() {
       const _this = this;
       _this.num = 2;

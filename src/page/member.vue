@@ -1,10 +1,16 @@
-<style lang='scss'>
+<style>
 .member {
   width: 100%;
   height: 100%;
   position: relative;
   padding-bottom: 276px;
-  .member-title {
+  
+}
+
+.member-con {
+  /* margin-top: 80px; */
+}
+.member-title {
     width: 100%;
     height: 400px;
     background-color: #5ab2d6;
@@ -13,12 +19,6 @@
     background-position: center;
     background-repeat: no-repeat;
   }
-}
-
-.member-con {
-  /* margin-top: 80px; */
-}
-
 .member-title p:nth-of-type(1) {
   text-align: center;
   font-size: 120px;

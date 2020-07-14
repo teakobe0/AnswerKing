@@ -1,461 +1,81 @@
-<style>
-.questionDetails {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding-bottom: 276px;
-  overflow: hidden;
-}
-
-.qd-con {
-  /* margin-top: 80px; */
-  overflow: hidden;
-  background: #f6f6f6;
-}
-.qd-title-back {
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-  margin-bottom: 20px;
-  background: #fff;
-  min-height: 140px;
-}
-.qd-title {
-  width: 1300px;
-  margin: 0 auto;
-  padding: 20px 0;
-  position: relative;
-  overflow: hidden;
-}
-.qd-title-left {
-  display: inline-block;
-  width: 980px;
-}
-.qd-title-right {
-  text-align: center;
-  position: absolute;
-  right: 0px;
-  top: 20px;
-}
-.qd-title-right-1 {
-  float: left;
-  padding: 0 8px;
-  /* width: 84px; */
-}
-.qd-title-right-1 p {
-  color: #8590a6;
-}
-.qd-title-right-1 div {
-  color: #000;
-  font-weight: 700;
-}
-.qd-title-right-2 {
-  float: left;
-  padding: 0 8px;
-  width: 84px;
-  border-left: 1px solid #ebebeb;
-}
-.qd-title-right-2 p {
-  color: #8590a6;
-}
-.qd-title-right-2 div {
-  color: #000;
-  font-weight: 700;
-}
-.qd-title h2 {
-  margin-bottom: 11px;
-}
-.qd-title p {
-  margin-bottom: 11px;
-}
-.qd-attention {
-}
-.ql-an {
-  color: #0084f0 !important;
-  border: 1px solid #0084f0 !important;
-}
-/* 编辑区域 */
-.qd-editCon {
-  width: 1300px;
-  margin: 0 auto;
-  overflow: hidden;
-  margin-bottom: 20px;
-  min-height: 320px;
-}
-.qd-editNull {
-  width: 900px;
-  height: 300px;
-  margin-bottom: 20px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-}
-.qd-editNull p {
-  line-height: 300px;
-  text-align: center;
-  color: #8590a6;
-}
-.qd-editan {
-  width: 900px;
-  min-height: 300px;
-  margin-bottom: 20px;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-}
-.qd-edit {
-  width: 1300px;
-  margin-bottom: 20px;
-}
-.qd-edit-submit {
-  margin-top: 11px !important;
-  float: right;
-  margin-bottom: 20px !important;
-  margin-left: 10px !important;
-}
-
-/* 编辑区域结束 */
-/* 竞拍遮罩区域 */
-.qd-auctionShade {
-  width: 380px;
-  height: 300px;
-  float: right;
-  box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
-}
-.auctionShade-con {
-  /*width: 300px;*/
-  height: 300px;
-  overflow: hidden;
-  /*margin: 0 auto;*/
-  background-color: #fff;
-  /*position: relative;*/
-  /*top: 50%;*/
-  /*transform: translateY(-50%);*/
-  /*border-radius: 4px;*/
-}
-.closeAuctionShade {
-  /*position: absolute;*/
-  /*right: -50px;*/
-  /*top: 10px;*/
-  /*color: #fff;*/
-  /*cursor: pointer;*/
-  /*font-size: 30px;*/
-}
-.autionShadeInfo {
-  height: 50px;
-  padding: 16px 20px 16px 20px;
-  overflow: hidden;
-  position: relative;
-  border-bottom: 1px solid #f6f6f6;
-}
-.autionShadeInfo img {
-  width: 40px;
-  min-width: 40px;
-  min-height: 40px;
-  vertical-align: top;
-  margin-right: 10px;
-  margin-top: 5px;
-}
-.autionShadeInfo b {
-  width: 110px;
-  font-size: 14px;
-  display: inline-block;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  margin-top: 16px;
-}
-.auctionShade-con-Info {
-  /*flex: 1 1;*/
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: 300px;
-}
-.auctionShade-con-TR {
-  position: absolute;
-  bottom: 16px;
-  right: 20px;
-  font-size: 14px;
-}
-.auctionShade-con-time {
-  margin-right: 0px;
-}
-.privateLetter {
-  color: #cc8500;
-  font-size: 22px;
-  cursor: pointer;
-}
-.privateLetter:hover {
-  color: #f3e901;
-}
-.nullLogin {
-  z-index: 999;
-  line-height: 320px;
-  text-align: center;
-  color: rgb(23, 114, 191);
-}
-.countTime {
-  position: absolute;
-  right: 0px;
-  bottom: 0px;
-}
-/* 竞拍遮罩区域结束 */
-.answerShow {
-  border: 1px solid #e6e6e6;
-  min-height: 318px;
-  background: #fff;
-}
-.DeupImg {
-  margin-bottom: 10px;
-  text-align: right;
-}
-.DeupImg .el-upload--picture-card {
-  border: 0 !important;
-  width: 50px !important;
-  height: 50px !important;
-  line-height: 60px !important;
-  background-color: #f6f6f6 !important;
-}
-.DeupImg .el-upload-list--picture-card .el-upload-list__item-actions {
-  font-size: 12px !important;
-}
-.DeupImg .el-upload-list--picture-card .el-upload-list__item {
-  width: 50px !important;
-  height: 50px !important;
-}
-.qd-edit .el-dialog {
-  margin-top: 4vh !important;
-}
-.button1 {
-  margin-right: 10px !important;
-  margin-left:0px !important;
-}
-/* 聊天记录面板 */
-.chatTitle {
-  text-align: center;
-  line-height: 40px;
-  border-bottom: 1px solid #757575a8;
-  padding-bottom: 5px;
-}
-.chatTitle img {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #757575a8;
-  border-radius: 20px;
-  vertical-align: middle;
-  margin-right: 10px;
-}
-.chatCon {
-  height: 450px;
-  overflow-x: hidden;
-  overflow-y: auto;
-  margin-bottom: 20px;
-}
-.chatCon img {
-  width: 40px;
-  height: 40px;
-  border: 1px solid #757575a8;
-  border-radius: 20px;
-  line-height: 42px;
-  margin-right: 10px;
-  float: left;
-}
-.chatCon span {
-  display: inline-block;
-  width: 480px;
-  /* min-block-size: 42px; */
-  /* line-height: 42px; */
-  word-wrap: break-word;
-  margin-top: 10px;
-}
-.chatCons {
-  min-height: 42px;
-  margin-top: 10px;
-  margin-bottom: 10px;
-}
-.chatSend {
-}
-.submitAns {
-  min-height: 40px;
-  background: #fff;
-  padding-bottom: 10px;
-  padding-left: 20px;
-  padding: 20px 20px 10px 20px;
-  margin-bottom: 10px;
-  border-bottom: 1px solid #dedede;
-}
-.subImgdiv {
-  width: 40px;
-  height: 40px;
-  display: inline-block;
-}
-.subImg {
-  width: 40px;
-  height: 40px;
-}
-</style>
 <template>
   <div class="questionDetails">
     <homeNav msg="登录/注册" />
     <div v-title data-title="问答大厅-CourseWhale"></div>
     <div class="qd-con">
-      <div class="qd-title-back">
-        <div class="qd-title" v-if="qlListShow">
-          <p class="countTime" v-if="countdown">倒计时:{{d}}天{{h}}小时{{m}}分{{s}}秒</p>
-
-          <p class="countTime" v-if="countdownText">时间已到您不能在更改答案内容。</p>
-          <div class="qd-title-left">
-            <h2>{{qlList.que.question.title}}</h2>
-
-            <p v-html="qlList.que.question.content"></p>
-            <el-button
-              icon="el-icon-edit"
-              size="mini"
-              class="ql-ask-reply-1 button1"
-              @click="replyShade(qlList)"
-              v-if="replyShadeShow"
-            >竞拍</el-button>
-            <el-button
-              size="mini"
-              class="ql-ask-reply-1 button1"
-              @click="editShade(qlList)"
-              v-show="editS"
-            >编辑</el-button>
-            <el-button
-              size="mini"
-              class="ql-ask-reply-1 button1"
-              @click="evaluate(qlList)"
-              v-show="evaluateS"
-            >评价</el-button>
-            <el-button
-              size="mini"
-              class="ql-ask-reply-1 button1"
-              @click="service(qlList.que.question.id)"
-              v-show="serviceS"
-            >申请客服</el-button>
-            <i
-              class="el-icon-chat-line-round privateLetter"
-              style="margin-top:2px;margin-right: 11px;"
-              title="通知留言"
-              v-show="inforQuiz"
-              @click="informQuizzer(qlList.que)"
-            ></i>
-          </div>
-
-          <div class="qd-title-right">
-            <div class="qd-title-right-1">
-              <p>截止日期</p>
-              <div>{{qlList.que.question.endTime | formatDate}}</div>
+      <div class="qdConMe">
+        <div class="qdConLeft">
+          <div class="qdConTitle">
+            <div class="qlBodyImg">
+              <img :src="qlList.que.qimage" alt />
+              {{qlList.que.qname}}
+              <!-- <span>{{item.Times}}</span> -->
             </div>
-            <div class="qd-title-right-2" v-if="qlList.bls.length != 0">
-              <p>竞拍者</p>
-              <div>{{qlList.bls.length}}</div>
+            <p v-html="qlList.que.question.content"></p>
+            <img class="qlBodyQuImg" :src="qlList.que.question.img" alt />
+            <div>
+              <span class="qlBodyI">{{qlList.que.question.currency}}鲸灵币</span>
+            </div>
+          </div>
+          <div class="qdConBls" v-for="item in qlList.bls">
+            <b>{{item.bname}}&nbsp;提交的竞拍</b>
+            <div class="qdConBlsD">
+              <img src="../assets/问答详情1.jpg" alt="">
+              完成时间:{{item.bidding.endTime | formatDate}}
+            </div>
+            <div class="qdConBlsD">
+              <img src="../assets/问答详情2.jpg" alt="">
+              鲸灵币:{{item.bidding.currency}}
+            </div>
+            <div class="qdConBlsR">
+              <div class="qdConBlsR1"><img src="../assets/问答详情3.jpg" alt="">聊天</div>
+              <div class="qdConBlsR2">选择TA</div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="qd-editCon">
-        <div style="width:1300px;min-height:320px;" v-if="qlListShow" v-loading="loading">
-          <div class="nullLogin" v-if="nullLoginShow">登录之后查看答案</div>
-          <!-- <div class="answerShow" v-show="answerShows" v-html="myValue"></div> -->
-          <div style="float: left">
-            <div class="qd-editNull" v-show="qdeditnullShow">
-              <p>暂时还没有回答,快去竞拍回答赢取鲸灵币吧!</p>
-            </div>
-            <div class="qd-editan" v-show="editan">
-              <div v-for="item in qlList.als" class="submitAns">
-                <div class="subImgdiv" v-for="img in item.images">
-                  <img class="subImg" :src="img.url" alt />
+        <div class="qdConRight">
+          <div class="qlBodyRightTop">
+            <div>
+              <div class="qlBodyRightTitle">
+                <img class="qlBodyRightI1" src="../assets/问答3.jpg" alt />
+                <span>我的提问</span>
+                <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
+              </div>
+              <div class="qlBodyRightBott">
+                <div>
+                  竞拍中
+                  <span>{{auctions}}</span>
                 </div>
-                <P>{{item.content}}</P>
-              </div>
-            </div>
-
-            <div style="width:1300px" v-show="submitAnss">
-              <div v-for="item in qlList.als" class="submitAns">
-                <div class="subImgdiv" v-for="img in item.images">
-                  <img class="subImg" :src="img.url" alt />
+                <div>
+                  待回答
+                  <span>{{toAnswer}}</span>
                 </div>
-                <P>{{item.content}}</P>
+                <div>
+                  已回答
+                  <span>{{haveToAnswer}}</span>
+                </div>
               </div>
-            </div>
-
-            <div class="qd-edit" v-show="qdeditShow">
-              <div v-show="editors">
-                <el-upload
-                  :action="imgSiteAns"
-                  :headers="myHeaders"
-                  list-type="picture-card"
-                  :auto-upload="true"
-                  class="DeupImg"
-                  multiple
-                  :on-success="handleAvatarSuccessAns"
-                  :before-upload="beforeAvatarUploadAns"
-                  :on-preview="handlePictureCardPreviewAns"
-                  :on-remove="handleRemoveAns"
-                  :file-list="quefileListAns"
-                  :data="{questionId:this.qlList.que.question.id}"
-                >
-                  <i slot="default" class="el-icon-picture" title="添加图片附件"></i>
-                </el-upload>
-                <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
-                  <img width="100%" :src="dialogImageUrl" alt />
-                </el-dialog>
-
-                <editor id="tinymce" v-model="myValue" :init="init"></editor>
-              </div>
-
-              <el-button
-                type="primary"
-                class="qd-edit-submit"
-                @click="submit"
-                v-if="savesubmitShow"
-              >提交回答</el-button>
-              <el-button
-                type="primary"
-                class="qd-edit-submit"
-                @click="save"
-                v-if="replenishShow"
-              >补充回答</el-button>
             </div>
           </div>
-
-          <div class="qd-auctionShade" v-show="auctionShow">
-            <div class="auctionShade-con">
-              <div class="auctionShade-con-Info">
-                <div
-                  v-if="qlList.bls.length == 0"
-                  style="line-height: 300px;text-align: center;color: #8590a6;"
-                >还没有竞拍者</div>
-                <div v-for="item in qlList.bls" class="autionShadeInfo">
-                  <img src="../assets/5.jpg" alt v-show="item.bimage == null" />
-                  <img :src="item.bimage" alt v-show="item.bimage != null" />
-                  <span>
-                    <b>{{item.bname}}</b>
-                  </span>
-                  <div class="auctionShade-con-TR" v-if="auctionClient">
-                    <span
-                      class="auctionShade-con-time el-icon-time"
-                      title="截止日期"
-                    >{{item.bidding.endTime | formatDate}}</span>
-                  </div>
-
-                  <el-button
-                    type="primary"
-                    size="mini"
-                    style="float:right;margin-top:0px;"
-                    v-if="auctionbutton"
-                    @click="auctions(item.bidding.createBy)"
-                  >选他答</el-button>
-                  <i
-                    class="el-icon-chat-line-round privateLetter"
-                    style="float:right;margin-top:2px;margin-right: 11px;"
-                    v-if="auctionClient"
-                    title="通知留言"
-                    @click="inform(item)"
-                  ></i>
-                  <span
-                    class="auctionShade-con-reward el-icon-coin"
-                    style="float:right;margin-top:7px;margin-right:11px;font-size:14px;width:38px;"
-                    v-if="auctionClient"
-                    title="悬赏金"
-                  >{{item.bidding.currency}}</span>
+          <div class="qlBodyRightTop">
+            <div>
+              <div class="qlBodyRightTitle">
+                <img class="qlBodyRightI1" src="../assets/问答4.jpg" alt />
+                <span>我的回答</span>
+                <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
+              </div>
+              <div class="qlBodyRightBott">
+                <div>
+                  竞拍中
+                  <span>{{paAuctions}}</span>
+                </div>
+                <div>
+                  待回答
+                  <span>{{paToAnswer}}</span>
+                </div>
+                <div>
+                  已回答
+                  <span>{{paHaveToAnswer}}</span>
                 </div>
               </div>
             </div>
@@ -587,11 +207,6 @@
         </div>
       </div>
     </div>
-    <!-- <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
-      <div class="ql-editQuzi">
-        <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
-      </div>
-    </div> -->
     <div class="ql-shade" v-show="ChatRecords">
       <div class="ql-editQuzi">
         <div style="height:550px">
@@ -629,12 +244,18 @@
           <div id="chatCons" class="chatCon">
             <div class="chatCons" v-for="item in quizzerChatRecordArray">
               <img :src="item.img" alt />
-              <span style="font-size:14px;color:#131313;margin-top:0px">{{item.notice.createTime | formatDate}}</span>
+              <span
+                style="font-size:14px;color:#131313;margin-top:0px"
+              >{{item.notice.createTime | formatDate}}</span>
               <span>{{item.notice.contentsUrl}}</span>
             </div>
           </div>
           <div class="chatSend">
-            <el-input v-model="quizzerchatSends" style="width:480px;margin-right:10px" @keyup.enter.native="quizzerChatSendHead"></el-input>
+            <el-input
+              v-model="quizzerchatSends"
+              style="width:480px;margin-right:10px"
+              @keyup.enter.native="quizzerChatSendHead"
+            ></el-input>
             <el-button @click="quizzerChatSendHead">发送</el-button>
           </div>
         </div>
@@ -650,6 +271,8 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import questionDetailsCss from "../pageCss/page/questionDetailsCss.css";
+
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
@@ -666,7 +289,8 @@ export default {
   components: {
     homeNav,
     homeFooter,
-    Editor
+    Editor,
+    questionDetailsCss
   },
   props: {
     value: {
@@ -892,7 +516,15 @@ export default {
       timeChatss: "",
       submitAnss: false,
       editors: false,
-      inforQuiz: false
+      inforQuiz: false,
+      // 当前登录人提出的问题数量
+      auctions: 0,
+      toAnswer: 0,
+      haveToAnswer: 0,
+      // 当前登录人参与的问题数量
+      paAuctions: 0,
+      paToAnswer: 0,
+      paHaveToAnswer: 0
     };
   },
   created: function() {
@@ -988,6 +620,8 @@ export default {
           .then(function(res) {
             _this.clientID = res.data.data.id;
             _this.QuDe();
+            _this.QuestionsStatus();
+            _this.AnswerStatus();
           })
           .catch(function(error) {
             console.log(error);
@@ -1248,7 +882,7 @@ export default {
         });
     },
     // 选他答
-    auctions(clienid) {
+    auctionss(clienid) {
       const _this = this;
       this.$prompt("请输入您的账号密码", "CourseWhale", {
         confirmButtonText: "确定",
@@ -1865,6 +1499,62 @@ export default {
         div.scrollTop = div.scrollHeight;
         divs.scrollTop = divs.scrollHeight;
       });
+    },
+    // 检索当前登录人我提出的问题数量
+    QuestionsStatus() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/QuestionStatus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.auctions = res.data.data.bnum;
+              _this.toAnswer = res.data.data.nonum;
+              _this.haveToAnswer = res.data.data.answernum;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
+    },
+    // 检索当前登录人参与的问题数量
+    AnswerStatus() {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/AnswerStatus`,
+            async: false,
+            xhrFields: {
+              withCredentials: true
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`
+            }
+          })
+          .then(function(res) {
+            if (res.data.status == 1) {
+              _this.paAuctions = res.data.data.bnum;
+              _this.paToAnswer = res.data.data.nonum;
+              _this.paHaveToAnswer = res.data.data.answernum;
+            }
+          })
+          .catch(function(error) {
+            console.log(error);
+          });
+      }
     }
   },
   mounted() {
