@@ -17,7 +17,7 @@
   }
   /* 左边 */
   .qdConLeft {
-    width: 1060px;
+    width: 1100px;
     margin-right: 20px;
     float: left;
     
@@ -28,7 +28,7 @@
     background: #fff;
   }
   .qdConLeft p {
-    margin-top: 20px;
+    margin-bottom: 20px;
   }
   .qlBodyQuImg {
     width: 200px;
@@ -37,6 +37,7 @@
   .qdConBls {
     background: #f7f3eb;
     margin-top: 20px;
+    margin-bottom: 20px;
     padding: 20px;
     min-height: 100px;
     position: relative;
@@ -48,7 +49,7 @@
   }
   .qdConBlsD {
     display: inline-block;
-    margin-right: 20px;
+    margin-right: 60px;
   }
   .qdConBlsD img {
     vertical-align: middle;
@@ -58,7 +59,7 @@
     width: 90px;
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 25px;
   }
   .qdConBlsR1 {
     background: #ffbb34;
@@ -89,12 +90,70 @@
   .qdConBlsR2:hover {
     background: #4dc78e;
   }
+  .qdConMyBls {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  .qdConMyBls1 {
+    border-top: 1px solid #dcdcdc;
+    width: 350px;
+    float: left;
+    margin-top: 10px;
+  }
+  .qdConMyBls2 {
+    /* border-top: 1px solid #dcdcdc; */
+    float: left;
+    margin-left: 85px;
+    
+  }
+  .qdConMyBls3 {
+    border-top: 1px solid #dcdcdc;
+    width: 350px;
+    float: right;
+    margin-top: 10px;
+  }
+  .qdConMyAns {
+    background-color: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    margin-top: 20px;
+  }
+  .qdConMyAnsTi {
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+  .qdConMyAnsTi div {
+    float: left;
+  }
+  .qdConMyAnsTi span {
+    float: right;
+  }
+  .qdConEvaluate {
+    height: 60px;
+    text-align: center;
+    line-height: 60px;
+    margin-bottom: 20px;
+    background: #2fc781;
+    color: #fff;
+    margin-top: 20px;
+    cursor: pointer;
+  }
+  .qdConEvaluate:hover {
+    background: #4dc78e;
+  }
+
+
+
+
+
+
+
+
   /* 右边 */
   .qdConRight {
     width: 180px;
     float: right;
   }
-
 
 
 
@@ -182,14 +241,13 @@
     color: #8590a6;
   }
   .qd-editan {
-    width: 900px;
-    min-height: 300px;
-    margin-bottom: 20px;
-    background: #fff;
-    box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
+    /* width: 1100px; */
+    /* margin-bottom: 20px; */
+    /* background: #fff; */
+    /* box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1); */
   }
   .qd-edit {
-    width: 1300px;
+    width: 1100px;
     margin-bottom: 20px;
   }
   .qd-edit-submit {
@@ -197,6 +255,8 @@
     float: right;
     margin-bottom: 20px !important;
     margin-left: 10px !important;
+    width:1100px !important;
+    height: 60px !important;
   }
   
   /* 编辑区域结束 */
@@ -280,9 +340,13 @@
     color: rgb(23, 114, 191);
   }
   .countTime {
-    position: absolute;
+    /* position: absolute;
     right: 0px;
-    bottom: 0px;
+    bottom: 0px; */
+    text-align: center;
+    background: #2fc781;
+    color: #fff;
+    padding: 20px;
   }
   /* 竞拍遮罩区域结束 */
   .answerShow {
@@ -361,13 +425,13 @@
   .chatSend {
   }
   .submitAns {
-    min-height: 40px;
+    /* min-height: 40px;
     background: #fff;
     padding-bottom: 10px;
     padding-left: 20px;
     padding: 20px 20px 10px 20px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #dedede;
+    border-bottom: 1px solid #dedede; */
   }
   .subImgdiv {
     width: 40px;
@@ -375,6 +439,6 @@
     display: inline-block;
   }
   .subImg {
-    width: 40px;
-    height: 40px;
+    width: 120px;
+    /* height: 120px; */
   }

@@ -17,20 +17,112 @@
               <span class="qlBodyI">{{qlList.que.question.currency}}鲸灵币</span>
             </div>
           </div>
+          <!-- <div
+            style="overflow:hidden;margin-top:20px;margin-bottom:20px;display:none"
+            
+          >
+            <div class="qdConMyBls1"></div>
+            <div class="qdConMyBls2">你已选择 {{qlList.bls[0].bname}} 回答本问题</div>
+            <div class="qdConMyBls3"></div>
+          </div>-->
           <div class="qdConBls" v-for="item in qlList.bls">
-            <b>{{item.bname}}&nbsp;提交的竞拍</b>
+            <b v-show="qdConMyBls == false">{{item.bname}}&nbsp;提交的竞拍</b>
+            <b v-show="qdConMyBls == true">回答者&nbsp;{{item.bname}}</b>
             <div class="qdConBlsD">
-              <img src="../assets/问答详情1.jpg" alt="">
+              <img src="../assets/问答详情1.jpg" alt />
               完成时间:{{item.bidding.endTime | formatDate}}
             </div>
             <div class="qdConBlsD">
-              <img src="../assets/问答详情2.jpg" alt="">
+              <img src="../assets/问答详情2.jpg" alt />
               鲸灵币:{{item.bidding.currency}}
             </div>
             <div class="qdConBlsR">
-              <div class="qdConBlsR1"><img src="../assets/问答详情3.jpg" alt="">聊天</div>
-              <div class="qdConBlsR2">选择TA</div>
+              <div class="qdConBlsR1" @click="inform(item)" v-if="auctionClient">
+                <img src="../assets/问答详情3.jpg" alt />聊天
+              </div>
+              <div
+                class="qdConBlsR2"
+                v-if="auctionbutton"
+                @click="auctionss(item.bidding.createBy)"
+              >选择TA</div>
             </div>
+          </div>
+          <!-- <div class="qdConMyBls" v-show="qdConMyBls">
+            <div style="overflow:hidden;" v-show="auctionText">
+              <div class="qdConMyBls1"></div>
+              <div class="qdConMyBls2">你已选择 {{qlList.bls[0].bname}} 回答本问题</div>
+              <div class="qdConMyBls3"></div>
+            </div>
+            <div class="qdConBls">
+              <b>回答者&nbsp;{{qlList.bls[0].bname}}</b>
+              <div class="qdConBlsD">
+                <img src="../assets/问答详情1.jpg" alt />
+                完成时间:{{qlList.bls[0].bidding.endTime | formatDate}}
+              </div>
+              <div class="qdConBlsD">
+                <img src="../assets/问答详情2.jpg" alt />
+                鲸灵币:{{qlList.bls[0].bidding.currency}}
+              </div>
+              <div class="qdConBlsR">
+                <div class="qdConBlsR1">
+                  <img src="../assets/问答详情3.jpg" alt />聊天
+                </div>
+              </div>
+            </div>
+          </div> -->
+          <div class="qdConMyAns" v-show="editan">
+            <div class="qd-editan">
+              <div v-for="item in qlList.als" class="submitAns">
+                <P>{{item.content}}</P>
+                <div class="subImgdiv" v-for="img in item.images">
+                  <img class="subImg" :src="img.url" alt />
+                </div>
+              </div>
+            </div>
+            <!-- <div class="qdConMyAnsTi">
+              <div>XXX 发布了回答</div>
+              <span>时间</span>
+            </div>
+            <div>内容</div>-->
+          </div>
+          <div class="qdConEvaluate" @click="evaluate(qlList)" v-show="evaluateS">评价</div>
+          <div class="qdConEvaluate" @click="replyShade(qlList)" v-if="replyShadeShow">参与竞拍</div>
+          <div class="countTime" v-if="countdown">
+            <div style="margin-bottom:10px;font-size:18px">恭喜你!该问题竞拍成功!</div>
+            <div>请在约定的时间范围内提交回答,剩余{{d}}天{{h}}小时{{m}}分{{s}}秒</div>
+            </div>
+          <div class="qd-edit" v-show="qdeditShow">
+            <div v-show="editors">
+              <el-upload
+                :action="imgSiteAns"
+                :headers="myHeaders"
+                list-type="picture-card"
+                :auto-upload="true"
+                class="DeupImg"
+                multiple
+                :on-success="handleAvatarSuccessAns"
+                :before-upload="beforeAvatarUploadAns"
+                :on-preview="handlePictureCardPreviewAns"
+                :on-remove="handleRemoveAns"
+                :file-list="quefileListAns"
+                :data="{questionId:this.qlList.que.question.id}"
+              >
+                <i slot="default" class="el-icon-picture" title="添加图片附件"></i>
+              </el-upload>
+              <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+                <img width="100%" :src="dialogImageUrl" alt />
+              </el-dialog>
+
+              <editor id="tinymce" v-model="myValue" :init="init"></editor>
+            </div>
+
+            <el-button
+              type="primary"
+              class="qd-edit-submit"
+              @click="submit"
+              v-if="savesubmitShow"
+            >提交回答</el-button>
+            <el-button type="primary" class="qd-edit-submit" @click="save" v-if="replenishShow">补充回答</el-button>
           </div>
         </div>
         <div class="qdConRight">
@@ -234,7 +326,7 @@
         <div class="qlreleaseClose el-icon-close" @click="CloseChatRecords"></div>
       </div>
     </div>
-    <div class="ql-shade" v-show="quizzerChatRecords">
+    <!-- <div class="ql-shade" v-show="quizzerChatRecords">
       <div class="ql-editQuzi">
         <div style="height:550px">
           <div class="chatTitle">
@@ -262,7 +354,7 @@
 
         <div class="qlreleaseClose el-icon-close" @click="quizzerCloseChatRecords"></div>
       </div>
-    </div>
+    </div>-->
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -524,7 +616,10 @@ export default {
       // 当前登录人参与的问题数量
       paAuctions: 0,
       paToAnswer: 0,
-      paHaveToAnswer: 0
+      paHaveToAnswer: 0,
+      // 已选竞拍者之后展示竞拍者
+      qdConMyBls: false,
+      auctionText: false
     };
   },
   created: function() {
@@ -723,6 +818,8 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.editS = true;
+                _this.qdConMyBls = true;
+                _this.auctionText = true;
                 console.log("提问者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -739,6 +836,8 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.evaluateS = true;
+                _this.qdConMyBls = true;
+                _this.auctionText = true;
                 console.log("提问者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -754,6 +853,8 @@ export default {
                 _this.replenishShow = false;
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
+                _this.qdConMyBls = true;
+                _this.auctionText = true;
                 console.log("提问者等于5");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -763,7 +864,7 @@ export default {
                 _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
-                _this.editan = false;
+                _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = false;
@@ -772,6 +873,7 @@ export default {
                 _this.submitAnss = true;
                 _this.replyShadeShow = false;
                 _this.serviceS = true;
+                _this.qdConMyBls = true;
                 console.log("提问者大于6");
               }
 
@@ -814,6 +916,7 @@ export default {
                 _this.answerShows = false; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
+                _this.editan = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
@@ -827,7 +930,7 @@ export default {
                 _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
-                _this.editan = false;
+                _this.editan = true;
                 _this.submitAnss = true;
                 _this.qdeditShow = true; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
@@ -848,7 +951,7 @@ export default {
                 _this.auctionbutton = false;
                 _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
-                _this.editan = false;
+                _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = false;
@@ -910,6 +1013,8 @@ export default {
               console.log(res);
               if (res.data.status == 1) {
                 _this.auctionbutton = false;
+                _this.qdConMyBls = true;
+
                 _this.$message({
                   message: "发布成功,竞拍者可以开始答题。",
                   type: "success"
