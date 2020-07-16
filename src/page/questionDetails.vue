@@ -4,7 +4,7 @@
     <div v-title data-title="问答大厅-CourseWhale"></div>
     <div class="qd-con">
       <div class="qdConMe">
-        <div class="qdConLeft">
+        <div class="qdConLeft" v-if="qdConLeftShow">
           <div class="qdConTitle">
             <div class="qlBodyImg">
               <img :src="qlList.que.qimage" alt />
@@ -14,7 +14,32 @@
             <p v-html="qlList.que.question.content"></p>
             <img class="qlBodyQuImg" :src="qlList.que.question.img" alt />
             <div>
-              <span class="qlBodyI">{{qlList.que.question.currency}}鲸灵币</span>
+              <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span>
+              <el-button
+                size="mini"
+                class="button2"
+                type="primary"
+                @click="editShade(qlList)"
+                v-show="editS"
+              >编辑</el-button>
+              <el-button size="mini" class="button2" @click="evaluate(qlList)" v-show="evaluateS">评价</el-button>
+              <el-button
+                size="mini"
+                class="button2"
+                type="primary"
+                @click="service(qlList.que.question.id)"
+                v-show="serviceS"
+              >申请客服</el-button>
+              <!-- <el-button
+                class="el-icon-chat-line-round privateLetter"
+                style="margin-top:2px;margin-right: 11px;"
+                title="通知留言"
+                v-show="inforQuiz"
+                @click="informQuizzer(qlList.que)"
+              ></el-button>-->
+              <div class="qdConBlsR3" @click="informQuizzer(qlList.que)" v-if="inforQuiz">
+                <img src="../assets/问答详情3.jpg" alt />聊天
+              </div>
             </div>
           </div>
           <!-- <div
@@ -25,6 +50,9 @@
             <div class="qdConMyBls2">你已选择 {{qlList.bls[0].bname}} 回答本问题</div>
             <div class="qdConMyBls3"></div>
           </div>-->
+          <div class="qd-title-right-2" v-if="qlList.bls.length != 0 && qlList.que.question.answerer == 0">
+            <p>该问题目前已有{{qlList.bls.length}}人参与竞拍</p>
+          </div>
           <div class="qdConBls" v-for="item in qlList.bls">
             <b v-show="qdConMyBls == false">{{item.bname}}&nbsp;提交的竞拍</b>
             <b v-show="qdConMyBls == true">回答者&nbsp;{{item.bname}}</b>
@@ -69,9 +97,10 @@
                 </div>
               </div>
             </div>
-          </div> -->
+          </div>-->
           <div class="qdConMyAns" v-show="editan">
             <div class="qd-editan">
+              123
               <div v-for="item in qlList.als" class="submitAns">
                 <P>{{item.content}}</P>
                 <div class="subImgdiv" v-for="img in item.images">
@@ -90,7 +119,7 @@
           <div class="countTime" v-if="countdown">
             <div style="margin-bottom:10px;font-size:18px">恭喜你!该问题竞拍成功!</div>
             <div>请在约定的时间范围内提交回答,剩余{{d}}天{{h}}小时{{m}}分{{s}}秒</div>
-            </div>
+          </div>
           <div class="qd-edit" v-show="qdeditShow">
             <div v-show="editors">
               <el-upload
@@ -125,53 +154,8 @@
             <el-button type="primary" class="qd-edit-submit" @click="save" v-if="replenishShow">补充回答</el-button>
           </div>
         </div>
-        <div class="qdConRight">
-          <div class="qlBodyRightTop">
-            <div>
-              <div class="qlBodyRightTitle">
-                <img class="qlBodyRightI1" src="../assets/问答3.jpg" alt />
-                <span>我的提问</span>
-                <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
-              </div>
-              <div class="qlBodyRightBott">
-                <div>
-                  竞拍中
-                  <span>{{auctions}}</span>
-                </div>
-                <div>
-                  待回答
-                  <span>{{toAnswer}}</span>
-                </div>
-                <div>
-                  已回答
-                  <span>{{haveToAnswer}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="qlBodyRightTop">
-            <div>
-              <div class="qlBodyRightTitle">
-                <img class="qlBodyRightI1" src="../assets/问答4.jpg" alt />
-                <span>我的回答</span>
-                <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
-              </div>
-              <div class="qlBodyRightBott">
-                <div>
-                  竞拍中
-                  <span>{{paAuctions}}</span>
-                </div>
-                <div>
-                  待回答
-                  <span>{{paToAnswer}}</span>
-                </div>
-                <div>
-                  已回答
-                  <span>{{paHaveToAnswer}}</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        <div class="qdConRight" v-if="qdConRigtS">
+          <questionNum></questionNum>
         </div>
       </div>
     </div>
@@ -326,11 +310,11 @@
         <div class="qlreleaseClose el-icon-close" @click="CloseChatRecords"></div>
       </div>
     </div>
-    <!-- <div class="ql-shade" v-show="quizzerChatRecords">
+    <div class="ql-shade" v-show="quizzerChatRecords">
       <div class="ql-editQuzi">
         <div style="height:550px">
           <div class="chatTitle">
-            <img :src="quizzerbls.qimage" alt />
+            <!-- <img :src="quizzerbls.qimage" alt /> -->
             {{quizzerbls.qname}}
           </div>
           <div id="chatCons" class="chatCon">
@@ -354,7 +338,7 @@
 
         <div class="qlreleaseClose el-icon-close" @click="quizzerCloseChatRecords"></div>
       </div>
-    </div>-->
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -363,6 +347,8 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import questionNum from "@/components/public/questionNum.vue";
+
 import questionDetailsCss from "../pageCss/page/questionDetailsCss.css";
 
 import { formatDate } from "@/common/js/date.js";
@@ -382,7 +368,8 @@ export default {
     homeNav,
     homeFooter,
     Editor,
-    questionDetailsCss
+    questionDetailsCss,
+    questionNum
   },
   props: {
     value: {
@@ -609,17 +596,12 @@ export default {
       submitAnss: false,
       editors: false,
       inforQuiz: false,
-      // 当前登录人提出的问题数量
-      auctions: 0,
-      toAnswer: 0,
-      haveToAnswer: 0,
-      // 当前登录人参与的问题数量
-      paAuctions: 0,
-      paToAnswer: 0,
-      paHaveToAnswer: 0,
       // 已选竞拍者之后展示竞拍者
       qdConMyBls: false,
-      auctionText: false
+      auctionText: false,
+      qdConRigtS:true,
+      // 左边整体隐藏
+      qdConLeftShow:false
     };
   },
   created: function() {
@@ -715,8 +697,6 @@ export default {
           .then(function(res) {
             _this.clientID = res.data.data.id;
             _this.QuDe();
-            _this.QuestionsStatus();
-            _this.AnswerStatus();
           })
           .catch(function(error) {
             console.log(error);
@@ -747,6 +727,7 @@ export default {
           }
         })
         .then(function(res) {
+          _this.qdConLeftShow = true;
           // auctionClient 竞拍者栏的留言、选他答、时间、悬赏的隐藏
           // qdeditShow 编辑器的隐藏
           // savesubmitShow 补充回答提交的隐藏
@@ -976,7 +957,8 @@ export default {
               _this.qdeditnullShow = false;
               _this.savesubmitShow = false;
               _this.answerShows = false;
-              _this.replyShadeShow = false;
+              _this.replyShadeShow = true;
+              _this.qdConRigtS = false;
             }
           }
         })
@@ -1605,62 +1587,6 @@ export default {
         divs.scrollTop = divs.scrollHeight;
       });
     },
-    // 检索当前登录人我提出的问题数量
-    QuestionsStatus() {
-      const _this = this;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/QuestionStatus`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.auctions = res.data.data.bnum;
-              _this.toAnswer = res.data.data.nonum;
-              _this.haveToAnswer = res.data.data.answernum;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    },
-    // 检索当前登录人参与的问题数量
-    AnswerStatus() {
-      const _this = this;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/AnswerStatus`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.paAuctions = res.data.data.bnum;
-              _this.paToAnswer = res.data.data.nonum;
-              _this.paHaveToAnswer = res.data.data.answernum;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    }
   },
   mounted() {
     tinymce.init({});

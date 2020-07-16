@@ -92,7 +92,8 @@
               @click="NewQuitBt"
               @mousewheel.prevent
             >提一个新问题</el-button>
-            <div class="qlBodyRightTop">
+            <questionNum></questionNum>
+            <!-- <div class="qlBodyRightTop" v-if="qdConRigtS">
               <div>
                 <div class="qlBodyRightTitle">
                   <img class="qlBodyRightI1" src="../assets/问答3.jpg" alt />
@@ -106,7 +107,7 @@
                 </div>
               </div>
             </div>
-            <div class="qlBodyRightTop">
+            <div class="qlBodyRightTop" v-if="qdConRigtS">
               <div>
                 <div class="qlBodyRightTitle">
                   <img class="qlBodyRightI1" src="../assets/问答4.jpg" alt />
@@ -119,7 +120,7 @@
                   <div>已回答<span>{{paHaveToAnswer}}</span></div>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
@@ -252,6 +253,7 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
+import questionNum from "@/components/public/questionNum.vue";
 import questionCss from "../pageCss/page/questionCss.css";
 
 import { formatDate } from "@/common/js/date.js";
@@ -270,7 +272,8 @@ export default {
     homeNav,
     homeFooter,
     Editor,
-    questionCss
+    questionCss,
+    questionNum
   },
   props: {
     value: {
@@ -420,7 +423,8 @@ export default {
       dialogVisible: false,
       fileList: [],
       Questionsnum: "",
-      Answernum: ""
+      Answernum: "",
+      qdConRigtS:false
     };
   },
   created: function() {
@@ -470,10 +474,6 @@ export default {
       window.addEventListener("scroll", this.handleScroll);
     }
     tinymce.init({});
-    //window.addEventListener('scroll', function () {
-    //    console.log("滚动高度" + document.body.scrollTop + `------` + document.documentElement.scrollTop); // 滚动高度
-    //    //console.log("文档高度" + document.body.offsetHeight); // 文档高度
-    //});
   },
   methods: {
     // 获取最新的问题数量
@@ -706,10 +706,7 @@ export default {
           .then(function(res) {
             _this.clientID = res.data.data.id;
             _this.myquizList();
-            _this.QuestionsStatus();
-            _this.AnswerStatus();
-            // _this.Questionsnum = setInterval(_this.QuestionsStatus, 15000);
-            // _this.Answernum = setInterval(_this.AnswerStatus, 15000);
+            
           })
           .catch(function(error) {
             console.log(error);
@@ -740,6 +737,7 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
+            
             let date = new Date();
             let now = date.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
@@ -784,6 +782,7 @@ export default {
         .then(function(res) {
           if (res.data.status == 1) {
             _this.myQlList = res.data.data.data;
+            _this.qdConRigtS = true;
             let date = new Date();
             let now = date.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
@@ -848,79 +847,79 @@ export default {
       }
     },
     // 已完成展示
-    accomplish() {
-      const _this = this;
-      _this.num = 3;
-      _this.typeNum = "finish";
-      _this.pagenums = 1;
-      // _this.qlcon = true;
-      // _this.qlData = false;
-      if (localStorage.token) {
-        _this.myquizList();
-      } else {
-        _this.quizList();
-      }
-    },
+    // accomplish() {
+    //   const _this = this;
+    //   _this.num = 3;
+    //   _this.typeNum = "finish";
+    //   _this.pagenums = 1;
+    //   // _this.qlcon = true;
+    //   // _this.qlData = false;
+    //   if (localStorage.token) {
+    //     _this.myquizList();
+    //   } else {
+    //     _this.quizList();
+    //   }
+    // },
     // 我的提问
-    Myquestion() {
-      const _this = this;
-      _this.num = 4;
-      _this.pagenums = 1;
-      // _this.qlcon = false;
-      // _this.qlData = true;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-          async: false,
-          params: {
-            pagenum: _this.pagenums,
-            pagesize: _this.pagesizes,
-            name: _this.topInput
-          },
-          xhrFields: {
-            withCredentials: true
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
-        })
-        .then(function(res) {
-          if (res.data.status == 1) {
-            _this.myQlList = res.data.data.data;
-            for (var i = 0; i < _this.myQlList.length; i++) {
-              _this.$set(_this.myQlList[i], "type", "");
-              if (_this.myQlList[i].que.status == 1) {
-                _this.myQlList[i].type = "保存";
-              }
-              if (_this.myQlList[i].que.status == 2) {
-                _this.myQlList[i].type = "正在竞拍";
-              }
-              if (_this.myQlList[i].que.status == 3) {
-                _this.myQlList[i].type = "已选竞拍者";
-              }
-              if (_this.myQlList[i].que.status == 4) {
-                _this.myQlList[i].type = "已回答";
-              }
-              if (_this.myQlList[i].que.status == 5) {
-                _this.myQlList[i].type = "提交修改";
-              }
-              if (_this.myQlList[i].que.status == 6) {
-                _this.myQlList[i].type = "申请客服";
-              }
-              if (_this.myQlList[i].que.status == 7) {
-                _this.myQlList[i].type = "已完成";
-              }
-              if (_this.myQlList[i].que.status == 8) {
-                _this.myQlList[i].type = "已关闭";
-              }
-            }
-          }
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
+    // Myquestion() {
+    //   const _this = this;
+    //   _this.num = 4;
+    //   _this.pagenums = 1;
+    //   // _this.qlcon = false;
+    //   // _this.qlData = true;
+    //   _this
+    //     .axios({
+    //       method: "get",
+    //       url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+    //       async: false,
+    //       params: {
+    //         pagenum: _this.pagenums,
+    //         pagesize: _this.pagesizes,
+    //         name: _this.topInput
+    //       },
+    //       xhrFields: {
+    //         withCredentials: true
+    //       },
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`
+    //       }
+    //     })
+    //     .then(function(res) {
+    //       if (res.data.status == 1) {
+    //         _this.myQlList = res.data.data.data;
+    //         for (var i = 0; i < _this.myQlList.length; i++) {
+    //           _this.$set(_this.myQlList[i], "type", "");
+    //           if (_this.myQlList[i].que.status == 1) {
+    //             _this.myQlList[i].type = "保存";
+    //           }
+    //           if (_this.myQlList[i].que.status == 2) {
+    //             _this.myQlList[i].type = "正在竞拍";
+    //           }
+    //           if (_this.myQlList[i].que.status == 3) {
+    //             _this.myQlList[i].type = "已选竞拍者";
+    //           }
+    //           if (_this.myQlList[i].que.status == 4) {
+    //             _this.myQlList[i].type = "已回答";
+    //           }
+    //           if (_this.myQlList[i].que.status == 5) {
+    //             _this.myQlList[i].type = "提交修改";
+    //           }
+    //           if (_this.myQlList[i].que.status == 6) {
+    //             _this.myQlList[i].type = "申请客服";
+    //           }
+    //           if (_this.myQlList[i].que.status == 7) {
+    //             _this.myQlList[i].type = "已完成";
+    //           }
+    //           if (_this.myQlList[i].que.status == 8) {
+    //             _this.myQlList[i].type = "已关闭";
+    //           }
+    //         }
+    //       }
+    //     })
+    //     .catch(function(error) {
+    //       console.log(error);
+    //     });
+    // },
     // 我要提问按钮
     NewQuitBt() {
       const _this = this;
@@ -1188,62 +1187,6 @@ export default {
           });
       }
     },
-    // 检索当前登录人我提出的问题数量
-    QuestionsStatus() {
-      const _this = this;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/QuestionStatus`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.auctions = res.data.data.bnum;
-              _this.toAnswer = res.data.data.nonum;
-              _this.haveToAnswer = res.data.data.answernum;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    },
-    // 检索当前登录人参与的问题数量
-    AnswerStatus() {
-      const _this = this;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/AnswerStatus`,
-            async: false,
-            xhrFields: {
-              withCredentials: true
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
-          })
-          .then(function(res) {
-            if (res.data.status == 1) {
-              _this.paAuctions = res.data.data.bnum;
-              _this.paToAnswer = res.data.data.nonum;
-              _this.paHaveToAnswer = res.data.data.answernum;
-            }
-          })
-          .catch(function(error) {
-            console.log(error);
-          });
-      }
-    },
     nextpages() {
       const _this = this;
       if (localStorage.token && _this.num != 3) {
@@ -1422,8 +1365,6 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
-    clearInterval(this.QuestionsStatus);
-    clearInterval(this.AnswerStatus);
     // this.handleScroll().unbind();
     window.removeEventListener("scroll", this.handleScroll);
     console.log(this.$route);

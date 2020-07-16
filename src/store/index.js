@@ -14,6 +14,8 @@ import review_store from '../storeComponents/review.js';
 // 登录人信息
 import loginPerson_store from '../storeComponents/loginPerson.js';
 import answer_store from '../storeComponents/answer.js';
+// 问答检索登录人问题数量
+import questionNums_store from '../storeComponents/questionNums_store.js';
 
 
 export default new vuex.Store({
@@ -25,5 +27,6 @@ export default new vuex.Store({
         review:review_store,
         loginPerson:loginPerson_store,
         answer:answer_store,
+        queNum:questionNums_store,
     }
 })
