@@ -152,10 +152,27 @@
 .qlBodyMeiConRightTable:hover {
     background: #4cc78e;
 }
-
-
-
-
+.qdEditanName {
+    float: left;
+    width: 530px;
+    color: #cecece;
+}
+.qdEditanTime {
+    float: right;
+    width: 530px;
+    text-align: right;
+    color: #cecece;
+}
+.pageturning {
+    text-align: center;
+    font-size: 40px;
+    position: relative;
+    top: -3px;
+    cursor: pointer;
+}
+.pageturning:hover {
+    color: #0059ff;
+}
 
 
 
@@ -239,14 +256,7 @@
     padding: 22px;
     margin-bottom: 22px;
 }
-.ql-right-quitBT {
-    width: 100% !important;
-    background-color: #2fc781 !important;
-    border:1px solid #2fc781;
-}
-.ql-right-quitBT:hover {
-    border:1px solid #2fc781;
-}
+
 .ql-right-function {
     box-shadow: 0 1px 3px rgba(26, 26, 26, 0.1);
     padding: 22px 0px 22px 0px;

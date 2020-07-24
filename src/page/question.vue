@@ -83,6 +83,7 @@
                 </div>
               </div>
             </div>
+            <div class="pageturning" @click="nextpages">...</div>
           </div>
           <div class="qlBodyRight">
             <el-button
@@ -93,34 +94,6 @@
               @mousewheel.prevent
             >提一个新问题</el-button>
             <questionNum></questionNum>
-            <!-- <div class="qlBodyRightTop" v-if="qdConRigtS">
-              <div>
-                <div class="qlBodyRightTitle">
-                  <img class="qlBodyRightI1" src="../assets/问答3.jpg" alt />
-                  <span>我的提问</span>
-                  <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
-                </div>
-                <div class="qlBodyRightBott">
-                  <div>竞拍中<span>{{auctions}}</span></div>
-                  <div>待回答<span>{{toAnswer}}</span></div>
-                  <div>已回答<span>{{haveToAnswer}}</span></div>
-                </div>
-              </div>
-            </div>
-            <div class="qlBodyRightTop" v-if="qdConRigtS">
-              <div>
-                <div class="qlBodyRightTitle">
-                  <img class="qlBodyRightI1" src="../assets/问答4.jpg" alt />
-                  <span>我的回答</span>
-                  <img class="qlBodyRightI2" src="../assets/问答5.jpg" alt />
-                </div>
-                <div class="qlBodyRightBott">
-                  <div>竞拍中<span>{{paAuctions}}</span></div>
-                  <div>待回答<span>{{paToAnswer}}</span></div>
-                  <div>已回答<span>{{paHaveToAnswer}}</span></div>
-                </div>
-              </div>
-            </div> -->
           </div>
         </div>
       </div>
@@ -188,7 +161,7 @@
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
-                  v-model="QuestionsQuiz.Currency"
+                  v-model.number="QuestionsQuiz.Currency"
                   placeholder="鲸灵币(选填)"
                   style="width:130px;"
                 ></el-input>
@@ -233,7 +206,11 @@
             <div style="float:right;">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
-                <el-input v-model="auction.Currency" placeholder="鲸灵币(选填)" style="width:130px;"></el-input>
+                <el-input
+                  v-model.number="auction.Currency"
+                  placeholder="鲸灵币(选填)"
+                  style="width:130px;"
+                ></el-input>
               </el-form-item>
             </div>
           </div>
@@ -273,26 +250,26 @@ export default {
     homeFooter,
     Editor,
     questionCss,
-    questionNum
+    questionNum,
   },
   props: {
     value: {
       type: String,
-      default: "写回答..."
+      default: "写回答...",
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     plugins: {
       type: [String, Array],
-      default: "colorpicker textcolor wordcount contextmenu"
+      default: "colorpicker textcolor wordcount contextmenu",
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor"
-    }
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor",
+    },
   },
   data() {
     return {
@@ -322,13 +299,13 @@ export default {
             async: false,
             data: formData,
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-            .then(res => {
+            .then((res) => {
               // 这里返回的是你图片的地址
               success(res.data.file);
             })
@@ -337,7 +314,7 @@ export default {
             });
 
           console.log(blobInfo);
-        }
+        },
       },
       myValue: this.value,
       topInput: "",
@@ -347,13 +324,13 @@ export default {
         Content: "",
         EndTime: "",
         Currency: "",
-        Img: ""
+        Img: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
         Title: [
           { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" }
+          { min: 4, message: "最少输入4个字", trigger: "blur" },
         ],
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
@@ -361,16 +338,19 @@ export default {
             type: "date",
             required: true,
             message: "请选择日期",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
+        Currency: [
+          { required: true, message: "请输入鲸灵币", trigger: "blur" },
+          { type: "number", message: "必须为数字" },
+        ],
       },
       // 我要答列表
       auction: {
         EndTime: "",
         Currency: "",
-        QuestionId: ""
+        QuestionId: "",
       },
       // 我要答表单验证
       auctionrules: {
@@ -378,10 +358,13 @@ export default {
           {
             required: true,
             message: "请选择日期",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
+        Currency: [
+          { required: true, message: "请输入鲸灵币", trigger: "blur" },
+          { type: "number", message: "必须为数字" },
+        ],
       },
       qlList: [],
       qlShade: false,
@@ -417,28 +400,28 @@ export default {
       // 图片
       imgSite: this.URLport.serverPath + "/File/UploadQuestion",
       myHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       dialogImageUrl: "",
       dialogVisible: false,
       fileList: [],
       Questionsnum: "",
       Answernum: "",
-      qdConRigtS:false
+      qdConRigtS: false,
     };
   },
-  created: function() {
+  created: function () {
     const _this = this;
     _this.personal();
     // _this.handleScroll();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
-    formatDate: function(time) {
+    formatDate: function (time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd-hh:mm");
     },
-    sendTimeDate: function(date) {
+    sendTimeDate: function (date) {
       if (!!date) {
         var nowDate =
           new Date(date).getFullYear() +
@@ -466,7 +449,7 @@ export default {
       } else {
         return "";
       }
-    }
+    },
   },
   mounted() {
     var _this = this;
@@ -485,20 +468,20 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/GetNumber`,
           async: false,
           params: {
-            time: _this.newAnswerTime
+            time: _this.newAnswerTime,
           },
           xhrFields: {
-            withCredentials: true
-          }
+            withCredentials: true,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.data.num > 0) {
             _this.newAnswerNum = res.data.data.num + _this.newAnswerNum;
             _this.newAnswerShow = true;
             _this.newAnswerTime = res.data.data.datetime;
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -510,13 +493,13 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/GetNewQuestion`,
           async: false,
           params: {
-            time: _this.newAnswerTime
+            time: _this.newAnswerTime,
           },
           xhrFields: {
-            withCredentials: true
-          }
+            withCredentials: true,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.newAnswerShow = false;
             _this.newAnswerNum = 0;
@@ -538,14 +521,14 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     handleScroll() {
       var _this = this;
       if (_this.$route.fullPath == "/question") {
-        window.onscroll = function() {
+        window.onscroll = function () {
           var scrollTop =
             document.documentElement.scrollTop || document.body.scrollTop;
           var windowHeight =
@@ -565,16 +548,16 @@ export default {
                   params: {
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes
+                    pagesize: _this.pagesizes,
                   },
                   xhrFields: {
-                    withCredentials: true
+                    withCredentials: true,
                   },
                   headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                  }
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
                 })
-                .then(function(res) {
+                .then(function (res) {
                   if (res.data.status == 1) {
                     // _this.myQlList.push(res.data.data.data);
                     let a = [];
@@ -593,7 +576,7 @@ export default {
                     }
                   }
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(error);
                 });
             } else if (!localStorage.token && _this.num != 3) {
@@ -605,13 +588,13 @@ export default {
                   params: {
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes
+                    pagesize: _this.pagesizes,
                   },
                   xhrFields: {
-                    withCredentials: true
-                  }
+                    withCredentials: true,
+                  },
                 })
-                .then(function(res) {
+                .then(function (res) {
                   if (res.data.status == 1) {
                     if (res.data.data.data.length != 0) {
                       for (var i = 0; i < res.data.data.data.length; i++) {
@@ -620,7 +603,7 @@ export default {
                     }
                   }
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(error);
                 });
             } else if (localStorage.token && _this.num == 3) {
@@ -632,16 +615,16 @@ export default {
                   params: {
                     name: _this.topInput,
                     pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes
+                    pagesize: _this.pagesizes,
                   },
                   xhrFields: {
-                    withCredentials: true
+                    withCredentials: true,
                   },
                   headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                  }
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
                 })
-                .then(function(res) {
+                .then(function (res) {
                   if (res.data.status == 1) {
                     let a = [];
                     a = res.data.data.data;
@@ -678,7 +661,7 @@ export default {
                     console.log(_this.myQlList);
                   }
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(error);
                 });
             }
@@ -688,7 +671,7 @@ export default {
         return;
       }
     },
-    personal: function() {
+    personal: function () {
       const _this = this;
       if (localStorage.token) {
         _this
@@ -697,18 +680,17 @@ export default {
             url: `${_this.URLport.serverPath}/Client/GetClient`,
             async: false,
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             _this.clientID = res.data.data.id;
             _this.myquizList();
-            
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else {
@@ -728,16 +710,16 @@ export default {
             type: _this.typeNum,
             pagenum: _this.pagenums,
             pagesize: _this.pagesizes,
-            name: _this.topInput
+            name: _this.topInput,
           },
           xhrFields: {
-            withCredentials: true
-          }
+            withCredentials: true,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.qlList = res.data.data.data;
-            
+
             let date = new Date();
             let now = date.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
@@ -752,7 +734,7 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -770,16 +752,16 @@ export default {
             type: _this.typeNum,
             pagenum: _this.pagenums,
             pagesize: _this.pagesizes,
-            name: _this.topInput
+            name: _this.topInput,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.myQlList = res.data.data.data;
             _this.qdConRigtS = true;
@@ -796,11 +778,11 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
-    formatDate: function(time) {
+    formatDate: function (time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd-hh:mm");
     },
@@ -928,7 +910,7 @@ export default {
       } else {
         _this.$message({
           message: "请登录之后提问",
-          type: "warning"
+          type: "warning",
         });
       }
     },
@@ -946,7 +928,7 @@ export default {
       let now = date.getTime();
       let leftTime = new Date(_this.QuestionsQuiz.EndTime).getTime() - now;
       let h = Math.floor(leftTime / (3600 * 1000));
-      _this.$refs[QuestionsQuiz].validate(valid => {
+      _this.$refs[QuestionsQuiz].validate((valid) => {
         if (valid) {
           _this
             .axios({
@@ -955,19 +937,19 @@ export default {
               async: false,
               data: _this.QuestionsQuiz,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 // _this.QuestionsQuiz = [];
                 _this.QuestionsQuiz.Title = "";
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
-                setTimeout(function() {
+                setTimeout(function () {
                   _this.newAnswerTime = new Date();
                   _this.newAnswer = setInterval(_this.answerNum, 5000);
                 }, 15000);
@@ -979,16 +961,16 @@ export default {
                 _this.myquizList();
                 _this.$message({
                   message: "发布成功",
-                  type: "success"
+                  type: "success",
                 });
               } else {
                 _this.$message({
                   message: "发布失败",
-                  type: "error"
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         }
@@ -1005,7 +987,7 @@ export default {
       } else {
         _this.$message({
           message: "请登录之后竞拍",
-          type: "warning"
+          type: "warning",
         });
       }
     },
@@ -1018,7 +1000,7 @@ export default {
     auctionQl(auction) {
       const _this = this;
 
-      _this.$refs[auction].validate(valid => {
+      _this.$refs[auction].validate((valid) => {
         if (valid) {
           _this
             .axios({
@@ -1027,27 +1009,27 @@ export default {
               async: false,
               data: _this.auction,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.qlreplyShade = !_this.qlreplyShade;
                 _this.$message({
-                  message: "竞拍成功,请开始作答！",
-                  type: "success"
+                  message: "竞拍成功!",
+                  type: "success",
                 });
               } else {
                 _this.$message({
                   message: res.data.msg,
-                  type: "error"
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         }
@@ -1067,16 +1049,16 @@ export default {
               type: _this.typeNum,
               pagenum: _this.pagenums,
               pagesize: _this.pagesizes,
-              name: _this.topInput
+              name: _this.topInput,
             },
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               _this.myQlList = res.data.data.data;
               let date = new Date();
@@ -1093,7 +1075,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else if (!localStorage.token && _this.num != 3) {
@@ -1106,13 +1088,13 @@ export default {
               type: _this.typeNum,
               pagenum: _this.pagenums,
               pagesize: _this.pagesizes,
-              name: _this.topInput
+              name: _this.topInput,
             },
             xhrFields: {
-              withCredentials: true
-            }
+              withCredentials: true,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               _this.qlList = res.data.data.data;
               let date = new Date();
@@ -1121,7 +1103,7 @@ export default {
                 _this.$set(_this.qlList[i], "Times", "");
                 _this.$set(_this.qlList[i], "myType", "");
                 let leftTime =
-                  new Date(_this.qlList[i].endTime).getTime() - now;
+                  new Date(_this.qlList[i].question.endTime).getTime() - now;
                 let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
@@ -1129,7 +1111,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else if (localStorage.token && _this.num == 3) {
@@ -1141,16 +1123,16 @@ export default {
             params: {
               pagenum: _this.pagenums,
               pagesize: _this.pagesizes,
-              name: _this.topInput
+              name: _this.topInput,
             },
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               _this.myQlList = res.data.data.data;
               for (var i = 0; i < a.length; i++) {
@@ -1182,7 +1164,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       }
@@ -1200,16 +1182,16 @@ export default {
             params: {
               type: _this.typeNum,
               pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes
+              pagesize: _this.pagesizes,
             },
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               // _this.myQlList.push(res.data.data.data);
               let a = [];
@@ -1228,7 +1210,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else if (!localStorage.token && _this.num != 3) {
@@ -1240,13 +1222,13 @@ export default {
             params: {
               type: _this.typeNum,
               pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes
+              pagesize: _this.pagesizes,
             },
             xhrFields: {
-              withCredentials: true
-            }
+              withCredentials: true,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               if (res.data.data.data.length != 0) {
                 for (var i = 0; i < res.data.data.data.length; i++) {
@@ -1255,7 +1237,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else if (localStorage.token && _this.num == 3) {
@@ -1267,16 +1249,16 @@ export default {
             params: {
               name: _this.topInput,
               pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes
+              pagesize: _this.pagesizes,
             },
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               let a = [];
               a = res.data.data.data;
@@ -1310,7 +1292,7 @@ export default {
               }
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       }
@@ -1325,23 +1307,23 @@ export default {
           async: false,
           params: {
             questionid: 0,
-            imgurl: file.response.file
+            imgurl: file.response.file,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           var imgurl = "";
           for (let i = 0; i < fileList.length; i++) {
             imgurl = imgurl + "|" + fileList[i].response.file;
           }
           _this.QuestionsQuiz.Img = imgurl.slice(1);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -1361,7 +1343,7 @@ export default {
     },
     beforeAvatarUpload(file) {
       console.log(file);
-    }
+    },
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
@@ -1395,7 +1377,7 @@ export default {
           // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
           // //否则为：00:00:00- 23:59:59
         }
-      }
+      },
     },
     "auction.EndTime": {
       immediate: true,
@@ -1421,14 +1403,14 @@ export default {
           // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
           // //否则为：00:00:00- 23:59:59
         }
-      }
+      },
     },
     value(newValue) {
       this.myValue = newValue;
     },
     myValue(newValue) {
       this.$emit("input", newValue);
-    }
-  }
+    },
+  },
 };
 </script>
