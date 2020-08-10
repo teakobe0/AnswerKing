@@ -503,7 +503,6 @@ export default {
       myValues: this.values,
       qlList: {},
       qdeditShow: false,
-      auctionShow: true,
       // 竞拍者信息
       autionInfo: [],
       d: "",
@@ -527,8 +526,6 @@ export default {
       // 加载中
       loading: true,
       nullLoginShow: false,
-      // 答案展示
-      answerShows: false,
       // 暂时没人回答
       editan: false,
       qdeditnullShow: true,
@@ -557,7 +554,6 @@ export default {
       replyShadeShow: true,
       dialogImageUrl: "",
       dialogVisible: false,
-      disableds: false,
       // 编辑评价客服
       qlShade: false,
       evaluateShade: false,
@@ -603,8 +599,6 @@ export default {
       queVisible: false,
       quefileList: [],
       imgSiteAns: this.URLport.serverPath + "/File/UploadAnswer",
-      queImageUrlAns: "",
-      queVisibleAns: false,
       quefileListAns: [],
       quefileListImg: "",
       // 聊天记录
@@ -761,8 +755,6 @@ export default {
           // qdeditShow 编辑器的隐藏
           // savesubmitShow 补充回答提交的隐藏
           // countdown 倒计时的隐藏
-          // auctionShow 竞拍者栏的整体隐藏
-          // answerShows 满屏答案的显示隐藏
           // qdeditnullShow 左侧没有答案的框体
           // editan 左侧有答案的框体
           // 1:保存 2：正在竞拍 3：已选竞拍者，4：已回答，5：申请客服，6：已完成,7:已关闭
@@ -782,7 +774,6 @@ export default {
                   }
                 }
               }
-              console.log(_this.qlList);
               // 确定登录人是否是竞拍者之一
               for (var i = 0; i < _this.qlList.bls.length; i++) {
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
@@ -800,7 +791,6 @@ export default {
               ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = true;
-                _this.auctionShow = true; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = true; //左侧没有答案的框体
                 _this.editan = false;
                 _this.qdeditShow = false; //编辑器的隐藏
@@ -816,7 +806,6 @@ export default {
               ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = true; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = true; //左侧没有答案的框体
                 _this.editan = false;
                 _this.qdeditShow = false; //编辑器的隐藏
@@ -834,7 +823,6 @@ export default {
               ) {
                 _this.auctionClient = true;
                 _this.auctionbutton = false;
-                _this.auctionShow = true;
                 _this.qdeditnullShow = false;
                 _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
@@ -852,7 +840,6 @@ export default {
               ) {
                 _this.auctionClient = true;
                 _this.auctionbutton = false;
-                _this.auctionShow = true;
                 _this.qdeditnullShow = false;
                 _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
@@ -869,14 +856,12 @@ export default {
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = false;
                 _this.countdown = false; //倒计时的隐藏
-                _this.answerShows = true; //满屏答案的显示隐藏
                 _this.submitAnss = true;
                 _this.replyShadeShow = false;
                 _this.serviceS = true;
@@ -892,14 +877,12 @@ export default {
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.qdeditShow = true; //编辑器的隐藏
                 _this.editors = true;
                 _this.savesubmitShow = true; //保存进度提交的隐藏
                 _this.replenishShow = false;
                 _this.countdown = true; //倒计时的隐藏
-                _this.answerShows = false; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
                 _this.endtime = _this.formatDate(
@@ -913,7 +896,6 @@ export default {
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.submitAnss = true;
                 _this.qdeditShow = true; //编辑器的隐藏
@@ -921,7 +903,6 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = true;
                 _this.countdown = true; //倒计时的隐藏
-                _this.answerShows = false; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
                 _this.editan = true;
@@ -936,7 +917,6 @@ export default {
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = true;
                 _this.submitAnss = true;
@@ -944,7 +924,6 @@ export default {
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = true;
                 _this.countdown = true; //倒计时的隐藏
-                _this.answerShows = true; //满屏答案的显示隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
                 _this.endtime = _this.formatDate(
@@ -957,14 +936,12 @@ export default {
               if (_this.qlList.que.question.status >= 6) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
-                _this.auctionShow = false; //竞拍者栏的整体隐藏
                 _this.qdeditnullShow = false; //左侧没有答案的框体
                 _this.editan = true;
                 _this.qdeditShow = false; //编辑器的隐藏
                 _this.savesubmitShow = false; //保存进度提交的隐藏
                 _this.replenishShow = false;
                 _this.countdown = false; //倒计时的隐藏
-                _this.answerShows = true; //满屏答案的显示隐藏
                 _this.submitAnss = true;
                 _this.replyShadeShow = false;
                 console.log("问题已完成");
@@ -979,11 +956,9 @@ export default {
               _this.nullLoginShow = true;
               _this.auctionClient = false;
               _this.auctionbutton = false;
-              _this.auctionShow = false;
               _this.qdeditShow = false;
               _this.qdeditnullShow = false;
               _this.savesubmitShow = false;
-              _this.answerShows = false;
               _this.replyShadeShow = true;
               _this.qdConRigtS = false;
             }
@@ -1261,44 +1236,51 @@ export default {
     submit() {
       const _this = this;
       // 如果这个答案保存过就把ID和CreateBy赋值如果是第一次就不赋值
-      var json = {};
-      json.questionId = _this.$route.params.question_id; //问题ID
-      json.content = this.myValue; //答案内容
-      // json.id = 0; //答案ID
-      // json.createBy = 0; //答题人ID
-      json.Img = _this.quefileListImg;
-
-      _this
-        .axios({
-          method: "post",
-          url: `${_this.URLport.serverPath}/Answer/Add`,
-          async: false,
-          data: json,
-          xhrFields: {
-            withCredentials: true,
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(function (res) {
-          if (res.data.status == 1) {
-            _this.myValue = "写回答...";
-            _this.QuDe();
-            _this.$message({
-              message: "保存成功",
-              type: "success",
-            });
-          } else {
-            _this.$message({
-              message: res.data.msg,
-              type: "error",
-            });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
+      if (this.myValue == "写回答...") {
+        _this.$message({
+          message: "请填写答案。",
+          type: "warning",
         });
+      } else {
+        var json = {};
+        json.questionId = _this.$route.params.question_id; //问题ID
+        json.content = this.myValue; //答案内容
+        // json.id = 0; //答案ID
+        // json.createBy = 0; //答题人ID
+        json.Img = _this.quefileListImg;
+
+        _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/Answer/Add`,
+            async: false,
+            data: json,
+            xhrFields: {
+              withCredentials: true,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(function (res) {
+            if (res.data.status == 1) {
+              _this.myValue = "写回答...";
+              _this.QuDe();
+              _this.$message({
+                message: "保存成功",
+                type: "success",
+              });
+            } else {
+              _this.$message({
+                message: res.data.msg,
+                type: "error",
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
     // 保存进度
     save() {

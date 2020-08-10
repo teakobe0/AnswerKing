@@ -9,11 +9,10 @@
             <h1>提升学业最好的方式就是互相帮助。</h1>
             <p>
               Coursewhale课程鲸灵为全球学子打造的社交问答平台，
-              <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强
+              <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强劲的学习动力。
             </p>
             <el-input
               v-model="topInput"
-              placeholder="搜索"
               @change="topInputs"
               clearable
               style="width:700px"
@@ -36,14 +35,18 @@
             <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
               <div class="qlBodyMeiConLeft">
                 <div>
-                  <span class="qlBodyI">{{item.question.currency}}鲸灵币</span>
+                  <span class="qlBodyI">{{item.question.currency}}&nbsp;鲸灵币</span>
                 </div>
                 <h4>
                   <router-link :to="'/questionDetails/'+item.question.id">{{item.question.title}}</router-link>
                 </h4>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
+                  
                   {{item.qname}}
+                  
+
+                  
                   <span>{{item.Times}}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
@@ -63,14 +66,18 @@
                   <span class="qlBodyU" v-show="item.bidd != null">{{item.bidd}}</span>
                   <span class="qlBodyU" v-show="item.myanswer != null">{{item.myanswer}}</span>
                   <span class="qlBodyU" v-show="item.myque != null">{{item.myque}}</span>
-                  <span class="qlBodyI">{{item.que.currency}}鲸灵币</span>
+                  <span class="qlBodyI">{{item.que.currency}}&nbsp;鲸灵币</span>
                 </div>
                 <h4>
                   <router-link :to="'/questionDetails/'+item.que.id">{{item.que.title}}</router-link>
                 </h4>
+                <div class="qlBodyConImg" >
+                    <img v-for="items in item.que.images" :src="items.url" alt="">
+                  </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
                   {{item.qname}}
+                  
                   <span>{{item.Times}}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
@@ -123,7 +130,8 @@
             :on-remove="handleRemove"
             :file-list="fileList"
           >
-            <i slot="default" class="el-icon-picture" title="添加图片"></i>
+          <el-button size="small" type="primary" class="upImgBut">上传问题图片 <i class="el-icon-picture"></i></el-button>
+            <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
           </el-upload>
           <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
             <img width="100%" :src="dialogImageUrl" alt />
@@ -138,7 +146,7 @@
             ></el-input>-->
 
             <!-- 富文本 -->
-            <editor id="tinymce" v-model="myValue" :init="init"></editor>
+            <editor id="tinymce" v-model="myValue" :init="init" ></editor>
           </el-form-item>
           <div style="overflow: hidden;">
             <div style="float:left;">
@@ -162,7 +170,7 @@
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="QuestionsQuiz.Currency"
-                  placeholder="鲸灵币(选填)"
+                  placeholder="请输入鲸灵币"
                   style="width:130px;"
                 ></el-input>
               </el-form-item>
@@ -208,7 +216,7 @@
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
-                  placeholder="鲸灵币(选填)"
+                  placeholder="请输入鲸灵币"
                   style="width:130px;"
                 ></el-input>
               </el-form-item>
@@ -255,7 +263,7 @@ export default {
   props: {
     value: {
       type: String,
-      default: "写回答...",
+      default: "",
     },
     disabled: {
       type: Boolean,
@@ -277,6 +285,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
+        placeholder: "输入问题的详细描述",
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 300,
         plugins: this.plugins,
@@ -369,8 +378,6 @@ export default {
       qlList: [],
       qlShade: false,
       qlreplyShade: false,
-      value1: "",
-      value2: "",
       num: 0,
       typeNum: "new",
       pagenums: 1,
@@ -379,15 +386,6 @@ export default {
       myqus: false,
       qlcon: false,
       qlData: false,
-      quizTableData: [],
-      // 当前登录人提出的问题数量
-      auctions: 0,
-      toAnswer: 0,
-      haveToAnswer: 0,
-      // 当前登录人参与的问题数量
-      paAuctions: 0,
-      paToAnswer: 0,
-      paHaveToAnswer: 0,
       myQlList: [],
       myQlcon: false,
       startTimeRange: "",
@@ -405,7 +403,6 @@ export default {
       dialogImageUrl: "",
       dialogVisible: false,
       fileList: [],
-      Questionsnum: "",
       Answernum: "",
       qdConRigtS: false,
     };
@@ -769,6 +766,13 @@ export default {
             let now = date.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.myQlList[i], "Times", "");
+              _this.$set(_this.myQlList[i].que, "images", []);
+              if (_this.myQlList[i].que.img) {
+                  var a = _this.myQlList[i].que.img.split("|");
+                  for (var j = 0; j < a.length; j++) {
+                    _this.myQlList[i].que.images.push({ url: a[j] });
+                  }
+                }
               let leftTime =
                 new Date(_this.myQlList[i].que.endTime).getTime() - now;
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
@@ -776,6 +780,7 @@ export default {
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               _this.myQlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
             }
+            console.log(_this.myQlList)
           }
         })
         .catch(function (error) {
@@ -955,7 +960,7 @@ export default {
                 }, 15000);
                 _this.QuestionsQuiz.Currency = "";
                 _this.QuestionsQuiz.Img = "";
-                _this.myValue = "写回答...";
+                _this.myValue = "";
                 _this.fileList = [];
                 _this.qlShade = !_this.qlShade;
                 _this.myquizList();
@@ -965,7 +970,7 @@ export default {
                 });
               } else {
                 _this.$message({
-                  message: "发布失败",
+                  message: "请填写",
                   type: "error",
                 });
               }

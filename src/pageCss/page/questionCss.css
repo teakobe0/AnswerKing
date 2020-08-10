@@ -6,7 +6,7 @@
 
 /* 标题开始 */
 .ql-title {
-    height: 300px;
+    height: 343px;
     background: #eff3ff;
 }
 .ql-t-con {
@@ -16,33 +16,39 @@
 }
 .qltconLeft {
     width: 910px;
-    height: 300px;
+    height: 343px;
     float: left;
 }
 .qltconLeft h1 {
-    margin-top: 59px;
+    margin-top: 80px;
     color: #27427a;
     letter-spacing: 1px;
-    margin-bottom: 20px;
+    margin-bottom: 28px;
+    font-size: 24px;
 }
 .qltconLeft p {
-    color: #6d7ca1;
+    color: #709fd4;
     letter-spacing: 3px;
-    margin-bottom: 20px;
+    margin-bottom: 33px;
+    font-size: 14px;
+    line-height: 23px;
+}
+.qltconLeft .el-input__inner {
+    height: 47px !important;
 }
 .qltconright {
     width: 390px;
-    height: 300px;
+    height: 343px;
     float: right;
 }
 .qltconright img {
-    margin-top: 10.5px;
+    margin-top: 35px;
 }
 /* 标题结束 */
 /* 主体内容开始 */
 .ql-body {
     background: #f5f6f7;
-    margin-top: 20px;
+    margin-top: 38px;
 }
 .qlBodyCon {
     width: 1300px;
@@ -51,23 +57,24 @@
 }
 .qlBodyLeft {
     float: left;
-    width: 180px;
-    margin-right: 20px;
+    width: 227px;
+    margin-right: 24px;
     background: #fff;
-    padding: 20px 0px 15px 0px;
+    padding: 15px 0px 15px 0px;
 }
 .qlBodyLeft div {
-    padding: 0px 0px 0px 15px;
-    line-height: 35px;
-    width: 160px;
+    padding: 0px 0px 0px 26px;
+    line-height: 31px;
+    width: 197px;
     float: right;
     cursor: pointer;
-    margin-bottom: 5px;
+    margin-bottom: 17px;
+}
+.qlBodyLeft div:last-of-type {
+    margin-bottom: 0px;
 }
 .qlBodyLeft div:hover {
     border-left: 5px solid #4458b0;
-    background: #7587d0;
-    color: #fff;
 }
 .qlBodyConActive {
     border-left: 5px solid #4458b0;
@@ -76,10 +83,10 @@
 }
 .qlBodyMei {
     float: left;
-    width: 900px;
+    width: 800px;
 }
 .qlBodyMeiCon {
-    width: 100%;
+    width: 800px;
     margin-bottom: 10px;
     background: #fff;
     overflow: hidden;
@@ -89,7 +96,7 @@
     background: #2fc781;
 }
 .qlBodyMeiConLeft {
-    width: 780px;
+    width: 680px;
     padding: 20px;
     /* float: left; */
     position: relative;
@@ -99,14 +106,16 @@
     color: #333;
 }
 .qlBodyMeiConLeft h4 {
-    margin-top: 10px;
-    margin-bottom: 10px;
+    margin-top: 15px;
+    margin-bottom: 26px;
+    font-size: 14px;
+    word-wrap:break-word
 }
 .qlBodyI {
     border: 1px solid #4458b0;
     border-radius: 2px;
-    padding: 2px;
-    font-size: 14px;
+    padding: 3px 7px;
+    font-size: 12px;
     color: #4458b0;
     
 }
@@ -116,22 +125,30 @@
     background: #ec6941;
     color: #fff;
     border-radius: 2px;
-    font-size: 14px;
-    padding: 2px;
+    font-size: 12px;
+    padding: 0px 4px;
     margin-right: 10px;
+}
+.qlBodyConImg {
+    
+}
+.qlBodyConImg img {
+    width: 236px;
+    height: 106px;
 }
 .qlBodyImg img {
     vertical-align: middle;
-    margin-right: 5px;
+    margin-right: 11px;
     width: 21px;
     height: 21px;
     border-radius: 10px;
 }
 .qlBodyImg span {
     color: #c9c9c9;
+    margin-left: 7px;
 }
 .qlBodyMeiConRight {
-    width: 80px;
+    width: 91px;
     height: 100%;
     background: #fff;
     color: #fff;
@@ -148,6 +165,7 @@
 .qlBodyMeiConRightTable {
     display: table-cell;
     vertical-align: middle;
+    font-size: 20px;
 }
 .qlBodyMeiConRightTable:hover {
     background: #4cc78e;
@@ -432,8 +450,8 @@
 }
 .ql-shade .el-upload--picture-card {
     border: 0px !important;
-    width: 30px !important;
-    height: 30px !important;
+    width: 123px !important;
+    height: 36px !important;
     line-height: 0px !important;
 }
 .ql-shade .el-upload-list--picture-card .el-upload-list__item {
@@ -446,6 +464,14 @@
 .upImg {
     text-align: right;
     margin-bottom: 11px;
+    
+}
+.upImgBut i {
+    font-size: 16px !important;
+    color: #fff !important;
+    vertical-align: middle;
+    position: relative;
+    top: -1px;
 }
 .newAnswer {
     padding: 0px 20px;

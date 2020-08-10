@@ -11,10 +11,10 @@
 }
 .qlBodyRight {
   float: right;
-  width: 180px;
+  width: 224px;
 }
 .qlBodyRightTop {
-  width: 180px;
+  width: 224px;
   margin-top: 20px;
 }
 .qlBodyRightTitle {
@@ -24,19 +24,20 @@
   font-weight: 700;
 }
 .qlBodyRightTitle .qlBodyRightI1 {
-  margin-right: 10px;
+  margin-right: 16px;
   vertical-align: middle;
 }
 .qlBodyRightTitle .qlBodyRightI2 {
   float: right;
-  margin-top: 6.5px;
+  margin-top: 5.5px;
 }
 .qlBodyRightBott a {
   display: block;
-  margin-left: 31px;
+  margin-left: 37px;
   margin-top: 10px;
   text-decoration: none;
   color: #000;
+  font-size: 14px;
 }
 .qlBodyRightBott a:hover {
     color: rgb(40, 176, 255);
@@ -48,8 +49,8 @@
   font-size: 14px;
   text-align: center;
   background: #e5e5e5;
-  border-radius: 10px;
-  margin-left: 10px;
+  border-radius: 4px;
+  margin-left: 5px;
 }
 .queNums {
   display: inline-block;
@@ -76,15 +77,15 @@
         <div class="qlBodyRightBott">
           <router-link to="/personalData/myQuestion">
             竞拍中
-            <span>{{auctions}}</span>
+            <span v-show="auctions != 0">{{auctions}}</span>
           </router-link>
           <router-link to="/personalData/myQuestion">
             待回答
-            <span>{{toAnswer}}</span>
+            <span v-show="toAnswer != 0">{{toAnswer}}</span>
           </router-link>
           <router-link to="/personalData/myQuestion">
             已回答
-            <span>{{haveToAnswer}}</span>
+            <span v-show="haveToAnswer != 0">{{haveToAnswer}}</span>
           </router-link>
         </div>
       </div>
@@ -100,15 +101,15 @@
         <div class="qlBodyRightBott">
           <router-link to="/personalData/myQuestion">
             竞拍中
-            <span>{{paAuctions}}</span>
+            <span v-show="paAuctions != 0">{{paAuctions}}</span>
           </router-link>
           <router-link to="/personalData/myQuestion">
             待回答
-            <span>{{paToAnswer}}</span>
+            <span v-show="paToAnswer != 0">{{paToAnswer}}</span>
           </router-link>
           <router-link to="/personalData/myQuestion">
             已回答
-            <span>{{paHaveToAnswer}}</span>
+            <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
           </router-link>
         </div>
       </div>
