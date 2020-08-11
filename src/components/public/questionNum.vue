@@ -4,6 +4,7 @@
   width: 100% !important;
   background-color: #2fc781 !important;
   border: 1px solid #2fc781;
+  font-size: 16px;
 }
 .ql-right-quitBT:hover {
   border: 1px solid #2fc781;
@@ -15,7 +16,7 @@
 }
 .qlBodyRightTop {
   width: 224px;
-  margin-top: 20px;
+  margin-top: 35px;
 }
 .qlBodyRightTitle {
   /* margin-bottom: 10px; */
@@ -46,7 +47,7 @@
   display: inline-block;
   color: #b3b3b3;
   width: 30px;
-  font-size: 14px;
+  font-size: 12px;
   text-align: center;
   background: #e5e5e5;
   border-radius: 4px;

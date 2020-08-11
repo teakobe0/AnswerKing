@@ -9,12 +9,15 @@
             <div class="qlBodyImg">
               <img :src="qlList.que.qimage" alt />
               {{qlList.que.qname}}
-              <!-- <span>{{item.Times}}</span> -->
+              <span>{{qlList.que.Times}}</span>
             </div>
             <h4>{{qlList.que.question.title}}</h4>
-            <p v-html="qlList.que.question.content"></p>
-            <img class="qlBodyQuImg" :src="qlList.que.question.img" alt />
+            <p style="font-size:14px;" v-html="qlList.que.question.content"></p>
             <div>
+              <img class="qlBodyQuImg" v-for="item in qlList.que.images" :src="item.url" alt />
+            </div>
+
+            <div style="margin-top:15px;">
               <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span>
               <el-button
                 size="mini"
@@ -59,9 +62,19 @@
           </div>-->
           <div
             class="qd-title-right-2"
-            v-if="qlList.bls.length != 0 && qlList.que.question.answerer == 0"
+            v-if="qlList.bls.length > 0 && qlList.que.question.answerer == 0"
           >
             <p>该问题目前已有{{qlList.bls.length}}人参与竞拍</p>
+          </div>
+          <div class="qd-title-right-3" v-if="selectbname">
+            <div></div>
+            <p>你已选择&nbsp;{{qlList.bls[0].bname}}&nbsp;回答问题</p>
+            <div></div>
+          </div>
+          <div class="qd-title-right-3" v-if="qlList.bls.length == 0">
+            <div></div>
+            <p>暂时无人参与竞拍</p>
+            <div></div>
           </div>
           <div class="qdConBls" v-for="item in qlList.bls">
             <b v-show="qdConMyBls == false">{{item.bname}}&nbsp;提交的竞拍</b>
@@ -111,8 +124,10 @@
           <div class="qdConMyAns" v-show="editan">
             <div class="qd-editan">
               <div v-for="item in qlList.als" class="submitAns">
-                <div style="overflow:hidden;margin-bottom:10px">
-                  <div class="qdEditanName">{{qlList.bls[0].bname}}&nbsp;发布了问题</div>
+                <div style="overflow:hidden;margin-bottom:33px">
+                  <div class="qdEditanName">
+                    <span style="color:#333;">{{qlList.bls[0].bname}}</span>&nbsp;发布了问题
+                  </div>
                   <div class="qdEditanTime">{{item.createTime | formatDate}}</div>
                 </div>
                 <P v-html="item.content"></P>
@@ -130,8 +145,8 @@
           <div class="qdConEvaluate" @click="evaluate(qlList.que.question.id)" v-show="evaluateS">评价</div>
           <div class="qdConEvaluate" @click="replyShade(qlList)" v-if="replyShadeShow">参与竞拍</div>
           <div class="countTime" v-if="countdown">
-            <div style="margin-bottom:10px;font-size:18px">恭喜你!该问题竞拍成功!</div>
-            <div>请在约定的时间范围内提交回答,剩余{{d}}天{{h}}小时{{m}}分{{s}}秒</div>
+            <div style="margin-bottom:14px;font-size:20px">恭喜你!&nbsp;该问题竞拍成功!</div>
+            <div style="font-size:14px;">请在约定的时间范围内提交回答,剩余{{d}}天{{h}}小时{{m}}分{{s}}秒</div>
           </div>
           <div class="qd-edit" v-show="qdeditShow">
             <div v-show="editors">
@@ -149,7 +164,11 @@
                 :file-list="quefileListAns"
                 :data="{questionId:this.qlList.que.question.id}"
               >
-                <i slot="default" class="el-icon-picture" title="添加图片附件"></i>
+                <el-button size="small" type="primary" class="upImgBut">
+                  上传答案图片
+                  <i class="el-icon-picture"></i>
+                </el-button>
+                <!-- <i slot="default" class="el-icon-picture" title="添加图片附件"></i> -->
               </el-upload>
               <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
                 <img width="100%" :src="dialogImageUrl" alt />
@@ -238,7 +257,10 @@
             :on-remove="handleRemove"
             :file-list="quefileList"
           >
-            <i slot="default" class="el-icon-picture" title="添加图片"></i>
+            <el-button size="small" type="primary" class="upImgBut">
+              上传问题图片
+              <i class="el-icon-picture"></i>
+            </el-button>
           </el-upload>
           <el-dialog :visible.sync="queVisible" :modal-append-to-body="false">
             <img width="100%" :src="queImageUrl" alt />
@@ -393,11 +415,11 @@ export default {
   props: {
     value: {
       type: String,
-      default: "写回答...",
+      default: "",
     },
     values: {
       type: String,
-      default: "写回答...",
+      default: "",
     },
     disabled: {
       type: Boolean,
@@ -419,6 +441,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
+        placeholder: "输入答案的详细内容",
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 300,
         plugins: this.plugins,
@@ -462,6 +485,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
+        placeholder: "输入问题的详细描述",
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 300,
         plugins: this.plugins,
@@ -625,6 +649,8 @@ export default {
       qbLenght: 0,
       newInfos: false,
       newInfo: false,
+      // 已选择竞拍者之后显示文字
+      selectbname: false,
     };
   },
   created: function () {
@@ -764,6 +790,31 @@ export default {
 
             _this.qlListShow = true;
             _this.nullLoginShow = false;
+
+            let date = new Date();
+            let now = date.getTime();
+            _this.$set(_this.qlList.que, "Times", "");
+            _this.$set(_this.qlList.que, "images", []);
+            if (_this.qlList.que.question.img != "") {
+              var a = _this.qlList.que.question.img.split("|");
+              for (var j = 0; j < a.length; j++) {
+                _this.qlList.que.images.push({ url: a[j] });
+              }
+            }
+            let leftTime =
+              now - new Date(_this.qlList.que.question.createTime).getTime();
+            let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+            let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+            let m = Math.floor((leftTime / 1000 / 60) % 60);
+            if (d == 0 && h > 0 ) {
+              _this.qlList.que.Times = "在" + h + "小时前发布了这个问题";
+            } else if(h <= 0 && d <= 0){
+              _this.qlList.que.Times = "刚刚发布的问题";
+            }else {
+              _this.qlList.que.Times =
+                "在" + d + "天" + h + "小时前发布了这个问题";
+            }
+
             if (localStorage.token) {
               for (var i = 0; i < _this.qlList.als.length; i++) {
                 _this.$set(_this.qlList.als[i], "images", []);
@@ -816,6 +867,7 @@ export default {
                 _this.editS = true;
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
+                _this.selectbname = true;
                 console.log("提问者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -833,6 +885,7 @@ export default {
                 _this.evaluateS = true;
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
+                _this.selectbname = true;
                 console.log("提问者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -849,6 +902,7 @@ export default {
                 _this.replyShadeShow = false;
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
+                _this.selectbname = true;
                 console.log("提问者等于5");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
@@ -866,7 +920,7 @@ export default {
                 _this.replyShadeShow = false;
                 _this.serviceS = true;
                 _this.qdConMyBls = true;
-
+                _this.selectbname = true;
                 console.log("提问者大于6");
               }
 
@@ -998,7 +1052,7 @@ export default {
               if (res.data.status == 1) {
                 _this.auctionbutton = false;
                 _this.qdConMyBls = true;
-
+                _this.QuDe();
                 _this.$message({
                   message: "发布成功,竞拍者可以开始答题。",
                   type: "success",
@@ -1236,7 +1290,7 @@ export default {
     submit() {
       const _this = this;
       // 如果这个答案保存过就把ID和CreateBy赋值如果是第一次就不赋值
-      if (this.myValue == "写回答...") {
+      if (this.myValue == "") {
         _this.$message({
           message: "请填写答案。",
           type: "warning",
@@ -1264,7 +1318,7 @@ export default {
           })
           .then(function (res) {
             if (res.data.status == 1) {
-              _this.myValue = "写回答...";
+              _this.myValue = "";
               _this.QuDe();
               _this.$message({
                 message: "保存成功",
@@ -1555,7 +1609,7 @@ export default {
                 _this.$router.go(0);
               } else {
                 _this.$message({
-                  message: "发布失败",
+                  message: "请确认填写相关内容",
                   type: "error",
                 });
               }
@@ -1647,7 +1701,7 @@ export default {
   },
   beforeRouteLeave: function (to, from, next) {
     next(false);
-    if (this.value != "写回答..." && this.qdeditShow) {
+    if (this.value != "" && this.qdeditShow) {
       this.$confirm("离开本页面?请注意保存您的数据.", "CourseWhale", {
         distinguishCancelAndClose: true,
         confirmButtonText: "确定",

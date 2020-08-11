@@ -126,15 +126,16 @@
     color: #fff;
     border-radius: 2px;
     font-size: 12px;
-    padding: 0px 4px;
+    padding: 0px 9px;
     margin-right: 10px;
 }
 .qlBodyConImg {
     
 }
 .qlBodyConImg img {
-    width: 236px;
-    height: 106px;
+    width: 240px;
+    margin-right: 20px;
+    margin-bottom: 20px;
 }
 .qlBodyImg img {
     vertical-align: middle;
@@ -170,17 +171,7 @@
 .qlBodyMeiConRightTable:hover {
     background: #4cc78e;
 }
-.qdEditanName {
-    float: left;
-    width: 530px;
-    color: #cecece;
-}
-.qdEditanTime {
-    float: right;
-    width: 530px;
-    text-align: right;
-    color: #cecece;
-}
+
 .pageturning {
     text-align: center;
     font-size: 40px;

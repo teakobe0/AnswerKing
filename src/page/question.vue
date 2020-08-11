@@ -11,12 +11,7 @@
               Coursewhale课程鲸灵为全球学子打造的社交问答平台，
               <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强劲的学习动力。
             </p>
-            <el-input
-              v-model="topInput"
-              @change="topInputs"
-              clearable
-              style="width:700px"
-            ></el-input>
+            <el-input v-model="topInput" @change="topInputs" clearable style="width:700px"></el-input>
           </div>
           <div class="qltconright">
             <img src="../assets/问答1.png" alt />
@@ -40,13 +35,12 @@
                 <h4>
                   <router-link :to="'/questionDetails/'+item.question.id">{{item.question.title}}</router-link>
                 </h4>
+                <div class="qlBodyConImg">
+                  <img v-for="items in item.question.images" :src="items.url" alt />
+                </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
-                  
                   {{item.qname}}
-                  
-
-                  
                   <span>{{item.Times}}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
@@ -71,13 +65,12 @@
                 <h4>
                   <router-link :to="'/questionDetails/'+item.que.id">{{item.que.title}}</router-link>
                 </h4>
-                <div class="qlBodyConImg" >
-                    <img v-for="items in item.que.images" :src="items.url" alt="">
-                  </div>
+                <div class="qlBodyConImg">
+                  <img v-for="items in item.que.images" :src="items.url" alt />
+                </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
                   {{item.qname}}
-                  
                   <span>{{item.Times}}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
@@ -130,7 +123,10 @@
             :on-remove="handleRemove"
             :file-list="fileList"
           >
-          <el-button size="small" type="primary" class="upImgBut">上传问题图片 <i class="el-icon-picture"></i></el-button>
+            <el-button size="small" type="primary" class="upImgBut">
+              上传问题图片
+              <i class="el-icon-picture"></i>
+            </el-button>
             <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
           </el-upload>
           <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
@@ -146,7 +142,7 @@
             ></el-input>-->
 
             <!-- 富文本 -->
-            <editor id="tinymce" v-model="myValue" :init="init" ></editor>
+            <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
           <div style="overflow: hidden;">
             <div style="float:left;">
@@ -508,11 +504,18 @@ export default {
               for (let i = 0; i < res.data.data.length; i++) {
                 _this.$set(myQlList[i], "Times", "");
                 let leftTime =
-                  new Date(myQlList[i].que.endTime).getTime() - now;
+                  now - new Date(myQlList[i].que.createTime).getTime();
                 let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
-                myQlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+                if (d == 0 && h > 0) {
+                  myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                } else if (h <= 0 && d <= 0) {
+                  myQlList[i].Times = "刚刚发布的问题";
+                } else {
+                  myQlList[i].Times =
+                    "在" + d + "天" + h + "个小时前发布了这个问题";
+                }
                 _this.myQlList.unshift(myQlList[i]);
               }
             }
@@ -546,6 +549,7 @@ export default {
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
                     pagesize: _this.pagesizes,
+                    name: _this.topInput,
                   },
                   xhrFields: {
                     withCredentials: true,
@@ -563,12 +567,26 @@ export default {
                     let now = date.getTime();
                     for (var i = 0; i < res.data.data.data.length; i++) {
                       _this.$set(a[i], "Times", "");
-                      let leftTime = new Date(a[i].que.endTime).getTime() - now;
+                      _this.$set(a[i].que, "images", []);
+                      if (a[i].que.img != "") {
+                        var b = a[i].que.img.split("|");
+                        for (var j = 0; j < b.length; j++) {
+                          a[i].que.images.push({ url: b[j] });
+                        }
+                      }
+                      let leftTime =
+                        now - new Date(a[i].que.createTime).getTime();
                       let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                       let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                       let m = Math.floor((leftTime / 1000 / 60) % 60);
-                      _this.myQlList[i].Times =
-                        "还剩" + d + "天" + h + "时" + m + "分";
+                      if (d == 0 && h > 0) {
+                        a[i].Times = "在" + h + "个小时前发布了这个问题";
+                      } else if (h <= 0 && d <= 0) {
+                        a[i].Times = "刚刚发布的问题";
+                      } else {
+                        a[i].Times =
+                          "在" + d + "天" + h + "个小时前发布了这个问题";
+                      }
                       _this.myQlList.push(a[i]);
                     }
                   }
@@ -586,6 +604,7 @@ export default {
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
                     pagesize: _this.pagesizes,
+                    name: _this.topInput,
                   },
                   xhrFields: {
                     withCredentials: true,
@@ -594,8 +613,33 @@ export default {
                 .then(function (res) {
                   if (res.data.status == 1) {
                     if (res.data.data.data.length != 0) {
-                      for (var i = 0; i < res.data.data.data.length; i++) {
-                        _this.qlList.push(res.data.data.data[i]);
+                      let date = new Date();
+                      let now = date.getTime();
+                      let a = [];
+                      a = res.data.data.data;
+                      for (var i = 0; i < a.length; i++) {
+                        _this.$set(a[i].question, "images", []);
+                        _this.$set(a[i], "Times", "");
+                        if (a[i].question.img != "") {
+                          var b = a[i].question.img.split("|");
+                          for (var j = 0; j < b.length; j++) {
+                            a[i].question.images.push({ url: b[j] });
+                          }
+                        }
+                        let leftTime =
+                          now - new Date(a[i].question.createTime).getTime();
+                        let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                        let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                        let m = Math.floor((leftTime / 1000 / 60) % 60);
+                        if (d == 0 && h > 0) {
+                          a[i].Times = "在" + h + "个小时前发布了这个问题";
+                        } else if (h <= 0 && d <= 0) {
+                          a[i].Times = "刚刚发布的问题";
+                        } else {
+                          a[i].Times =
+                            "在" + d + "天" + h + "个小时前发布了这个问题";
+                        }
+                        _this.qlList.push(a[i]);
                       }
                     }
                   }
@@ -613,6 +657,7 @@ export default {
                     name: _this.topInput,
                     pagenum: ++_this.pagenums,
                     pagesize: _this.pagesizes,
+                    name: _this.topInput,
                   },
                   xhrFields: {
                     withCredentials: true,
@@ -653,9 +698,6 @@ export default {
                       }
                       _this.myQlList.push(a[i]);
                     }
-                    console.log(a);
-
-                    console.log(_this.myQlList);
                   }
                 })
                 .catch(function (error) {
@@ -722,12 +764,26 @@ export default {
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.qlList[i], "Times", "");
               _this.$set(_this.qlList[i], "myType", "");
+              _this.$set(_this.qlList[i].question, "images", []);
+              if (_this.qlList[i].question.img != "") {
+                var a = _this.qlList[i].question.img.split("|");
+                for (var j = 0; j < a.length; j++) {
+                  _this.qlList[i].question.images.push({ url: a[j] });
+                }
+              }
               let leftTime =
-                new Date(_this.qlList[i].question.endTime).getTime() - now;
+                now - new Date(_this.qlList[i].question.createTime).getTime();
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
-              _this.qlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+              if (d == 0 && h > 0) {
+                _this.qlList[i].Times = "在" + h + "个小时前发布了这个问题";
+              } else if (h <= 0 && d <= 0) {
+                _this.qlList[i].Times = "刚刚发布的问题";
+              } else {
+                _this.qlList[i].Times =
+                  "在" + d + "天" + h + "个小时前发布了这个问题";
+              }
             }
           }
         })
@@ -767,20 +823,26 @@ export default {
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.myQlList[i], "Times", "");
               _this.$set(_this.myQlList[i].que, "images", []);
-              if (_this.myQlList[i].que.img) {
-                  var a = _this.myQlList[i].que.img.split("|");
-                  for (var j = 0; j < a.length; j++) {
-                    _this.myQlList[i].que.images.push({ url: a[j] });
-                  }
+              if (_this.myQlList[i].que.img != "") {
+                var a = _this.myQlList[i].que.img.split("|");
+                for (var j = 0; j < a.length; j++) {
+                  _this.myQlList[i].que.images.push({ url: a[j] });
                 }
+              }
               let leftTime =
-                new Date(_this.myQlList[i].que.endTime).getTime() - now;
+                now - new Date(_this.myQlList[i].que.createTime).getTime();
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
-              _this.myQlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+              if (d == 0 && h > 0) {
+                _this.myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+              } else if (h <= 0 && d <= 0) {
+                _this.myQlList[i].Times = "刚刚发布的问题";
+              } else {
+                _this.myQlList[i].Times =
+                  "在" + d + "天" + h + "个小时前发布了这个问题";
+              }
             }
-            console.log(_this.myQlList)
           }
         })
         .catch(function (error) {
@@ -962,6 +1024,7 @@ export default {
                 _this.QuestionsQuiz.Img = "";
                 _this.myValue = "";
                 _this.fileList = [];
+                _this.$refs[QuestionsQuiz].resetFields();
                 _this.qlShade = !_this.qlShade;
                 _this.myquizList();
                 _this.$message({
@@ -970,7 +1033,7 @@ export default {
                 });
               } else {
                 _this.$message({
-                  message: "请填写",
+                  message: "请检查相关内容是否填写",
                   type: "error",
                 });
               }
@@ -1070,13 +1133,26 @@ export default {
               let now = date.getTime();
               for (var i = 0; i < res.data.data.data.length; i++) {
                 _this.$set(_this.myQlList[i], "Times", "");
+                _this.$set(_this.myQlList[i].que, "images", []);
+                if (_this.myQlList[i].que.img != "") {
+                  var a = _this.myQlList[i].que.img.split("|");
+                  for (var j = 0; j < a.length; j++) {
+                    _this.myQlList[i].que.images.push({ url: a[j] });
+                  }
+                }
                 let leftTime =
-                  new Date(_this.myQlList[i].que.endTime).getTime() - now;
+                  now - new Date(_this.myQlList[i].que.createTime).getTime();
                 let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
-                _this.myQlList[i].Times =
-                  "还剩" + d + "天" + h + "时" + m + "分";
+                if (d == 0 && h > 0) {
+                  _this.myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                } else if (h <= 0 && d <= 0) {
+                  _this.myQlList[i].Times = "刚刚发布的问题";
+                } else {
+                  _this.myQlList[i].Times =
+                    "在" + d + "天" + h + "个小时前发布了这个问题";
+                }
               }
             }
           })
@@ -1107,12 +1183,26 @@ export default {
               for (var i = 0; i < res.data.data.data.length; i++) {
                 _this.$set(_this.qlList[i], "Times", "");
                 _this.$set(_this.qlList[i], "myType", "");
+                _this.$set(_this.qlList[i].question, "images", []);
+                if (_this.qlList[i].question.img != "") {
+                  var a = _this.qlList[i].question.img.split("|");
+                  for (var j = 0; j < a.length; j++) {
+                    _this.qlList[i].question.images.push({ url: a[j] });
+                  }
+                }
                 let leftTime =
-                  new Date(_this.qlList[i].question.endTime).getTime() - now;
+                  now - new Date(_this.qlList[i].question.createTime).getTime();
                 let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
-                _this.qlList[i].Times = "还剩" + d + "天" + h + "时" + m + "分";
+                if (d == 0 && h > 0) {
+                  _this.qlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                } else if (h <= 0 && d <= 0) {
+                  _this.qlList[i].Times = "刚刚发布的问题";
+                } else {
+                  _this.qlList[i].Times =
+                    "在" + d + "天" + h + "个小时前发布了这个问题";
+                }
               }
             }
           })
@@ -1203,15 +1293,31 @@ export default {
               a = res.data.data.data;
               let date = new Date();
               let now = date.getTime();
-              for (var i = 0; i < res.data.data.data.length; i++) {
+              for (var i = 0; i < a.length; i++) {
                 _this.$set(a[i], "Times", "");
-                let leftTime = new Date(a[i].que.endTime).getTime() - now;
+                _this.$set(a[i].que, "images", []);
+                if (a[i].que.img != "") {
+                  var b = a[i].que.img.split("|");
+                  for (var j = 0; j < b.length; j++) {
+                    a[i].que.images.push({ url: b[j] });
+                  }
+                }
+                let leftTime = now - new Date(a[i].que.createTime).getTime();
                 let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
-                _this.myQlList[i].Times =
-                  "还剩" + d + "天" + h + "时" + m + "分";
+                if (d == 0 && h > 0) {
+                  a[i].Times = "在" + h + "个小时前发布了这个问题";
+                } else if (h <= 0 && d <= 0) {
+                  a[i].Times = "刚刚发布的问题";
+                } else {
+                  a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
+                }
                 _this.myQlList.push(a[i]);
+                console.log(a[i]);
+                console.log(d);
+                console.log(h);
+                console.log(m);
               }
             }
           })
@@ -1236,9 +1342,34 @@ export default {
           .then(function (res) {
             if (res.data.status == 1) {
               if (res.data.data.data.length != 0) {
-                for (var i = 0; i < res.data.data.data.length; i++) {
-                  _this.qlList.push(res.data.data.data[i]);
+                let date = new Date();
+                let now = date.getTime();
+                let a = [];
+                a = res.data.data.data;
+                for (var i = 0; i < a.length; i++) {
+                  _this.$set(a[i].question, "images", []);
+                  _this.$set(a[i], "Times", "");
+                  if (a[i].question.img != "") {
+                    var b = a[i].question.img.split("|");
+                    for (var j = 0; j < b.length; j++) {
+                      a[i].question.images.push({ url: b[j] });
+                    }
+                  }
+                  let leftTime =
+                    now - new Date(a[i].question.createTime).getTime();
+                  let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                  let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                  let m = Math.floor((leftTime / 1000 / 60) % 60);
+                  if (d == 0 && h > 0) {
+                    a[i].Times = "在" + h + "个小时前发布了这个问题";
+                  } else if (h <= 0 && d <= 0) {
+                    a[i].Times = "刚刚发布的问题";
+                  } else {
+                    a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
+                  }
+                  _this.qlList.push(a[i]);
                 }
+                console.log(_this.qlList);
               }
             }
           })
