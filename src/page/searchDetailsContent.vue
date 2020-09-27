@@ -540,7 +540,7 @@
               <!-- 答案图片组件 -->
               <answer></answer>
             </div>
-            <div class="advertising">
+            <!-- <div class="advertising">
               <div>
                 <p class="advertising-p1">{{$t('content.con18')}}</p>
                 <p class="advertising-p2">
@@ -549,7 +549,7 @@
                 </p>
               </div>
               <img src="../assets/erweima.jpg" alt />
-            </div>
+            </div> -->
             <!-- 评论组件 -->
             <reviews></reviews>
           </div>

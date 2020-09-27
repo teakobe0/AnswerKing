@@ -135,7 +135,7 @@
       <div>
         <router-view/>
       </div>
-      <div class="ClassesAdvertising">
+      <!-- <div class="ClassesAdvertising">
         <div>
           <p class="advertising-p1">{{$t('university.con6')}}</p>
           <p class="advertising-p2">
@@ -143,7 +143,7 @@
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div>
+      </div> -->
     </div>
     <homeFooter></homeFooter>
   </div>

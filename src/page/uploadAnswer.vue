@@ -316,6 +316,7 @@
   height: 50px;
   border-bottom: 1px solid #f0f0f0;
   margin-bottom: 20px;
+  position: relative;
 }
 .up-answer-week .el-input__inner {
   border: none !important;
@@ -498,7 +499,7 @@
 }
 .showAnswer-week {
   margin-top: 10px;
-  cursor:pointer;
+  cursor: pointer;
   background: #fff;
   padding: 0 20px;
   line-height: 40px;
@@ -513,12 +514,16 @@
   color: #ffcd1f;
 }
 .showAnswer-week span {
-  color:#409efe;
+  color: #409efe;
 }
 .showAnswer-week i {
   float: right;
   margin-top: 12px;
-  color:#409efe;
+  color: #409efe;
+}
+.Batchupload {
+  display: inline-block;
+  margin-right: 10px;
 }
 </style>
 
@@ -733,9 +738,42 @@
                         </el-select>
                       </el-form-item>
                     </div>
+
                     <div class="up-answer-fn">
+                      <i style="color: rgb(156, 156, 156);font-size: 12px;margin-right:10px">批量上传可以一次性上传≤10张答案图片,并且自动保存</i>
+                      <el-upload
+                        class="Batchupload"
+                        ref="addAnswerUpload"
+                        :action="imgSite"
+                        :headers="myHeaders"
+                        :on-success="BatchanswerHandleSucceed"
+                        :on-remove="BatchanswerHandleRemove"
+                        :on-change="BatchanswerHandleChange"
+                        :before-upload="BatchanswerHandlebeforeupload"
+                        :file-list="answerfileList"
+                        :auto-upload="true"
+                        :limit="10"
+                        :data="{classInfoId:this.classInfoId}"
+                        list-type="picture"
+                        multiple
+                        :disabled="Batchupload"
+                        :show-file-list="false"
+                      >
+                        <el-button
+                          slot="trigger"
+                          size="small"
+                          type="primary"
+                          icon="el-icon-picture"
+                          :disabled="Batchupload"
+                          title="批量上传可以一次性上传多张答案图片,最多上传10张,当选择完图片之后自动保存."
+                        >批量上传</el-button>
+                      </el-upload>
                       <el-button size="small" @click="topicCancel">{{$t('upload.cancel')}}</el-button>
-                      <el-button type="primary" size="small" @click="stepupload('upload')">{{$t('upload.topic')}}</el-button>
+                      <el-button
+                        type="primary"
+                        size="small"
+                        @click="stepupload('upload')"
+                      >{{$t('upload.topic')}}</el-button>
                     </div>
                   </div>
 
@@ -788,12 +826,14 @@
                         :limit="uploadNum"
                         :data="{classInfoId:this.classInfoId}"
                         list-type="picture"
+                        :disabled="answerupload"
                       >
                         <el-button
                           slot="trigger"
                           size="small"
                           type="primary"
                           icon="el-icon-picture"
+                          :disabled="answerupload"
                         >{{$t('upload.picture2')}}</el-button>
                         <i
                           slot="tip"
@@ -822,10 +862,7 @@
                 <div class="share-box">
                   <p class="share-title">{{$t('upload.school6')}}</p>
                   <el-form-item prop="name">
-                    <el-input
-                      v-model="ruleForm.name"
-                      :placeholder="$t('upload.school7')"
-                    ></el-input>
+                    <el-input v-model="ruleForm.name" :placeholder="$t('upload.school7')"></el-input>
                   </el-form-item>
                 </div>
                 <div class="nextcenter">
@@ -987,6 +1024,7 @@
                           ></el-option>
                         </el-select>
                       </div>
+
                       <div class="SA-edit">
                         <i
                           class="el-icon-circle-check edits"
@@ -994,7 +1032,11 @@
                           :title="$t('upload.topic')"
                           @click="editstepupload(items)"
                         ></i>
-                        <i class="el-icon-edit edits" @click="editAnswerShow(items)" :title="$t('upload.Edit')"></i>
+                        <i
+                          class="el-icon-edit edits"
+                          @click="editAnswerShow(items)"
+                          :title="$t('upload.Edit')"
+                        ></i>
                         <i
                           class="el-icon-delete delete"
                           @click="editAnswerDelete(items)"
@@ -1004,8 +1046,13 @@
                     </div>
                     <div v-show="active == 2 && items.show == false">
                       <div class="SA-topic">
-                        <span style="color:#ccc;margin-bottom:5px;display: block;">{{$t('upload.title')}}</span>
-                        <p v-show="items.name == ''" style="color:#2a2a2a;">[{{$t('upload.nothave')}}]</p>
+                        <span
+                          style="color:#ccc;margin-bottom:5px;display: block;"
+                        >{{$t('upload.title')}}</span>
+                        <p
+                          v-show="items.name == ''"
+                          style="color:#2a2a2a;"
+                        >[{{$t('upload.nothave')}}]</p>
                         <p v-show="items.name != ''">{{items.name}}</p>
                         <img
                           :src="items.topicImg"
@@ -1016,8 +1063,13 @@
                       </div>
 
                       <div class="SA-answer">
-                        <span style="color:#ccc;margin-bottom:5px;display: block;">{{$t('upload.answer')}}</span>
-                        <p v-show="items.contents == ''" style="color:#2a2a2a;">[{{$t('upload.nothave')}}]</p>
+                        <span
+                          style="color:#ccc;margin-bottom:5px;display: block;"
+                        >{{$t('upload.answer')}}</span>
+                        <p
+                          v-show="items.contents == ''"
+                          style="color:#2a2a2a;"
+                        >[{{$t('upload.nothave')}}]</p>
                         <p v-show="items.contents != ''">{{items.contents}}</p>
                         <img
                           :src="items.answerImg"
@@ -1148,7 +1200,7 @@ export default {
   components: {
     homeNav,
     homeFooter,
-    UAQ
+    UAQ,
   },
   data() {
     return {
@@ -1160,49 +1212,49 @@ export default {
       // 选择课程下一步
       seletchourse: {
         name: "",
-        UniversityId: 0
+        UniversityId: 0,
       },
       // 标题Model
       orderInfo: {
-        name: "XXX的题库集"
+        name: "XXX的题库集",
       },
       // 标题的验证规则
       orderInforules: {
-        name: [{ required: true, message: "请填写标题名称", trigger: "blur" }]
+        name: [{ required: true, message: "请填写标题名称", trigger: "blur" }],
       },
       // 添加课程model
       addchourses: {
         name: "",
-        UniversityId: 0
+        UniversityId: 0,
       },
       // 添加课程的验证规则
       chourserules: {
-        name: [{ required: true, message: "请填写课程名称", trigger: "blur" }]
+        name: [{ required: true, message: "请填写课程名称", trigger: "blur" }],
       },
       // 添加学校Model
       ruleForm: {
-        name: ""
+        name: "",
       },
       // 添加学校的验证规则
       addrules: {
-        name: [{ required: true, message: "请填写学校名称", trigger: "blur" }]
+        name: [{ required: true, message: "请填写学校名称", trigger: "blur" }],
       },
       // 修改学校model
       editruleForm: {
-        name: ""
+        name: "",
       },
       // 修改学校的验证规则
       ediaddtrules: {
-        name: [{ required: true, message: "请填写学校名称", trigger: "blur" }]
+        name: [{ required: true, message: "请填写学校名称", trigger: "blur" }],
       },
       // 修改课程model
       editchourses: {
         name: "",
-        school: ""
+        school: "",
       },
       // 修改课程的验证规则
       editchourserules: {
-        name: [{ required: true, message: "请填写课程名称", trigger: "blur" }]
+        name: [{ required: true, message: "请填写课程名称", trigger: "blur" }],
       },
       // 表单容器
       upload: {
@@ -1215,14 +1267,14 @@ export default {
         topic: "",
         topicUrl: "",
         answer: "",
-        answerUrl: ""
+        answerUrl: "",
       },
       rules: {
         school: [
-          { required: true, message: "请填写学校名称", trigger: "change" }
+          { required: true, message: "请填写学校名称", trigger: "change" },
         ],
         course: [
-          { required: true, message: "请填写课程名称", trigger: "change" }
+          { required: true, message: "请填写课程名称", trigger: "change" },
         ],
         type: [{ required: true, message: "请选择类型", trigger: "change" }],
         week: [{ required: true, message: "请选择周", trigger: "change" }],
@@ -1230,8 +1282,8 @@ export default {
         topicUrl: [{ required: false, message: "请上传题目图片" }],
         answer: [{ required: false, message: "请输入答案", trigger: "blur" }],
         answerUrl: [
-          { required: false, message: "请上传答案图片", trigger: "change" }
-        ]
+          { required: false, message: "请上传答案图片", trigger: "change" },
+        ],
       },
       // 编辑表单容器
       editupload: {
@@ -1244,14 +1296,14 @@ export default {
         topic: "",
         topicUrl: "",
         answer: "",
-        answerUrl: ""
+        answerUrl: "",
       },
       editrules: {
         school: [
-          { required: true, message: "请填写学校名称", trigger: "change" }
+          { required: true, message: "请填写学校名称", trigger: "change" },
         ],
         course: [
-          { required: true, message: "请填写课程名称", trigger: "change" }
+          { required: true, message: "请填写课程名称", trigger: "change" },
         ],
         type: [{ required: true, message: "请选择类型", trigger: "change" }],
         week: [{ required: true, message: "请选择周", trigger: "change" }],
@@ -1259,8 +1311,8 @@ export default {
         topicUrl: [{ required: false, message: "请上传题目图片" }],
         answer: [{ required: false, message: "请输入答案", trigger: "blur" }],
         answerUrl: [
-          { required: true, message: "请上传答案图片", trigger: "change" }
-        ]
+          { required: true, message: "请上传答案图片", trigger: "change" },
+        ],
       },
       school: "",
       schooldisabled: true,
@@ -1269,23 +1321,23 @@ export default {
       type: "",
       typeoptions: [
         {
-          label: "作业(Assignment)"
+          label: "作业(Assignment)",
         },
         {
-          label: "测验(Quiz)"
+          label: "测验(Quiz)",
         },
         {
-          label: "考试(Exam)"
+          label: "考试(Exam)",
         },
         {
-          label: "讨论(Discussion)"
-        }
+          label: "讨论(Discussion)",
+        },
       ],
       week: "",
       weekoptions: [
         {
-          label:1
-        }
+          label: 1,
+        },
       ],
       // 选择学校和填写学校的显示隐藏
       upschool: true,
@@ -1308,7 +1360,7 @@ export default {
       answerFile: [],
       imgSite: this.URLport.serverPath + "/File/UploadImg",
       myHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       clientId: 0,
 
@@ -1324,11 +1376,15 @@ export default {
       // 跳转顶部和底部的显示隐藏
       topBottShow: false,
       afterData: [],
-      addTopicShow: true
+      addTopicShow: true,
+      // 批量上传禁用
+      Batchupload: false,
+      // 新建上传答案禁用
+      answerupload: false,
     };
   },
   beforeRouteUpdate(to, from, next) {},
-  created: function() {
+  created: function () {
     const _this = this;
 
     _this.gainpersonal();
@@ -1365,7 +1421,7 @@ export default {
       // "vue-i18n": "^8.17.6",
     },
     // 获取个人信息
-    gainpersonal: function() {
+    gainpersonal: function () {
       const _this = this;
       if (localStorage.getItem("token")) {
         _this
@@ -1374,22 +1430,22 @@ export default {
             url: `${_this.URLport.serverPath}/Client/GetClient`,
             async: false,
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             _this.clientId = res.data.data.id;
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else {
         _this.$message({
-          message: _this.$t('upload.u1'),
-          type: "error"
+          message: _this.$t("upload.u1"),
+          type: "error",
         });
         _this.$router.push({ path: "/login" });
       }
@@ -1423,8 +1479,8 @@ export default {
         _this.active = 1;
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
@@ -1433,7 +1489,7 @@ export default {
       const _this = this;
       if (localStorage.getItem("token")) {
         _this.ruleForm.name = _this.ruleForm.name.trim();
-        _this.$refs[ruleForm].validate(valid => {
+        _this.$refs[ruleForm].validate((valid) => {
           if (valid) {
             _this
               .axios({
@@ -1442,30 +1498,30 @@ export default {
                 async: false,
                 data: _this.ruleForm,
                 xhrFields: {
-                  withCredentials: true
+                  withCredentials: true,
                 },
                 headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
               })
-              .then(function(res) {
+              .then(function (res) {
                 if (res.data.status == 1) {
                   _this.upload.school = res.data.data.name;
                   _this.upload.schoolId = res.data.data.id;
                   _this.active = 1;
                   _this.upcourse = false;
                   _this.$message({
-                    message: _this.$t('upload.u3'),
-                    type: "success"
+                    message: _this.$t("upload.u3"),
+                    type: "success",
                   });
                 } else {
                   _this.$message({
                     message: res.data.msg,
-                    type: "error"
+                    type: "error",
                   });
                 }
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 console.log(error);
               });
           } else {
@@ -1475,8 +1531,8 @@ export default {
         });
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
@@ -1496,13 +1552,13 @@ export default {
             async: false,
             data: seletchourse,
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-          .then(function(res) {
+          .then(function (res) {
             if (res.data.status == 1) {
               _this.upload.course = res.data.data.clas.name;
               _this.active = 2;
@@ -1512,13 +1568,13 @@ export default {
               _this.cacheAnswerId(_this.classInfoId);
             }
           })
-          .catch(function(error) {
+          .catch(function (error) {
             console.log(error);
           });
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
@@ -1528,7 +1584,7 @@ export default {
       if (localStorage.getItem("token")) {
         _this.addchourses.name = _this.addchourses.name.trim();
         _this.addchourses.UniversityId = _this.upload.schoolId;
-        _this.$refs[addchourses].validate(valid => {
+        _this.$refs[addchourses].validate((valid) => {
           if (valid) {
             _this
               .axios({
@@ -1537,13 +1593,13 @@ export default {
                 async: false,
                 data: _this.addchourses,
                 xhrFields: {
-                  withCredentials: true
+                  withCredentials: true,
                 },
                 headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
+                  Authorization: `Bearer ${localStorage.getItem("token")}`,
+                },
               })
-              .then(function(res) {
+              .then(function (res) {
                 console.log(res);
                 if (res.data.status == 1) {
                   _this.upload.course = res.data.data.clas.name;
@@ -1554,17 +1610,17 @@ export default {
                   _this.serchingAnswer(_this.classInfoId);
                   _this.cacheAnswerId(_this.classInfoId);
                   _this.$message({
-                    message: _this.$t('upload.u4'),
-                    type: "success"
+                    message: _this.$t("upload.u4"),
+                    type: "success",
                   });
                 } else {
                   _this.$message({
                     message: res.data.msg,
-                    type: "error"
+                    type: "error",
                   });
                 }
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 console.log(error);
               });
           } else {
@@ -1574,14 +1630,15 @@ export default {
         });
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
     // 立即上传
     stepupload(upload) {
       const _this = this;
+
       if (localStorage.getItem("token")) {
         var formData = {};
         formData.Name = _this.upload.topic;
@@ -1596,11 +1653,11 @@ export default {
         _this.formData = formData;
         if (formData.Url == "" && formData.Contents == "") {
           _this.$message({
-            message: _this.$t('upload.u5'),
-            type: "error"
+            message: _this.$t("upload.u5"),
+            type: "error",
           });
         } else {
-          _this.$refs[upload].validate(valid => {
+          _this.$refs[upload].validate((valid) => {
             if (valid) {
               _this
                 .axios({
@@ -1609,13 +1666,13 @@ export default {
                   async: false,
                   data: _this.formData,
                   xhrFields: {
-                    withCredentials: true
+                    withCredentials: true,
                   },
                   headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`
-                  }
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
                 })
-                .then(function(res) {
+                .then(function (res) {
                   if (res.data.status == 1) {
                     _this.upload.Name = "";
                     _this.upload.Contents = "";
@@ -1627,18 +1684,19 @@ export default {
                     _this.upload.answerUrl = "";
                     _this.upload.answer = "";
                     _this.upAnswerShow = false;
+                    _this.Batchupload = false;
                     _this.$message({
-                      message: _this.$t('upload.u6'),
-                      type: "success"
+                      message: _this.$t("upload.u6"),
+                      type: "success",
                     });
                   } else {
                     _this.$message({
                       message: res.data.msg,
-                      type: "error"
+                      type: "error",
                     });
                   }
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(error);
                 });
             } else {
@@ -1648,8 +1706,8 @@ export default {
         }
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
@@ -1663,13 +1721,13 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContent/Week`,
           async: false,
           params: {
-            classInfoId: classInfoId
+            classInfoId: classInfoId,
           },
           xhrFields: {
-            withCredentials: true
-          }
+            withCredentials: true,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             // for (let i = 2; i <= res.data.data.length + 1; i++) {
             //   const obj = {};
@@ -1684,10 +1742,10 @@ export default {
             var b = _this.weekoptions.length;
             var a = _this.weekoptions[b - 1].label;
             _this.weekoptions.push({ label: a + 1 });
-            console.log(_this.weekoptions)
+            console.log(_this.weekoptions);
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -1701,16 +1759,16 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfoContent/ClassInfoContents`,
           async: false,
           params: {
-            classInfoId: classInfoId
+            classInfoId: classInfoId,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             var answerArray = [];
             answerArray = res.data.data;
@@ -1739,7 +1797,7 @@ export default {
                   answerArray[i].list[j].topicCacheUrl =
                     "/" + a[3] + "/" + a[4] + "/" + a[5];
                   answerArray[i].list[j].topicUrlList.push({
-                    url: answerArray[i].list[j].nameUrl
+                    url: answerArray[i].list[j].nameUrl,
                   });
                 }
                 if (
@@ -1753,18 +1811,18 @@ export default {
                   answerArray[i].list[j].answerCacheUrl =
                     "/" + b[3] + "/" + b[4] + "/" + b[5];
                   answerArray[i].list[j].answerUrlList.push({
-                    url: answerArray[i].list[j].url
+                    url: answerArray[i].list[j].url,
                   });
                 }
               }
             }
             answerArray[0].shows = true;
             _this.answerArray = answerArray;
-          }else {
-            _this.answerArray = []
+          } else {
+            _this.answerArray = [];
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -1775,10 +1833,10 @@ export default {
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$message.error(_this.$t('upload.u7'));
+        this.$message.error(_this.$t("upload.u7"));
       }
       if (!isLt2M) {
-        this.$message.error(_this.$t('upload.u8'));
+        this.$message.error(_this.$t("upload.u8"));
       }
       return isJPG && isLt2M;
     },
@@ -1800,30 +1858,154 @@ export default {
           async: false,
           params: {
             id: 0,
-            imgurl: nameurl
+            imgurl: nameurl,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.upload.topicUrl = "";
           } else {
             _this.$message({
-              message:_this.$t('upload.u9'),
-              type: "error"
+              message: _this.$t("upload.u9"),
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
+    // 批量上传
+    // 文件删除后
+    BatchanswerHandleRemove(res, file, fileList) {
+      const _this = this;
+      const a = _this.upload.answerUrl.split("/");
+      const url = "/" + a[3] + "/" + a[4] + "/" + a[5];
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/ClassInfoContent/RemoveImg`,
+          async: false,
+          params: {
+            id: 0,
+            imgurl: url,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.upload.answerUrl = "";
+          } else {
+            _this.$message({
+              message: _this.$t("upload.u9"),
+              type: "error",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 文件上传成功之后
+    BatchanswerHandleSucceed(res, file, fileList) {
+      const _this = this;
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
 
+      _this.upload.answerUrl = imgurl.slice(1);
+      console.log(imgurl.slice(1));
+      // _this.upload.answerUrl = res.file;
+
+      var formData = {};
+      formData.Name = _this.upload.topic;
+      formData.NameUrl = _this.upload.topicUrl;
+      formData.UniversityId = _this.upload.schoolId;
+      formData.Url = _this.upload.answerUrl;
+      formData.Contents = _this.upload.answer;
+      formData.ClassInfoId = _this.classInfoId;
+      formData.ClassId = _this.upload.courseId;
+      formData.ClassWeek = _this.upload.week;
+      formData.ClassWeekType = _this.upload.type;
+      _this.formData = formData;
+      if (formData.Url == "" && formData.Contents == "") {
+        _this.$message({
+          message: _this.$t("upload.u5"),
+          type: "error",
+        });
+      } else {
+        _this
+          .axios({
+            method: "post",
+            url: `${_this.URLport.serverPath}/ClassInfoContent/Add`,
+            async: false,
+            data: _this.formData,
+            xhrFields: {
+              withCredentials: true,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(function (res) {
+            if (res.data.status == 1) {
+              _this.upload.Name = "";
+              _this.upload.Contents = "";
+              _this.topicfileList = [];
+              _this.answerfileList = [];
+              _this.serchingAnswer(_this.classInfoId);
+              _this.upload.topic = "";
+              _this.upload.topicUrl = "";
+              _this.upload.answerUrl = "";
+              _this.upload.answer = "";
+              _this.upAnswerShow = false;
+              _this.answerupload = false;
+              _this.$message({
+                message: _this.$t("upload.u6"),
+                type: "success",
+              });
+            } else {
+              _this.$message({
+                message: res.data.msg,
+                type: "error",
+              });
+            }
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
+    },
+    // 文件上传之前
+    BatchanswerHandlebeforeupload(file) {
+      const _this = this;
+      _this.answerupload = true;
+      const isJPG = file.type === "image/jpeg" || file.type === "image/png";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+      if (!isJPG) {
+        this.$message.error(_this.$t("upload.u7"));
+      }
+      if (!isLt2M) {
+        this.$message.error(_this.$t("upload.u8"));
+      }
+      return isJPG && isLt2M;
+    },
+    // 文件状态有变化时
+    BatchanswerHandleChange(file) {
+      const _this = this;
+    },
     // 答案图片
     // 文件删除后
     answerHandleRemove(res, file, fileList) {
@@ -1837,44 +2019,51 @@ export default {
           async: false,
           params: {
             id: 0,
-            imgurl: url
+            imgurl: url,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.upload.answerUrl = "";
           } else {
             _this.$message({
-              message: _this.$t('upload.u9'),
-              type: "error"
+              message: _this.$t("upload.u9"),
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     // 文件上传成功之后
     answerHandleSucceed(res, file, fileList) {
       const _this = this;
-      _this.upload.answerUrl = res.file;
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
+
+      _this.upload.answerUrl = imgurl.slice(1);
+      // _this.upload.answerUrl = res.file;
     },
     // 文件上传之前
     answerHandlebeforeupload(file) {
       const _this = this;
+      _this.Batchupload = true;
       const isJPG = file.type === "image/jpeg" || file.type === "image/png";
       const isLt2M = file.size / 1024 / 1024 < 2;
       if (!isJPG) {
-        this.$message.error(_this.$t('upload.u7'));
+        this.$message.error(_this.$t("upload.u7"));
       }
       if (!isLt2M) {
-        this.$message.error(_this.$t('upload.u8'));
+        this.$message.error(_this.$t("upload.u8"));
       }
       return isJPG && isLt2M;
     },
@@ -1900,31 +2089,34 @@ export default {
                 url: `${_this.URLport.serverPath}/University/Universitys`,
                 async: false,
                 params: {
-                  name: valuestr
+                  name: valuestr,
                 },
                 xhrFields: {
-                  withCredentials: true
-                }
+                  withCredentials: true,
+                },
               })
-              .then(function(res) {
+              .then(function (res) {
                 console.log(res);
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
                       results.push({
                         value: res.data.data[i].name,
-                        type: _this.$t('upload.u10'),
-                        id: res.data.data[i].id
+                        type: _this.$t("upload.u10"),
+                        id: res.data.data[i].id,
                       });
                     }
                   }
                 } else {
-                  results.push({ value: _this.$t('schools.schools8'), type: null });
+                  results.push({
+                    value: _this.$t("schools.schools8"),
+                    type: null,
+                  });
                 }
 
                 cb(results);
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 console.log(error);
               });
           }
@@ -1934,7 +2126,7 @@ export default {
     // 选择学校下拉框其中一条学校触发
     SchoolHandleSelectauto(value) {
       const _this = this;
-      console.log(value)
+      console.log(value);
       _this.upload.schoolId = value.id;
       _this.upload.school = value.value;
       if (value.type != null) _this.schooldisabled = false;
@@ -1967,20 +2159,20 @@ export default {
                 async: false,
                 params: {
                   name: valuestr,
-                  universityId: _this.upload.schoolId
+                  universityId: _this.upload.schoolId,
                 },
                 xhrFields: {
-                  withCredentials: true
-                }
+                  withCredentials: true,
+                },
               })
-              .then(function(res) {
+              .then(function (res) {
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
                       results.push({
                         value: res.data.data[i].name,
-                        type: _this.$t('upload.u11'),
-                        id: res.data.data[i].id
+                        type: _this.$t("upload.u11"),
+                        id: res.data.data[i].id,
                       });
                     }
                   }
@@ -1990,7 +2182,7 @@ export default {
 
                 cb(results);
               })
-              .catch(function(error) {
+              .catch(function (error) {
                 console.log(error);
               });
           }
@@ -2020,13 +2212,14 @@ export default {
     },
     // 删除答案
     editAnswerDelete(item) {
-      console.log(item)
+      console.log(item);
       const _this = this;
-      _this.$confirm(_this.$t('upload.u12'), _this.$t('award.con16'), {
-        confirmButtonText: _this.$t('basic.con14'),
-        cancelButtonText: _this.$t('basic.con13'),
-        type: "warning"
-      })
+      _this
+        .$confirm(_this.$t("upload.u12"), _this.$t("award.con16"), {
+          confirmButtonText: _this.$t("basic.con14"),
+          cancelButtonText: _this.$t("basic.con13"),
+          type: "warning",
+        })
         .then(() => {
           _this
             .axios({
@@ -2034,25 +2227,25 @@ export default {
               url: `${_this.URLport.serverPath}/classInfoContent/Del`,
               async: false,
               params: {
-                id: item.id
+                id: item.id,
               },
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.serchingAnswer(item.classInfoId);
                 _this.$message({
-                  message: _this.$t('upload.u13'),
-                  type: "success"
+                  message: _this.$t("upload.u13"),
+                  type: "success",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         })
@@ -2065,7 +2258,7 @@ export default {
     },
     // 打开编辑答案内的上传
     editstepupload(item) {
-      console.log(item)
+      console.log(item);
       const _this = this;
       if (localStorage.getItem("token")) {
         var formData = {};
@@ -2084,8 +2277,8 @@ export default {
         _this.editformData = formData;
         if (formData.Url == "" && formData.Contents == "") {
           _this.$message({
-            message: _this.$t('upload.u5'),
-            type: "error"
+            message: _this.$t("upload.u5"),
+            type: "error",
           });
         } else {
           _this
@@ -2095,34 +2288,34 @@ export default {
               async: false,
               data: _this.editformData,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.serchingAnswer(_this.editformData.ClassInfoId);
                 _this.$message({
-                  message: _this.$t('upload.u14'),
-                  type: "success"
+                  message: _this.$t("upload.u14"),
+                  type: "success",
                 });
               } else {
                 _this.$message({
                   message: res.data.msg,
-                  type: "error"
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         }
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
-          type: "error"
+          message: _this.$t("upload.u2"),
+          type: "error",
         });
       }
     },
@@ -2137,31 +2330,31 @@ export default {
           async: false,
           data: _this.orderKong,
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.subtitle = !_this.subtitle;
             _this.$message({
-              message: _this.$t('upload.u15'),
-              type: "success"
+              message: _this.$t("upload.u15"),
+              type: "success",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     // 编辑题目图片
-    editTopicHandleSuccess(res, file, fileList, index,indexs) {
+    editTopicHandleSuccess(res, file, fileList, index, indexs) {
       const _this = this;
       _this.answerArray[index].list[indexs].topicCacheUrl = res.file;
     },
-    editTopicHandleRemove(file, fileList, idx, id, nameUrl,indexs) {
+    editTopicHandleRemove(file, fileList, idx, id, nameUrl, indexs) {
       const _this = this;
       const a = nameUrl.split("/");
       var nameUrls = "/" + a[3] + "/" + a[4] + "/" + a[5];
@@ -2175,27 +2368,27 @@ export default {
           async: false,
           params: {
             id: id,
-            imgurl: nameUrls
+            imgurl: nameUrls,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.answerArray[idx].list[indexs].topicCacheUrl = "";
             _this.answerArray[idx].list[indexs].topicImg = "";
           } else {
             _this.$message({
-              message: _this.$t('upload.u16'),
-              type: "error"
+              message: _this.$t("upload.u16"),
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2206,14 +2399,14 @@ export default {
       const _this = this;
     },
     // 编辑答案图片
-    editAnswerHandlesuccess(res, file, fileList, index,indexs) {
+    editAnswerHandlesuccess(res, file, fileList, index, indexs) {
       const _this = this;
-      console.log(res)
-      console.log(indexs)
+      console.log(res);
+      console.log(indexs);
       _this.answerArray[index].list[indexs].answerCacheUrl = res.file;
     },
     //
-    editAnswerHandleRemove(file, fileList, idx, id, url,indexs) {
+    editAnswerHandleRemove(file, fileList, idx, id, url, indexs) {
       const _this = this;
       const a = url.split("/");
       var answerUrl = "/" + a[3] + "/" + a[4] + "/" + a[5];
@@ -2227,27 +2420,27 @@ export default {
           async: false,
           params: {
             id: id,
-            imgurl: answerUrl
+            imgurl: answerUrl,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.answerArray[idx].list[indexs].answerCacheUrl = "";
             _this.answerArray[idx].list[indexs].answerImg = "";
           } else {
             _this.$message({
-              message: _this.$t('upload.u16'),
-              type: "error"
+              message: _this.$t("upload.u16"),
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2266,16 +2459,16 @@ export default {
           url: `${_this.URLport.serverPath}/ClassInfo/GetClassInfo`,
           async: false,
           params: {
-            id: id
+            id: id,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.orderInfo.name = res.data.data.cict.name;
             _this.orderKong = res.data.data.cict;
@@ -2287,7 +2480,7 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2300,20 +2493,20 @@ export default {
           url: `${_this.URLport.serverPath}/University/GetUniversity`,
           async: false,
           params: {
-            id: id
+            id: id,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           _this.editruleForm.name = res.data.data.name;
           _this.schoolKong = res.data.data;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2326,21 +2519,21 @@ export default {
           url: `${_this.URLport.serverPath}/Class/GetClass`,
           async: false,
           params: {
-            id: id
+            id: id,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           _this.editchourses.name = res.data.data.name;
           _this.editchourses.school = res.data.data.university;
           _this.coursekong = res.data.data;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2349,7 +2542,7 @@ export default {
       const _this = this;
       var a = _this.editruleForm.name.trim();
       _this.schoolKong.name = a;
-      _this.$refs[editruleForm].validate(valid => {
+      _this.$refs[editruleForm].validate((valid) => {
         if (valid) {
           _this
             .axios({
@@ -2358,27 +2551,27 @@ export default {
               async: false,
               data: _this.schoolKong,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.$router.push("/personalData/award");
                 _this.$message({
-                  message: _this.$t('upload.u17'),
-                  type: "success"
+                  message: _this.$t("upload.u17"),
+                  type: "success",
                 });
               } else {
                 _this.$message({
-                  message: _this.$t('upload.u18'),
-                  type: "error"
+                  message: _this.$t("upload.u18"),
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         } else {
@@ -2391,7 +2584,7 @@ export default {
       const _this = this;
       var a = item.name.trim();
       _this.coursekong.name = a;
-      _this.$refs[editchourses].validate(valid => {
+      _this.$refs[editchourses].validate((valid) => {
         if (valid) {
           _this
             .axios({
@@ -2400,27 +2593,27 @@ export default {
               async: false,
               data: _this.coursekong,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.$router.push("/personalData/award");
                 _this.$message({
-                  message: _this.$t('upload.u19'),
-                  type: "success"
+                  message: _this.$t("upload.u19"),
+                  type: "success",
                 });
               } else {
                 _this.$message({
-                  message: _this.$t('upload.u20'),
-                  type: "error"
+                  message: _this.$t("upload.u20"),
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         } else {
@@ -2437,8 +2630,8 @@ export default {
       const _this = this;
       if (_this.upAnswerShow) {
         _this.$message({
-          message: _this.$t('upload.u21'),
-          type: "warning"
+          message: _this.$t("upload.u21"),
+          type: "warning",
         });
       }
       // _this.addTopicShow = false;
@@ -2448,7 +2641,8 @@ export default {
     topicCancel() {
       const _this = this;
       _this.addTopicShow = true;
-
+      _this.Batchupload = false;
+      _this.answerupload = false;
       _this.upAnswerShow = false;
     },
     // 确认提交
@@ -2460,25 +2654,25 @@ export default {
           url: `${_this.URLport.serverPath}/Classinfo/Change`,
           async: false,
           params: {
-            id: Number(_this.classInfoId)
+            id: Number(_this.classInfoId),
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.$message({
-              message: _this.$t('upload.u22'),
-              type: "success"
+              message: _this.$t("upload.u22"),
+              type: "success",
             });
             _this.$router.push({ path: "/personalData/award" });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -2508,7 +2702,7 @@ export default {
           confirmButtonText: "确定",
           cancelButtonText: "取消",
           inputPattern: /^\d+$|^\d+[.]?\d+$/,
-          inputErrorMessage: "请输入数字"
+          inputErrorMessage: "请输入数字",
         })
         .then(({ value }) => {
           _this.weekoptions.push({ label: value });
@@ -2516,7 +2710,7 @@ export default {
           console.log(_this.upload.week);
           _this.$message({
             type: "success",
-            message: "添加第" + value + "周"
+            message: "添加第" + value + "周",
           });
         })
         .catch(() => {});
@@ -2524,7 +2718,7 @@ export default {
     fold(item, index) {
       const _this = this;
       item.shows = !item.shows;
-    }
-  }
+    },
+  },
 };
 </script>

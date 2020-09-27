@@ -102,7 +102,7 @@ Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;
 Vue.prototype.$message = Message;
 Vue.prototype.$prompt = MessageBox.prompt;
-
+Vue.prototype.$confirm = MessageBox.confirm;
 
 import VueClipboard from 'vue-clipboard2'
 Vue.use(VueClipboard)

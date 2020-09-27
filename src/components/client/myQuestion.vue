@@ -145,7 +145,10 @@
                     :on-remove="handleRemove"
                     :file-list="quefileList"
                   >
-                    <i slot="default" class="el-icon-picture" title="添加图片"></i>
+                    <el-button size="small" type="primary" class="upImgBut">
+                      上传问题图片
+                      <i class="el-icon-picture"></i>
+                    </el-button>
                   </el-upload>
                   <el-dialog :visible.sync="queVisible" :modal-append-to-body="false">
                     <img width="100%" :src="queImageUrl" alt />
@@ -225,7 +228,7 @@
               <div class="ql-editQuzi">
                 <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
               </div>
-            </div> -->
+            </div>-->
             <div class="mynextpage">
               <div class="block">
                 <el-pagination
@@ -294,26 +297,26 @@ import "tinymce/plugins/textcolor";
 export default {
   name: "myQuestion",
   components: {
-    Editor
+    Editor,
   },
   props: {
     value: {
       type: String,
-      default: "写回答..."
+      default: "写回答...",
     },
     disabled: {
       type: Boolean,
-      default: false
+      default: false,
     },
     plugins: {
       type: [String, Array],
-      default: "colorpicker textcolor wordcount contextmenu"
+      default: "colorpicker textcolor wordcount contextmenu",
     },
     toolbar: {
       type: [String, Array],
       default:
-        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor"
-    }
+        "bold italic underline strikethrough | fontsizeselect | forecolor backcolor",
+    },
   },
   data() {
     //在ES6中添加数据是在return{}中
@@ -344,13 +347,13 @@ export default {
             async: false,
             data: formData,
             xhrFields: {
-              withCredentials: true
+              withCredentials: true,
             },
             headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`
-            }
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           })
-            .then(res => {
+            .then((res) => {
               // 这里返回的是你图片的地址
               success(res.data.file);
             })
@@ -359,7 +362,7 @@ export default {
             });
 
           console.log(blobInfo);
-        }
+        },
       },
       myValue: this.value,
       activeName: "first",
@@ -372,23 +375,25 @@ export default {
         Content: "",
         EndTime: "",
         Currency: "",
-        Img: ""
+        Img: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
         Title: [
           { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" }
+          { min: 4, message: "最少输入4个字", trigger: "blur" },
         ],
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
           {
             required: true,
             message: "请选择日期",
-            trigger: "change"
-          }
+            trigger: "change",
+          },
         ],
-        Currency: [{ required: true, message: "请输入鲸灵币", trigger: "blur" }]
+        Currency: [
+          { required: true, message: "请输入鲸灵币", trigger: "blur" },
+        ],
       },
       // 我的竞拍
       auctionTableData: [],
@@ -405,24 +410,24 @@ export default {
       // 图片
       imgSite: this.URLport.serverPath + "/File/UploadQuestion",
       myHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
       queImageUrl: "",
       queVisible: false,
-      quefileList: []
+      quefileList: [],
     };
   },
-  created: function() {
+  created: function () {
     const _this = this;
     _this.quizList();
     _this.answerList();
     _this.auctionlist();
   },
   filters: {
-    formatDate: function(time) {
+    formatDate: function (time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
-    }
+    },
   },
   methods: {
     handleSizeChange(val) {
@@ -438,16 +443,16 @@ export default {
           async: false,
           params: {
             pagenum: val,
-            pagesize: _this.pagesizes
+            pagesize: _this.pagesizes,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data.data;
@@ -478,7 +483,7 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -491,16 +496,16 @@ export default {
           async: false,
           params: {
             pagenum: ++_this.pagenums,
-            pagesize: _this.pagesizes
+            pagesize: _this.pagesizes,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             let a = [];
             a = res.data.data.data;
@@ -531,7 +536,7 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -545,16 +550,16 @@ export default {
           async: false,
           params: {
             pagenum: _this.pagenums,
-            pagesize: _this.pagesizes
+            pagesize: _this.pagesizes,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data.data;
@@ -586,7 +591,7 @@ export default {
             }
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -598,19 +603,19 @@ export default {
           url: `${_this.URLport.serverPath}/Answer/MyAnswer`,
           async: false,
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           if (res.data.status == 1) {
             _this.answerTableData = res.data.data;
             _this.answerShow = true;
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -622,20 +627,20 @@ export default {
           url: `${_this.URLport.serverPath}/Bidding/MyBidding`,
           async: false,
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           if (res.data.status == 1) {
             _this.auctionTableData = res.data.data;
             _this.auctionShow = true;
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -666,7 +671,7 @@ export default {
     releaseQl(QuestionsQuiz) {
       const _this = this;
       _this.QuestionsQuiz.Content = _this.myValue;
-      _this.$refs[QuestionsQuiz].validate(valid => {
+      _this.$refs[QuestionsQuiz].validate((valid) => {
         if (valid) {
           _this
             .axios({
@@ -675,13 +680,13 @@ export default {
               async: false,
               data: _this.QuestionsQuiz,
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               if (res.data.status == 1) {
                 _this.QuestionsQuiz.Title = "";
                 _this.QuestionsQuiz.Content = "";
@@ -692,16 +697,16 @@ export default {
                 _this.quizList();
                 _this.$message({
                   message: "发布成功",
-                  type: "success"
+                  type: "success",
                 });
               } else {
                 _this.$message({
                   message: "发布失败",
-                  type: "error"
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         }
@@ -728,32 +733,32 @@ export default {
           params: {
             questionid: _this.evaluateId,
             content: _this.evaluateInput,
-            grade: grades
+            grade: grades,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizList();
             _this.evaluateShade = false;
             _this.$message({
               message: "评价成功",
-              type: "success"
+              type: "success",
             });
           } else {
             _this.$message({
               message: "评价失败",
-              type: "error"
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -762,7 +767,7 @@ export default {
       console.log(id);
       this.$prompt("您要对客服说:", "CourseWhale", {
         confirmButtonText: "确定",
-        cancelButtonText: "取消"
+        cancelButtonText: "取消",
       })
         .then(({ value }) => {
           _this
@@ -772,30 +777,30 @@ export default {
               async: false,
               params: {
                 questionid: id,
-                reason: value
+                reason: value,
               },
               xhrFields: {
-                withCredentials: true
+                withCredentials: true,
               },
               headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`
-              }
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               console.log(res);
               if (res.data.status == 1) {
                 _this.$message({
                   message: "发送成功",
-                  type: "success"
+                  type: "success",
                 });
               } else {
                 _this.$message({
                   message: "发送失败",
-                  type: "error"
+                  type: "error",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         })
@@ -809,38 +814,37 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/Edit`,
           async: false,
           params: {
-            questionid: id
+            questionid: id,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           console.log(res);
           if (res.data.status == 1) {
             _this.quizList();
             _this.$message({
               message: "回答者可以开始补充回答。",
-              type: "success"
+              type: "success",
             });
           } else {
             _this.$message({
               message: "提交修改失败",
-              type: "error"
+              type: "error",
             });
           }
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
-      
     },
     handleClick() {
       const _this = this;
@@ -854,23 +858,23 @@ export default {
           async: false,
           params: {
             questionid: _this.$route.params.question_id,
-            imgurl: file.response.file
+            imgurl: file.response.file,
           },
           xhrFields: {
-            withCredentials: true
+            withCredentials: true,
           },
           headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`
-          }
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
-        .then(function(res) {
+        .then(function (res) {
           var imgurl = "";
           for (let i = 0; i < fileList.length; i++) {
             imgurl = imgurl + "|" + fileList[i].response.file;
           }
           _this.QuestionsQuiz.Img = imgurl.slice(1);
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
         });
     },
@@ -891,7 +895,7 @@ export default {
     },
     beforeAvatarUpload(file) {
       console.log(file);
-    }
+    },
   },
   watch: {
     value(newValue) {
@@ -899,7 +903,7 @@ export default {
     },
     myValue(newValue) {
       this.$emit("input", newValue);
-    }
-  }
+    },
+  },
 };
 </script>

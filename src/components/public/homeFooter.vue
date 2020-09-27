@@ -71,6 +71,7 @@
   font-size: 14px !important;
   font-weight: 700 !important;
   text-align: right !important;
+  padding-right:30px !important;
 }
 .nav .el-menu-item * {
   vertical-align: baseline !important;

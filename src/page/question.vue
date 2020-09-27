@@ -226,6 +226,7 @@
       </div>
     </div>
 
+
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -408,6 +409,7 @@ export default {
     _this.personal();
     // _this.handleScroll();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
+    
   },
   filters: {
     formatDate: function (time) {
@@ -895,6 +897,8 @@ export default {
         _this.quizList();
       }
     },
+
+    
     // 已完成展示
     // accomplish() {
     //   const _this = this;
@@ -1470,12 +1474,12 @@ export default {
     },
     handleAvatarSuccess(res, file, fileList) {
       const _this = this;
-      console.log(fileList);
       var imgurl = "";
       for (let i = 0; i < fileList.length; i++) {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
+      console.log(imgurl.slice(1))
     },
     beforeAvatarUpload(file) {
       console.log(file);

@@ -304,7 +304,7 @@
       <div>
         <router-view :Names="this.value" :attCon="this.attentionCon" />
       </div>
-      <div class="ClassesAdvertising">
+      <!-- <div class="ClassesAdvertising">
         <div>
           <p class="advertising-p1">{{$t('classesDetail.con11')}}</p>
           <p class="advertising-p2">
@@ -313,7 +313,7 @@
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div>
+      </div> -->
     </div>
     <homeFooter></homeFooter>
   </div>
