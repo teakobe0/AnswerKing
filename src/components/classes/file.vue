@@ -279,7 +279,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           if (res.data.status == 2) {
             _this.infoShow = true;
           }

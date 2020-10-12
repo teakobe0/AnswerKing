@@ -63,7 +63,7 @@
               <el-button size="mini" @click="delAttention(item.id)">{{$t('attention.con3')}}</el-button>
             </div>
           </el-tab-pane>
-          <el-tab-pane :label="$t('attention.con1')" name="second">
+          <el-tab-pane :label="$t('attention.con2')" name="second">
             <div class="attentionNull" v-if="attNull2 == false">{{$t('attention.con5')}}</div>
             <div v-for="item in questionAtt">
               <router-link

@@ -158,21 +158,29 @@
   top: 23px;
   left: 213px;
 }
-.select-option {
+.languages {
   background-color: #4458b0 !important;
   border: 0 !important;
   color: #fff !important;
   margin-top: 5px !important;
 }
-.select-option .popper__arrow {
+.languages .popper__arrow {
   display: none !important;
 }
-.select-option .el-select-dropdown__item {
+.languages .el-select-dropdown__item {
   color: #fff !important;
 }
-.select-option .el-select-dropdown__item.hover,
+.languages .el-select-dropdown__item.hover,
+.selected {
+  background-color: #36468d !important;
+}
+.languages .el-select-dropdown__item.hover,
+.hover {
+  background-color: #36468d !important;
+}
+.languages .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
-  background-color: #36468d;
+  background-color: #36468d !important;
 }
 </style>
 
@@ -198,13 +206,13 @@
           <img src="../../assets/logo.png" alt />
         </router-link>
       </div>
-      <div class="lang">
+      <div class="lang" id="langs">
         <div style="position: relative;">
           <el-select
             v-model="value"
             placeholder
             class="language"
-            popper-class="select-option"
+            popper-class="languages"
             @change="handleWeeks"
           >
             <el-option

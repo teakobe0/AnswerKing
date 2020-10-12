@@ -947,15 +947,15 @@ export default {
                 } else {
                   results.push({ value: "没有找到对应的课程", solid: true });
                 }
-                if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+                if (res.data.data.university != null && res.data.data.university.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data.ls[i]) {
+                    if (res.data.data.university[i]) {
                       results.push({
-                        value: res.data.data.ls[i].university.name,
+                        value: res.data.data.university[i].name,
                         type: "大学",
                         class: "university",
                         num: i,
-                        id: res.data.data.ls[i].university.id
+                        id: res.data.data.university[i].id
                       });
                     }
                   }

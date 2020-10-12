@@ -230,7 +230,6 @@
               class="query-searchbox"
               v-model="state1"
               :fetch-suggestions="querySearch"
-              @select="handleSelectauto"
               :placeholder="$t('classes.classes3')"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
@@ -264,13 +263,13 @@
           <div class="find-class-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in classesAll">
-                <router-link :to="'/classes/'+item.cla.id">
-                  <span class="classes-boo-name">{{item.cla.name}}</span>
+                <router-link :to="'/classes/'+item.id">
+                  <span class="classes-boo-name">{{item.name}}</span>
                   <span class="classes-boo-order">{{item.order}}{{$t('classes.classes8')}}</span>
                 </router-link>
 
                 <div class="classes-boo-num">
-                  <span>{{$t('classesDetail.con2')}}:{{item.cla.university}}</span>
+                  <span>{{$t('classesDetail.con2')}}:{{item.university}}</span>
                 </div>
               </li>
             </ul>
@@ -377,11 +376,11 @@ export default {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data.data[i]) {
                       results.push({
-                        value: res.data.data.data[i].cla.name,
-                        type: res.data.data.data[i].cla.university,
+                        value: res.data.data.data[i].name,
+                        type: res.data.data.data[i].university,
                         class: "classes",
                         num: i,
-                        id: res.data.data.data[i].cla.id
+                        id: res.data.data.data[i].id
                       });
                     }
                   }
@@ -397,41 +396,6 @@ export default {
           }
         }, 1000 * Math.random());
       }
-    },
-    handleSelectauto(item) {
-      const _this = this;
-      // _this.loading = this.$loading({
-      //   lock: true,
-      //   text: "加载中",
-      //   spinner: "el-icon-loading",
-      //   background: "rgba(0, 0, 0, 0.7)"
-      // });
-      // this.axios({
-      //   method: "get",
-      //   url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
-      //   async: false,
-      //   params: {
-      //     name: _this.queryString
-      //   },
-      //   xhrFields: {
-      //     withCredentials: true
-      //   }
-      // })
-      //   .then(function(res) {
-      //     //课程
-      //     if (item.class == "classes") {
-      //       _this.$router.push({
-      //         path: "/classesDetails",
-      //         query: {
-      //           id: item.id
-      //         }
-      //       });
-      //     }
-      //     _this.loading.close();
-      //   })
-      //   .catch(function(error) {
-      //     console.log(error);
-      //   });
     },
     //根据课程名称检索 分页
     GetClasses: function(index) {

@@ -160,7 +160,7 @@
       </div>
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
-          <router-link :to="/classes/+item.cla.id">{{item.cla.name}}</router-link>
+          <router-link :to="/classes/+item.id">{{item.name}}</router-link>
           <p>{{$t('university.con5')}}:{{item.order}}</p>
           <i
             class="el-icon-star-off"
@@ -346,8 +346,8 @@ export default {
       if (localStorage.token) {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
-          _this.attentions.Name = item.cla.name.toString();
-          _this.attentions.TypeId = item.cla.id;
+          _this.attentions.Name = item.name.toString();
+          _this.attentions.TypeId = item.id;
           _this.attentions.Type = 1;
           _this
             .axios({
@@ -376,7 +376,7 @@ export default {
           var attentionsId = "";
           for (var i = 0; i < _this.attentionCon.length; i++) {
             var v = _this.attentionCon[i].typeId;
-            if (item.cla.id == v) {
+            if (item.id == v) {
               attentionsId = _this.attentionCon[i].id;
             }
           }
@@ -434,7 +434,7 @@ export default {
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 1) {
                 for (var j = 0; j < _this.classes.length; j++) {
-                  if (res.data.data[i].typeId == _this.classes[j].cla.id) {
+                  if (res.data.data[i].typeId == _this.classes[j].id) {
                     _this.classes[j].attentions = true;
                   }
                 }

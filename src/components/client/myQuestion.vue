@@ -245,13 +245,13 @@
             <el-table :data="answerTableData" border style="width: 100%" v-if="answerShow">
               <el-table-column label="发布日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.answer.createTime | formatDate}}</span>
+                  <span>{{ scope.row.createTime | formatDate}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="题目">
                 <template slot-scope="scope">
                   <router-link
-                    :to="'/questionDetails/'+scope.row.answer.questionId"
+                    :to="'/questionDetails/'+scope.row.questionId"
                   >{{ scope.row.title}}</router-link>
                 </template>
               </el-table-column>
@@ -261,13 +261,13 @@
             <el-table :data="auctionTableData" border style="width: 100%" v-if="auctionShow">
               <el-table-column label="发布日期" width="100">
                 <template slot-scope="scope">
-                  <span>{{ scope.row.bidding.createTime | formatDate}}</span>
+                  <span>{{ scope.row.createTime | formatDate}}</span>
                 </template>
               </el-table-column>
               <el-table-column label="题目">
                 <template slot-scope="scope">
                   <router-link
-                    :to="'/questionDetails/'+scope.row.bidding.questionId"
+                    :to="'/questionDetails/'+scope.row.questionId"
                   >{{ scope.row.title}}</router-link>
                 </template>
               </el-table-column>

@@ -99,6 +99,7 @@ export default {
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
+
           if (res.data.data.birthday == "0001-01-01T00:00:00") {
             _this.modifiedDatas.Birthday = "1901-01-01T00:00:00";
           } else {
