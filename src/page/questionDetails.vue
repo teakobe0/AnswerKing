@@ -204,6 +204,7 @@
                   v-model="auction.EndTime"
                   type="datetime"
                   class="auTime"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择日期时间"
                   :picker-options="{
                     disabledDate: time => {
@@ -276,6 +277,13 @@
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
                   placeholder="选择日期时间"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :picker-options="{
+                    disabledDate: time => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    },
+                    selectableRange: startTimeRange
+                  }"
                 ></el-date-picker>
               </el-form-item>
             </div>
@@ -332,8 +340,8 @@
           <div id="chatConss" class="chatCon">
             <div class="chatCons" v-for="item in ChatRecordArray">
               <img :src="item.img" alt />
-              <span>{{item.notice.createTime | formatDate}}</span>
-              <span>{{item.notice.contentsUrl}}</span>
+              <span>{{item.createTime | formatDate}}</span>
+              <span>{{item.contentsUrl}}</span>
             </div>
           </div>
           <div v-show="newInfo" class="newInfo1" @click="newInfo1">新消息</div>
@@ -362,8 +370,8 @@
               <img :src="item.img" alt />
               <span
                 style="font-size:14px;color:#131313;margin-top:0px"
-              >{{item.notice.createTime | formatDate}}</span>
-              <span>{{item.notice.contentsUrl}}</span>
+              >{{item.createTime | formatDate}}</span>
+              <span>{{item.contentsUrl}}</span>
             </div>
           </div>
           <div v-show="newInfos" class="newInfo1" @click="newInfo2">新消息</div>
@@ -604,6 +612,7 @@ export default {
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
           {
+            type: "string",
             required: true,
             message: "请选择日期",
             trigger: "change",
@@ -651,6 +660,7 @@ export default {
       newInfo: false,
       // 已选择竞拍者之后显示文字
       selectbname: false,
+      startTimeRange:"",
     };
   },
   created: function () {
@@ -1349,7 +1359,7 @@ export default {
       console.log(item);
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.question.id;
-        _this.auction.EndTime = item.que.question.endTime;
+        _this.auction.EndTime = _this.formatDate(item.que.question.endTime);
         _this.auction.Currency = item.que.question.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
@@ -1365,7 +1375,7 @@ export default {
       _this.QuestionsQuiz.Title = list.que.question.title;
       _this.QuestionsQuiz.Content = list.que.question.content;
       _this.myValues = list.que.question.content;
-      _this.QuestionsQuiz.EndTime = list.que.question.endTime;
+      _this.QuestionsQuiz.EndTime = _this.formatDate(list.que.question.endTime);
       _this.QuestionsQuiz.Currency = list.que.question.currency;
       _this.QuestionsQuiz.id = list.que.question.id;
       _this.QuestionsQuiz.Img = list.que.question.img;

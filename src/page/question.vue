@@ -11,7 +11,12 @@
               Coursewhale课程鲸灵为全球学子打造的社交问答平台，
               <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强劲的学习动力。
             </p>
-            <el-input v-model="topInput" @change="topInputs" clearable style="width:700px"></el-input>
+            <el-input
+              v-model="topInput"
+              @change="topInputs"
+              clearable
+              style="width: 700px"
+            ></el-input>
           </div>
           <div class="qltconright">
             <img src="../assets/问答1.png" alt />
@@ -21,27 +26,49 @@
       <div class="ql-body">
         <div class="qlBodyCon">
           <div class="qlBodyLeft">
-            <div :class="{qlBodyConActive:num == 0}" @click="newTime">最新</div>
-            <div :class="{qlBodyConActive:num == 2}" @click="topCurrency">最高悬赏</div>
-            <div :class="{qlBodyConActive:num == 1}" @click="newTimes">即将结束</div>
+            <div :class="{ qlBodyConActive: num == 0 }" @click="newTime">
+              最新
+            </div>
+            <div :class="{ qlBodyConActive: num == 2 }" @click="topCurrency">
+              最高悬赏
+            </div>
+            <div :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
+              即将结束
+            </div>
           </div>
           <div class="qlBodyMei">
+            <div
+              class="newAnswer"
+              @click="newAnswerClick"
+              v-show="newAnswerShow"
+            >
+              有新的问题{{ newAnswerNum }}条,点击查看!
+            </div>
+            <!-- 没有登录时 -->
             <!-- 没登录 -->
             <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
               <div class="qlBodyMeiConLeft">
                 <div>
-                  <span class="qlBodyI">{{item.question.currency}}&nbsp;鲸灵币</span>
+                  <span class="qlBodyI"
+                    >{{ item.question.currency }}&nbsp;鲸灵币</span
+                  >
                 </div>
                 <h4>
-                  <router-link :to="'/questionDetails/'+item.question.id">{{item.question.title}}</router-link>
+                  <router-link :to="'/questionDetails/' + item.question.id">{{
+                    item.question.title
+                  }}</router-link>
                 </h4>
                 <div class="qlBodyConImg">
-                  <img v-for="items in item.question.images" :src="items.url" alt />
+                  <img
+                    v-for="items in item.question.images"
+                    :src="items.url"
+                    alt
+                  />
                 </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
-                  {{item.qname}}
-                  <span>{{item.Times}}</span>
+                  {{ item.qname }}
+                  <span>{{ item.Times }}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
                   <div class="qlBodyMeiConRightTable">
@@ -57,21 +84,31 @@
             <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
               <div class="qlBodyMeiConLeft">
                 <div>
-                  <span class="qlBodyU" v-show="item.bidd != null">{{item.bidd}}</span>
-                  <span class="qlBodyU" v-show="item.myanswer != null">{{item.myanswer}}</span>
-                  <span class="qlBodyU" v-show="item.myque != null">{{item.myque}}</span>
-                  <span class="qlBodyI">{{item.que.currency}}&nbsp;鲸灵币</span>
+                  <span class="qlBodyU" v-show="item.bidd != null">{{
+                    item.bidd
+                  }}</span>
+                  <span class="qlBodyU" v-show="item.myanswer != null">{{
+                    item.myanswer
+                  }}</span>
+                  <span class="qlBodyU" v-show="item.myque != null">{{
+                    item.myque
+                  }}</span>
+                  <span class="qlBodyI"
+                    >{{ item.que.currency }}&nbsp;鲸灵币</span
+                  >
                 </div>
                 <h4>
-                  <router-link :to="'/questionDetails/'+item.que.id">{{item.que.title}}</router-link>
+                  <router-link :to="'/questionDetails/' + item.que.id">{{
+                    item.que.title
+                  }}</router-link>
                 </h4>
                 <div class="qlBodyConImg">
                   <img v-for="items in item.que.images" :src="items.url" alt />
                 </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
-                  {{item.qname}}
-                  <span>{{item.Times}}</span>
+                  {{ item.qname }}
+                  <span>{{ item.Times }}</span>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
                   <div class="qlBodyMeiConRightTable">
@@ -92,7 +129,8 @@
               class="ql-right-quitBT"
               @click="NewQuitBt"
               @mousewheel.prevent
-            >提一个新问题</el-button>
+              >提一个新问题</el-button
+            >
             <questionNum></questionNum>
           </div>
         </div>
@@ -107,7 +145,10 @@
           class="demo-ruleForm"
         >
           <el-form-item prop="Title" class="ql-editQuziTi">
-            <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
+            <el-input
+              v-model="QuestionsQuiz.Title"
+              placeholder="写下你的问题，准确的描述问题更容易得到解答"
+            ></el-input>
           </el-form-item>
 
           <el-upload
@@ -129,7 +170,10 @@
             </el-button>
             <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
           </el-upload>
-          <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+          <el-dialog
+            :visible.sync="dialogVisible"
+            :modal-append-to-body="false"
+          >
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
 
@@ -144,42 +188,44 @@
             <!-- 富文本 -->
             <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
-          <div style="overflow: hidden;">
-            <div style="float:left;">
+          <div style="overflow: hidden">
+            <div style="float: left">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
                   placeholder="选择日期时间"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
-                    disabledDate: time => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
                     },
-                    selectableRange: startTimeRange
+                    selectableRange: startTimeRange,
                   }"
                 ></el-date-picker>
               </el-form-item>
             </div>
-            <div style="float:right;">
+            <div style="float: right">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="QuestionsQuiz.Currency"
                   placeholder="请输入鲸灵币"
-                  style="width:130px;"
+                  style="width: 130px"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
         </el-form>
-        <div style="overflow:hidden">
+        <div style="overflow: hidden">
           <el-button
             class="releaseQl"
             type="primary"
             size="medium"
             @click="releaseQl('QuestionsQuiz')"
-          >发布问题</el-button>
+            >发布问题</el-button
+          >
         </div>
 
         <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div>
@@ -188,9 +234,14 @@
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
         <h3>选择您向提问人提出的时间和赏金要求</h3>
-        <el-form :model="auction" :rules="auctionrules" ref="auction" class="demo-ruleForm">
-          <div style="overflow: hidden;">
-            <div style="float:left;">
+        <el-form
+          :model="auction"
+          :rules="auctionrules"
+          ref="auction"
+          class="demo-ruleForm"
+        >
+          <div style="overflow: hidden">
+            <div style="float: left">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
@@ -198,34 +249,40 @@
                   type="datetime"
                   class="auTime"
                   placeholder="选择日期时间"
+                  value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
-                    disabledDate: time => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
                     },
-                    selectableRange: austartTimeRange
+                    selectableRange: austartTimeRange,
                   }"
                 ></el-date-picker>
               </el-form-item>
             </div>
-            <div style="float:right;">
+            <div style="float: right">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
                   placeholder="请输入鲸灵币"
-                  style="width:130px;"
+                  style="width: 130px"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
         </el-form>
-        <div style="overflow:hidden">
-          <el-button class="releaseQl" type="primary" size="medium" @click="auctionQl('auction')">提交</el-button>
+        <div style="overflow: hidden">
+          <el-button
+            class="releaseQl"
+            type="primary"
+            size="medium"
+            @click="auctionQl('auction')"
+            >提交</el-button
+          >
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
       </div>
     </div>
-
 
     <homeFooter></homeFooter>
   </div>
@@ -341,7 +398,7 @@ export default {
         Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
         EndTime: [
           {
-            type: "date",
+            type: "string",
             required: true,
             message: "请选择日期",
             trigger: "change",
@@ -390,6 +447,7 @@ export default {
       // 新问题出现之后
       newAnswerNum: 0,
       newAnswerTime: new Date(),
+      newAnswerTimes: "",
       newAnswer: "",
       newAnswerShow: false,
       // 图片
@@ -402,6 +460,7 @@ export default {
       fileList: [],
       Answernum: "",
       qdConRigtS: false,
+      myQlListsId:0
     };
   },
   created: function () {
@@ -409,7 +468,6 @@ export default {
     _this.personal();
     // _this.handleScroll();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
-    
   },
   filters: {
     formatDate: function (time) {
@@ -463,7 +521,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/GetNumber`,
           async: false,
           params: {
-            time: _this.newAnswerTime,
+            time: _this.formatDate(_this.newAnswerTime),
           },
           xhrFields: {
             withCredentials: true,
@@ -471,9 +529,18 @@ export default {
         })
         .then(function (res) {
           if (res.data.data.num > 0) {
-            _this.newAnswerNum = res.data.data.num + _this.newAnswerNum;
-            _this.newAnswerShow = true;
-            _this.newAnswerTime = res.data.data.datetime;
+            _this.newAnswerNum = res.data.data.num;
+            console.log(_this.newAnswerTime)
+            console.log("------")
+            console.log(res.data.data.datetime)
+
+            if(_this.newAnswerTime == res.data.data.datetime){
+              _this.newAnswerShow = false;
+            }else {
+              _this.newAnswerShow = true;
+            }
+            
+            _this.newAnswerTimes = res.data.data.datetime;
           }
         })
         .catch(function (error) {
@@ -488,7 +555,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/GetNewQuestion`,
           async: false,
           params: {
-            time: _this.newAnswerTime,
+            time: _this.formatDate(_this.newAnswerTimes),
           },
           xhrFields: {
             withCredentials: true,
@@ -498,27 +565,34 @@ export default {
           if (res.data.status == 1) {
             _this.newAnswerShow = false;
             _this.newAnswerNum = 0;
-            _this.newAnswerTime = new Date();
+            _this.newAnswerTime = res.data.data[0].que.createTime;
             let myQlList = res.data.data;
-            let date = new Date();
-            let now = date.getTime();
-            if (localStorage.token) {
-              for (let i = 0; i < res.data.data.length; i++) {
-                _this.$set(myQlList[i], "Times", "");
-                let leftTime =
-                  now - new Date(myQlList[i].que.createTime).getTime();
-                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                let m = Math.floor((leftTime / 1000 / 60) % 60);
-                if (d == 0 && h > 0) {
-                  myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
-                } else if (h <= 0 && d <= 0) {
-                  myQlList[i].Times = "刚刚发布的问题";
-                } else {
-                  myQlList[i].Times =
-                    "在" + d + "天" + h + "个小时前发布了这个问题";
+
+
+            _this.myQlListsId = myQlList[0].que.id;
+
+
+            if (myQlList[0].que.id != _this.myQlList[0].que.id) {
+              let date = new Date();
+              let now = date.getTime();
+              if (localStorage.token) {
+                for (let i = 0; i < res.data.data.length; i++) {
+                  _this.$set(myQlList[i], "Times", "");
+                  let leftTime =
+                    now - new Date(myQlList[i].que.createTime).getTime();
+                  let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                  let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                  let m = Math.floor((leftTime / 1000 / 60) % 60);
+                  if (d == 0 && h > 0) {
+                    myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                  } else if (h <= 0 && d <= 0) {
+                    myQlList[i].Times = "刚刚发布的问题";
+                  } else {
+                    myQlList[i].Times =
+                      "在" + d + "天" + h + "个小时前发布了这个问题";
+                  }
+                  _this.myQlList.unshift(myQlList[i]);
                 }
-                _this.myQlList.unshift(myQlList[i]);
               }
             }
           }
@@ -853,7 +927,7 @@ export default {
     },
     formatDate: function (time) {
       let date = new Date(time);
-      return formatDate(date, "yyyy-MM-dd-hh:mm");
+      return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     // 最新展示
     newTime() {
@@ -898,7 +972,6 @@ export default {
       }
     },
 
-    
     // 已完成展示
     // accomplish() {
     //   const _this = this;
@@ -1051,9 +1124,10 @@ export default {
     // 我要答显示遮罩按钮
     replyShade(item) {
       const _this = this;
+      console.log(item.que.endTime);
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.id;
-        _this.auction.EndTime = item.que.endTime;
+        _this.auction.EndTime = _this.formatDate(item.que.endTime);
         _this.auction.Currency = item.que.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
@@ -1479,7 +1553,7 @@ export default {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
-      console.log(imgurl.slice(1))
+      console.log(imgurl.slice(1));
     },
     beforeAvatarUpload(file) {
       console.log(file);

@@ -1366,7 +1366,11 @@ export default {
 
       coursekong: {},
       schoolKong: {},
-      orderKong: {},
+      orderKong: {
+        name:"",
+        id:"",
+        clientId:""
+      },
       lastStep: true,
       // 新题目展开隐藏
       upAnswerShow: false,
@@ -2470,13 +2474,15 @@ export default {
         })
         .then(function (res) {
           if (res.data.status == 1) {
-            _this.orderInfo.name = res.data.data.cict.name;
-            _this.orderKong = res.data.data.cict;
+            _this.orderInfo.name = res.data.data.name;
+            _this.orderKong.name = res.data.data.name;
+            _this.orderKong.id = res.data.data.id;
+            _this.orderKong.clientId = res.data.data.clientId;
             if (_this.$route.query.type == 3) {
-              _this.classInfoId = res.data.data.cict.id;
-              _this.upload.course = res.data.data.clas;
-              _this.upload.school = res.data.data.university;
-              _this.serchingAnswer(res.data.data.cict.id);
+              _this.classInfoId = res.data.data.id;
+              _this.upload.course = res.data.data.info.clas;
+              _this.upload.school = res.data.data.info.university;
+              _this.serchingAnswer(res.data.data.id);
             }
           }
         })
