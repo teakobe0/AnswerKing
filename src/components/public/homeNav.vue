@@ -170,16 +170,22 @@
 .languages .el-select-dropdown__item {
   color: #fff !important;
 }
-.languages .el-select-dropdown__item.hover,
+/* .languages .el-select-dropdown__item.hover,
 .selected {
   background-color: #36468d !important;
-}
-.languages .el-select-dropdown__item.hover,
+} */
+/* .languages .el-select-dropdown__item.hover,
 .hover {
   background-color: #36468d !important;
-}
-.languages .el-select-dropdown__item.hover,
+} */
+/* .languages .el-select-dropdown__item.hover,
 .el-select-dropdown__item:hover {
+  background-color: #36468d !important;
+} */
+.languages li:hover {
+  background-color: #36468d !important;
+}
+.languages li.hover {
   background-color: #36468d !important;
 }
 </style>
@@ -250,7 +256,6 @@
       <el-menu
         class="el-menu-demo"
         mode="horizontal"
-        @select="handleSelect"
         background-color="#4458b0"
         text-color="#fff"
         active-text-color="#ffd04b"
@@ -394,6 +399,7 @@ export default {
     }
   },
   methods: {
+    // 语言转换
     handleWeeks(item) {
       const _this = this;
       if (item == "zh") {
@@ -409,7 +415,7 @@ export default {
         localStorage.setItem("lang", "ko");
       }
     },
-    handleSelect(key, keyPath) {},
+    // 检索通知信息数量
     gainmessage: function() {
       const _this = this;
       _this
@@ -437,6 +443,7 @@ export default {
           console.log(error);
         });
     },
+    // 检索通知信息
     gainmessages: function() {
       const _this = this;
       _this
@@ -510,18 +517,7 @@ export default {
       } else {
       }
     },
-    homenavRe: function() {
-      this.vanish = false;
-      this.vanishs = true;
-    },
-    homenavDel: function() {
-      this.vanish = true;
-      this.vanishs = false;
-    },
-    homenavLoseFoucs: function() {
-      this.vanish = true;
-      this.vanishs = false;
-    },
+    // 注销
     logout: function() {
       const _this = this;
       if (localStorage.getItem("token")) {
@@ -541,23 +537,7 @@ export default {
 
       window.location.reload();
     },
-    handleEnter: function() {
-      const _this = this;
-      _this.$router.push({
-        path: "/serch",
-        query: {
-          serchName: _this.statle
-        }
-      });
-      window.location.reload();
-    },
-    handleScroll() {
-      const _this = this;
-      var scrollTop =
-        window.pageYOffset ||
-        document.documentElement.scrollTop ||
-        document.body.scrollTop;
-    },
+    // 关闭VIP 不足通知
     vipHandel() {
       const _this = this;
       _this.$store.state.vip.vipShow = false;
@@ -573,7 +553,6 @@ export default {
     }
   },
   mounted() {
-    window.addEventListener("scroll", this.handleScroll);
   },
   beforeDestroy() {
     clearInterval(this.times);

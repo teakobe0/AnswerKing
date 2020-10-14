@@ -175,7 +175,7 @@ export default {
     _this.University();
   },
   methods: {
-    //根据学校id检索
+    //根据学校id检索学校
     University: function() {
       const _this = this;
       _this
@@ -198,6 +198,7 @@ export default {
           console.log(error);
         });
     },
+    // 页面中间的tab选项卡切换
     tab: function(tab) {
       const _this = this;
       if (tab == "tab01") {

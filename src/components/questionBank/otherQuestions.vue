@@ -73,6 +73,7 @@ export default {
         }
       }
     },
+    // 强制跳转
     skipclass: function(classId, id) {
       const _this = this;
       window.location.reload();

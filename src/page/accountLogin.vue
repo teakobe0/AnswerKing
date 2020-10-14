@@ -251,7 +251,6 @@ export default {
               _this.$message.error(_this.$t("popupLogin.con18"));
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

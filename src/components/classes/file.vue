@@ -147,7 +147,6 @@
 .ownness .createTime {
   float: right;
   margin-top: 5px;
-  /* text-align: right; */
 }
 .file-con-course i {
   position: absolute;
@@ -167,14 +166,12 @@
   margin-bottom: 160px;
 }
 </style>
-
-
 <template>
   <div id="file">
     <div class="file-con">
       <div class="infoShows" v-if="infoShow == true">{{$t('classesDetail.con7')}}</div>
       <div class="file-con-course" v-if="courseShow == true">
-        <div v-for="(item,index) in value" @click="Information(item)">
+        <div v-for="(item,index) in value">
           <router-link
             :to="'/classes/'+$route.params.classes_id+'/content/'+item.classinfo.id+'/weeks/'+0+'/weektype/'+0"
             class="file-course-img"
@@ -196,7 +193,6 @@
           </router-link>
           <span class="ownness">
             <router-link
-              @click.native="ownness(item.clientname,item.clientimg)"
               :to="'/ownness/'+item.classinfo.clientId"
               :title="$t('classesDetail.con15') + ' ' + item.clientname + ' '+$t('classesDetail.con16')"
               class="ownness-name"
@@ -298,10 +294,7 @@ export default {
           console.log(error);
         });
     },
-    Information: function(item) {
-      const _this = this;
-      // _this.$store.state.information.informations = item;
-    },
+    // 点击关注
     attention: function(item, index) {
       const _this = this;
       if (localStorage.token) {
@@ -410,9 +403,6 @@ export default {
             console.log(error);
           });
       }
-    },
-    ownness(name, img) {
-      const _this = this;
     }
   }
 };

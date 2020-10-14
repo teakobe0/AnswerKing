@@ -384,6 +384,7 @@ export default {
           console.log(error);
         });
     },
+    // 选项卡切换
     tab: function(tab) {
       const _this = this;
       if (tab == "tab01") {
@@ -424,6 +425,7 @@ export default {
           });
       }
     },
+    // 点击关注
     attention: function() {
       const _this = this;
 

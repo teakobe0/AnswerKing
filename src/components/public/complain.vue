@@ -180,15 +180,17 @@ export default {
     const _this = this;
   },
   methods: {
+    // 关闭问答系统
     complainClick: function() {
       const _this = this;
       _this.$store.state.logo.contactUs = !_this.$store.state.logo.contactUs;
     },
+    // 展开问答系统
     comPageClick() {
       const _this = this;
       _this.comPageShow = !_this.comPageShow;
     },
-
+    // 提交问题
     submitForm(feedback) {
       this.$refs[feedback].validate(valid => {
         if (valid) {
@@ -219,6 +221,7 @@ export default {
         }
       });
     },
+    // 关闭问答系统
     cancelForm: function() {
       const _this = this;
       _this.comPageShow = !_this.comPageShow;

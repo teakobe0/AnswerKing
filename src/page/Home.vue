@@ -607,7 +607,6 @@
                   :fetch-suggestions="querySearch"
                   :placeholder="$t('home.input')"
                   @select="handleSelect"
-                  @keyup.enter.native="handleEnter(state1)"
                   prefix-icon="el-icon-tickets"
                   :trigger-on-focus="inputLoad"
                 >
@@ -637,7 +636,6 @@
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -656,7 +654,6 @@
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -672,7 +669,6 @@
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -870,10 +866,6 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
-    // 翻滚一次动画执行的方法
-    handScrollEnd: function() {
-      // const _this = this;
-    },
     // 获取所有课程，题库集，贡献者信息
     GetClassinfo() {
       const _this = this;
@@ -896,6 +888,7 @@ export default {
           console.log(error);
         });
     },
+    // 首页搜索框搜索课程和学校
     querySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -962,36 +955,6 @@ export default {
                 } else {
                   results.push({ value: "没有找到对应的大学" });
                 }
-                // if (
-                //   res.data.data.classes != null &&
-                //   res.data.data.content.length > 0
-                // ) {
-                //   for (var i = 0; i < 3; i++) {
-                //     if (res.data.data.content[i]) {
-                //       var aa;
-                //       aa = res.data.data.content[i].contents.indexOf(_this.state2);
-                //       results.push({
-                //         value: res.data.data.content[i].contents.substring(
-                //           aa - 10,
-                //           aa
-                //         ),
-                //         queryString: res.data.data.content[i].contents.substr(
-                //           aa,
-                //           queryString.length
-                //         ),
-                //         queryStringRight: res.data.data.content[i].contents.substring(
-                //           aa + queryString.length,
-                //           aa + queryString.length + 10
-                //         ),
-                //         type: "课程内容",
-                //         class: "content",
-                //         num: i
-                //       });
-                //     }
-                //   }
-                // } else {
-                //   results.push({ value: "没有找到对应的课程内容" });
-                // }
                 cb(results);
               })
               .catch(function(error) {
@@ -1009,6 +972,7 @@ export default {
         );
       };
     },
+    // 点击搜索下拉框内的课程学校跳转
     handleSelect(item) {
       const _this = this;
       this.axios({
@@ -1035,52 +999,12 @@ export default {
               path: `/university/${item.id}`
             });
           }
-          // else if (item.class == "content") {
-          //   //课程内容
-          //   _this.$router.push({
-          //     path: "/serchDetailsContent",
-          //     query: {
-          //       id: res.data.data.content[item.num].classId,
-          //       classInfoId: res.data.data.content[item.num].classInfoId
-          //     }
-          //   });
-          // }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    handleEnter(item) {
-      // const _this = this;
-      // var patt = /^[\s]*$/;
-      // var pvalue = patt.test(_this.state1);
-      // if (pvalue) {
-      //   _this.$message({
-      //     message: "不能搜索全空格的内容",
-      //     type: "success"
-      //   });
-      // } else if(_this.state1.length<3) {
-      //   _this.$message({
-      //     message: "搜索长度最少三位数",
-      //     type: "success"
-      //   });
-      // }else {
-      //   _this.$router.push({
-      //     path: "/serch",
-      //     query: {
-      //       serchName: _this.state1
-      //     }
-      //   });
-      // }
-    },
-    handle() {
-      this.homeSerchHide = false;
-      this.homeSerchShow = true;
-    },
-    homeLoseFocus() {
-      this.homeSerchHide = true;
-      this.homeSerchShow = false;
-    },
+    // 点击快速了解向下跳转
     nextPageFn() {
       const _this = this;
       const ScrollTop = (number = 0, time) => {
@@ -1102,11 +1026,11 @@ export default {
           }
         }, spacingTime);
       };
-      ScrollTop(870, 200);
+      ScrollTop(950, 200);
     },
+    // 动画图片移动
     handleScroll() {
       const _this = this;
-      
       if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
         var elPosition1 = $(".img-fluid1").offset().top;
         var elPosition2 = $(".img-fluid2").offset().top;
@@ -1138,7 +1062,7 @@ export default {
         }
       }
     },
-    //根据国家 州/省份检索学校
+    //检索学校数量
     GetUniversitys: function(index) {
       const _this = this;
       _this

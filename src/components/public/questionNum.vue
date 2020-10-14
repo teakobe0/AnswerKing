@@ -153,6 +153,7 @@ export default {
     }
   },
   methods: {
+    // 检索问题数量
     Questionscirculation() {
       const _this = this;
       if (localStorage.token) {
@@ -190,6 +191,7 @@ export default {
           });
       }
     },
+    // 检索回答数量
     Answercirculation() {
       const _this = this;
       if (localStorage.token) {

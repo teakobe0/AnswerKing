@@ -14,7 +14,7 @@
             <h4>{{qlList.que.question.title}}</h4>
             <p style="font-size:14px;" v-html="qlList.que.question.content"></p>
             <div>
-              <img class="qlBodyQuImg" v-for="item in qlList.que.images" :src="item.url" alt />
+              <img class="qlBodyQuImg" v-for="item in qlList.que.images" :src="item.url" alt @click="suspendImg(item.url)"/>
             </div>
 
             <div style="margin-top:15px;">
@@ -80,11 +80,11 @@
             <b v-show="qdConMyBls == false">{{item.bname}}&nbsp;提交的竞拍</b>
             <b v-show="qdConMyBls == true">回答者&nbsp;{{item.bname}}</b>
             <div class="qdConBlsD">
-              <img src="../assets/问答详情1.jpg" alt />
+              <img src="../assets/问答详情2.jpg" alt />
               完成时间:{{item.bidding.endTime | formatDate}}
             </div>
             <div class="qdConBlsD">
-              <img src="../assets/问答详情2.jpg" alt />
+              <img src="../assets/问答详情1.jpg" alt />
               鲸灵币:{{item.bidding.currency}}
             </div>
             <div class="qdConBlsR">
@@ -388,6 +388,12 @@
         <div class="qlreleaseClose el-icon-close" @click="quizzerCloseChatRecords"></div>
       </div>
     </div>
+    <div class="suspend-img" v-show="suspendimgShow">
+        <div class="suspend-img-re">
+          <img :src="suImg" alt />
+          <div class="suspendClose el-icon-close" @click="CloseQuitBt"></div>
+        </div>
+      </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -661,6 +667,8 @@ export default {
       // 已选择竞拍者之后显示文字
       selectbname: false,
       startTimeRange:"",
+      suImg:"",
+      suspendimgShow:false
     };
   },
   created: function () {
@@ -707,6 +715,7 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
+    // 倒计时的效果
     countTime: function () {
       //获取当前时间
       var date = new Date();
@@ -738,6 +747,7 @@ export default {
       //递归每秒调用countTime方法，显示动态时间效果
       setTimeout(this.countTime, 1000);
     },
+    // 拿到当前登录人信息
     personal: function () {
       const _this = this;
       if (localStorage.token) {
@@ -842,7 +852,7 @@ export default {
                   _this.auctionbutton = false;
                   _this.replyShadeShow = false;
                   _this.inforQuiz = true;
-                  console.log("我是竞拍者之一");
+                  // console.log("我是竞拍者之一");
                 }
               }
               // 我是提问者
@@ -860,7 +870,7 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.editS = true;
-                console.log("提问者小于3");
+                // console.log("提问者小于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 3
@@ -878,7 +888,7 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                console.log("提问者等于3");
+                // console.log("提问者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 4
@@ -896,7 +906,7 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                console.log("提问者等于4");
+                // console.log("提问者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 5
@@ -913,7 +923,7 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                console.log("提问者等于5");
+                // console.log("提问者等于5");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status >= 6
@@ -931,7 +941,7 @@ export default {
                 _this.serviceS = true;
                 _this.qdConMyBls = true;
                 _this.selectbname = true;
-                console.log("提问者大于6");
+                // console.log("提问者大于6");
               }
 
               // 我是答题者
@@ -953,7 +963,7 @@ export default {
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                console.log("答题者小于等于3");
+                // console.log("答题者小于等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.answerer &&
                 _this.qlList.que.question.status == 4
@@ -974,7 +984,7 @@ export default {
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                console.log("答题者等于4");
+                // console.log("答题者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.answerer &&
                 _this.qlList.que.question.status == 5
@@ -994,7 +1004,7 @@ export default {
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                console.log("答题者等于5");
+                // console.log("答题者等于5");
               }
               // 当问题已完成
               if (_this.qlList.que.question.status >= 6) {
@@ -1008,12 +1018,12 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.submitAnss = true;
                 _this.replyShadeShow = false;
-                console.log("问题已完成");
+                // console.log("问题已完成");
               }
 
               if (_this.qlList.answer != null) {
                 _this.myValue = _this.qlList.answer.content;
-                console.log("有答案");
+                // console.log("有答案");
               }
             } else {
               _this.qdeditShow = false;
@@ -1058,7 +1068,6 @@ export default {
               },
             })
             .then(function (res) {
-              console.log(res);
               if (res.data.status == 1) {
                 _this.auctionbutton = false;
                 _this.qdConMyBls = true;
@@ -1080,6 +1089,7 @@ export default {
         })
         .catch(() => {});
     },
+    // 竞拍者发起聊天检索聊天信息
     informQuizzer(item) {
       const _this = this;
       _this.quizzerbls = item;
@@ -1110,6 +1120,7 @@ export default {
           console.log(error);
         });
     },
+    // 竞拍者发起聊天之后轮询这个方法持续检索
     informss() {
       const _this = this;
       _this
@@ -1145,7 +1156,7 @@ export default {
           console.log(error);
         });
     },
-    // 发送消息
+    // 竞拍者发送消息
     quizzerChatSendHead() {
       const _this = this;
       var valuestr = _this.quizzerchatSends.trim();
@@ -1185,7 +1196,7 @@ export default {
           });
       }
     },
-    // 通知留言
+    // 提问者发起聊天检索聊天内容
     inform(item) {
       const _this = this;
       _this.bls = item;
@@ -1216,6 +1227,7 @@ export default {
           console.log(error);
         });
     },
+    // 提问者发起聊天之后轮询这个方法检索聊天
     informs() {
       const _this = this;
       _this
@@ -1251,11 +1263,7 @@ export default {
           console.log(error);
         });
     },
-    chatSendChange() {
-      const _this = this;
-      clearInterval(_this.timeChat);
-    },
-    // 发送消息
+    // 提问者发送消息
     chatSendHead() {
       const _this = this;
       _this.scrollToBottom();
@@ -1356,7 +1364,6 @@ export default {
     // 竞拍按钮
     replyShade(item) {
       const _this = this;
-      console.log(item);
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.question.id;
         _this.auction.EndTime = _this.formatDate(item.que.question.endTime);
@@ -1447,7 +1454,6 @@ export default {
     // 申请客服按钮
     service(id) {
       const _this = this;
-      console.log(id);
       this.$prompt("您要对客服说:", "CourseWhale", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -1470,7 +1476,6 @@ export default {
               },
             })
             .then(function (res) {
-              console.log(res);
               if (res.data.status == 1) {
                 _this.$message({
                   message: "发送成功",
@@ -1534,6 +1539,7 @@ export default {
         }
       });
     },
+    // 编辑答案内容图片删除后
     handleRemoveAns(file) {
       const _this = this;
       _this
@@ -1562,22 +1568,24 @@ export default {
           console.log(error);
         });
     },
+    // 编辑答案内容图片预览
     handlePictureCardPreviewAns(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
     },
+    // 编辑答案内容图片成功后
     handleAvatarSuccessAns(res, file, fileList) {
       const _this = this;
-      console.log(fileList);
       var imgurl = "";
       for (let i = 0; i < fileList.length; i++) {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.quefileListImg = imgurl.slice(1);
     },
+    // 编辑答案内容图片上传前
     beforeAvatarUploadAns(file) {
-      console.log(file);
     },
+    // 关闭评价遮罩
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
@@ -1630,6 +1638,7 @@ export default {
         }
       });
     },
+    // 编辑问题的图片删除后
     handleRemove(file, fileList) {
       const _this = this;
       _this
@@ -1659,28 +1668,29 @@ export default {
           console.log(error);
         });
     },
+    // 编辑问题的图片预览
     handlePictureCardPreview(file) {
       this.queImageUrl = file.url;
       this.queVisible = true;
-      console.log(file);
     },
+    // 编辑问题的图片成功后
     handleAvatarSuccess(res, file, fileList) {
       const _this = this;
-      console.log(fileList);
       var imgurl = "";
       for (let i = 0; i < fileList.length; i++) {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
-      console.log(_this.QuestionsQuiz.Img);
     },
+    // 编辑问题的图片上传前
     beforeAvatarUpload(file) {
-      console.log(file);
     },
+    // 关闭聊天框
     CloseChatRecords() {
       this.ChatRecords = false;
       clearInterval(this.timeChat);
     },
+    // 关闭聊天框
     quizzerCloseChatRecords() {
       this.quizzerChatRecords = false;
       clearInterval(this.timeChatss);
@@ -1695,16 +1705,29 @@ export default {
         divs.scrollTop = divs.scrollHeight;
       });
     },
+    // 新消息点击跳转到底部
     newInfo1() {
       const _this = this;
       _this.newInfo = false;
       _this.scrollToBottom();
     },
+    // 新消息点击跳转到底部
     newInfo2() {
       const _this = this;
       _this.newInfos = false;
       _this.scrollToBottom();
     },
+    // 提问内容里的图片放大
+    suspendImg(item){
+      const _this = this;
+      _this.suImg = item;
+      _this.suspendimgShow = !_this.suspendimgShow;
+    },
+    // 提问内容里的图片关闭放大遮罩
+    CloseQuitBt(){
+      const _this = this;
+      _this.suspendimgShow = !_this.suspendimgShow;
+    }
   },
   mounted() {
     tinymce.init({});

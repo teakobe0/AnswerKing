@@ -106,9 +106,6 @@ export default {
     }
   },
   methods: {
-    handleClick: function(tab, event) {
-      console.log(tab, event);
-    },
     // 获取个人信息
     gainpersonal: function() {
       const _this = this;
@@ -131,7 +128,6 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
-            console.log("获取token失败");
           });
       } else {
       }
@@ -182,7 +178,6 @@ export default {
                 }
               }
             }
-            console.log(_this.messages)
           }
         })
         .catch(function(error) {
@@ -217,6 +212,7 @@ export default {
           0
       });
     },
+    // 删除留言
     del(ids) {
       const _this = this;
       _this
@@ -241,7 +237,6 @@ export default {
     // 通知留言
     inform(item, name) {
       const _this = this;
-      console.log(item);
 
       this.$prompt("对" + " " + name + " " + "留言:", "CourseWhale", {
         confirmButtonText: "确定",

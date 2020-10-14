@@ -104,11 +104,11 @@ export default {
       defeadet: false,
       nullShow: true,
       loading:true,
-      a: ""
     };
   },
   created: function() {
     const _this = this;
+    // 验证邮箱
     _this
       .axios({
         method: "put",

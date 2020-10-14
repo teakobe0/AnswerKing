@@ -144,8 +144,6 @@
         <div
           class="cover"
           v-for="(item,indexs) in items.origin"
-          @mouseenter="onMouseOver(items,indexs)"
-          @mouseleave="onMouseout(items,indexs)"
           @click="() => handleanwer(indexs,item)"
         >
           
@@ -221,23 +219,20 @@ export default {
     const _this = this;
   },
   methods: {
-    onMouseOver: function(item, index) {
-      const _this = this;
-    },
-    onMouseout: function(item, index) {
-      const _this = this;
-    },
+    // 控制图片查看器的展开
     shows() {
       let _this = this;
       _this.visible = true;
       _this.imgshow = true;
     },
+    // 图片查看器的关闭
     handleHide() {
       let _this = this;
       _this.visible = false;
       _this.fullscreenLoading = false;
       _this.imgshow = false;
     },
+    // 开通会员前查看用户状态
     joim: function() {
       const _this = this;
       if (localStorage.token) {
@@ -266,25 +261,8 @@ export default {
               _this.fullscreenLoading = false;
               _this.visible = false;
             }
-            // _this.shade = false;
-            // _this.totalTime = 0;
-            // _this.visible = false;
           });
       }
-    },
-    clockTick: function() {
-      let _this = this;
-
-      return setTimeout(() => {
-        if (_this.totalTime > 0) {
-          _this.totalTime--;
-          _this.content =
-            _this.totalTime + "s" + " " + _this.$t("content.con25");
-          _this.clockTick();
-        } else {
-          _this.Closemask();
-        }
-      }, 1000);
     },
     //点击答案显示遮罩方法
     handleanwer: function(index,item) {
@@ -335,6 +313,7 @@ export default {
       // _this.shows();
       _this.handleHide();
     },
+    // 登录遮罩层的关闭
     popupShows() {
       const _this = this;
       _this.popup = false;

@@ -234,9 +234,9 @@ export default {
     _this.universityidClass();
   },
   methods: {
+    //通过学校ID查询拥有的课程
     universityidClass: function() {
       const _this = this;
-      //通过学校ID查询拥有的课程
       _this
         .axios({
           method: "get",
@@ -314,7 +314,7 @@ export default {
           });
       }
     },
-    // 输入框搜索查询
+    // 输入框搜索查询课程
     queryname: function(names) {
       const _this = this;
       _this
@@ -341,6 +341,7 @@ export default {
           console.log(error);
         });
     },
+    // 点击关注
     attention: function(item, index) {
       const _this = this;
       if (localStorage.token) {

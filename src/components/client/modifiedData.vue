@@ -121,6 +121,7 @@ export default {
     }
   },
   methods: {
+    // 修改资料
     onSubmit() {
       const _this = this;
 
@@ -144,6 +145,7 @@ export default {
           console.log(error);
         });
     },
+    // 获取个人信息
     GetClient: function() {
       const _this = this;
       if (localStorage.getItem("token")) {

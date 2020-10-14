@@ -477,17 +477,6 @@ export default {
         _this.headShow = false;
         _this.searching();
       }
-      // if (_this.$store.state.loginPerson.loginPerson.id) {
-      //   _this.personreviews = _this.$store.state.loginPerson.loginPerson;
-      //   _this.personreviewsid = _this.$store.state.loginPerson.loginPerson.id;
-      //   _this.imageUrl =
-      //     "http://192.168.1.29:8088" +
-      //     _this.$store.state.loginPerson.loginPerson.image;
-      //     _this.headShowLogin = true;
-      //   _this.searching();
-      // } else {
-
-      // }
     },
     //检索评论
     searching: function() {
@@ -615,7 +604,6 @@ export default {
     },
     // 新增2级评论
     submitReview: function(model) {
-      console.log(model);
       const _this = this;
       if (localStorage.token) {
         if (_this.personalVipEmail) {
@@ -698,14 +686,6 @@ export default {
         .catch(function(error) {
           console.log(error);
         });
-    },
-
-    //向reviews评论数组中添加控制打开关闭的openreply属性，动态显示ipnut值得model属性
-    openreview: function() {
-      const _this = this;
-    },
-    openLike: function(like) {
-      const _this = this;
     },
     // 2级评论的回复方法
     replyTwolevel: function(index, oneid, twoid, name) {

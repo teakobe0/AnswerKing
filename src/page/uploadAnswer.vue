@@ -1176,7 +1176,7 @@
         <div class="page-component-up" @click="pageTop" v-show="topBottShow">
           <i class="el-icon-caret-top"></i>
         </div>
-        <a href="#UPdown" class="page-component-ups" @click="pageBottom" v-show="topBottShow">
+        <a href="#UPdown" class="page-component-ups" v-show="topBottShow">
           <i class="el-icon-caret-bottom"></i>
         </a>
       </div>
@@ -1411,6 +1411,7 @@ export default {
     window.addEventListener("scroll", _this.handleScroll);
   },
   methods: {
+    // 展示上下箭头
     handleScroll() {
       const _this = this;
       var scrollTop =
@@ -1604,7 +1605,6 @@ export default {
                 },
               })
               .then(function (res) {
-                console.log(res);
                 if (res.data.status == 1) {
                   _this.upload.course = res.data.data.clas.name;
                   _this.upload.courseId = res.data.data.clas.id;
@@ -1746,7 +1746,6 @@ export default {
             var b = _this.weekoptions.length;
             var a = _this.weekoptions[b - 1].label;
             _this.weekoptions.push({ label: a + 1 });
-            console.log(_this.weekoptions);
           }
         })
         .catch(function (error) {
@@ -1930,8 +1929,6 @@ export default {
       }
 
       _this.upload.answerUrl = imgurl.slice(1);
-      console.log(imgurl.slice(1));
-      // _this.upload.answerUrl = res.file;
 
       var formData = {};
       formData.Name = _this.upload.topic;
@@ -2100,7 +2097,6 @@ export default {
                 },
               })
               .then(function (res) {
-                console.log(res);
                 if (res.data.data.length > 0) {
                   for (var i = 0; i < 10; i++) {
                     if (res.data.data[i]) {
@@ -2130,7 +2126,6 @@ export default {
     // 选择学校下拉框其中一条学校触发
     SchoolHandleSelectauto(value) {
       const _this = this;
-      console.log(value);
       _this.upload.schoolId = value.id;
       _this.upload.school = value.value;
       if (value.type != null) _this.schooldisabled = false;
@@ -2216,7 +2211,6 @@ export default {
     },
     // 删除答案
     editAnswerDelete(item) {
-      console.log(item);
       const _this = this;
       _this
         .$confirm(_this.$t("upload.u12"), _this.$t("award.con16"), {
@@ -2262,7 +2256,6 @@ export default {
     },
     // 打开编辑答案内的上传
     editstepupload(item) {
-      console.log(item);
       const _this = this;
       if (localStorage.getItem("token")) {
         var formData = {};
@@ -2358,6 +2351,7 @@ export default {
       const _this = this;
       _this.answerArray[index].list[indexs].topicCacheUrl = res.file;
     },
+    // 题目图片删除后
     editTopicHandleRemove(file, fileList, idx, id, nameUrl, indexs) {
       const _this = this;
       const a = nameUrl.split("/");
@@ -2396,20 +2390,20 @@ export default {
           console.log(error);
         });
     },
+    // 题目图片有变化时
     editTopicHandleChange(file, fileList, idx, nameUrl) {
       const _this = this;
     },
+    // 题目图片上传之前
     editTopicHandlebeforeupload(file) {
       const _this = this;
     },
     // 编辑答案图片
     editAnswerHandlesuccess(res, file, fileList, index, indexs) {
       const _this = this;
-      console.log(res);
-      console.log(indexs);
       _this.answerArray[index].list[indexs].answerCacheUrl = res.file;
     },
-    //
+    // 答案图片删除后
     editAnswerHandleRemove(file, fileList, idx, id, url, indexs) {
       const _this = this;
       const a = url.split("/");
@@ -2448,9 +2442,11 @@ export default {
           console.log(error);
         });
     },
+    // 答案图片有变化时
     editAnswerHandleChange(file, fileList) {
       const _this = this;
     },
+    // 答案图片上传前
     editAnswerHandlebeforeupload(file) {
       const _this = this;
     },
@@ -2474,15 +2470,13 @@ export default {
         })
         .then(function (res) {
           if (res.data.status == 1) {
-            _this.orderInfo.name = res.data.data.name;
-            _this.orderKong.name = res.data.data.name;
-            _this.orderKong.id = res.data.data.id;
-            _this.orderKong.clientId = res.data.data.clientId;
+            _this.orderInfo.name = res.data.data.cict.name;
+            _this.orderKong = res.data.data.cict;
             if (_this.$route.query.type == 3) {
-              _this.classInfoId = res.data.data.id;
-              _this.upload.course = res.data.data.info.clas;
-              _this.upload.school = res.data.data.info.university;
-              _this.serchingAnswer(res.data.data.id);
+              _this.classInfoId = res.data.data.cict.id;
+              _this.upload.course = res.data.data.clas;
+              _this.upload.school = res.data.data.university;
+              _this.serchingAnswer(res.data.data.cict.id);
             }
           }
         })
@@ -2627,6 +2621,7 @@ export default {
         }
       });
     },
+    // 修改题库集名称
     modification() {
       const _this = this;
       _this.subtitle = !_this.subtitle;
@@ -2682,22 +2677,21 @@ export default {
           console.log(error);
         });
     },
+    // 放大图片遮罩
     suspendImg(item) {
       const _this = this;
-      console.log(item);
       _this.suImg = item;
       _this.suspendimgShow = !_this.suspendimgShow;
     },
+    // 关闭图片遮罩
     CloseQuitBt() {
       const _this = this;
       _this.suspendimgShow = !_this.suspendimgShow;
     },
+    // 跳转的页面顶部
     pageTop() {
       const _this = this;
       window.scroll(0, 0);
-    },
-    pageBottom() {
-      const _this = this;
     },
     // 自定义添加一个新的周
     addWeek() {
@@ -2713,7 +2707,6 @@ export default {
         .then(({ value }) => {
           _this.weekoptions.push({ label: value });
           _this.upload.week = Number(value);
-          console.log(_this.upload.week);
           _this.$message({
             type: "success",
             message: "添加第" + value + "周",
@@ -2721,6 +2714,7 @@ export default {
         })
         .catch(() => {});
     },
+    // 展开一个周的答案
     fold(item, index) {
       const _this = this;
       item.shows = !item.shows;

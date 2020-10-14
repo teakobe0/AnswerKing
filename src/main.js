@@ -68,6 +68,7 @@ import {
   Radio,
   RadioGroup,
   RadioButton,
+  Alert,
 } from 'element-ui';
 Vue.use(Button);
 Vue.use(Select);
@@ -98,10 +99,11 @@ Vue.use(Col);
 Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(RadioButton);
+Vue.use(Alert);
 
 
 Vue.use(Loading.directive);
-
+Vue.prototype.$alert = MessageBox.alert;
 Vue.prototype.$notify = Notification;
 Vue.prototype.$loading = Loading.service;
 Vue.prototype.$msgbox = MessageBox;

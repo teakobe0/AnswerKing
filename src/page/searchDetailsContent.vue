@@ -433,7 +433,6 @@
               <span v-if="value.professor">{{$t('classesDetail.con3')}}:{{value.professor}}</span>
               <span v-if="contributor == true">{{$t('content.con1')}}:</span>
               <router-link
-                :to="'/ownness/'+informations.classinfo.clientId"
                 class="ownness-name"
                 @click="ownness"
                 :title="$t('classesDetail.con15') + ' ' + informations.clientname + ' ' + $t('classesDetail.con16')"
@@ -659,7 +658,7 @@ export default {
     _this.Classinfos();
   },
   methods: {
-    //根据课程id检索
+    //根据课程id检索课程
     Getclass: function() {
       const _this = this;
       _this
@@ -955,6 +954,7 @@ export default {
     RetrieveTheTnswer: function(classWeekTypeId) {
       const _this = this;
     },
+    // 有用按钮
     beOfUses: function() {
       const _this = this;
       if (localStorage.token) {
@@ -980,6 +980,7 @@ export default {
         });
       }
     },
+    // 没有按钮
     noUses: function() {
       const _this = this;
       if (localStorage.token) {
@@ -1110,7 +1111,7 @@ export default {
           });
       }
     },
-    // 关注
+    // 点击关注关注
     attention: function() {
       const _this = this;
 
@@ -1188,9 +1189,6 @@ export default {
           type: "warning"
         });
       }
-    },
-    ownness() {
-      const _this = this;
     }
   }
 };

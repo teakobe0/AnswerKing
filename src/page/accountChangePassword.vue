@@ -73,10 +73,10 @@ export default {
   },
   created: function() {
     const _this = this;
-    console.log(_this.$route.query.k)
   },
   //页面的方法还是写在methods{}中
   methods: {
+    // 修改重置后密码
     submitForm: function() {
       const _this = this;
       
@@ -105,7 +105,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             _this.loadings = false;
             if (res.data.status == 1) {
               _this.$alert(_this.$t('popupLogin.con25'), "CourseWhale", {

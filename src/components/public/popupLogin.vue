@@ -56,7 +56,6 @@
 <template>
   <div class="popupLogin" v-show="popups">
     <div class="pop-login-con">
-      <!-- <i class="el-icon-close pop-close" @click="popupShows"></i> -->
       <img class="pop-img" src="../../assets/现在注册.png" alt v-show="popimg1 == true" />
       <img class="pop-img" src="../../assets/限时活动.png" alt v-show="popimg1 == false" />
       <div class="pop-milogin" v-show="loginShow == true">
@@ -293,7 +292,6 @@ export default {
               console.log(error);
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
@@ -338,19 +336,15 @@ export default {
               console.log(error);
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
     },
+    // 关闭登录遮罩
     loginShowHed() {
       const _this = this;
       _this.loginShow = !_this.loginShow;
     },
-    popupShows() {
-      const _this = this;
-      _this.popups = false;
-    }
   },
   watch: {
     "$i18n.locale"() {

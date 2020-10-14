@@ -340,6 +340,7 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
+    // 搜索框搜索课程
     querySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -369,7 +370,6 @@ export default {
                 }
               })
               .then(function(res) {
-                console.log(res)
                 if (
                   res.data.data.data.length > 0
                 ) {
@@ -397,7 +397,7 @@ export default {
         }, 1000 * Math.random());
       }
     },
-    //根据课程名称检索 分页
+    // 根据课程名称检索课程分页
     GetClasses: function(index) {
       const _this = this;
       _this
@@ -415,7 +415,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res)
           _this.classesAll = res.data.data.data;
           _this.loading = false;
           _this.classesPagings = true;
@@ -425,6 +424,7 @@ export default {
           console.log(error);
         });
     },
+    // 课程分页跳转
     handleCurrentChange(val) {
       const _this = this;
       _this

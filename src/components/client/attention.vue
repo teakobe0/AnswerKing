@@ -54,7 +54,7 @@
     <div class="attention-right">
       <h3>{{$t('personal.nav7')}}</h3>
       <div class="MyAttention">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName">
           <el-tab-pane :label="$t('attention.con1')" name="first">
             <div class="attentionNull" v-if="attNull1 == false">{{$t('attention.con4')}}</div>
             <div v-for="item in classAtt">
@@ -106,7 +106,7 @@ export default {
     }
   },
   methods: {
-    handleClick: function() {},
+    // 取消关注
     delAttention: function(item) {
       const _this = this;
       _this

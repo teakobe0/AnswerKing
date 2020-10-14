@@ -348,36 +348,36 @@ export default {
         menubar: false,
         // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
         // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
-        images_upload_handler: (blobInfo, success, failure) => {
-          // const img = "data:image/jpeg;base64," + blobInfo.base64();
-          // success(img);
-          let formData = new FormData();
-          // 服务端接收文件的参数名，文件数据，文件名
-          formData.append("file", blobInfo.blob(), blobInfo.filename());
+        // images_upload_handler: (blobInfo, success, failure) => {
+        //   // const img = "data:image/jpeg;base64," + blobInfo.base64();
+        //   // success(img);
+        //   let formData = new FormData();
+        //   // 服务端接收文件的参数名，文件数据，文件名
+        //   formData.append("file", blobInfo.blob(), blobInfo.filename());
 
-          this.axios({
-            method: "POST",
-            // 这里是你的上传地址
-            url: this.URLport.serverPath + "/File/UploadQuestion",
-            async: false,
-            data: formData,
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-            .then((res) => {
-              // 这里返回的是你图片的地址
-              success(res.data.file);
-            })
-            .catch(() => {
-              // failure("上传失败");
-            });
+        //   this.axios({
+        //     method: "POST",
+        //     // 这里是你的上传地址
+        //     url: this.URLport.serverPath + "/File/UploadQuestion",
+        //     async: false,
+        //     data: formData,
+        //     xhrFields: {
+        //       withCredentials: true,
+        //     },
+        //     headers: {
+        //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //     },
+        //   })
+        //     .then((res) => {
+        //       // 这里返回的是你图片的地址
+        //       success(res.data.file);
+        //     })
+        //     .catch(() => {
+        //       // failure("上传失败");
+        //     });
 
-          console.log(blobInfo);
-        },
+        //   console.log(blobInfo);
+        // },
       },
       myValue: this.value,
       topInput: "",
@@ -460,13 +460,11 @@ export default {
       fileList: [],
       Answernum: "",
       qdConRigtS: false,
-      myQlListsId:0
     };
   },
   created: function () {
     const _this = this;
     _this.personal();
-    // _this.handleScroll();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
@@ -515,38 +513,37 @@ export default {
     // 获取最新的问题数量
     answerNum() {
       const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/GetNumber`,
-          async: false,
-          params: {
-            time: _this.formatDate(_this.newAnswerTime),
-          },
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          if (res.data.data.num > 0) {
-            _this.newAnswerNum = res.data.data.num;
-            console.log(_this.newAnswerTime)
-            console.log("------")
-            console.log(res.data.data.datetime)
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Questions/GetNumber`,
+            async: false,
+            params: {
+              time: _this.formatDate(_this.newAnswerTime),
+            },
+            xhrFields: {
+              withCredentials: true,
+            },
+          })
+          .then(function (res) {
+            if (res.data.data.num > 0) {
+              _this.newAnswerNum = res.data.data.num;
+              if (_this.newAnswerTime == res.data.data.datetime) {
+                _this.newAnswerShow = false;
+              } else {
+                _this.newAnswerShow = true;
+              }
 
-            if(_this.newAnswerTime == res.data.data.datetime){
-              _this.newAnswerShow = false;
-            }else {
-              _this.newAnswerShow = true;
+              _this.newAnswerTimes = res.data.data.datetime;
             }
-            
-            _this.newAnswerTimes = res.data.data.datetime;
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      }
     },
+    // 出现新消息时点击获取新消息
     newAnswerClick() {
       const _this = this;
       _this
@@ -567,11 +564,6 @@ export default {
             _this.newAnswerNum = 0;
             _this.newAnswerTime = res.data.data[0].que.createTime;
             let myQlList = res.data.data;
-
-
-            _this.myQlListsId = myQlList[0].que.id;
-
-
             if (myQlList[0].que.id != _this.myQlList[0].que.id) {
               let date = new Date();
               let now = date.getTime();
@@ -601,6 +593,7 @@ export default {
           console.log(error);
         });
     },
+    // 当滚动条拉倒页面底部时加载问题
     handleScroll() {
       var _this = this;
       if (_this.$route.fullPath == "/question") {
@@ -786,6 +779,7 @@ export default {
         return;
       }
     },
+    // 检索当前登录人信息
     personal: function () {
       const _this = this;
       if (localStorage.token) {
@@ -929,21 +923,19 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
-    // 最新展示
+    // 点击最新按钮展示
     newTime() {
       const _this = this;
       _this.num = 0;
       _this.typeNum = "new";
       _this.pagenums = 1;
-      // _this.qlcon = true;
-      // _this.qlData = false;
       if (localStorage.token) {
         _this.myquizList();
       } else {
         _this.quizList();
       }
     },
-    // 即将结束展示
+    // 点击即将结束展示
     newTimes() {
       const _this = this;
       _this.num = 1;
@@ -957,7 +949,7 @@ export default {
         _this.quizList();
       }
     },
-    // 高悬赏展示
+    // 点击高悬赏展示
     topCurrency() {
       const _this = this;
       _this.num = 2;
@@ -971,7 +963,6 @@ export default {
         _this.quizList();
       }
     },
-
     // 已完成展示
     // accomplish() {
     //   const _this = this;
@@ -1124,7 +1115,6 @@ export default {
     // 我要答显示遮罩按钮
     replyShade(item) {
       const _this = this;
-      console.log(item.que.endTime);
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.id;
         _this.auction.EndTime = _this.formatDate(item.que.endTime);
@@ -1342,6 +1332,7 @@ export default {
           });
       }
     },
+    // 点击页面底部的三个点加载下一页
     nextpages() {
       const _this = this;
       if (localStorage.token && _this.num != 3) {
@@ -1392,10 +1383,6 @@ export default {
                   a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
                 }
                 _this.myQlList.push(a[i]);
-                console.log(a[i]);
-                console.log(d);
-                console.log(h);
-                console.log(m);
               }
             }
           })
@@ -1447,7 +1434,6 @@ export default {
                   }
                   _this.qlList.push(a[i]);
                 }
-                console.log(_this.qlList);
               }
             }
           })
@@ -1511,6 +1497,7 @@ export default {
           });
       }
     },
+    // 上传问题图片删除后
     handleRemove(file, fileList) {
       const _this = this;
 
@@ -1541,11 +1528,12 @@ export default {
           console.log(error);
         });
     },
+    // 上传问题图片预览
     handlePictureCardPreview(file) {
       this.dialogImageUrl = file.url;
       this.dialogVisible = true;
-      console.log(file);
     },
+    // 上传问题图片成功后
     handleAvatarSuccess(res, file, fileList) {
       const _this = this;
       var imgurl = "";
@@ -1553,17 +1541,14 @@ export default {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
-      console.log(imgurl.slice(1));
     },
+    // 上传问题图片上传前
     beforeAvatarUpload(file) {
-      console.log(file);
     },
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
-    // this.handleScroll().unbind();
     window.removeEventListener("scroll", this.handleScroll);
-    console.log(this.$route);
   },
   watch: {
     "QuestionsQuiz.EndTime": {
@@ -1587,7 +1572,6 @@ export default {
             st = "00:00:00";
           }
           this.startTimeRange = st + " - 23:59:59";
-          console.log(this.startTimeRange);
           // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
           // //否则为：00:00:00- 23:59:59
         }

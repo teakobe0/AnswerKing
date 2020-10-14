@@ -62,8 +62,6 @@ import schoolFile from '@/components/school/schoolFile.vue'
 
 import answer from "@/components/questionBank/answer.vue";
 
-import platinavip from '@/components/client/platinayearly.vue'
-
 
 
 
@@ -147,17 +145,6 @@ export default new Router({
                     path: 'vip',      //设置跳转
                     name: 'vip',
                     component: vip,
-                    // children:[
-                    //     {
-                    //         path: '/',      //设置跳转
-                    //         component: platinavip,
-                    //     },
-                    //     {
-                    //         path: 'platinavip',      //设置跳转
-                    //         name: 'platinavip',
-                    //         component: platinavip,
-                    //     },
-                    // ]
                 },
                 {
                     path: 'orderHistory',      //设置跳转

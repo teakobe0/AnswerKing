@@ -149,6 +149,7 @@ export default {
   },
   //页面的方法还是写在methods{}中
   methods: {
+    // 点击忘记密码下一步给邮箱发送重置密码页面
     submitForm(ruleForm) {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
@@ -167,7 +168,6 @@ export default {
               }
             })
             .then(function(res) {
-              console.log(res);
               _this.loadings = false;
               if (res.data.status == 1) {
                 _this.$alert(
@@ -199,7 +199,6 @@ export default {
               console.log(error);
             });
         } else {
-          console.log("error submit!!");
           return false;
         }
       });

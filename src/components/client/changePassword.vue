@@ -102,6 +102,7 @@ export default {
   },
   //页面的方法还是写在methods{}中
   methods: {
+    // 修改密码
     submitForm(changePasswords) {
       this.$refs[changePasswords].validate(valid => {
         if (valid) {
@@ -124,7 +125,6 @@ export default {
               }
             })
             .then(function(res) {
-              console.log(res);
               if (res.data.status == 1) {
                 _this.$message({
                   message: _this.$t('changePassword.con5'),

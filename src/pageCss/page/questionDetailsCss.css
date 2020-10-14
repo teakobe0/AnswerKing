@@ -37,6 +37,12 @@
   margin-top: 22px;
   margin-bottom: 25px;
   margin-right: 25px;
+  cursor:pointer;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #fff;
+}
+.qlBodyQuImg:hover {
+  border-bottom: 1px solid #4458B0;
 }
 .qdConBls {
   background: #f7f3eb;

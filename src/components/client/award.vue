@@ -83,6 +83,7 @@ export default {
     }
   },
   methods: {
+    // 点击编辑跳转对应界面
     handleClick(row) {
       this.$store.state.logo.uaShow = true;
       if (row.type == "学校") {
@@ -104,6 +105,7 @@ export default {
         });
       }
     },
+    // 点击删除
     handleDelete(row) {
       const _this = this;
       if (row.type == "学校") {
@@ -233,6 +235,7 @@ export default {
           });
       }
     },
+    // 获取贡献列表
     queryOrder() {
       const _this = this;
       _this

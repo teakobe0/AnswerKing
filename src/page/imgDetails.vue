@@ -292,7 +292,6 @@ export default {
       // 答案图片内容
       Answer: [],
       informations: {},
-      UPshow: false,
       beforeData: [],
       afterData: [],
       answerImgs: [],
@@ -308,24 +307,8 @@ export default {
   },
   mounted() {
     var _this = this;
-    window.addEventListener("scroll", _this.handleScroll);
   },
   methods: {
-    handleScroll() {
-      var _this = this;
-      if (_this.$route.params.imgDetails_id) {
-        var scrollTop =
-          window.pageYOffset ||
-          document.documentElement.scrollTop ||
-          document.body.scrollTop;
-        if (scrollTop >= 500) {
-          _this.UPshow = true;
-          $(".UP").addClass("animation fade-in");
-        } else {
-          _this.UPshow = false;
-        }
-      }
-    },
     //根据课程id检索
     Getclass: function() {
       const _this = this;
@@ -385,6 +368,7 @@ export default {
           console.log(error);
         });
     },
+    // 图片详情页面的没有按钮
     beOfUses: function() {
       const _this = this;
       if (localStorage.token) {
@@ -410,6 +394,7 @@ export default {
         });
       }
     },
+    // 图片详情页面的有用按钮
     noUses: function() {
       const _this = this;
       if (localStorage.token) {
@@ -637,37 +622,6 @@ export default {
 
       return outputList;
     },
-    // 获取答案图片
-    // gainImg() {
-    //   const _this = this;
-    //   _this
-    //     .axios({
-    //       method: "get",
-    //       url: `${_this.URLport.serverPath}/ClassInfoContent/ClassInfoContents`,
-    //       async: false,
-    //       params: {
-    //         classInfoId: _this.$route.params.imgDetails_id
-    //       },
-    //       xhrFields: {
-    //         withCredentials: true
-    //       },
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("token")}`
-    //       }
-    //     })
-    //     .then(function(res) {
-    //       _this.Answer = res.data.data;
-    //       for (var i = 0; i < _this.Answer.length; i++) {
-    //         if (_this.Answer[i].url == null || _this.Answer[i].url == "") {
-    //         } else {
-    //           _this.Answer[i].Imgs = _this.getUrlList(_this.Answer[i]);
-    //         }
-    //       }
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
-    // },
     // 根据周和订单ID获取类型和答案
     typeAnswer(weekId, anIndex) {
       const _this = this;
@@ -688,7 +642,6 @@ export default {
           }
         })
         .then(function(res) {
-          console.log(res);
           _this.beforeData = res.data.data;
           // 循环整合数据结构
           let tempArr = [];
@@ -735,9 +688,6 @@ export default {
           console.log(error);
         });
     },
-    UPcilick() {
-      document.documentElement.scrollTop = 0;
-    }
   }
 };
 </script>

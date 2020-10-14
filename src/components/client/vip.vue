@@ -142,27 +142,6 @@
 .imgweixin {
   border: 2px solid #fc8321 !important;
 }
-.dredgePay {
-  display: inline-block;
-  width: 220px;
-  height: 50px;
-  line-height: 50px;
-  color: #fff;
-  font-size: 18px;
-  text-align: center;
-  background: #fc8321;
-  -webkit-box-shadow: 0 10px 15px rgba(252, 131, 33, 0.3);
-  box-shadow: 0 10px 15px rgba(252, 131, 33, 0.3);
-  -webkit-transition: 0.2s;
-  -o-transition: 0.2s;
-  transition: 0.2s;
-  cursor: pointer;
-  margin-left: 66px;
-  margin-top: 24px;
-}
-.dredgePay:hover {
-  background-color: #ff8d2f;
-}
 .paypal-button-container {
   width: 300px;
   margin: 0 auto;
@@ -194,42 +173,10 @@
           </li>
         </ul>
       </div>
-      <!--<div>-->
-      <!--<router-view/>-->
-      <!--</div>-->
       <div class="sweep">
         <div>{{$t('myvip.con3')}}</div>
       </div>
       <div class="pay">
-        <!-- <div class="pay-left"> -->
-        <!-- 选择平台: -->
-        <!-- <img
-            src="../../assets/paypal.png"
-            alt
-            :class="{imgweixin:pay == 0}"
-            @click="payplatform(0,1)"
-        >-->
-        <!-- <img
-            src="../../assets/weixin.png"
-            alt
-            :class="{imgweixin:pay == 1}"
-            @click="payplatform(1,2)"
-          >
-          <img
-            src="../../assets/zhifubao.png"
-            alt
-            :class="{imgweixin:pay == 2}"
-            @click="payplatform(2,3)"
-        >-->
-        <!-- </div> -->
-        <!-- <div class="pay-right"> -->
-        <!-- <p>
-            应付金额:
-            <span style="color: #fc8321;font-size: 25px;">{{money}}</span> 元
-        </p>-->
-        <!-- <div><img src="../../assets/微信.png" alt=""  style="width: 20px;height: 20px;vertical-align:middle"/><img src="../../assets/支付宝.png" alt=""  style="width: 20px;height: 20px;vertical-align:middle;margin-left: 10px;margin-right: 10px;"/></div> -->
-        <!-- </div> -->
-        <!-- <div class="dredgePay" @click="dredgePay">立即开通</div> -->
         <div id="paypal-button-container" class="paypal-button-container"></div>
       </div>
       <div class="clauseText">{{$t('myvip.con4')}}</div>
@@ -267,6 +214,7 @@ export default {
     _this.gainpersonal();
   },
   methods: {
+    // 检索VIP的价钱
     gainpersonal: function() {
       const _this = this;
       if (localStorage.getItem("token")) {
@@ -300,6 +248,7 @@ export default {
       } else {
       }
     },
+    // 付款成功之后
     paypal: function() {
       const _this = this;
       paypal
@@ -359,6 +308,7 @@ export default {
         })
         .render("#paypal-button-container");
     },
+    // 支付成功
     open() {
       this.$alert(this.$t('myvip.con5'), "CourseWhale", {
         confirmButtonText: this.$t('basic.con14'),
@@ -371,6 +321,7 @@ export default {
         }
       });
     },
+    // 支付失败
     defeatedOpen() {
       this.$confirm(this.$t('myvip.con6'), this.$t('award.con16'), {
         confirmButtonText: this.$t('myvip.con7'),
@@ -378,34 +329,12 @@ export default {
         type: "warning"
       });
     },
-    openFullScreen() {
-      const loadings = this.$loading({
-        lock: true,
-        text: "Loading",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
-      loading.close();
-    },
+    // 选择一款价钱
     tabdredge: function(tab, money) {
       const _this = this;
       _this.num = tab;
       _this.money = money;
     },
-    payplatform: function(tab, platform) {
-      const _this = this;
-      _this.pay = tab;
-    },
-    dredgePay: function() {
-      const _this = this;
-      _this.$store.state.vip.succeed = true;
-      console.log(_this.money);
-      _this.$message({
-        message: _this.$t('myvip.con9'),
-        type: "success"
-      });
-      this.$router.push({ path: "/personalData/basic" });
-    }
   },
   mounted: function() {
     const _this = this;

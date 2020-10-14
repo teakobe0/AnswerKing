@@ -351,6 +351,7 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
+    // 点击成为会员跳转会员页面
     joinMember: function() {
       const _this = this;
       if (localStorage.token) {

@@ -49,7 +49,7 @@
     <div class="myQuestion-right">
       <h3>我的问答</h3>
       <div class="myQuestion-con">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
+        <el-tabs v-model="activeName" >
           <el-tab-pane label="我的提问" name="first">
             <el-table
               :data="quizTableData"
@@ -276,7 +276,6 @@
                     >取消</el-button
                   >
                 </div>
-                <!-- <div class="qlreleaseClose el-icon-close" @click="CloseEvaluate"></div> -->
               </div>
             </div>
             <!-- <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
@@ -287,7 +286,6 @@
             <div class="mynextpage">
               <div class="block">
                 <el-pagination
-                  @size-change="handleSizeChange"
                   @current-change="handleCurrentChange"
                   :page-size="pagesizes"
                   layout="total, prev, pager, next"
@@ -428,7 +426,6 @@ export default {
               // failure("上传失败");
             });
 
-          console.log(blobInfo);
         },
       },
       myValue: this.value,
@@ -531,12 +528,9 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
-    handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
-    },
+    // 页数跳转后触发
     handleCurrentChange(val) {
       const _this = this;
-      console.log(`当前页: ${val}`);
       _this
         .axios({
           method: "get",
@@ -554,7 +548,6 @@ export default {
           },
         })
         .then(function (res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data.data;
             _this.quizShow = true;
@@ -588,59 +581,6 @@ export default {
           console.log(error);
         });
     },
-    nextpages() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-          async: false,
-          params: {
-            pagenum: ++_this.pagenums,
-            pagesize: _this.pagesizes,
-          },
-          xhrFields: {
-            withCredentials: true,
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(function (res) {
-          if (res.data.status == 1) {
-            let a = [];
-            a = res.data.data.data;
-            for (var i = 0; i < a.length; i++) {
-              a[i].type = "";
-              if (a[i].que.status == 1) {
-                a[i].type = "保存";
-              }
-              if (a[i].que.status == 2) {
-                a[i].type = "正在竞拍";
-              }
-              if (a[i].que.status == 3) {
-                a[i].type = "已选竞拍者";
-              }
-              if (a[i].que.status == 4) {
-                a[i].type = "已回答";
-              }
-              if (a[i].que.status == 5) {
-                a[i].type = "申请客服";
-              }
-              if (a[i].que.status == 6) {
-                a[i].type = "已完成";
-              }
-              if (a[i].que.status == 7) {
-                a[i].type = "已关闭";
-              }
-              _this.quizTableData.push(a[i]);
-            }
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     // 检索问题列表
     quizList() {
       const _this = this;
@@ -661,7 +601,6 @@ export default {
           },
         })
         .then(function (res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.quizTableData = res.data.data.data;
             _this.pageTotal = res.data.data.pageTotal;
@@ -696,6 +635,7 @@ export default {
           console.log(error);
         });
     },
+    // 我回答的问题列表
     answerList() {
       const _this = this;
       _this
@@ -720,6 +660,7 @@ export default {
           console.log(error);
         });
     },
+    // 我竞拍的问题列表
     auctionlist() {
       const _this = this;
       _this
@@ -735,7 +676,6 @@ export default {
           },
         })
         .then(function (res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.auctionTableData = res.data.data;
             _this.auctionShow = true;
@@ -764,11 +704,13 @@ export default {
 
       _this.qlShade = !_this.qlShade;
     },
+    // 关闭编辑遮罩
     CloseQuitBt() {
       const _this = this;
       _this.quefileList = [];
       _this.qlShade = !_this.qlShade;
     },
+    // 发布新的问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
       _this.QuestionsQuiz.Content = _this.myValue;
@@ -813,19 +755,20 @@ export default {
         }
       });
     },
+    // 打开评价
     evaluate(id) {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
       _this.evaluateId = id;
       _this.evaluateSwitch = true;
     },
+    // 发送评价
     evaluateCon() {
       const _this = this;
       let grades = 5;
       if (_this.evaluateSwitch == false) {
         grades = 1;
       }
-      console.log(_this.evaluateId);
       _this
         .axios({
           method: "put",
@@ -844,7 +787,6 @@ export default {
           },
         })
         .then(function (res) {
-          console.log(res);
           if (res.data.status == 1) {
             _this.quizList();
             _this.evaluateShade = false;
@@ -863,9 +805,9 @@ export default {
           console.log(error);
         });
     },
+    // 发送客服
     service(id) {
       const _this = this;
-      console.log(id);
       this.$prompt("您要对客服说:", "CourseWhale", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -888,7 +830,6 @@ export default {
               },
             })
             .then(function (res) {
-              console.log(res);
               if (res.data.status == 1) {
                 _this.$message({
                   message: "发送成功",
@@ -907,49 +848,12 @@ export default {
         })
         .catch(() => {});
     },
-    commitchanges(id) {
-      const _this = this;
-      _this
-        .axios({
-          method: "put",
-          url: `${_this.URLport.serverPath}/Questions/Edit`,
-          async: false,
-          params: {
-            questionid: id,
-          },
-          xhrFields: {
-            withCredentials: true,
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(function (res) {
-          console.log(res);
-          if (res.data.status == 1) {
-            _this.quizList();
-            _this.$message({
-              message: "回答者可以开始补充回答。",
-              type: "success",
-            });
-          } else {
-            _this.$message({
-              message: "提交修改失败",
-              type: "error",
-            });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+    // 取消评价
     CloseEvaluate() {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
     },
-    handleClick() {
-      const _this = this;
-    },
+    // 编辑问题里的图片删除后
     handleRemove(file, fileList) {
       const _this = this;
       _this
@@ -979,23 +883,22 @@ export default {
           console.log(error);
         });
     },
+    // 编辑问题里的图片预览
     handlePictureCardPreview(file) {
       this.queImageUrl = file.url;
       this.queVisible = true;
-      console.log(file);
     },
+    // 编辑问题里的图片成功后
     handleAvatarSuccess(res, file, fileList) {
       const _this = this;
-      console.log(fileList);
       var imgurl = "";
       for (let i = 0; i < fileList.length; i++) {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
-      console.log(_this.QuestionsQuiz.Img);
     },
+    // 编辑问题里的图片上传前
     beforeAvatarUpload(file) {
-      console.log(file);
     },
   },
   watch: {

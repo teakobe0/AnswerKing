@@ -103,9 +103,6 @@ export default {
            
           _this.loading = false;
           _this.kong = false;
-          // _this.classes = res.data.data;
-          // _this.classeslength = _this.classes.length;
-          // _this.universityClass = res.data.data;
           sortByKey(res.data.data, "order");
           //数组对象排序
           function sortByKey(array, key) {
@@ -118,8 +115,6 @@ export default {
           for (var i = 0; i < 5; i++) {
             if (res.data.data[i].id != _this.$route.params.classes_id) {
               _this.universityClass.push(res.data.data[i]);
-            } else {
-              // _this.universityClass.push(res.data.data[6])
             }
           }
         })

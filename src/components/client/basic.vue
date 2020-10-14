@@ -173,13 +173,6 @@
       <div class="InvitationCon" v-show="InvitationShow == false">
         <p>{{$t('basic.con20')}}<span style="text-decoration:underline;cursor:pointer;color:#e21c1c;" @click="InvitationCon">{{$t('basic.con21')}}</span>{{$t('basic.con22')}}</p>
       </div>
-      <!-- <div class="head-right-middle">
-        <p class="right-middle-title">文件</p>
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="最近浏览过的文件" name="first">最近浏览过的文件</el-tab-pane>
-          <el-tab-pane label="我的上传" name="second">我的上传</el-tab-pane>
-        </el-tabs>
-      </div> -->
     </div>
   </div>
 </template>
@@ -224,13 +217,13 @@ export default {
     Invitation(){
       const _this = this;
     },
+    // 粘粘
     onCopy(){
         this.$message.success(this.$t('basic.con26'))
     },
+    // 粘粘
     onError(){
         this.$message.console.error(this.$t('basic.con27'));
-    },
-    handleClick: function(tab, event) {
     },
     // 获取个人信息
     gainpersonal: function() {
@@ -249,7 +242,6 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res)
             _this.value = res.data.data;
             _this.inviterId = _this.value.id;
             let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
@@ -263,7 +255,6 @@ export default {
           })
           .catch(function(error) {
             console.log(error);
-            console.log("获取token失败");
           });
       } else {
       }
