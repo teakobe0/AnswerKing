@@ -23,7 +23,7 @@
 /* End hide from IE-mac */
 .school-con {
   width: 100%;
-  /* margin-top: 80px; */
+  margin-top: 80px;
 }
 
 .school-query {
@@ -201,30 +201,24 @@
     <div class="school-con">
       <div class="school-query">
         <div class="query-con">
-          <h1 class="query-con-h1">{{ $t("schools.schools1") }}</h1>
+          <h1 class="query-con-h1">按学校查找学习资源</h1>
 
-          <p class="query-con-describe">{{ $t("schools.schools2") }}</p>
+          <p class="query-con-describe">找到所有课程所需的学习资源。我们有数百万的学习文件，问题和答案以及辅导问题，以帮助您学习。</p>
 
           <div class="query-con-search">
             <el-autocomplete
               class="query-searchbox"
               v-model="state1"
-              :fetch-suggestions="querySearchs"
-              :placeholder="$t('schools.schools3')"
+              :fetch-suggestions="querySearch"
+              @select="handleSelectauto"
+              placeholder="请输入您需要查询的学校名称"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
               <template slot-scope="{ item }">
-                <router-link
-                  :to="'/university/' + item.id"
-                  style="width: 100%; height: 34px; display: block"
-                >
-                  <span style="color: #878787; float: left">{{
-                    item.value
-                  }}</span>
-                  <span style="color: #878787; float: right">{{
-                    item.type
-                  }}</span>
+                <router-link :to="'/university/'+ item.id" style="width: 100%;height: 34px;display: block;">
+                  <span style="color:#878787;float:left;">{{item.value}}</span>
+                  <span style="color:#878787;float:right;">{{item.type}}</span>
                 </router-link>
               </template>
             </el-autocomplete>
@@ -232,9 +226,9 @@
         </div>
       </div>
       <div class="find-school">
-        <h1 class="find-school-h1">{{ $t("schools.schools4") }}</h1>
+        <h1 class="find-school-h1">找到你的学校</h1>
 
-        <p class="find-school-describe">{{ $t("schools.schools5") }}</p>
+        <p class="find-school-describe">从我们的学校和学院列表中选择，以找到您需要的学习资源。</p>
 
         <div class="find-select">
           <div class="find-select-top">
@@ -292,30 +286,24 @@
               </el-select>
             </div>
           </div>
-          <div
-            class="find-select-bootom"
-            v-loading="loading"
-            element-loading-text="拼命加载中"
-          >
+          <div class="find-select-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in universitys">
-                <router-link :to="'/university/' + item.id">{{
-                  item.name
-                }}</router-link>
-                <div class="select-boo-num">
-                  {{ item.number }}{{ $t("schools.schools7") }}
-                </div>
+                <router-link
+                  :to="'/university/'+item.university.id"
+                >{{item.university.name}}</router-link>
+                <div class="select-boo-num">{{item.number}}门课程</div>
               </li>
             </ul>
           </div>
           <div @click="viewMore" class="viewmores" v-show="viewMores == true">
-            {{ $t("schools.schools6") }}
+            查看更多
             <i class="el-icon-caret-bottom"></i>
           </div>
         </div>
       </div>
     </div>
-    <div style="height: 40px"></div>
+    <div style="height: 40px;"></div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -328,7 +316,7 @@ export default {
   name: "schoolStydy",
   components: {
     homeNav,
-    homeFooter,
+    homeFooter
   },
   data() {
     return {
@@ -343,41 +331,46 @@ export default {
       uns: [],
       country: [],
       state: [],
-      city: [],
+      city: [
+        //{
+        //    value: '选项1',
+        //    label: '加利福尼亚州'
+        //},
+        //{
+        //    value: '选项2',
+        //    label: '加州'
+        //}
+      ],
       pageSize: 40,
       queryString: "",
       loading: true,
-      viewMores: false,
+      viewMores: false
     };
   },
-  created: function () {
+  created: function() {
     const _this = this;
-    _this.Countrys();
+
+    _this
+      .axios({
+        method: "get",
+        url: `${_this.URLport.serverPath}/University/Countrys`,
+        async: false,
+        xhrFields: {
+          withCredentials: true
+        }
+      })
+      .then(function(res) {
+        _this.country = res.data.data;
+      })
+      .catch(function(error) {
+        console.log(error);
+      });
     _this.handleSelectcountry();
+
     document.documentElement.scrollTop = 0;
   },
   methods: {
-    // 检索国家
-    Countrys() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/University/Countrys`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          _this.country = res.data.data;
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    // 查看更多按钮
-    viewMore: function () {
+    viewMore: function() {
       const _this = this;
       _this.universitys = _this.alluniversitys.slice(
         0,
@@ -389,15 +382,14 @@ export default {
       return sortByKey(_this.universitys, "number");
       //数组对象排序
       function sortByKey(array, key) {
-        return array.sort(function (a, b) {
+        return array.sort(function(a, b) {
           var x = a[key];
           var y = b[key];
           return y < x ? -1 : x > y ? 1 : 0;
         });
       }
     },
-    // 输入框触发检索学校
-    querySearchs(queryString, cb) {
+    querySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
       var patt = /^[\s]*$/; //以空格开头并且已空格结尾，中间多次或者零次空格
@@ -406,49 +398,85 @@ export default {
         console.log("空格");
       } else {
         _this.timeout = setTimeout(() => {
-          if (queryString.length >= 1) {
+          if (queryString.length >= 3) {
+            _this.inputLoad = true;
+            _this.state2 = queryString;
+            _this.queryString = queryString;
             var results = [];
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/University/Universitys`,
+                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
                 async: false,
                 params: {
-                  name: valuestr,
+                  name: valuestr
                 },
                 xhrFields: {
-                  withCredentials: true,
-                },
+                  withCredentials: true
+                }
               })
-              .then(function (res) {
-                if (res.data.data.length > 0) {
+              .then(function(res) {
+                if (res.data.data.ls != null && res.data.data.ls.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data[i]) {
+                    if (res.data.data.ls[i]) {
                       results.push({
-                        value: res.data.data[i].name,
-                        type: _this.$t("upload.u10"),
-                        id: res.data.data[i].id,
+                        value: res.data.data.ls[i].university.name,
+                        type: "大学",
+                        class: "university",
+                        num: i,
+                        id: res.data.data.ls[i].university.id
                       });
                     }
                   }
                 } else {
-                  results.push({
-                    value: _this.$t("schools.schools8"),
-                    type: null,
-                  });
+                  results.push({ value: "没有找到对应的大学" });
                 }
 
                 cb(results);
               })
-              .catch(function (error) {
+              .catch(function(error) {
                 console.log(error);
               });
           }
         }, 1000 * Math.random());
       }
     },
+    handleSelectauto(item) {
+      const _this = this;
+      // _this.loading = this.$loading({
+      //   lock: true,
+      //   text: "加载中",
+      //   spinner: "el-icon-loading",
+      //   background: "rgba(0, 0, 0, 0.7)"
+      // });
+      // this.axios({
+      //   method: "get",
+      //   url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+      //   async: false,
+      //   params: {
+      //     name: _this.queryString
+      //   },
+      //   xhrFields: {
+      //     withCredentials: true
+      //   }
+      // })
+      //   .then(function(res) {
+      //     //学校
+      //     if (item.class == "university") {
+      //       //学校
+      //       // _this.$router.push({
+      //       //   name: "schools/university",
+      //       //   params: { id: res.data.data.ls[item.num].university.id }
+      //       // });
+      //     }
+      //     _this.loading.close();
+      //   })
+      //   .catch(function(error) {
+      //     console.log(error);
+      //   });
+    },
     //根据国家 州/省份检索学校
-    GetUniversitys: function (index) {
+    GetUniversitys: function(index) {
       const _this = this;
       _this
         .axios({
@@ -457,20 +485,20 @@ export default {
           async: false,
           params: {
             name: _this.value1,
-            state: _this.value2,
+            state: _this.value2
           },
           xhrFields: {
-            withCredentials: true,
-          },
+            withCredentials: true
+          }
         })
-        .then(function (res) {
+        .then(function(res) {
           _this.alluniversitys = res.data.data;
           _this.loading = false;
           _this.viewMores = true;
           sortByKey(_this.alluniversitys, "number");
           //数组对象排序
           function sortByKey(array, key) {
-            array.sort(function (a, b) {
+            array.sort(function(a, b) {
               var x = a[key];
               var y = b[key];
               return y < x ? -1 : x > y ? 1 : 0;
@@ -478,16 +506,15 @@ export default {
           }
           _this.viewMore();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
-    sort: function () {
+    sort: function() {
       const _this = this;
       _this.universitys = _this.alluniversitys.slice(0, _this.pageSize);
     },
-    // 根据国家检索州
-    handleSelectcountry: function (item) {
+    handleSelectcountry: function(item) {
       const _this = this;
       _this
         .axios({
@@ -495,32 +522,30 @@ export default {
           url: `${_this.URLport.serverPath}/University/States`,
           async: false,
           params: {
-            name: _this.value1,
+            name: _this.value1
           },
           xhrFields: {
-            withCredentials: true,
-          },
+            withCredentials: true
+          }
         })
-        .then(function (res) {
+        .then(function(res) {
           _this.state = res.data.data;
           _this.value2 = "";
           _this.value3 = "";
           _this.GetUniversitys();
         })
-        .catch(function (error) {
+        .catch(function(error) {
           console.log(error);
         });
     },
-    // 根据州检索市
-    handleSelectstate: function () {
+    handleSelectstate: function() {
       const _this = this;
       _this.value3 = "";
       _this.GetUniversitys();
     },
-    // 根据市检索
-    handleSelectcity: function () {
+    handleSelectcity: function() {
       const _this = this;
-    },
-  },
+    }
+  }
 };
 </script>

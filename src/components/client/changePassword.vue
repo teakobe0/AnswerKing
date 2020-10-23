@@ -1,12 +1,4 @@
 <style>
-/*右侧*/
-.pd-con-head-right {
-  width: 1000px;
-  height: 960px;
-  float: left;
-  padding: 20px 40px 0px 40px;
-  overflow: hidden;
-}
 
 #changePassword h3 {
   border-bottom: 1px solid #dddddd;
@@ -21,19 +13,19 @@
 <template>
   <div id="changePassword">
     <div class="pd-con-head-right">
-      <h3>{{$t('personal.nav4')}}</h3>
+      <h3>修改密码</h3>
       <el-form :model="changePasswords" :rules="rules" ref="changePasswords" label-width="80px">
-        <el-form-item :label="$t('changePassword.con1')" prop="OldPassword">
+        <el-form-item label="原密码" prop="OldPassword">
           <el-col :span="11">
             <el-input type="Password" v-model="changePasswords.OldPassword"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item :label="$t('changePassword.con2')" prop="NewPassword">
+        <el-form-item label="新密码" prop="NewPassword">
           <el-col :span="11">
             <el-input type="Password" v-model="changePasswords.NewPassword" autocomplete="off"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item :label="$t('changePassword.con3')" prop="RepeatPwd">
+        <el-form-item label="确认密码" prop="RepeatPwd">
           <el-col :span="11">
             <el-input
               type="Password"
@@ -44,7 +36,7 @@
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="submitForm('changePasswords')">{{$t('personal.nav4')}}</el-button>
+          <el-button type="primary" @click="submitForm('changePasswords')">修改密码</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -58,7 +50,7 @@ export default {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con15')));
+        callback(new Error("请输入密码"));
       } else {
         if (this.changePasswords.Passwords !== "") {
           this.$refs.changePasswords.validateField("Passwords");
@@ -68,9 +60,9 @@ export default {
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con16')));
+        callback(new Error("请再次输入密码"));
       } else if (value !== this.changePasswords.NewPassword) {
-        callback(new Error(this.$t('popupLogin.con17')));
+        callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
       }
@@ -84,7 +76,7 @@ export default {
       },
       rules: {
         OldPassword: [
-          { required: true, message: this.$t('changePassword.con4'), trigger: "blur" }
+          { required: true, message: "请输入原密码", trigger: "blur" }
         ],
         NewPassword: [
           { required: true, validator: validatePass, trigger: "blur" }
@@ -95,14 +87,8 @@ export default {
       }
     };
   },
-  watch: {
-    "$i18n.locale"() {
-      this.rules.OldPassword.message = this.$t('changePassword.con4');
-    }
-  },
   //页面的方法还是写在methods{}中
   methods: {
-    // 修改密码
     submitForm(changePasswords) {
       this.$refs[changePasswords].validate(valid => {
         if (valid) {
@@ -125,9 +111,10 @@ export default {
               }
             })
             .then(function(res) {
+              console.log(res);
               if (res.data.status == 1) {
                 _this.$message({
-                  message: _this.$t('changePassword.con5'),
+                  message: "修改密码成功,请重新登录",
                   type: "success"
                 });
                 localStorage.removeItem("token");

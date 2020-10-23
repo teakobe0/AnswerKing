@@ -1,7 +1,6 @@
 <style>
 #schoolall {
   /* background-color: #f0f0f0; */
-  min-height: 282px;
   overflow: hidden;
 }
 
@@ -97,8 +96,8 @@
 }
 
 .classes-con-course div:nth-last-child(2n + 0) {
-  float: right;
-  margin-left: 20px;
+  float: left;
+  margin-right: 20px;
 }
 
 .classes-con-course div a {
@@ -141,12 +140,12 @@
     <div class="classes-con">
       <div class="classes-con-info">
         <div style="margin-bottom:16px;">
-          <p>{{$t('university.con3')}}({{classeslength}})</p>
+          <p>所有课程({{classeslength}})</p>
           <!--<i>找到你的课程</i>-->
         </div>
 
         <div class="serchinput">
-          <el-input :placeholder="$t('university.con4')" v-model="input1" @change="queryname" clearable>
+          <el-input placeholder="请输入需要查询的课程(回车确认)" v-model="input1" @change="queryname" clearable>
             <i slot="prefix" class="el-input__icon el-icon-search"></i>
           </el-input>
         </div>
@@ -160,20 +159,20 @@
       </div>
       <div class="classes-con-course">
         <div v-for="(item,index) in classes">
-          <router-link :to="/classes/+item.id">{{item.name}}</router-link>
-          <p>{{$t('university.con5')}}:{{item.order}}</p>
+          <router-link :to="/classes/+item.cla.id">{{item.cla.name}}</router-link>
+          <p>题库集:{{item.order}}</p>
           <i
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
-            :title="$t('university.con10')"
+            title="关注课程"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
-            :title="$t('university.con11')"
+            title="取消关注课程"
           ></i>
         </div>
       </div>
@@ -234,9 +233,9 @@ export default {
     _this.universityidClass();
   },
   methods: {
-    //通过学校ID查询拥有的课程
     universityidClass: function() {
       const _this = this;
+      //通过学校ID查询拥有的课程
       _this
         .axios({
           method: "get",
@@ -261,7 +260,6 @@ export default {
           console.log(error);
         });
     },
-    // 点击字母根据字母查询
     queryClass: function(alifs) {
       const _this = this;
       if (alifs == "All") {
@@ -314,7 +312,6 @@ export default {
           });
       }
     },
-    // 输入框搜索查询课程
     queryname: function(names) {
       const _this = this;
       _this
@@ -341,14 +338,13 @@ export default {
           console.log(error);
         });
     },
-    // 点击关注
     attention: function(item, index) {
       const _this = this;
       if (localStorage.token) {
         item.attentions = !item.attentions;
         if (item.attentions == true) {
-          _this.attentions.Name = item.name.toString();
-          _this.attentions.TypeId = item.id;
+          _this.attentions.Name = item.cla.name.toString();
+          _this.attentions.TypeId = item.cla.id;
           _this.attentions.Type = 1;
           _this
             .axios({
@@ -366,7 +362,7 @@ export default {
             .then(function(res) {
               _this.retrieveAttention();
               _this.$message({
-                message: _this.$t('classesDetail.con19'),
+                message: "关注成功",
                 type: "success"
               });
             })
@@ -377,7 +373,7 @@ export default {
           var attentionsId = "";
           for (var i = 0; i < _this.attentionCon.length; i++) {
             var v = _this.attentionCon[i].typeId;
-            if (item.id == v) {
+            if (item.cla.id == v) {
               attentionsId = _this.attentionCon[i].id;
             }
           }
@@ -398,7 +394,7 @@ export default {
             })
             .then(function(res) {
               _this.$message({
-                message: _this.$t('classesDetail.con20'),
+                message: "取消关注",
                 type: "success"
               });
               _this.retrieveAttention();
@@ -409,7 +405,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: _this.$t('classesDetail.con21'),
+          message: "请登录之后进行操作!",
           type: "warning"
         });
       }
@@ -435,7 +431,7 @@ export default {
             for (var i = 0; i < res.data.data.length; i++) {
               if (res.data.data[i].type == 1) {
                 for (var j = 0; j < _this.classes.length; j++) {
-                  if (res.data.data[i].typeId == _this.classes[j].id) {
+                  if (res.data.data[i].typeId == _this.classes[j].cla.id) {
                     _this.classes[j].attentions = true;
                   }
                 }

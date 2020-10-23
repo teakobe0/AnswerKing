@@ -42,7 +42,7 @@
 <template>
   <div class="company">
     <!-- <Nav></Nav> -->
-    <div v-title :data-title="$t('footer.con11')+'-CourseWhale'"></div>
+    <div v-title data-title="关于我们-CourseWhale"></div>
     <div class="company-con">
       <img src="../../assets/construction.jpg" alt />
       <!-- <div class="company-titl e">

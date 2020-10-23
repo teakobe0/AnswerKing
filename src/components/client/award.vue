@@ -1,10 +1,4 @@
 <style>
-.award-right {
-  width: 1000px;
-  float: left;
-  padding: 20px 40px 0px 40px;
-  overflow: hidden;
-}
 #award h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -14,46 +8,27 @@
 }
 #award .pd-con-head-right {
   /* height:100%; */
-  /* overflow-y: scroll; */
-  /* width: 110%;
-  height: 120%; */
-}
-.el-scrollbar__wrap {
-  overflow-y: scroll;
-  overflow-x: hidden;
-  /* width: 110%;
-  height: 120%; */
 }
 </style>
 
 
 <template>
   <div id="award">
-    <div class="award-right">
-      <h3>{{$t('personal.nav6')}}</h3>
+    <div class="pd-con-head-right">
+      <h3>我的贡献</h3>
       <div class="MyAward">
         <el-table :data="tableData" border style="width: 100%">
-          <el-table-column fixed :label="$t('award.con1')" width="150px">
+          <el-table-column fixed label="日期" width="150px">
             <template slot-scope="scope">
               <span>{{ scope.row.createTime | formatDate}}</span>
             </template>
           </el-table-column>
-          <el-table-column prop="name" :label="$t('award.con2')" width="560px"></el-table-column>
-          <el-table-column prop="type" :label="$t('award.con3')" ></el-table-column>
-          <el-table-column prop="type" :label="$t('award.con4')" >
+          <el-table-column prop="name" label="您创建的项目" width="619px"></el-table-column>
+          <el-table-column prop="type" label="类别" width="130"></el-table-column>
+          <el-table-column fixed="right" label="操作" width="100">
             <template slot-scope="scope">
-              <span>{{ scope.row.statusType}}</span>
-            </template>
-          </el-table-column>
-          <el-table-column fixed="right" :label="$t('award.con5')" width="100">
-            <template slot-scope="scope">
-              <el-button @click="handleClick(scope.row)" type="text" size="mini">{{$t('award.con14')}}</el-button>
-              <el-button
-                type="text"
-                size="mini"
-                style="color:#f95c5c;"
-                @click="handleDelete(scope.row)"
-              >{{$t('award.con15')}}</el-button>
+              <el-button @click="handleClick(scope.row)" type="text" size="mini">编辑</el-button>
+              <el-button type="text" size="mini" style="color:#f95c5c;" @click="handleDelete(scope.row)">删除</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -69,12 +44,14 @@ export default {
   data() {
     //在ES6中添加数据是在return{}中
     return {
-      tableData: []
+      tableData: [
+        
+      ]
     };
   },
   created: function() {
     const _this = this;
-    this.queryOrder();
+    this.queryOrder()
   },
   filters: {
     formatDate: function(time) {
@@ -83,9 +60,8 @@ export default {
     }
   },
   methods: {
-    // 点击编辑跳转对应界面
     handleClick(row) {
-      this.$store.state.logo.uaShow = true;
+      console.log(row);
       if (row.type == "学校") {
         this.$router.push({
           path: "/uploadAnswer",
@@ -105,143 +81,138 @@ export default {
         });
       }
     },
-    // 点击删除
-    handleDelete(row) {
+    handleDelete(row){
       const _this = this;
       if (row.type == "学校") {
-        _this.$confirm(_this.$t('award.con21'), _this.$t('award.con16'), {
-          confirmButtonText: _this.$t('basic.con14'),
-          cancelButtonText: _this.$t('basic.con13'),
-          type: "warning"
-        })
-          .then(() => {
-            _this
-              .axios({
-                method: "delete",
-                url: `${_this.URLport.serverPath}/University/Del`,
-                async: false,
-                params: {
-                  id: row.id
-                },
-                xhrFields: {
-                  withCredentials: true
-                },
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-              })
-              .then(function(res) {
-                if (res.data.status == 1) {
-                  _this.queryOrder();
-                  _this.$message({
-                    message: _this.$t('award.con18'),
-                    type: "success"
-                  });
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          })
-          .catch(() => {
-            // this.$message({
-            //   type: 'info',
-            //   message: '已取消删除'
-            // });
-          });
+        this.$confirm('此操作将永久删除该学校, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this
+            .axios({
+              method: "delete",
+              url: `${_this.URLport.serverPath}/UniversityTest/Del`,
+              async: false,
+              params: {
+                id: row.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.queryOrder();
+                _this.$message({
+                  message: "删除学校成功",
+                  type: "success"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });          
+        });
       }
       if (row.type == "课程") {
-        _this.$confirm(_this.$t('award.con22'), _this.$t('award.con16'), {
-          confirmButtonText: _this.$t('basic.con14'),
-          cancelButtonText: _this.$t('basic.con13'),
-          type: "warning"
-        })
-          .then(() => {
-            _this
-              .axios({
-                method: "delete",
-                url: `${_this.URLport.serverPath}/class/Del`,
-                async: false,
-                params: {
-                  id: row.id
-                },
-                xhrFields: {
-                  withCredentials: true
-                },
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-              })
-              .then(function(res) {
-                if (res.data.status == 1) {
-                  _this.queryOrder();
-                  _this.$message({
-                    message: _this.$t('award.con19'),
-                    type: "success"
-                  });
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          })
-          .catch(() => {
-            // this.$message({
-            //   type: 'info',
-            //   message: '已取消删除'
-            // });
-          });
+        this.$confirm('此操作将永久删除该课程, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this
+            .axios({
+              method: "delete",
+              url: `${_this.URLport.serverPath}/classTest/Del`,
+              async: false,
+              params: {
+                id: row.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.queryOrder();
+                _this.$message({
+                  message: "删除课程成功",
+                  type: "success"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });          
+        });
       }
       if (row.type == "题库集") {
-        _this.$confirm(_this.$t('award.con17'), _this.$t('award.con16'), {
-          confirmButtonText: _this.$t('basic.con14'),
-          cancelButtonText: _this.$t('basic.con13'),
-          type: "warning"
-        })
-          .then(() => {
-            _this
-              .axios({
-                method: "delete",
-                url: `${_this.URLport.serverPath}/ClassInfo/Del`,
-                async: false,
-                params: {
-                  id: row.id
-                },
-                xhrFields: {
-                  withCredentials: true
-                },
-                headers: {
-                  Authorization: `Bearer ${localStorage.getItem("token")}`
-                }
-              })
-              .then(function(res) {
-                if (res.data.status == 1) {
-                  _this.queryOrder();
-                  _this.$message({
-                    message: _this.$t('award.con20'),
-                    type: "success"
-                  });
-                }
-              })
-              .catch(function(error) {
-                console.log(error);
-              });
-          })
-          .catch(() => {
-            // this.$message({
-            //   type: 'info',
-            //   message: '已取消删除'
-            // });
-          });
+        this.$confirm('此操作将永久删除该题库集, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          _this
+            .axios({
+              method: "delete",
+              url: `${_this.URLport.serverPath}/ClassInfoTest/Del`,
+              async: false,
+              params: {
+                id: row.id
+              },
+              xhrFields: {
+                withCredentials: true
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`
+              }
+            })
+            .then(function(res) {
+              console.log(res);
+              if (res.data.status == 1) {
+                _this.queryOrder();
+                _this.$message({
+                  message: "删除题库集成功",
+                  type: "success"
+                });
+              }
+            })
+            .catch(function(error) {
+              console.log(error);
+            });
+        }).catch(() => {
+          // this.$message({
+          //   type: 'info',
+          //   message: '已取消删除'
+          // });          
+        });
       }
     },
-    // 获取贡献列表
     queryOrder() {
       const _this = this;
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/ClassInfo/Action`,
+          url: `${_this.URLport.serverPath}/ClassInfoTest/Action`,
           async: false,
           xhrFields: {
             withCredentials: true
@@ -252,40 +223,10 @@ export default {
         })
         .then(function(res) {
           _this.tableData = res.data.data;
-          for (var i = 0; i < _this.tableData.length; i++) {
-            _this.$set(_this.tableData[i], "statusType", "");
-            if(_this.tableData[i].type == "题库集"){
-              if(_this.tableData[i].status == 0){
-                _this.tableData[i].statusType = _this.$t('award.con9')
-              }
-              if(_this.tableData[i].status == 1){
-                _this.tableData[i].statusType = _this.$t('award.con12')
-              }
-              if(_this.tableData[i].status == 2){
-                _this.tableData[i].statusType = _this.$t('award.con11')
-              }
-              if(_this.tableData[i].status == 3){
-                _this.tableData[i].statusType = _this.$t('award.con13')
-              }
-            }
-            if(_this.tableData[i].type != "题库集"){
-              if(_this.tableData[i].status == 0){
-                _this.tableData[i].statusType = _this.$t('award.con10')
-              }
-              if(_this.tableData[i].status == 1){
-                _this.tableData[i].statusType = _this.$t('award.con11')
-              }
-            }
-          }
         })
         .catch(function(error) {
           console.log(error);
         });
-    }
-  },
-  watch:{
-    '$i18n.locale'(){
-      this.queryOrder()
     }
   }
 };

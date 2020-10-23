@@ -1,10 +1,4 @@
 <style>
-.attention-right {
-  width: 1000px;
-  float: left;
-  padding: 20px 40px 0px 40px;
-  overflow: hidden;
-}
 #attention h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;
@@ -51,26 +45,26 @@
 
 <template>
   <div id="attention">
-    <div class="attention-right">
-      <h3>{{$t('personal.nav7')}}</h3>
+    <div class="pd-con-head-right">
+      <h3>我的关注</h3>
       <div class="MyAttention">
-        <el-tabs v-model="activeName">
-          <el-tab-pane :label="$t('attention.con1')" name="first">
-            <div class="attentionNull" v-if="attNull1 == false">{{$t('attention.con4')}}</div>
+        <el-tabs v-model="activeName" @tab-click="handleClick">
+          <el-tab-pane label="关注的课程" name="first">
+            <div class="attentionNull" v-if="attNull1 == false">暂无关注的课程</div>
             <div v-for="item in classAtt">
               <router-link :to="'/classes/'+item.typeId">{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
-              <el-button size="mini" @click="delAttention(item.id)">{{$t('attention.con3')}}</el-button>
+              <el-button size="mini" @click="delAttention(item.id)">取消关注</el-button>
             </div>
           </el-tab-pane>
-          <el-tab-pane :label="$t('attention.con2')" name="second">
-            <div class="attentionNull" v-if="attNull2 == false">{{$t('attention.con5')}}</div>
+          <el-tab-pane label="关注的题库" name="second">
+            <div class="attentionNull" v-if="attNull2 == false">暂无关注的题库集</div>
             <div v-for="item in questionAtt">
               <router-link
-                :to="'/classes/'+item.typeIds[0]+'/content/'+item.typeIds[1]+'/weeks/'+0+'/weektype/'+0"
+                :to="'/classes/'+item.typeIds[0]+'/content/'+item.typeIds[1]"
               >{{item.name}}</router-link>
               <!-- <span>{{item.createTime | formatDate}}</span> -->
-              <el-button size="mini" @click="delAttention(item.id)">{{$t('attention.con3')}}</el-button>
+              <el-button size="mini" @click="delAttention(item.id)">取消关注</el-button>
             </div>
           </el-tab-pane>
         </el-tabs>
@@ -106,7 +100,7 @@ export default {
     }
   },
   methods: {
-    // 取消关注
+    handleClick: function() {},
     delAttention: function(item) {
       const _this = this;
       _this
@@ -126,7 +120,7 @@ export default {
         })
         .then(function(res) {
           _this.$message({
-            message: _this.$t('attention.con3'),
+            message: "取消关注",
             type: "success"
           });
           _this.retrieveAttention();

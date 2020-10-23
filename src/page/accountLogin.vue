@@ -10,7 +10,7 @@
   background-image: url(../assets/347985.jpg);
   background-color: #dfdfdf;
   background-repeat: no-repeat;
-  background-position: left center;
+  background-position:left center;
   background-size: cover;
   margin: 0 auto;
   width: 100%;
@@ -36,6 +36,7 @@
 }
 
 .brand {
+  
   /* height: 50px; */
 }
 .brand span {
@@ -44,6 +45,7 @@
   color: #4458b0;
   margin-bottom: 20px;
   vertical-align: middle;
+  
 }
 .brand img {
   width: 40px;
@@ -97,7 +99,7 @@
 
 
 <template>
-  <div class="login" v-title :data-title="$t('popupLogin.con4')+'-CourseWhale'">
+  <div class="login" v-title data-title="登录-CourseWhale">
     <!--<Nav msg="登录"></Nav>-->
     <div class="login-lo">
       <div class="login-cc">
@@ -119,7 +121,7 @@
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Username"
-                  :placeholder="$t('popupLogin.con1')"
+                  placeholder="输入邮箱地址"
                 ></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -50px;" label prop="Password">
@@ -127,12 +129,12 @@
                   prefix-icon="el-icon-goods"
                   type="Password"
                   v-model="ruleForm.Password"
-                  :placeholder="$t('popupLogin.con2')"
+                  placeholder="输入密码"
                   @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
               <div class="forgetpassword">
-                <router-link to="/forgetPassword">{{$t('popupLogin.con3')}}</router-link>
+                <router-link to="/forgetPassword">忘记密码？</router-link>
               </div>
 
               <el-form-item style="margin-left: -50px;">
@@ -142,13 +144,13 @@
                   type="primary"
                   @click="submitForm('ruleForm')"
                   :loading="loadings"
-                >{{$t('popupLogin.con4')}}</el-button>
+                >登录</el-button>
               </el-form-item>
             </el-form>
           </div>
           <div class="reg-bottom">
-            <span>{{$t('popupLogin.con5')}}</span>
-            <router-link class="login-resi" to="/register">{{$t('popupLogin.con6')}}</router-link>
+            <span>没有账号？</span>
+            <router-link class="login-resi" to="/register">注册</router-link>
           </div>
         </div>
       </div>
@@ -166,13 +168,13 @@ export default {
   name: "login",
   components: {
     Nav,
-    Footer
+    Footer,
   },
   data() {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t("popupLogin.con15")));
+        callback(new Error("请输入密码"));
       }
       callback();
     };
@@ -182,31 +184,21 @@ export default {
       ruleForm: {
         Email: "",
         Password: "",
-        Username: ""
+        Username:""
       },
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          {
-            required: true,
-            message: this.$t("popupLogin.con11"),
-            trigger: "blur"
-          },
+          { required: true, message: "请输入用户名", trigger: "blur" },
           {
             type: "email",
-            message: this.$t("popupLogin.con12"),
+            message: "请输入正确的邮箱地址",
             trigger: ["blur", "change"]
           }
         ],
         Password: [{ required: true, validator: validatePass, trigger: "blur" }]
       }
     };
-  },
-  created: function() {
-    if (!localStorage.SkipPath) {
-      localStorage.SkipPath = '/'
-    }
-    
   },
   //页面的方法还是写在methods{}中
   methods: {
@@ -227,40 +219,35 @@ export default {
             }
           })
             .then(function(res) {
+              console.log(res)
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 // _this.loadings = false;
                 _this.$message({
-                  message: _this.$t("popupLogin.con13"),
+                  message: "登录成功",
                   type: "success"
                 });
                 //_this.$store.state.logo.show = false;
                 //_this.$store.state.logo.hide = true;
-                if (localStorage.SkipPath != "/login") {
+                if (localStorage.SkipPath) {
                   _this.$router.push({
-                    path: localStorage.SkipPath
+                    path: localStorage.SkipPath,
                   });
-                } else {
-                  _this.$router.push({ path: "/uploadAnswer" });
+                }else {
+                  _this.$router.push({ path: "/home" });
                 }
               }
             })
             .catch(function(error) {
               console.log(error);
               _this.loadings = false;
-              _this.$message.error(_this.$t("popupLogin.con18"));
+              _this.$message.error('账号或密码错误');
             });
         } else {
+          console.log("error submit!!");
           return false;
         }
       });
-    }
-  },
-  watch: {
-    "$i18n.locale"() {
-      const _this = this;
-      _this.rules.Username[0].message = _this.$t("popupLogin.con11");
-      _this.rules.Username[1].message = _this.$t("popupLogin.con12");
     }
   }
 };

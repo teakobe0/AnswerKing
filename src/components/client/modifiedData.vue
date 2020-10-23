@@ -14,9 +14,9 @@
 <template>
   <div id="modifiedData">
     <div class="pd-con-head-right">
-      <h3>{{$t('personal.nav3')}}</h3>
+      <h3>修改资料</h3>
       <el-form ref="modifiedDatas" :model="modifiedDatas" label-width="80px">
-        <el-form-item :label="$t('modified.con1')">
+        <el-form-item label="昵称">
           <el-col :span="11">
             <el-input v-model="modifiedDatas.Name"></el-input>
           </el-col>
@@ -26,23 +26,23 @@
             <el-input v-model="modifiedDatas.QQ"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item :label="$t('modified.con2')">
+        <el-form-item label="手机">
           <el-col :span="11">
             <el-input v-model="modifiedDatas.Tel"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item :label="$t('modified.con3')">
+        <el-form-item label="学校">
           <el-col :span="11">
             <el-input v-model="modifiedDatas.School"></el-input>
           </el-col>
         </el-form-item>
-        <el-form-item :label="$t('modified.con4')">
+        <el-form-item label="性别">
           <el-radio-group v-model="modifiedDatas.Sex">
-            <el-radio :label="$t('modified.con5')"></el-radio>
-            <el-radio :label="$t('modified.con6')"></el-radio>
+            <el-radio label="男"></el-radio>
+            <el-radio label="女"></el-radio>
           </el-radio-group>
         </el-form-item>
-        <el-form-item :label="$t('modified.con7')">
+        <el-form-item label="生日">
           <el-col :span="11">
             <el-date-picker
               type="date"
@@ -54,7 +54,7 @@
           </el-col>
         </el-form-item>
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">{{$t('modified.con8')}}</el-button>
+          <el-button type="primary" @click="onSubmit">修改资料</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -99,7 +99,6 @@ export default {
           _this.modifiedDatas.QQ = res.data.data.qq;
           _this.modifiedDatas.Tel = res.data.data.tel;
           _this.modifiedDatas.Sex = res.data.data.sex;
-
           if (res.data.data.birthday == "0001-01-01T00:00:00") {
             _this.modifiedDatas.Birthday = "1901-01-01T00:00:00";
           } else {
@@ -121,7 +120,6 @@ export default {
     }
   },
   methods: {
-    // 修改资料
     onSubmit() {
       const _this = this;
 
@@ -145,7 +143,6 @@ export default {
           console.log(error);
         });
     },
-    // 获取个人信息
     GetClient: function() {
       const _this = this;
       if (localStorage.getItem("token")) {
@@ -165,12 +162,12 @@ export default {
             _this.$store.state.modified.Name = res.data.data.name;
             if (res.data.status == 1) {
               _this.$message({
-                message: _this.$t('modified.con9'),
+                message: "修改资料成功",
                 type: "success"
               });
             } else {
               _this.$message({
-                message: _this.$t('modified.con10z'),
+                message: "修改资料失败",
                 type: "error"
               });
             }

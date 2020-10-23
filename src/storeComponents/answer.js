@@ -1,9 +1,9 @@
 export default {
     state:{
         answer:[],
-        imgss:[],
+        imgss:"",
         tabconwu:false,
-        loading:true,
+        loading:false,
         loginIf:false,
         imgWeekTypeId:0,
     }

@@ -21,7 +21,7 @@
 
 <template>
   <div class="news">
-    <div v-title :data-title="$t('footer.con12')+'-CourseWhale'"></div>
+    <div v-title data-title="新闻-CourseWhale"></div>
     <div class="news-con">
       <img src="../../assets/construction.jpg" alt />
     </div>

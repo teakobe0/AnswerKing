@@ -1,6 +1,5 @@
 export default {
     state:{
-        succeed:false,
-        vipShow:false,
+        succeed:false
     }
 }

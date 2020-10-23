@@ -78,7 +78,7 @@
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Username"
-                  :placeholder="$t('popupLogin.con11')"
+                  placeholder="请输入邮箱"
                   @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
@@ -89,13 +89,13 @@
                   type="primary"
                   @click="submitForm('ruleForm')"
                   :loading="loadings"
-                >{{$t('upload.bottom')}}</el-button>
+                >下一步</el-button>
               </el-form-item>
             </el-form>
           </div>
           <div class="reg-bottom">
-            <span>{{$t('popupLogin.con19')}}</span>
-            <router-link class="forgetPassword-resi" to="/login">{{$t('popupLogin.con4')}}</router-link>
+            <span>想起账号？</span>
+            <router-link class="forgetPassword-resi" to="/login">登录</router-link>
           </div>
         </div>
       </div>
@@ -118,7 +118,7 @@ export default {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con15')));
+        callback(new Error("请输入密码"));
       }
       callback();
     };
@@ -131,25 +131,18 @@ export default {
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          { required: true, message: this.$t('popupLogin.con11'), trigger: "blur" },
+          { required: true, message: "请输入邮箱地址", trigger: "blur" },
           {
             type: "email",
-            message: this.$t('popupLogin.con12'),
+            message: "请输入正确的邮箱地址",
             trigger: ["blur", "change"]
           }
         ]
       }
     };
   },
-  watch: {
-    "$i18n.locale"() {
-      this.rules.Username[0].message = this.$t('changePassword.con11');
-      this.rules.Username[1].message = this.$t('changePassword.con12');
-    }
-  },
   //页面的方法还是写在methods{}中
   methods: {
-    // 点击忘记密码下一步给邮箱发送重置密码页面
     submitForm(ruleForm) {
       this.$refs[ruleForm].validate(valid => {
         if (valid) {
@@ -168,17 +161,18 @@ export default {
               }
             })
             .then(function(res) {
+              console.log(res);
               _this.loadings = false;
               if (res.data.status == 1) {
                 _this.$alert(
-                  _this.$t('popupLogin.con20'),
+                  "已向您的邮箱发了一封邮件，请打开邮件进行下一步操作重置密码。",
                   "CourseWhale",
                   {
-                    confirmButtonText: _this.$t('basic.con14'),
+                    confirmButtonText: "确定",
                     callback: action => {
                       _this.$message({
                         type: "success",
-                        message: _this.$t('popupLogin.con21')
+                        message: `即将返回首页!`
                       });
                       setTimeout(function() {
                         _this.$router.push({
@@ -199,6 +193,7 @@ export default {
               console.log(error);
             });
         } else {
+          console.log("error submit!!");
           return false;
         }
       });

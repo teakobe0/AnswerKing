@@ -26,14 +26,14 @@
 <template>
   <div id="orderHistory">
     <div class="pd-con-head-right">
-      <h3>{{$t('personal.nav9')}}</h3>
+      <h3>购买记录</h3>
       <div class="indent">
         <template>
-          <el-table :data="messages" style="width: 100%" :empty-text="$t('orderHistory.con5')">
-            <el-table-column prop="payTime" :label="$t('orderHistory.con1')" width="250"></el-table-column>
-            <el-table-column prop="name" :label="$t('orderHistory.con2')" width="250"></el-table-column>
-            <el-table-column prop="price" :label="$t('orderHistory.con3')" width="250"></el-table-column>
-            <el-table-column prop="currency" :label="$t('orderHistory.con4')" width="250"></el-table-column>
+          <el-table :data="messages" style="width: 100%">
+            <el-table-column prop="payTime" label="购买日期" width="250"></el-table-column>
+            <el-table-column prop="name" label="购买月份" width="250"></el-table-column>
+            <el-table-column prop="price" label="购买金额" width="250"></el-table-column>
+            <el-table-column prop="currency" label="货币类型" width="250"></el-table-column>
           </el-table>
         </template>
       </div>
