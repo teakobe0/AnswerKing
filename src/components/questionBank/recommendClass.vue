@@ -58,9 +58,9 @@
     <ul v-for="item in universityClass">
       <li>
         <i class="el-icon-tickets"></i>
-        <router-link :to="'/classes/'+item.cla.id">{{item.cla.name}}</router-link>
-        <span>{{item.cla.university}}</span>
-        <span>题库:{{item.order}}</span>
+        <router-link :to="'/classes/'+item.id">{{item.name}}</router-link>
+        <span>{{item.university}}</span>
+        <span>{{$t('content.con22')}}:{{item.order}}</span>
       </li>
     </ul>
   </div>
@@ -103,9 +103,6 @@ export default {
            
           _this.loading = false;
           _this.kong = false;
-          // _this.classes = res.data.data;
-          // _this.classeslength = _this.classes.length;
-          // _this.universityClass = res.data.data;
           sortByKey(res.data.data, "order");
           //数组对象排序
           function sortByKey(array, key) {
@@ -116,10 +113,8 @@ export default {
             });
           }
           for (var i = 0; i < 5; i++) {
-            if (res.data.data[i].cla.id != _this.$route.params.classes_id) {
+            if (res.data.data[i].id != _this.$route.params.classes_id) {
               _this.universityClass.push(res.data.data[i]);
-            } else {
-              // _this.universityClass.push(res.data.data[6])
             }
           }
         })

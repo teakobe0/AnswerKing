@@ -5,7 +5,7 @@
 }
 
 .serchDetailsUniversity-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
   overflow: hidden;
 }
 
@@ -39,7 +39,7 @@
 .un-top-info {
   float: left;
   width: 83%;
-  height: 140px;
+  min-height: 140px;
   padding: 25px 40px;
   overflow: hidden;
 }
@@ -71,7 +71,7 @@
   float: left;
   list-style-type: none;
   text-align: center;
-  width: 73px;
+  /* width: 73px; */
   height: 46px;
   line-height: 50px;
   margin-right: 10px;
@@ -86,9 +86,10 @@
 .un-tag-con li a {
   display: inline-block;
   text-align: center;
-  width: 73px;
+  /* width: 73px; */
   height: 46px;
   color: #000;
+  padding: 0 20px;
   text-decoration: none;
 }
 </style>
@@ -102,19 +103,20 @@
         <div class="crumbs">
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right" style>
-              <el-breadcrumb-item :to="{ path: '/schools' }"><span class="crumb">全部学校</span></el-breadcrumb-item>
-              <el-breadcrumb-item><span style="color:rgb(228, 228, 228);">当前学校</span></el-breadcrumb-item>
+              <el-breadcrumb-item :to="{ path: '/schools' }"><span class="crumb">{{$t('Public.con1')}}</span></el-breadcrumb-item>
+              <el-breadcrumb-item><span style="color:rgb(228, 228, 228);">{{$t('Public.con2')}}</span></el-breadcrumb-item>
             </el-breadcrumb>
           </div>
         </div>
         <div class="university-top">
           <div class="un-top-img">
             <img src="../assets/schoolAll.png" alt>
+            <!-- <img :src="value.image" alt> -->
           </div>
           <div class="un-top-info">
             <h2>{{value.name}}</h2>
 
-            <p>学校信息:{{value.intro}}</p>
+            <p>{{$t('university.con1')}}:{{value.intro}}</p>
           </div>
         </div>
       </div>
@@ -123,7 +125,7 @@
         <div class="un-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="'/university/'+ $route.params.university_id +'/schoolall'">课程</router-link>
+              <router-link :to="'/university/'+ $route.params.university_id +'/schoolall'">{{$t('university.con2')}}</router-link>
             </li>
             
           </ul>
@@ -133,15 +135,15 @@
       <div>
         <router-view/>
       </div>
-      <div class="ClassesAdvertising">
+      <!-- <div class="ClassesAdvertising">
         <div>
-          <p class="advertising-p1">没有找到您需要的学校吗？想得到更多的学习辅导服务吗？</p>
+          <p class="advertising-p1">{{$t('university.con6')}}</p>
           <p class="advertising-p2">
-            扫描二维码添加CourseWhale合作伙伴学业辅导的<b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
+            {{$t('university.con7')}}<b style="color:#3ccece;">{{$t('university.con8')}}</b>{{$t('university.con9')}}
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div>
+      </div> -->
     </div>
     <homeFooter></homeFooter>
   </div>
@@ -173,7 +175,7 @@ export default {
     _this.University();
   },
   methods: {
-    //根据学校id检索
+    //根据学校id检索学校
     University: function() {
       const _this = this;
       _this
@@ -196,6 +198,7 @@ export default {
           console.log(error);
         });
     },
+    // 页面中间的tab选项卡切换
     tab: function(tab) {
       const _this = this;
       if (tab == "tab01") {

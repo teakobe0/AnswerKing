@@ -132,7 +132,7 @@
                 </div>
                 <P v-html="item.content"></P>
                 <div class="subImgdiv" v-for="img in item.images">
-                  <img class="subImg" :src="img.url" alt />
+                  <img class="subImg" :src="img.url" alt  @click="suspendImg(img.url)"/>
                 </div>
               </div>
             </div>
@@ -391,7 +391,7 @@
     <div class="suspend-img" v-show="suspendimgShow">
         <div class="suspend-img-re">
           <img :src="suImg" alt />
-          <div class="suspendClose el-icon-close" @click="CloseQuitBt"></div>
+          <div class="suspendClose el-icon-close" @click="CloseQuitBts"></div>
         </div>
       </div>
     <homeFooter></homeFooter>
@@ -1724,7 +1724,7 @@ export default {
       _this.suspendimgShow = !_this.suspendimgShow;
     },
     // 提问内容里的图片关闭放大遮罩
-    CloseQuitBt(){
+    CloseQuitBts(){
       const _this = this;
       _this.suspendimgShow = !_this.suspendimgShow;
     }

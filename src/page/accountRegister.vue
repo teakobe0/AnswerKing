@@ -38,9 +38,9 @@
 }
 
 .termsOfService {
-  text-align: left;
   color: #8590a6;
   font-size: 8px;
+  text-align: left;
 }
 .termsOfService a {
   text-decoration: none;
@@ -50,7 +50,7 @@
 
 
 <template>
-  <div class="register" v-title data-title="注册-CourseWhale">
+  <div class="register" v-title :data-title="$t('popupLogin.con6')+'-CourseWhale'">
     <!--<Nav msg="登录/注册"></Nav>-->
     <div class="regi-emp">
       <div class="regi-cc">
@@ -68,14 +68,14 @@
               class="demo-ruleForm"
             >
               <el-form-item style="margin-left: -50px;" label prop="Email">
-                <el-input prefix-icon="el-icon-edit" v-model="ruleForm.Email" placeholder="输入邮箱地址"></el-input>
+                <el-input prefix-icon="el-icon-edit" v-model="ruleForm.Email" :placeholder="$t('popupLogin.con1')"></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -50px;" label prop="Password">
                 <el-input
                   prefix-icon="el-icon-goods"
                   type="Password"
                   v-model="ruleForm.Password"
-                  placeholder="输入密码"
+                  :placeholder="$t('popupLogin.con2')"
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
@@ -84,7 +84,7 @@
                   prefix-icon="el-icon-goods"
                   type="Password"
                   v-model="ruleForm.Passwords"
-                  placeholder="再次输入密码"
+                  :placeholder="$t('popupLogin.con7')"
                   autocomplete="off"
                   @keyup.enter.native="register('ruleForm')"
                 ></el-input>
@@ -95,17 +95,17 @@
                   id="regi"
                   @click="register('ruleForm')"
                   :loading="loadings"
-                >注册</el-button>
+                >{{$t('popupLogin.con6')}}</el-button>
               </el-form-item>
             </el-form>
             <p class="termsOfService">
-              注册即代表同意
-              <router-link to="/termsOfService">《CourseWhale服务条款》</router-link>
+              {{$t('popupLogin.con8')}}
+              <router-link to="/termsOfService">{{$t('popupLogin.con9')}}</router-link>
             </p>
           </div>
           <div class="reg-bottom">
-            <span>已有账号？</span>
-            <router-link class="login-resi" to="/login">登录</router-link>
+            <span>{{$t('popupLogin.con10')}}</span>
+            <router-link class="login-resi" to="/login">{{$t('popupLogin.con4')}}</router-link>
           </div>
         </div>
       </div>
@@ -129,7 +129,7 @@ export default {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请输入密码"));
+        callback(new Error(this.$t('popupLogin.con15')));
       } else {
         if (this.ruleForm.Passwords !== "") {
           this.$refs.ruleForm.validateField("Passwords");
@@ -139,9 +139,9 @@ export default {
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("请再次输入密码"));
+        callback(new Error(this.$t('popupLogin.con16')));
       } else if (value !== this.ruleForm.Password) {
-        callback(new Error("两次输入密码不一致!"));
+        callback(new Error(this.$t('popupLogin.con17')));
       } else {
         callback();
       }
@@ -158,10 +158,10 @@ export default {
       //rules是Element的表单验证规则
       rules: {
         Email: [
-          { required: true, message: "请输入邮箱地址", trigger: "blur" },
+          { required: true, message: this.$t('popupLogin.con11'), trigger: "blur" },
           {
             type: "email",
-            message: "请输入正确的邮箱地址",
+            message: this.$t('popupLogin.con12'),
             trigger: ["blur", "change"]
           }
         ],
@@ -174,6 +174,11 @@ export default {
       },
       decrypt: 0
     };
+  },
+  created: function() {
+    if (!localStorage.SkipPath) {
+      localStorage.SkipPath = '/'
+    }
   },
   //页面的方法还是写在methods{}中
   methods: {
@@ -207,7 +212,7 @@ export default {
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 _this.$message({
-                  message: "注册成功",
+                  message: _this.$t('popupLogin.con14'),
                   type: "success"
                 });
                 if (localStorage.SkipPath) {
@@ -313,10 +318,16 @@ export default {
           //     });
           // }
         } else {
-          console.log("error submit!!");
           return false;
         }
       });
+    }
+  },
+  watch: {
+    "$i18n.locale"() {
+      const _this = this;
+      _this.rules.Email[0].message = _this.$t("popupLogin.con11");
+      _this.rules.Email[1].message = _this.$t("popupLogin.con12");
     }
   }
 };

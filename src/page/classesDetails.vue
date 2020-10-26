@@ -5,7 +5,7 @@
 }
 
 .classesDetails-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .classesDetails-top {
@@ -121,8 +121,9 @@
 }
 
 .classesDetails-tag-con ul {
-  width: 600px;
+  /* width: 600px; */
   height: 46px;
+  display: inline-block;
 }
 
 .classesDetails-tag-con li {
@@ -130,7 +131,7 @@
   list-style-type: none;
   text-align: center;
   cursor: pointer;
-  width: 73px;
+  /* width: 73px; */
   height: 46px;
   line-height: 50px;
   margin-right: 10px;
@@ -139,7 +140,8 @@
 .classesDetails-tag-con li a {
   display: inline-block;
   text-align: center;
-  width: 73px;
+  /* width: 73px; */
+  padding: 0 20px;
   height: 46px;
   color: #000;
   text-decoration: none;
@@ -151,9 +153,13 @@
 }
 .classesDetails-tag-con div {
   font-size: 14px;
-  position: absolute;
-  left: 130px;
-  top: 13.5px;
+  /* position: absolute;
+  left: 160px;
+  top: 13.5px; */
+  position: relative;
+  top: -16px;
+  left: 10px;
+  display: inline-block;
   color: rgb(185, 185, 185);
 }
 .con-img {
@@ -200,13 +206,14 @@
   overflow: hidden;
   color: #fff;
 }
-.ClassesAdvertising div{
+.ClassesAdvertising div {
   margin-top: 24px;
   margin-left: 35px;
 }
 .ClassesAdvertising .advertising-p2 {
   margin-top: 10px;
   margin-left: 190px;
+  width: 945px;
 }
 .ClassesAdvertising img {
   width: 70px;
@@ -227,13 +234,13 @@
           <div class="crumbs-con">
             <el-breadcrumb separator-class="el-icon-arrow-right" style>
               <el-breadcrumb-item :to="{ path: '/schools' }">
-                <span class="crumb">全部学校</span>
+                <span class="crumb">{{$t('Public.con1')}}</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item :to="'/university/'+universityId">
-                <span class="crumb">该校课程</span>
+                <span class="crumb">{{$t('Public.con3')}}</span>
               </el-breadcrumb-item>
               <el-breadcrumb-item>
-                <span style="color:rgb(228, 228, 228);">当前课程</span>
+                <span style="color:rgb(228, 228, 228);">{{$t('Public.con4')}}</span>
               </el-breadcrumb-item>
             </el-breadcrumb>
           </div>
@@ -254,7 +261,7 @@
                   :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-off" v-if="value.attentions == false"></i>
-                  关注
+                  {{$t('classesDetail.con1')}}
                 </el-button>
                 <el-button
                   class="attentions"
@@ -264,17 +271,17 @@
                   :disabled="attenDisabled"
                 >
                   <i class="el-icon-star-on" v-if="value.attentions == true" style="color:red"></i>
-                  关注
+                  {{$t('classesDetail.con1')}}
                 </el-button>
               </div>
 
               <p>
-                学校:
+                {{$t('classesDetail.con2')}}:
                 <router-link :to="'/university/'+universityId">{{value.university}}</router-link>
-                <span v-if="value.professor">教授:{{value.professor}}</span>
+                <span v-if="value.professor">{{$t('classesDetail.con3')}}:{{value.professor}}</span>
               </p>
 
-              <p>备注:{{value.memo}}</p>
+              <p>{{$t('classesDetail.con4')}}:{{value.memo}}</p>
             </div>
           </div>
         </div>
@@ -283,27 +290,30 @@
         <div class="classesDetails-tag-con">
           <ul>
             <li :class="{classesTag:num == 0}" @click="tab(tab01Text)">
-              <router-link :to="'/classes/'+ $route.params.classes_id +'/file'">题库集</router-link>
+              <router-link
+                :to="'/classes/'+ $route.params.classes_id +'/file'"
+              >{{$t('classesDetail.con5')}}</router-link>
             </li>
             <!-- <li :class="{classesTag:num == 1}" @click="tab(tab02Text)">
                             <router-link :to="{path:'/classes/file',query: {id: this.Id}}">题库集</router-link>
             </li>-->
           </ul>
-          <div>题库集是由各校童鞋友情分享!</div>
+          <div>{{$t('classesDetail.con6')}}</div>
         </div>
       </div>
       <div>
         <router-view :Names="this.value" :attCon="this.attentionCon" />
       </div>
-      <div class="ClassesAdvertising">
+      <!-- <div class="ClassesAdvertising">
         <div>
-          <p class="advertising-p1">没有找到您需要的课程吗？想得到更多的学习辅导服务吗？</p>
+          <p class="advertising-p1">{{$t('classesDetail.con11')}}</p>
           <p class="advertising-p2">
-            扫描二维码添加CourseWhale合作伙伴学业辅导的<b style="color:#3ccece;">客服微信</b>吧！任何学业问题统统解决！
+            {{$t('classesDetail.con12')}}
+            <b style="color:#3ccece;">{{$t('classesDetail.con13')}}</b>{{$t('classesDetail.con14')}}
           </p>
         </div>
         <img src="../assets/erweima.jpg" alt />
-      </div>
+      </div> -->
     </div>
     <homeFooter></homeFooter>
   </div>
@@ -374,6 +384,7 @@ export default {
           console.log(error);
         });
     },
+    // 选项卡切换
     tab: function(tab) {
       const _this = this;
       if (tab == "tab01") {
@@ -414,6 +425,7 @@ export default {
           });
       }
     },
+    // 点击关注
     attention: function() {
       const _this = this;
 
@@ -441,7 +453,7 @@ export default {
               _this.attenDisabled = false;
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -467,7 +479,7 @@ export default {
             .then(function(res) {
               _this.attenDisabled = false;
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -478,7 +490,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }

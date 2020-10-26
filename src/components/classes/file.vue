@@ -2,6 +2,7 @@
 #file {
   /* background-color: #ebf5f424; */
   overflow: hidden;
+  min-height: 276px;
 }
 
 .file-con {
@@ -146,7 +147,6 @@
 .ownness .createTime {
   float: right;
   margin-top: 5px;
-  /* text-align: right; */
 }
 .file-con-course i {
   position: absolute;
@@ -166,38 +166,35 @@
   margin-bottom: 160px;
 }
 </style>
-
-
 <template>
   <div id="file">
     <div class="file-con">
-      <div class="infoShows" v-if="infoShow == true">该题库集正在审核中!</div>
+      <div class="infoShows" v-if="infoShow == true">{{$t('classesDetail.con7')}}</div>
       <div class="file-con-course" v-if="courseShow == true">
-        <div v-for="(item,index) in value" @click="Information(item)">
+        <div v-for="(item,index) in value">
           <router-link
             :to="'/classes/'+$route.params.classes_id+'/content/'+item.classinfo.id+'/weeks/'+0+'/weektype/'+0"
             class="file-course-img"
           >
             <p class="course-goal">
-              题库集得分:
-              <b>{{item.classinfo.totalGrade}}</b>
+              {{$t('classesDetail.con8')}}:
+              <b>{{item.classinfo.grade}}</b>
             </p>
             <p>
-              <span>课程名称:</span>
+              <span>{{$t('classesDetail.con9')}}:</span>
               <br />
               <span>{{Names.name}}</span>
             </p>
             <p>
-              <span>学校名称:</span>
+              <span>{{$t('classesDetail.con10')}}:</span>
               <br />
               <span>{{Names.university}}</span>
             </p>
           </router-link>
           <span class="ownness">
             <router-link
-              @click.native="ownness(item.clientname,item.clientimg)"
               :to="'/ownness/'+item.classinfo.clientId"
-              :title="'访问'+ item.clientname +'的个人资料'"
+              :title="$t('classesDetail.con15') + ' ' + item.clientname + ' '+$t('classesDetail.con16')"
               class="ownness-name"
             >
               <img ondragstart="return false;" :src="item.clientimg" alt />
@@ -209,14 +206,14 @@
             class="el-icon-star-off"
             @click="attention(item,index)"
             v-show="item.attentions == false"
-            title="关注题库集"
+            :title="$t('classesDetail.con17')"
           ></i>
           <i
             class="el-icon-star-on"
             style="color:red;"
             @click="attention(item,index)"
             v-show="item.attentions == true"
-            title="取消关注题库集"
+            :title="$t('classesDetail.con18')"
           ></i>
         </div>
       </div>
@@ -297,10 +294,7 @@ export default {
           console.log(error);
         });
     },
-    Information: function(item) {
-      const _this = this;
-      // _this.$store.state.information.informations = item;
-    },
+    // 点击关注
     attention: function(item, index) {
       const _this = this;
       if (localStorage.token) {
@@ -326,7 +320,7 @@ export default {
             .then(function(res) {
               _this.retrieveAttention();
               _this.$message({
-                message: "关注成功",
+                message: _this.$t('classesDetail.con19'),
                 type: "success"
               });
             })
@@ -359,7 +353,7 @@ export default {
             })
             .then(function(res) {
               _this.$message({
-                message: "取消关注",
+                message: _this.$t('classesDetail.con20'),
                 type: "success"
               });
               _this.retrieveAttention();
@@ -370,7 +364,7 @@ export default {
         }
       } else {
         _this.$message({
-          message: "请登录之后进行操作!",
+          message: _this.$t('classesDetail.con21'),
           type: "warning"
         });
       }
@@ -409,9 +403,6 @@ export default {
             console.log(error);
           });
       }
-    },
-    ownness(name, img) {
-      const _this = this;
     }
   }
 };

@@ -11,7 +11,7 @@
 }
 
 .home-con {
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .home-ser {
@@ -236,7 +236,6 @@
   width: 1300px;
   margin: 0 auto;
   margin-top: 100px;
-  overflow: hidden;
 }
 
 .pub-con-left {
@@ -285,7 +284,6 @@
 }
 
 .con-left-bottom h2 {
-  text-align: right;
   font-size: 37px;
   color: #383838;
 }
@@ -422,7 +420,7 @@
   display: inline-block;
   text-decoration: none;
   margin: 0 auto;
-  width: 180px;
+  /* width: 180px; */
   padding: 10px;
   /* cursor: pointer; */
   margin-top: 32px;
@@ -591,7 +589,7 @@
 </style>
 
 <template>
-  <div class="home" v-title data-title="首页-CourseWhale">
+  <div class="home" v-title :data-title="$t('footer.con4')+'-CourseWhale'">
     <homeNav msg="登录/注册" />
     <div class="home-con">
       <div class="home-ser">
@@ -599,17 +597,16 @@
           <div class="ser-con-left">
             <div class="ser-left-deta">
               <div class="ser-left-deta-tit">
-                <p>找到属于你的学校与课程,为你</p>
-                <h1 class="home-heading">轻松获得准确、高效的QUIZ解答</h1>
+                <p>{{$t('home.title1')}}</p>
+                <h1 class="home-heading">{{$t('home.title2')}}</h1>
               </div>
               <div class="homeserch">
                 <el-autocomplete
                   class="inline-input"
                   v-model="state1"
                   :fetch-suggestions="querySearch"
-                  placeholder="查询你的课程或者学校，例如University of California"
+                  :placeholder="$t('home.input')"
                   @select="handleSelect"
-                  @keyup.enter.native="handleEnter(state1)"
                   prefix-icon="el-icon-tickets"
                   :trigger-on-focus="inputLoad"
                 >
@@ -634,12 +631,11 @@
               <div class="homeClassText">
                 <div class="contribution">
                   <p class="homeClassText-1">{{this.classNum}}</p>
-                  <p class="homeClassText-2">课程</p>
+                  <p class="homeClassText-2">{{$t('home.con1')}}</p>
                   <vue-seamless
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -653,12 +649,11 @@
 
                 <div class="contribution">
                   <p class="homeClassText-1">{{this.classinfoNum}}</p>
-                  <p class="homeClassText-2">题库集</p>
+                  <p class="homeClassText-2">{{$t('home.con2')}}</p>
                   <vue-seamless
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -669,12 +664,11 @@
                 </div>
                 <div class="contribution">
                   <p class="homeClassText-1">{{this.clientNum}}</p>
-                  <p class="homeClassText-2">贡献者</p>
+                  <p class="homeClassText-2">{{$t('home.con3')}}</p>
                   <vue-seamless
                     :data="classVessel"
                     :class-option="classOption"
                     class="warp"
-                    @ScrollEnd="handScrollEnd"
                   >
                     <ul class="item">
                       <li v-for="(item,index) in classVessel" :key="index">
@@ -685,7 +679,7 @@
                 </div>
               </div>
               <div class="homeUniversity">
-                <router-link to="/schools" class="homeUniv-button">查看61所全部学校资源</router-link>
+                <router-link to="/schools" class="homeUniv-button">{{$t('home.schol1')}}{{this.universityNum}}{{$t('home.schol2')}}</router-link>
               </div>
               <div class="home-ser-img1">
                 <img src="../assets/home23.png" alt class="home-ser-img-1" />
@@ -694,7 +688,7 @@
                 <img src="../assets/home1.png" alt class="home-ser-img-2" />
               </div>-->
               <div class="nextPage" @click="nextPageFn">
-                <p>快速了解</p>
+                <p>{{$t('home.kuaisu')}}</p>
                 <p>COURSEWHALE</p>
                 <div class="rightan">
                   <img src="../assets/017-大下箭头.png" alt />
@@ -707,14 +701,14 @@
 
       <div class="features-area">
         <div class="features-title" style="padding-top:82px;">
-          <p class="features-title-one">快速了解CourseWhale</p>
-          <p class="features-title-tow">一个你不可或缺的学习伙伴</p>
+          <p class="features-title-one">{{$t('home.kuaisu')}} CourseWhale</p>
+          <p class="features-title-tow">{{$t('home.text1')}}</p>
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid1">
             <h1>CourseWhale</h1>
-            <h3 class="text-center">一个在线教育题库学习平台，提供北美各高校的学习资料，你可以根据学校或课程名称轻而易举地找到相关内容。</h3>
+            <h3 class="text-center">{{$t('home.text2')}}</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -725,14 +719,14 @@
           </div>
         </div>
         <div class="features-title">
-          <p class="features-title-one">为什么选择CourseWhale</p>
-          <p class="features-title-tow">更强大、更多元、更专业、更贴心</p>
+          <p class="features-title-one">{{$t('home.text3')}}</p>
+          <p class="features-title-tow">{{$t('home.text4')}}</p>
         </div>
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid2" style="float: right">
-            <h1 style="text-align:right">更强大</h1>
-            <h3 class="text-center" style="text-align:right">学习资源高度共享，涵盖各个学科各门课程各种习题，还可添加定制化服务</h3>
+            <h1 style="text-align:right">{{$t('home.text5')}}</h1>
+            <h3 class="text-center" style="text-align:right">{{$t('home.text6')}}</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -745,8 +739,8 @@
         <div class="divider_line"></div>
         <div class="conclusion">
           <div class="conclusion-left text-fluid3">
-            <h1>更多元</h1>
-            <h3 class="text-center">你可以是内容终端的学习者，也可以是内容的初始贡献者，即时享受学习成果</h3>
+            <h1>{{$t('home.text7')}}</h1>
+            <h3 class="text-center">{{$t('home.text8')}}</h3>
           </div>
           <div class="conclusion-right">
             <img
@@ -764,14 +758,14 @@
           <div class="home-pub-con">
             <div class="pub-con-left">
               <div class="con-left-top text-fluid4">
-                <h1>更专业</h1>
-                <h3 style="text-align:right">切中要害，直达问题核心，内容质量更高，满足不同需求</h3>
+                <h1>{{$t('home.text9')}}</h1>
+                <h3 style="text-align:right">{{$t('home.text10')}}</h3>
               </div>
               <div class="con-left-middle">
                 <img class="img-fluid4" src="../assets/3.jpg" alt />
               </div>
               <div class="con-left-bottom">
-                <h2>我们的使命是帮助学生练习和掌握任何学习内容。</h2>
+                <h2>{{$t('home.text13')}}</h2>
               </div>
             </div>
             <div class="pub-con-right">
@@ -779,8 +773,8 @@
                 <img style="width:400px;height:544px;" class="img-fluid5" src="../assets/4.jpg" alt />
               </div>
               <div class="con-right-middle text-fluid5">
-                <h1>更贴心</h1>
-                <h3>根据你的专业，学科推送相关内容，省去二次查找的麻烦；定制化服务让你高枕无忧，留学生活更加丰富</h3>
+                <h1>{{$t('home.text11')}}</h1>
+                <h3>{{$t('home.text12')}}</h3>
               </div>
             </div>
           </div>
@@ -849,7 +843,8 @@ export default {
       isActive1: false,
       isActive2: false,
       isActive3: false,
-      money: 1
+      money: 1,
+      universityNum:0
     };
   },
   computed: {
@@ -867,13 +862,10 @@ export default {
   created: function() {
     const _this = this;
     _this.GetClassinfo();
+    _this.GetUniversitys();
     document.documentElement.scrollTop = 0;
   },
   methods: {
-    // 翻滚一次动画执行的方法
-    handScrollEnd: function() {
-      // const _this = this;
-    },
     // 获取所有课程，题库集，贡献者信息
     GetClassinfo() {
       const _this = this;
@@ -896,6 +888,7 @@ export default {
           console.log(error);
         });
     },
+    // 首页搜索框搜索课程和学校
     querySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -947,51 +940,21 @@ export default {
                 } else {
                   results.push({ value: "没有找到对应的课程", solid: true });
                 }
-                if (res.data.data.ls != null && res.data.data.ls.length > 0) {
+                if (res.data.data.university != null && res.data.data.university.length > 0) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data.ls[i]) {
+                    if (res.data.data.university[i]) {
                       results.push({
-                        value: res.data.data.ls[i].university.name,
+                        value: res.data.data.university[i].name,
                         type: "大学",
                         class: "university",
                         num: i,
-                        id: res.data.data.ls[i].university.id
+                        id: res.data.data.university[i].id
                       });
                     }
                   }
                 } else {
                   results.push({ value: "没有找到对应的大学" });
                 }
-                // if (
-                //   res.data.data.classes != null &&
-                //   res.data.data.content.length > 0
-                // ) {
-                //   for (var i = 0; i < 3; i++) {
-                //     if (res.data.data.content[i]) {
-                //       var aa;
-                //       aa = res.data.data.content[i].contents.indexOf(_this.state2);
-                //       results.push({
-                //         value: res.data.data.content[i].contents.substring(
-                //           aa - 10,
-                //           aa
-                //         ),
-                //         queryString: res.data.data.content[i].contents.substr(
-                //           aa,
-                //           queryString.length
-                //         ),
-                //         queryStringRight: res.data.data.content[i].contents.substring(
-                //           aa + queryString.length,
-                //           aa + queryString.length + 10
-                //         ),
-                //         type: "课程内容",
-                //         class: "content",
-                //         num: i
-                //       });
-                //     }
-                //   }
-                // } else {
-                //   results.push({ value: "没有找到对应的课程内容" });
-                // }
                 cb(results);
               })
               .catch(function(error) {
@@ -1009,6 +972,7 @@ export default {
         );
       };
     },
+    // 点击搜索下拉框内的课程学校跳转
     handleSelect(item) {
       const _this = this;
       this.axios({
@@ -1035,52 +999,12 @@ export default {
               path: `/university/${item.id}`
             });
           }
-          // else if (item.class == "content") {
-          //   //课程内容
-          //   _this.$router.push({
-          //     path: "/serchDetailsContent",
-          //     query: {
-          //       id: res.data.data.content[item.num].classId,
-          //       classInfoId: res.data.data.content[item.num].classInfoId
-          //     }
-          //   });
-          // }
         })
         .catch(function(error) {
           console.log(error);
         });
     },
-    handleEnter(item) {
-      // const _this = this;
-      // var patt = /^[\s]*$/;
-      // var pvalue = patt.test(_this.state1);
-      // if (pvalue) {
-      //   _this.$message({
-      //     message: "不能搜索全空格的内容",
-      //     type: "success"
-      //   });
-      // } else if(_this.state1.length<3) {
-      //   _this.$message({
-      //     message: "搜索长度最少三位数",
-      //     type: "success"
-      //   });
-      // }else {
-      //   _this.$router.push({
-      //     path: "/serch",
-      //     query: {
-      //       serchName: _this.state1
-      //     }
-      //   });
-      // }
-    },
-    handle() {
-      this.homeSerchHide = false;
-      this.homeSerchShow = true;
-    },
-    homeLoseFocus() {
-      this.homeSerchHide = true;
-      this.homeSerchShow = false;
-    },
+    // 点击快速了解向下跳转
     nextPageFn() {
       const _this = this;
       const ScrollTop = (number = 0, time) => {
@@ -1102,11 +1026,11 @@ export default {
           }
         }, spacingTime);
       };
-      ScrollTop(870, 200);
+      ScrollTop(950, 200);
     },
+    // 动画图片移动
     handleScroll() {
       const _this = this;
-      
       if (_this.$route.fullPath == "/home" || _this.$route.fullPath == "/") {
         var elPosition1 = $(".img-fluid1").offset().top;
         var elPosition2 = $(".img-fluid2").offset().top;
@@ -1137,7 +1061,27 @@ export default {
           $(".text-fluid4").addClass("animation fade-in-right");
         }
       }
-    }
+    },
+    //检索学校数量
+    GetUniversitys: function(index) {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/University/UniversityNum`,
+          async: false,
+          xhrFields: {
+            withCredentials: true
+          }
+        })
+        .then(function(res) {
+          _this.universityNum = res.data.data;
+        })
+        .catch(function(error) {
+          console.log(error);
+        });
+    },
+    
   },
   mounted() {
     const _this = this;

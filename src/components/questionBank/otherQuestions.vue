@@ -13,7 +13,7 @@
 </style>
 <template>
   <div class="content-tag-con-right-con" v-if="otherQuestionShow == true">
-    <p class="content-tag-con-right-con-p">该课程的其他题库</p>
+    <p class="content-tag-con-right-con-p">{{$t('content.con7')}}</p>
 
     <el-carousel
       trigger="click"
@@ -25,15 +25,14 @@
       <el-carousel-item v-for="item in courses" :key="item.id">
         <img :src="item.Imgs" alt />
         <h3>{{className}}</h3>
-        <p>分数:{{item.classinfo.totalGrade}}</p>
+        <p>{{$t('content.con8')}}:{{item.classinfo.grade}}</p>
         <button
           @click="skipclass(item.classinfo.classId,item.classinfo.id)"
-          @click.native="flushCom"
         >
           <router-link
             style="text-decoration:none;color:#FFF"
             :to="'/classes/'+item.classinfo.classId+'/content/'+item.classinfo.id+'/weeks/'+0+'/weektype/'+0"
-          >进入题库</router-link>
+          >{{$t('content.con9')}}</router-link>
         </button>
       </el-carousel-item>
     </el-carousel>
@@ -74,6 +73,7 @@ export default {
         }
       }
     },
+    // 强制跳转
     skipclass: function(classId, id) {
       const _this = this;
       window.location.reload();

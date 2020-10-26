@@ -23,7 +23,7 @@
 /* End hide from IE-mac */
 .school-con {
   width: 100%;
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 
 .class-query {
@@ -217,21 +217,20 @@
 <template>
   <div class="classesStudy clearfix">
     <homeNav></homeNav>
-    <div v-title data-title="课程资源-CourseWhale"></div>
+    <div v-title :data-title="$t('nav.nav2')+'-CourseWhale'"></div>
     <div class="school-con">
       <div class="class-query">
         <div class="query-con">
-          <h1 class="query-con-h1">按课程查找学习资源</h1>
+          <h1 class="query-con-h1">{{$t('classes.classes1')}}</h1>
 
-          <p class="query-con-describe">找到所有课程所需的学习资源。我们有数百万的学习文件，问题和答案以及辅导问题，以帮助您学习。</p>
+          <p class="query-con-describe">{{$t('classes.classes2')}}</p>
 
           <div class="query-con-search">
             <el-autocomplete
               class="query-searchbox"
               v-model="state1"
               :fetch-suggestions="querySearch"
-              @select="handleSelectauto"
-              placeholder="请输入您需要查询的课程名称"
+              :placeholder="$t('classes.classes3')"
               prefix-icon="el-icon-search"
               :trigger-on-focus="false"
             >
@@ -246,14 +245,14 @@
         </div>
       </div>
       <div class="find-school">
-        <h1 class="find-school-h1">找到你的课程</h1>
+        <h1 class="find-school-h1">{{$t('classes.classes4')}}</h1>
 
-        <p class="find-school-describe">从我们的课程列表中选择，以找到您需要的学习资源。</p>
+        <p class="find-school-describe">{{$t('classes.classes5')}}</p>
 
         <div class="find-classes">
           <div class="find-serchinput">
             <el-input
-              placeholder="请输入需要查询的课程(回车确认)"
+              :placeholder="$t('classes.classes6')"
               v-model="input1"
               @change="GetClasses"
               clearable
@@ -264,13 +263,13 @@
           <div class="find-class-bootom" v-loading="loading" element-loading-text="拼命加载中">
             <ul>
               <li v-for="item in classesAll">
-                <router-link :to="'/classes/'+item.cla.id">
-                  <span class="classes-boo-name">{{item.cla.name}}</span>
-                  <span class="classes-boo-order">{{item.order}}个题库</span>
+                <router-link :to="'/classes/'+item.id">
+                  <span class="classes-boo-name">{{item.name}}</span>
+                  <span class="classes-boo-order">{{item.order}}{{$t('classes.classes8')}}</span>
                 </router-link>
 
                 <div class="classes-boo-num">
-                  <span>学校:{{item.cla.university}}</span>
+                  <span>{{$t('classesDetail.con2')}}:{{item.university}}</span>
                 </div>
               </li>
             </ul>
@@ -341,6 +340,7 @@ export default {
     document.documentElement.scrollTop = 0;
   },
   methods: {
+    // 搜索框搜索课程
     querySearch(queryString, cb) {
       const _this = this;
       var valuestr = queryString.trim();
@@ -358,10 +358,12 @@ export default {
             _this
               .axios({
                 method: "get",
-                url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
+                url: `${_this.URLport.serverPath}/Class/ClassPage`,
                 async: false,
                 params: {
-                  name: valuestr
+                  name: valuestr,
+                  pagenum: 1,
+                  pagesize: 10
                 },
                 xhrFields: {
                   withCredentials: true
@@ -369,22 +371,21 @@ export default {
               })
               .then(function(res) {
                 if (
-                  res.data.data.classes != null &&
-                  res.data.data.classes.length > 0
+                  res.data.data.data.length > 0
                 ) {
                   for (var i = 0; i < 10; i++) {
-                    if (res.data.data.classes[i]) {
+                    if (res.data.data.data[i]) {
                       results.push({
-                        value: res.data.data.classes[i].name,
-                        type: res.data.data.classes[i].university,
+                        value: res.data.data.data[i].name,
+                        type: res.data.data.data[i].university,
                         class: "classes",
                         num: i,
-                        id: res.data.data.classes[i].id
+                        id: res.data.data.data[i].id
                       });
                     }
                   }
                 } else {
-                  results.push({ value: "没有找到对应的课程" });
+                  results.push({ value: _this.$t('classes.classes7') });
                 }
 
                 cb(results);
@@ -396,42 +397,7 @@ export default {
         }, 1000 * Math.random());
       }
     },
-    handleSelectauto(item) {
-      const _this = this;
-      _this.loading = this.$loading({
-        lock: true,
-        text: "加载中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)"
-      });
-      this.axios({
-        method: "get",
-        url: `${_this.URLport.serverPath}/ClassInfoContent/Search`,
-        async: false,
-        params: {
-          name: _this.queryString
-        },
-        xhrFields: {
-          withCredentials: true
-        }
-      })
-        .then(function(res) {
-          //课程
-          if (item.class == "classes") {
-            _this.$router.push({
-              path: "/classesDetails",
-              query: {
-                id: item.id
-              }
-            });
-          }
-          _this.loading.close();
-        })
-        .catch(function(error) {
-          console.log(error);
-        });
-    },
-    //根据课程名称检索 分页
+    // 根据课程名称检索课程分页
     GetClasses: function(index) {
       const _this = this;
       _this
@@ -458,6 +424,7 @@ export default {
           console.log(error);
         });
     },
+    // 课程分页跳转
     handleCurrentChange(val) {
       const _this = this;
       _this

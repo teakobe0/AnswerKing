@@ -6,49 +6,69 @@
 
 /* 标题开始 */
 .ql-title {
-    height: 343px;
+    height: 240px;
     background: #eff3ff;
+    overflow: hidden;
 }
 .ql-t-con {
     width: 1300px;
-    height: 300px;
+    height: 240px;
     margin: 0 auto;
 }
 .qltconLeft {
-    width: 910px;
-    height: 343px;
+    width: 680px;
+    height: 240px;
     float: left;
 }
 .qltconLeft h1 {
-    margin-top: 80px;
+    margin-top: 70px;
     color: #27427a;
     letter-spacing: 1px;
     margin-bottom: 28px;
     font-size: 24px;
 }
-.qltconLeft p {
-    color: #709fd4;
-    letter-spacing: 3px;
-    margin-bottom: 33px;
-    font-size: 14px;
-    line-height: 23px;
-}
 .qltconLeft .el-input__inner {
-    height: 47px !important;
+    height: 57px !important;
+    font-size: 20px;
 }
 .qltconright {
-    width: 390px;
-    height: 343px;
-    float: right;
+    width: 355px;
+    height: 240px;
+    float: left;
+    margin-left: 30px;
 }
 .qltconright img {
-    margin-top: 35px;
+    float: left;
+}
+.qltconAdd {
+    width: 211px;
+    float: right;
+    margin-top: 66.5px;
+}
+.qltconAdd a {
+    font-size: 12px;
+    margin-top: 20px;
+    display: inline-block;
+    text-decoration: none;
+    color: #888888;
 }
 /* 标题结束 */
 /* 主体内容开始 */
 .ql-body {
     background: #f5f6f7;
     margin-top: 38px;
+}
+.qlConTab {
+    padding: 20px 20px 0px 20px;
+    height: 50px;
+}
+.qlConTab div{
+    float: left;
+    margin-right: 20px;
+    background-color: #f5f6f7;
+    padding: 16px 20px;
+    border-radius: 10px;
+    font-size: 16px;
 }
 .qlBodyCon {
     width: 1300px;
@@ -91,12 +111,7 @@
     background: #fff;
     overflow: hidden;
 }
-.qlBodyMeiCon:hover .qlBodyMeiConRight {
-    /* display: block; */
-    background: #2fc781;
-}
 .qlBodyMeiConLeft {
-    width: 680px;
     padding: 20px;
     /* float: left; */
     position: relative;
@@ -107,9 +122,12 @@
 }
 .qlBodyMeiConLeft h4 {
     margin-top: 15px;
-    margin-bottom: 26px;
-    font-size: 14px;
+    margin-bottom: 20px;
+    font-size: 22px;
     word-wrap:break-word
+}
+.qlBodyMeiConLeft h4 a:hover {
+    color: #0059ff;
 }
 .qlBodyI {
     border: 1px solid #4458b0;
@@ -130,12 +148,16 @@
     margin-right: 10px;
 }
 .qlBodyConImg {
-    
+    margin-bottom: 20px;
 }
 .qlBodyConImg img {
-    width: 240px;
-    margin-right: 20px;
+    width: 190px;
+    margin-right: 10px;
+    height: 190px;
+}
+.qlBodyImg {
     margin-bottom: 20px;
+    color: #484848;
 }
 .qlBodyImg img {
     vertical-align: middle;
@@ -145,33 +167,45 @@
     border-radius: 10px;
 }
 .qlBodyImg span {
-    color: #c9c9c9;
+    color: #a2a2a2;
     margin-left: 7px;
 }
+.viewimages {
+    width: 160px;
+    height: 190px;
+    float: right;
+    background-color: #fafafa;
+    text-align: center;
+    cursor: pointer;
+    display: block;
+}
+.viewimages p {
+    margin-top: 74px;
+    color: #999999;
+}
 .qlBodyMeiConRight {
-    width: 91px;
-    height: 100%;
-    background: #fff;
+    background-color: #1da1f2;
     color: #fff;
     text-align: center;
-    float: right;
-    position: absolute;
-    right: -80px;
-    top: 0px;
     cursor: pointer;
-    display: table;
-    /* display: none; */
+    padding: 10px 20px;
+    width: 136px;
+    border-radius: 10px;
 }
 
 .qlBodyMeiConRightTable {
-    display: table-cell;
     vertical-align: middle;
-    font-size: 20px;
+    font-size: 16px;
 }
-.qlBodyMeiConRightTable:hover {
-    background: #4cc78e;
+.qlBodyMeiConshou {
+    width: 200px;
+    margin-top: 30px;
+    color: #888888;
+    margin-left: 20px;
+    position: absolute;
+    bottom: 30px;
+    left: 200px;
 }
-
 .pageturning {
     text-align: center;
     font-size: 40px;
@@ -316,7 +350,7 @@
     z-index: 100;
 }
 .ql-editQuzi {
-    width: 560px;
+    width: 710px;
     padding: 20px 20px 30px 20px;
     margin: 0 auto;
     background-color: #fff;
@@ -326,14 +360,13 @@
     border-radius: 4px;
 }
 .ql-editQuziTi .el-input__inner {
-    border: none !important;
-    height: 60px !important;
+    height: 58px !important;
     font-size: 22px !important;
-    padding: 0px !important;
+    padding: 10px 20px !important;
 }
 .ql-editQuziTi .el-form-item__error {
     left: 0px !important;
-    top: 80% !important;
+    top: 100% !important;
     font-size: 14px !important;
 }
 .ql-editNameDetail .el-textarea__inner {

@@ -10,7 +10,7 @@
 .ownnessPage-title {
   width: 100%;
   height: 200px;
-  margin-top: 80px;
+  /* margin-top: 80px; */
 }
 .op-title-con {
   width: 1300px;
@@ -133,14 +133,14 @@
                 <i class="el-icon-caret-bottom" v-show="item.isSubShow == false"></i>
                 <i class="el-icon-caret-top" v-show="item.isSubShow == true"></i>
               </div>
-              <el-collapse-transition>
+              <div>
                 <dir class="DSCon" v-show="item.isSubShow">
                   <div class="DSCon-text" v-for="(items,itemsindex) in item.goodsList">
                     <div>{{items.content}}&nbsp;{{items.classname}}</div>
                     <div>{{items.createTime | formatDateSS}}</div>
                   </div>
                 </dir>
-              </el-collapse-transition>
+              </div>
             </div>
           </div>
         </div>
@@ -156,7 +156,7 @@ import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import { formatDate } from "@/common/js/date.js";
 import { formatDateSS } from "@/common/js/date.js";
-
+import CollapseTransition from 'element-ui/lib/transitions/collapse-transition';
 export default {
   name: "ownnessPage",
   components: {
@@ -192,6 +192,7 @@ export default {
     }
   },
   methods: {
+    // 检索贡献者个人信息
     getclientbyid() {
       const _this = this;
       _this
@@ -219,6 +220,7 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
     },
+    // 检索贡献者的行为记录
     action() {
       const _this = this;
       _this
@@ -270,6 +272,7 @@ export default {
           console.log(error);
         });
     },
+    // 打开关闭时间
     fold(item, index) {
       const _this = this;
       item.isSubShow = !item.isSubShow;

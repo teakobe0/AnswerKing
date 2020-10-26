@@ -6,7 +6,7 @@
 
 
 <template>
-  <div class="login" v-title data-title="登录-CourseWhale">
+  <div class="login" v-title :data-title="$t('popupLogin.con4')+'-CourseWhale'">
     <!--<Nav msg="登录"></Nav>-->
     <div class="login-lo">
       <div class="login-cc">
@@ -26,7 +26,7 @@
                   prefix-icon="el-icon-edit"
                   type="Password"
                   v-model="changePasswords.NewPassword"
-                  placeholder="输入新密码"
+                  :placeholder="$t('popupLogin.con22')"
                 ></el-input>
               </el-form-item>
               <el-form-item style="margin-left: -50px;" label prop="Password">
@@ -34,7 +34,7 @@
                   prefix-icon="el-icon-goods"
                   type="Password"
                   v-model="changePasswords.RepeatPwd"
-                  placeholder="重复输入新密码"
+                  :placeholder="$t('popupLogin.con23')"
                   @keyup.enter.native="submitForm('ruleForm')"
                 ></el-input>
               </el-form-item>
@@ -45,7 +45,7 @@
                   type="primary"
                   @click="submitForm('ruleForm')"
                   :loading="loadings"
-                >确定</el-button>
+                >{{$t('basic.con14')}}</el-button>
               </el-form-item>
             </el-form>
           </div>
@@ -73,10 +73,10 @@ export default {
   },
   created: function() {
     const _this = this;
-    console.log(_this.$route.query.k)
   },
   //页面的方法还是写在methods{}中
   methods: {
+    // 修改重置后密码
     submitForm: function() {
       const _this = this;
       
@@ -86,7 +86,7 @@ export default {
       if (pvalue || pvalues) {
         _this.$message({
           type: "warning",
-          message: `请填写内容!`
+          message: _this.$t('popupLogin.con24')
         });
       } else {
         _this.loadings = true;
@@ -105,15 +105,14 @@ export default {
             }
           })
           .then(function(res) {
-            console.log(res);
             _this.loadings = false;
             if (res.data.status == 1) {
-              _this.$alert("重置密码成功!", "CourseWhale", {
-                confirmButtonText: "确定",
+              _this.$alert(_this.$t('popupLogin.con25'), "CourseWhale", {
+                confirmButtonText: _this.$t('basic.con14'),
                 callback: action => {
                   _this.$message({
                     type: "success",
-                    message: `即将返回首页!`
+                    message: _this.$t('popupLogin.con21')
                   });
                   setTimeout(function() {
                     _this.$router.push({
@@ -132,7 +131,7 @@ export default {
             console.log(error);
             _this.$message({
               type: "success",
-              message: `密码重复!`
+              message: _this.$t('popupLogin.con26')
             });
           });
       }

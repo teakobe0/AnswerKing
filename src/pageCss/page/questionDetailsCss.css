@@ -514,6 +514,13 @@
 }
 .submitAns img {
   margin-bottom: 10px;
+  border-bottom: 1px solid #fff;
+  padding-bottom: 5px;
+  cursor: pointer;
+  margin-right: 5px;
+}
+.submitAns img:hover {
+  border-bottom: 1px solid #4458B0;
 }
 .subImgdiv {
   display: inline-block;

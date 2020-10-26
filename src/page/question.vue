@@ -7,19 +7,33 @@
         <div class="ql-t-con">
           <div class="qltconLeft">
             <h1>提升学业最好的方式就是互相帮助。</h1>
-            <p>
-              Coursewhale课程鲸灵为全球学子打造的社交问答平台，
-              <br />致力于帮助学生们通过互相提问及回答，更好的掌握学习内容，培养更强劲的学习动力。
-            </p>
             <el-input
               v-model="topInput"
               @change="topInputs"
               clearable
-              style="width: 700px"
+              style="width: 680px"
+              placeholder="在这里搜索你想找的学校，课程或其他学业相关内容..."
             ></el-input>
           </div>
           <div class="qltconright">
             <img src="../assets/问答1.png" alt />
+          </div>
+          <div class="qltconAdd">
+            <el-button
+              type="primary"
+              class="ql-right-quitBT"
+              @click="NewQuitBt"
+              @mousewheel.prevent
+              style="
+                height: 70px;
+                font-size: 20px;
+                background: #1da1f2 !important;
+              "
+              >提一个新问题&nbsp;></el-button
+            >
+            <router-link to="home"
+              >第一次使用课程精灵?点击这里查看教程</router-link
+            >
           </div>
         </div>
       </div>
@@ -27,13 +41,13 @@
         <div class="qlBodyCon">
           <div class="qlBodyLeft">
             <div :class="{ qlBodyConActive: num == 0 }" @click="newTime">
-              最新
-            </div>
-            <div :class="{ qlBodyConActive: num == 2 }" @click="topCurrency">
-              最高悬赏
+              全部科目
             </div>
             <div :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
               即将结束
+            </div>
+            <div :class="{ qlBodyConActive: num == 2 }" @click="topAll">
+              全部提问
             </div>
           </div>
           <div class="qlBodyMei">
@@ -47,43 +61,62 @@
             <!-- 没有登录时 -->
             <!-- 没登录 -->
             <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
+              <div class="qlConTab">
+                <div>搜索:"{{ topInput }}"</div>
+                <div>最新问题</div>
+                <div>人气问题</div>
+              </div>
               <div class="qlBodyMeiConLeft">
-                <div>
-                  <span class="qlBodyI"
+                <!-- <div>
+                  <span class="qlBodyI" v-show="item.question.currency != 0"
                     >{{ item.question.currency }}&nbsp;鲸灵币</span
                   >
-                </div>
+                </div> -->
+                <div style="font-size: 14px; color: #adadad">2人正在竞拍</div>
                 <h4>
                   <router-link :to="'/questionDetails/' + item.question.id">{{
                     item.question.title
                   }}</router-link>
                 </h4>
+
+                <div class="qlBodyImg">
+                  <img :src="item.qimage" alt />
+                  {{ item.qname }}
+                  <span>{{ item.Times }}</span>
+                </div>
                 <div class="qlBodyConImg">
                   <img
                     v-for="items in item.question.images"
                     :src="items.url"
                     alt
                   />
-                </div>
-                <div class="qlBodyImg">
-                  <img :src="item.qimage" alt />
-                  {{ item.qname }}
-                  <span>{{ item.Times }}</span>
+                  <router-link
+                    :to="'/questionDetails/' + item.question.id"
+                    v-show="item.question.imagesNum > 3"
+                    class="viewimages"
+                  >
+                    <p>
+                      点击查看<br />剩余{{ item.question.imagesNum - 3 }}张图片
+                    </p>
+                  </router-link>
                 </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
                   <div class="qlBodyMeiConRightTable">
-                    <div>
-                      参与
-                      <br />竞拍
-                    </div>
+                    <div>参与竞拍回答</div>
                   </div>
                 </div>
+                <div class="qlBodyMeiConshou">11人收藏 21人浏览</div>
               </div>
             </div>
             <!-- 登录时 -->
             <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
+              <div class="qlConTab">
+                <div>搜索:"{{ topInput }}"</div>
+                <div>最新问题</div>
+                <div>人气问题</div>
+              </div>
               <div class="qlBodyMeiConLeft">
-                <div>
+                <!-- <div>
                   <span class="qlBodyU" v-show="item.bidd != null">{{
                     item.bidd
                   }}</span>
@@ -93,44 +126,42 @@
                   <span class="qlBodyU" v-show="item.myque != null">{{
                     item.myque
                   }}</span>
-                  <span class="qlBodyI"
+                  <span class="qlBodyI" v-show="item.que.currency != 0"
                     >{{ item.que.currency }}&nbsp;鲸灵币</span
                   >
-                </div>
+                </div> -->
+                <div style="font-size: 14px; color: #adadad">2人正在竞拍</div>
                 <h4>
                   <router-link :to="'/questionDetails/' + item.que.id">{{
                     item.que.title
                   }}</router-link>
                 </h4>
-                <div class="qlBodyConImg">
-                  <img v-for="items in item.que.images" :src="items.url" alt />
-                </div>
                 <div class="qlBodyImg">
                   <img :src="item.qimage" alt />
                   {{ item.qname }}
                   <span>{{ item.Times }}</span>
                 </div>
+                <div class="qlBodyConImg">
+                  <img v-for="items in item.que.images" :src="items.url" alt />
+                  <router-link
+                    :to="'/questionDetails/' + item.que.id"
+                    v-show="item.que.imagesNum > 3"
+                    class="viewimages"
+                  >
+                    <p>点击查看<br />剩余{{ item.que.imagesNum - 3 }}张图片</p>
+                  </router-link>
+                </div>
                 <div class="qlBodyMeiConRight" @click="replyShade(item)">
                   <div class="qlBodyMeiConRightTable">
-                    <div>
-                      参与
-                      <br />竞拍
-                    </div>
+                    <div>参与竞拍回答</div>
                   </div>
                 </div>
+                <div class="qlBodyMeiConshou">11人收藏 21人浏览</div>
               </div>
             </div>
             <div class="pageturning" @click="nextpages">...</div>
           </div>
           <div class="qlBodyRight">
-            <el-button
-              type="primary"
-              icon="el-icon-plus"
-              class="ql-right-quitBT"
-              @click="NewQuitBt"
-              @mousewheel.prevent
-              >提一个新问题</el-button
-            >
             <questionNum></questionNum>
           </div>
         </div>
@@ -144,13 +175,43 @@
           ref="QuestionsQuiz"
           class="demo-ruleForm"
         >
-          <el-form-item prop="Title" class="ql-editQuziTi">
+          <el-form-item prop="Title" class="ql-editQuziTi" label="选择你的科目" style="width:350px;float:left;">
             <el-input
               v-model="QuestionsQuiz.Title"
               placeholder="写下你的问题，准确的描述问题更容易得到解答"
             ></el-input>
           </el-form-item>
-
+          <el-form-item
+            prop="Title"
+            class="ql-editQuziTi"
+            label="输入你的主题或课程"
+            style="width:350px;float:right;"
+          >
+            <el-input
+              v-model="QuestionsQuiz.Title"
+              placeholder="写下你的问题，准确的描述问题更容易得到解答"
+            ></el-input>
+          </el-form-item>
+          <div style="overflow: hidden;float:left;width: 100%;">
+            <div style="float: left">
+              <!-- <div class="PR">答题截止时间</div> -->
+              <el-form-item prop="EndTime" label="答题截止时间" >
+                <el-date-picker
+                  v-model="QuestionsQuiz.EndTime"
+                  type="datetime"
+                  style="width:350px;heigth:58px"
+                  placeholder="选择日期时间"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :picker-options="{
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
+                    },
+                    selectableRange: startTimeRange,
+                  }"
+                ></el-date-picker>
+              </el-form-item>
+            </div>
+          </div>
           <el-upload
             :action="imgSite"
             :headers="myHeaders"
@@ -188,35 +249,7 @@
             <!-- 富文本 -->
             <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
-          <div style="overflow: hidden">
-            <div style="float: left">
-              <div class="PR">答题截止时间</div>
-              <el-form-item prop="EndTime">
-                <el-date-picker
-                  v-model="QuestionsQuiz.EndTime"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                  :picker-options="{
-                    disabledDate: (time) => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
-                    },
-                    selectableRange: startTimeRange,
-                  }"
-                ></el-date-picker>
-              </el-form-item>
-            </div>
-            <div style="float: right">
-              <div class="PR">鲸灵币</div>
-              <el-form-item prop="Currency">
-                <el-input
-                  v-model.number="QuestionsQuiz.Currency"
-                  placeholder="请输入鲸灵币"
-                  style="width: 130px"
-                ></el-input>
-              </el-form-item>
-            </div>
-          </div>
+          
         </el-form>
         <div style="overflow: hidden">
           <el-button
@@ -386,8 +419,8 @@ export default {
         Title: "",
         Content: "",
         EndTime: "",
-        Currency: "",
         Img: "",
+        imgContent: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
@@ -403,10 +436,6 @@ export default {
             message: "请选择日期",
             trigger: "change",
           },
-        ],
-        Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-          { type: "number", message: "必须为数字" },
         ],
       },
       // 我要答列表
@@ -435,7 +464,7 @@ export default {
       num: 0,
       typeNum: "new",
       pagenums: 1,
-      pagesizes: 15,
+      pagesizes: 3,
       clientID: 0,
       myqus: false,
       qlcon: false,
@@ -563,13 +592,29 @@ export default {
             _this.newAnswerShow = false;
             _this.newAnswerNum = 0;
             _this.newAnswerTime = res.data.data[0].que.createTime;
-            let myQlList = res.data.data;
+            let myQlList = [];
+            myQlList = res.data.data;
             if (myQlList[0].que.id != _this.myQlList[0].que.id) {
               let date = new Date();
               let now = date.getTime();
               if (localStorage.token) {
                 for (let i = 0; i < res.data.data.length; i++) {
                   _this.$set(myQlList[i], "Times", "");
+                  _this.$set(myQlList[i].que, "images", []);
+                  _this.$set(myQlList[i].que, "imagesNum", 0);
+                  if (myQlList[i].que.img != "") {
+                    var b = myQlList[i].que.img.split("|");
+                    myQlList[i].que.imagesNum = b.length;
+                    if (a.length >= 3) {
+                      for (var j = 0; j <= 2; j++) {
+                        myQlList[i].que.images.push({ url: b[j] });
+                      }
+                    } else {
+                      for (var j = 0; j < a.length; j++) {
+                        myQlList[i].que.images.push({ url: b[j] });
+                      }
+                    }
+                  }
                   let leftTime =
                     now - new Date(myQlList[i].que.createTime).getTime();
                   let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
@@ -637,10 +682,22 @@ export default {
                     for (var i = 0; i < res.data.data.data.length; i++) {
                       _this.$set(a[i], "Times", "");
                       _this.$set(a[i].que, "images", []);
+                      _this.$set(a[i].que, "imagesNum", 0);
                       if (a[i].que.img != "") {
                         var b = a[i].que.img.split("|");
-                        for (var j = 0; j < b.length; j++) {
-                          a[i].que.images.push({ url: b[j] });
+                        a[i].que.imagesNum = b.length;
+                        if (b.length >= 3) {
+                          for (var j = 0; j <= 2; j++) {
+                            a[i].que.images.push({
+                              url: b[j],
+                            });
+                          }
+                        } else {
+                          for (var j = 0; j < b.length; j++) {
+                            a[i].que.images.push({
+                              url: b[j],
+                            });
+                          }
                         }
                       }
                       let leftTime =
@@ -688,11 +745,23 @@ export default {
                       a = res.data.data.data;
                       for (var i = 0; i < a.length; i++) {
                         _this.$set(a[i].question, "images", []);
+                        _this.$set(a[i].question, "imagesNum", 0);
                         _this.$set(a[i], "Times", "");
                         if (a[i].question.img != "") {
                           var b = a[i].question.img.split("|");
-                          for (var j = 0; j < b.length; j++) {
-                            a[i].question.images.push({ url: b[j] });
+                          a[i].question.imagesNum = b.length;
+                          if (b.length >= 3) {
+                            for (var j = 0; j <= 2; j++) {
+                              a[i].question.images.push({
+                                url: b[j],
+                              });
+                            }
+                          } else {
+                            for (var j = 0; j < b.length; j++) {
+                              a[i].question.images.push({
+                                url: b[j],
+                              });
+                            }
                           }
                         }
                         let leftTime =
@@ -835,10 +904,18 @@ export default {
               _this.$set(_this.qlList[i], "Times", "");
               _this.$set(_this.qlList[i], "myType", "");
               _this.$set(_this.qlList[i].question, "images", []);
+              _this.$set(_this.qlList[i].question, "imagesNum", 0);
               if (_this.qlList[i].question.img != "") {
                 var a = _this.qlList[i].question.img.split("|");
-                for (var j = 0; j < a.length; j++) {
-                  _this.qlList[i].question.images.push({ url: a[j] });
+                _this.qlList[i].question.imagesNum = a.length;
+                if (a.length >= 3) {
+                  for (var j = 0; j <= 2; j++) {
+                    _this.qlList[i].question.images.push({ url: a[j] });
+                  }
+                } else {
+                  for (var j = 0; j < a.length; j++) {
+                    _this.qlList[i].question.images.push({ url: a[j] });
+                  }
                 }
               }
               let leftTime =
@@ -893,10 +970,18 @@ export default {
             for (var i = 0; i < res.data.data.data.length; i++) {
               _this.$set(_this.myQlList[i], "Times", "");
               _this.$set(_this.myQlList[i].que, "images", []);
+              _this.$set(_this.myQlList[i].que, "imagesNum", 0);
               if (_this.myQlList[i].que.img != "") {
                 var a = _this.myQlList[i].que.img.split("|");
-                for (var j = 0; j < a.length; j++) {
-                  _this.myQlList[i].que.images.push({ url: a[j] });
+                _this.myQlList[i].que.imagesNum = a.length;
+                if (a.length >= 3) {
+                  for (var j = 0; j <= 2; j++) {
+                    _this.myQlList[i].que.images.push({ url: a[j] });
+                  }
+                } else {
+                  for (var j = 0; j < a.length; j++) {
+                    _this.myQlList[i].que.images.push({ url: a[j] });
+                  }
                 }
               }
               let leftTime =
@@ -950,10 +1035,10 @@ export default {
       }
     },
     // 点击高悬赏展示
-    topCurrency() {
+    topAll() {
       const _this = this;
       _this.num = 2;
-      _this.typeNum = "currency";
+      _this.typeNum = "";
       _this.pagenums = 1;
       // _this.qlcon = true;
       // _this.qlData = false;
@@ -1083,12 +1168,12 @@ export default {
                 // _this.QuestionsQuiz = [];
                 _this.QuestionsQuiz.Title = "";
                 _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.imgContent = "";
                 _this.QuestionsQuiz.EndTime = new Date();
                 setTimeout(function () {
                   _this.newAnswerTime = new Date();
                   _this.newAnswer = setInterval(_this.answerNum, 5000);
                 }, 15000);
-                _this.QuestionsQuiz.Currency = "";
                 _this.QuestionsQuiz.Img = "";
                 _this.myValue = "";
                 _this.fileList = [];
@@ -1118,7 +1203,7 @@ export default {
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.id;
         _this.auction.EndTime = _this.formatDate(item.que.endTime);
-        _this.auction.Currency = item.que.currency;
+        // _this.auction.Currency = item.que.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
@@ -1202,10 +1287,18 @@ export default {
               for (var i = 0; i < res.data.data.data.length; i++) {
                 _this.$set(_this.myQlList[i], "Times", "");
                 _this.$set(_this.myQlList[i].que, "images", []);
+                _this.$set(_this.myQlList[i].que, "imagesNum", 0);
                 if (_this.myQlList[i].que.img != "") {
                   var a = _this.myQlList[i].que.img.split("|");
-                  for (var j = 0; j < a.length; j++) {
-                    _this.myQlList[i].que.images.push({ url: a[j] });
+                  _this.myQlList[i].que.imagesNum = a.length;
+                  if (a.length >= 3) {
+                    for (var j = 0; j <= 2; j++) {
+                      _this.myQlList[i].que.images.push({ url: a[j] });
+                    }
+                  } else {
+                    for (var j = 0; j < a.length; j++) {
+                      _this.myQlList[i].que.images.push({ url: a[j] });
+                    }
                   }
                 }
                 let leftTime =
@@ -1252,10 +1345,18 @@ export default {
                 _this.$set(_this.qlList[i], "Times", "");
                 _this.$set(_this.qlList[i], "myType", "");
                 _this.$set(_this.qlList[i].question, "images", []);
+                _this.$set(_this.qlList[i].question, "imagesNum", 0);
                 if (_this.qlList[i].question.img != "") {
                   var a = _this.qlList[i].question.img.split("|");
-                  for (var j = 0; j < a.length; j++) {
-                    _this.qlList[i].question.images.push({ url: a[j] });
+                  _this.qlList[i].question.imagesNum = a.length;
+                  if (a.length >= 3) {
+                    for (var j = 0; j <= 2; j++) {
+                      _this.qlList[i].question.images.push({ url: a[j] });
+                    }
+                  } else {
+                    for (var j = 0; j < a.length; j++) {
+                      _this.qlList[i].question.images.push({ url: a[j] });
+                    }
                   }
                 }
                 let leftTime =
@@ -1365,10 +1466,22 @@ export default {
               for (var i = 0; i < a.length; i++) {
                 _this.$set(a[i], "Times", "");
                 _this.$set(a[i].que, "images", []);
+                _this.$set(a[i].que, "imagesNum", 0);
                 if (a[i].que.img != "") {
                   var b = a[i].que.img.split("|");
-                  for (var j = 0; j < b.length; j++) {
-                    a[i].que.images.push({ url: b[j] });
+                  a[i].que.imagesNum = b.length;
+                  if (b.length >= 3) {
+                    for (var j = 0; j <= 2; j++) {
+                      a[i].que.images.push({
+                        url: b[j],
+                      });
+                    }
+                  } else {
+                    for (var j = 0; j < b.length; j++) {
+                      a[i].que.images.push({
+                        url: b[j],
+                      });
+                    }
                   }
                 }
                 let leftTime = now - new Date(a[i].que.createTime).getTime();
@@ -1413,11 +1526,23 @@ export default {
                 a = res.data.data.data;
                 for (var i = 0; i < a.length; i++) {
                   _this.$set(a[i].question, "images", []);
+                  _this.$set(a[i].question, "imagesNum", 0);
                   _this.$set(a[i], "Times", "");
                   if (a[i].question.img != "") {
                     var b = a[i].question.img.split("|");
-                    for (var j = 0; j < b.length; j++) {
-                      a[i].question.images.push({ url: b[j] });
+                    a[i].question.imagesNum = b.length;
+                    if (b.length >= 3) {
+                      for (var j = 0; j <= 2; j++) {
+                        a[i].question.images.push({
+                          url: b[j],
+                        });
+                      }
+                    } else {
+                      for (var j = 0; j < b.length; j++) {
+                        a[i].question.images.push({
+                          url: b[j],
+                        });
+                      }
                     }
                   }
                   let leftTime =
@@ -1537,14 +1662,15 @@ export default {
     handleAvatarSuccess(res, file, fileList) {
       const _this = this;
       var imgurl = "";
+      _this.QuestionsQuiz.imgContent =
+        res.imgContent + "|" + _this.QuestionsQuiz.imgContent;
       for (let i = 0; i < fileList.length; i++) {
         imgurl = imgurl + "|" + fileList[i].response.file;
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
     },
     // 上传问题图片上传前
-    beforeAvatarUpload(file) {
-    },
+    beforeAvatarUpload(file) {},
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
