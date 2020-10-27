@@ -7,13 +7,15 @@
         <div class="ql-t-con">
           <div class="qltconLeft">
             <h1>提升学业最好的方式就是互相帮助。</h1>
-            <el-input
-              v-model="topInput"
-              @change="topInputs"
-              clearable
-              style="width: 680px"
-              placeholder="在这里搜索你想找的学校，课程或其他学业相关内容..."
-            ></el-input>
+            <div style="position: relative;">
+              <el-input
+                v-model="topInput"
+                @change="topInputs"
+                style="width: 700px"
+                placeholder="在这里搜索你想找的学校，课程或其他学业相关内容..."
+              ></el-input>
+              <i class="el-icon-search" @click="topInputs"></i>
+            </div>
           </div>
           <div class="qltconright">
             <img src="../assets/问答1.png" alt />
@@ -25,8 +27,8 @@
               @click="NewQuitBt"
               @mousewheel.prevent
               style="
-                height: 70px;
-                font-size: 20px;
+                height: 55px;
+                font-size: 18px;
                 background: #1da1f2 !important;
               "
               >提一个新问题&nbsp;></el-button
@@ -62,9 +64,26 @@
             <!-- 没登录 -->
             <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
               <div class="qlConTab">
-                <div>搜索:"{{ topInput }}"</div>
-                <div>最新问题</div>
-                <div>人气问题</div>
+                <div class="qlConTabS" v-show="topInput != ''">
+                  搜索&nbsp;&nbsp;"{{ topInput }}"<i
+                    class="el-icon-close"
+                    @click="topInClose"
+                  ></i>
+                </div>
+                <div
+                  class="qlConTabN"
+                  :class="{ qlConTabNClass: qlConTabnum == 0 }"
+                  @click="tab('n')"
+                >
+                  <img src="../assets/问答new.png" alt="" />最新问题
+                </div>
+                <div
+                  class="qlConTabN"
+                  :class="{ qlConTabNClass: qlConTabnum == 1 }"
+                  @click="tab('r')"
+                >
+                  <img src="../assets/问答huo.png" alt="" />人气问题
+                </div>
               </div>
               <div class="qlBodyMeiConLeft">
                 <!-- <div>
@@ -72,7 +91,7 @@
                     >{{ item.question.currency }}&nbsp;鲸灵币</span
                   >
                 </div> -->
-                <div style="font-size: 14px; color: #adadad">2人正在竞拍</div>
+                <div style="font-size: 12px; color: #adadad">2人正在竞拍</div>
                 <h4>
                   <router-link :to="'/questionDetails/' + item.question.id">{{
                     item.question.title
@@ -109,12 +128,29 @@
               </div>
             </div>
             <!-- 登录时 -->
-            <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
-              <div class="qlConTab">
-                <div>搜索:"{{ topInput }}"</div>
-                <div>最新问题</div>
-                <div>人气问题</div>
+            <div class="qlConTab">
+              <div class="qlConTabS" v-show="topInput != ''">
+                搜索&nbsp;&nbsp;"{{ topInput }}"<i
+                  class="el-icon-close"
+                  @click="topInClose"
+                ></i>
               </div>
+              <div
+                class="qlConTabN"
+                :class="{ qlConTabNClass: qlConTabnum == 0 }"
+                @click="tab('n')"
+              >
+                <img src="../assets/问答new.png" alt="" />最新问题
+              </div>
+              <div
+                class="qlConTabN"
+                :class="{ qlConTabNClass: qlConTabnum == 1 }"
+                @click="tab('r')"
+              >
+                <img src="../assets/问答huo.png" alt="" />人气问题
+              </div>
+            </div>
+            <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
               <div class="qlBodyMeiConLeft">
                 <!-- <div>
                   <span class="qlBodyU" v-show="item.bidd != null">{{
@@ -130,7 +166,7 @@
                     >{{ item.que.currency }}&nbsp;鲸灵币</span
                   >
                 </div> -->
-                <div style="font-size: 14px; color: #adadad">2人正在竞拍</div>
+                <div style="font-size: 12px; color: #adadad">2人正在竞拍</div>
                 <h4>
                   <router-link :to="'/questionDetails/' + item.que.id">{{
                     item.que.title
@@ -174,32 +210,42 @@
           :rules="QuestionsQuizrules"
           ref="QuestionsQuiz"
           class="demo-ruleForm"
+          
         >
-          <el-form-item prop="Title" class="ql-editQuziTi" label="选择你的科目" style="width:350px;float:left;">
-            <el-input
-              v-model="QuestionsQuiz.Title"
-              placeholder="写下你的问题，准确的描述问题更容易得到解答"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            prop="Title"
-            class="ql-editQuziTi"
-            label="输入你的主题或课程"
-            style="width:350px;float:right;"
-          >
-            <el-input
-              v-model="QuestionsQuiz.Title"
-              placeholder="写下你的问题，准确的描述问题更容易得到解答"
-            ></el-input>
-          </el-form-item>
-          <div style="overflow: hidden;float:left;width: 100%;">
-            <div style="float: left">
-              <!-- <div class="PR">答题截止时间</div> -->
-              <el-form-item prop="EndTime" label="答题截止时间" >
+          <div style="overflow: hidden; float: left">
+            <div class="PR">选择你的科目</div>
+            <!-- :inline="true" -->
+            <el-form-item
+              prop="Title"
+              class="ql-editQuziTi"
+              style="width: 270px;"
+            >
+              <el-input v-model="QuestionsQuiz.Title"></el-input>
+            </el-form-item>
+          </div>
+          <div style="overflow: hidden;margin-left:289px">
+            <div class="PR">输入你的主题或课程</div>
+            <el-form-item
+              prop="Title"
+              class="ql-editQuziTi"
+              style="width: 270px; "
+              
+            >
+              <el-input
+                v-model="QuestionsQuiz.Title"
+                placeholder="Write about..."
+              ></el-input>
+            </el-form-item>
+          </div>
+
+          <div style="overflow: hidden;">
+            <div style="float: left" class="queTime">
+              <div class="PR">答题截止时间</div>
+              <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
-                  style="width:350px;heigth:58px"
+                  style="width: 270px"
                   placeholder="选择日期时间"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
@@ -212,6 +258,18 @@
               </el-form-item>
             </div>
           </div>
+
+          <el-form-item prop="Content" class="ql-editNameDetail">
+            <!-- <el-input
+              type="textarea"
+              placeholder="输入问题背景、条件等详细信(选填)"
+              v-model="QuestionsQuiz.Content"
+              :autosize="{ minRows: 2, maxRows: 22}"
+            ></el-input>-->
+
+            <!-- 富文本 -->
+            <editor id="tinymce" v-model="myValue" :init="init"></editor>
+          </el-form-item>
           <el-upload
             :action="imgSite"
             :headers="myHeaders"
@@ -237,20 +295,8 @@
           >
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
-
-          <el-form-item prop="Content" class="ql-editNameDetail">
-            <!-- <el-input
-              type="textarea"
-              placeholder="输入问题背景、条件等详细信(选填)"
-              v-model="QuestionsQuiz.Content"
-              :autosize="{ minRows: 2, maxRows: 22}"
-            ></el-input>-->
-
-            <!-- 富文本 -->
-            <editor id="tinymce" v-model="myValue" :init="init"></editor>
-          </el-form-item>
-          
         </el-form>
+
         <div style="overflow: hidden">
           <el-button
             class="releaseQl"
@@ -266,7 +312,7 @@
     </div>
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
-        <h3>选择您向提问人提出的时间和赏金要求</h3>
+        <h3>选择您向提问人提出的赏金要求</h3>
         <el-form
           :model="auction"
           :rules="auctionrules"
@@ -274,7 +320,7 @@
           class="demo-ruleForm"
         >
           <div style="overflow: hidden">
-            <div style="float: left">
+            <!-- <div style="float: left">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
@@ -291,14 +337,14 @@
                   }"
                 ></el-date-picker>
               </el-form-item>
-            </div>
-            <div style="float: right">
+            </div> -->
+            <div style="float: left">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
                   placeholder="请输入鲸灵币"
-                  style="width: 130px"
+                  style="width: 270px"
                 ></el-input>
               </el-form-item>
             </div>
@@ -374,7 +420,7 @@ export default {
         skin_url: "/tinymce/skins/ui/oxide",
         placeholder: "输入问题的详细描述",
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
-        height: 300,
+        height: 213,
         plugins: this.plugins,
         toolbar: this.toolbar,
         branding: false,
@@ -489,6 +535,7 @@ export default {
       fileList: [],
       Answernum: "",
       qdConRigtS: false,
+      qlConTabnum: 0,
     };
   },
   created: function () {
@@ -1378,59 +1425,6 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      } else if (localStorage.token && _this.num == 3) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-            async: false,
-            params: {
-              pagenum: _this.pagenums,
-              pagesize: _this.pagesizes,
-              name: _this.topInput,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              _this.myQlList = res.data.data.data;
-              for (var i = 0; i < a.length; i++) {
-                a[i].type = "";
-                if (a[i].que.status == 1) {
-                  a[i].type = "保存";
-                }
-                if (a[i].que.status == 2) {
-                  a[i].type = "正在竞拍";
-                }
-                if (a[i].que.status == 3) {
-                  a[i].type = "已选竞拍者";
-                }
-                if (a[i].que.status == 4) {
-                  a[i].type = "已回答";
-                }
-                if (a[i].que.status == 5) {
-                  a[i].type = "提交修改";
-                }
-                if (a[i].que.status == 6) {
-                  a[i].type = "申请客服";
-                }
-                if (a[i].que.status == 7) {
-                  a[i].type = "已完成";
-                }
-                if (a[i].que.status == 8) {
-                  a[i].type = "已关闭";
-                }
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
       }
     },
     // 点击页面底部的三个点加载下一页
@@ -1671,6 +1665,21 @@ export default {
     },
     // 上传问题图片上传前
     beforeAvatarUpload(file) {},
+    // 小搜索框的关闭按钮
+    topInClose() {
+      const _this = this;
+      _this.topInput = "";
+      _this.topInputs();
+    },
+    // 最新和人气切换
+    tab(tab) {
+      const _this = this;
+      if (tab == "n") {
+        _this.qlConTabnum = 0;
+      } else if (tab == "r") {
+        _this.qlConTabnum = 1;
+      }
+    },
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);

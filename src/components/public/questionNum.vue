@@ -76,16 +76,20 @@
           <img class="qlBodyRightI2" src="../../assets/问答5.jpg" alt />
         </div>
         <div class="qlBodyRightBott">
-          <router-link to="/personalData/myQuestion">
-            竞拍中
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'auction'}}">
+            竞拍中的提问
             <span v-show="auctions != 0">{{auctions}}</span>
           </router-link>
-          <router-link to="/personalData/myQuestion">
-            待回答
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'tofinish'}}">
+            待完成的提问
             <span v-show="toAnswer != 0">{{toAnswer}}</span>
           </router-link>
-          <router-link to="/personalData/myQuestion">
-            已回答
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'evaluate'}}">
+            待评价的提问
+            <span v-show="haveToAnswer != 0">{{haveToAnswer}}</span>
+          </router-link>
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'finish'}}">
+            已完毕的提问
             <span v-show="haveToAnswer != 0">{{haveToAnswer}}</span>
           </router-link>
         </div>
@@ -100,16 +104,20 @@
           <img class="qlBodyRightI2" src="../../assets/问答5.jpg" alt />
         </div>
         <div class="qlBodyRightBott">
-          <router-link to="/personalData/myQuestion">
-            竞拍中
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'auction'}}">
+            竞拍中的回答
             <span v-show="paAuctions != 0">{{paAuctions}}</span>
           </router-link>
-          <router-link to="/personalData/myQuestion">
-            待回答
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'tofinish'}}">
+            待完成的回答
             <span v-show="paToAnswer != 0">{{paToAnswer}}</span>
           </router-link>
-          <router-link to="/personalData/myQuestion">
-            已回答
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'evaluate'}}">
+            待评价的回答
+            <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
+          </router-link>
+          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'finish'}}">
+            已完毕的回答
             <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
           </router-link>
         </div>

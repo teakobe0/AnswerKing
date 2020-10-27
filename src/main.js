@@ -69,6 +69,7 @@ import {
   RadioGroup,
   RadioButton,
   Alert,
+  Rate,
 } from 'element-ui';
 Vue.use(Button);
 Vue.use(Select);
@@ -100,6 +101,7 @@ Vue.use(Radio);
 Vue.use(RadioGroup);
 Vue.use(RadioButton);
 Vue.use(Alert);
+Vue.use(Rate);
 
 
 Vue.use(Loading.directive);

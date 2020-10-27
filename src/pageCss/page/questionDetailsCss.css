@@ -26,77 +26,156 @@
   margin-bottom: 20px;
   padding: 25px 32px;
   background: #fff;
+  position: relative;
+}
+.DeShowCSS {
+  position: absolute;
+  right: 32px;
+  top: 25px;
+  font-size: 30px;
+  cursor: pointer;
 }
 .qdConLeft h4 {
-  font-size: 14px;
-  margin-top: 30px;
-  margin-bottom: 10px;
+  font-size: 18px;
+  margin-bottom: 15px;
+}
+.qlBodyImgD {
+  margin-bottom: 15px;
+    color: #484848;
+}
+.qlBodyImgD img {
+  vertical-align: middle;
+  margin-right: 11px;
+  width: 21px;
+  height: 21px;
+  border-radius: 10px;
+}
+.qlBodyImgD span {
+  color: #a2a2a2;
+  margin-left: 7px;
 }
 .qlBodyQuImg {
-  width: 240px;
+  width: 190px;
+  height: 120px;
   margin-top: 22px;
   margin-bottom: 25px;
-  margin-right: 25px;
+  margin-right: 6px;
   cursor:pointer;
   padding-bottom: 5px;
   border-bottom: 1px solid #fff;
+}
+.qlBodyQuImg:nth-child(5n+0){
+  margin-right: 0px;
 }
 .qlBodyQuImg:hover {
   border-bottom: 1px solid #4458B0;
 }
 .qdConBls {
-  background: #f7f3eb;
+  width: 290px;
+  background: #fff;
   margin-bottom: 20px;
-  padding: 30px 37px;
+  padding: 20px;
   min-height: 100px;
   position: relative;
   overflow: hidden;
-  border: 1px solid #f5ba96;
+  border-radius: 10px;
+  float: left;
+  margin-right: 20px;
 }
-.qdConBls b {
+.qdConBls:nth-child(3n+0){
+  margin-right: 0px;
+}
+.qdConBlsName {
+  min-width: 122px;
+  position: relative;
+  overflow: hidden;
+}
+.qdConBlsName b {
   display: block;
-  margin-bottom: 40px;
-  font-size: 20px;
+  color: #333333;
+  margin-bottom: 5px;
+  font-size: 14px;
+  margin-left: 13px;
+  float: left;
 }
-.qdConBlsD {
+.qdConBlsCurrency {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  text-align: center;
+  line-height: 1em;
+}
+.qdConBlsCurrency span {
+  font-size: 18px;
+  color: #ff7e00;
+}
+.qdConBlsName a {
+  color: #333333;
+  text-decoration: none;
+  display: block;
+  font-size: 12px;
+  position: absolute;
+  left: 52px;
+  top: 17px;
+}
+.qdConBlsBimg {
+  width: 40px;
+  height: 35px;
+  border-radius: 20px;
+  vertical-align: middle;
+  float: left;
+}
+.qdConBlsgrade {
   display: inline-block;
   margin-right: 60px;
+  margin-top: 20px;
 }
-.qdConBlsD img {
-  vertical-align: middle;
-  margin-right: 10px;
+.qdConBlsgrade p {
+  margin-right: 5px;
+  font-size: 16px; 
+  float: left; 
+  color: #225c81; 
+  font-weight: 700;
+  
+}
+.qdConBlsgrade span {
+  margin-right: -5px;
+  font-size: 16px;
 }
 .qdConBlsR {
-  width: 90px;
+  width: 135px;
   position: absolute;
-  right: 37px;
-  top: 33px;
+  right: 20px;
+  bottom: 20px;
 }
 .qdConBlsR1 {
-  background: #ffbb34;
-  color: #fff;
+  background: #ffffff;
+  border: 1px solid #e1e1e1;
+  color: #333;
   padding: 10px;
-  font-size: 16px;
+  width: 43px;
+  height: 18px;
+  font-size: 14px;
   text-align: center;
-  margin-bottom: 10px;
   cursor: pointer;
   border-radius: 10px;
-}
-.qdConBlsR1 img {
-  vertical-align: middle;
+  float: left;
   margin-right: 5px;
 }
 .qdConBlsR1:hover {
   background: #ffc249;
 }
 .qdConBlsR2 {
-  background: #2fc781;
+  background: #1da1f2;
   color: #fff;
   padding: 10px;
-  font-size: 16px;
+  width: 45px;
+  height: 20px;
+  font-size: 14px;
   text-align: center;
   cursor: pointer;
   border-radius: 10px;
+  float: left;
 }
 .qdConBlsR2:hover {
   background: #4dc78e;
@@ -104,25 +183,28 @@
 .qdConBlsR3 {
   background: #ffbb34;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   text-align: center;
   padding: 0px 10px;
   cursor: pointer;
-  width: 54px;
-  height: 20px;
+  width: 106px;
+  height: 36px;
   display: inline-block;
   border-radius: 2px;
-  border: 1px solid #ffbb34;
-  line-height: 20px;
+  line-height: 36px;
 }
 .qdConBlsR3 img {
   margin-right: 5px;
-  width: 12px;
+  width: 15px;
   position: relative;
   top: 2px;
 }
 .qdConBlsR3:hover {
   background: #ffc249;
+}
+.qd-Time {
+  text-align: center;
+  margin-bottom: 20px;
 }
 .qdConMyBls {
   margin-top: 20px;
@@ -162,17 +244,33 @@
   float: right;
 }
 .qdConEvaluate {
-  height: 60px;
+  width: 130px;
+  height: 45px;
   text-align: center;
-  line-height: 60px;
+  line-height: 45px;
   margin-bottom: 20px;
-  background: #2fc781;
+  background: #1da1f2;
   color: #fff;
   margin-top: 20px;
   cursor: pointer;
+  margin: 0 auto;
+  border-radius: 10px;
+  font-size: 18px;
 }
 .qdConEvaluate:hover {
   background: #4dc78e;
+}
+.zhengzaijingpai {
+  width: 471px;
+  height: 96px;
+  margin: 0 auto;
+  background-color: #1da1f2;
+  border-radius: 10px;
+}
+.zhengzaijingpai img{
+  width: 50px;
+  height: 46px;
+  border-radius: 25px;
 }
 .qlBodyIs {
   border: 1px solid #4458b0;
@@ -238,16 +336,27 @@
   margin-bottom: 20px;
   width: 1040px;
   text-align: center;
-  height: 64px;
-  line-height: 64px;
-  background: #eff3ff;
+  height: 50px;
+  line-height: 50px;
+  position: relative;
+  /* background: #eff3ff; */
 }
 .qd-title-right-2 p {
-  color: #333;
+  color: #333333;
 }
-.qd-title-right-2 div {
-  color: #000;
-  font-weight: 700;
+.qd-title-right-2-l {
+  width: 448px;
+  border-top: 2px solid #e0e0e0;
+  position: absolute;
+  top: 22px;
+  left: 0px;
+}
+.qd-title-right-2-r {
+  width: 448px;
+  border-top: 2px solid #e0e0e0;
+  position: absolute;
+  top: 22px;
+  right: 0px;
 }
 .qd-title-right-3 {
   width: 1040px;
@@ -451,9 +560,23 @@
   margin-top: 4vh !important;
 }
 .button2 {
+  width: 137px;
+  height: 36px;
   margin-right: 10px !important;
   margin-left: 0px !important;
   padding: 4px 9px;
+  font-size: 14px;
+}
+.collect {
+  width: 126px;
+  height: 36px;
+  margin-right: 10px !important;
+  margin-left: 0px !important;
+  padding: 4px 9px;
+  font-size: 14px;
+}
+.collect i {
+  color: #ffc107;
 }
 /* 聊天记录面板 */
 .chatTitle {

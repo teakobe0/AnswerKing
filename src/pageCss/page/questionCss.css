@@ -6,19 +6,33 @@
 
 /* 标题开始 */
 .ql-title {
-    height: 240px;
+    height: 190px;
     background: #eff3ff;
     overflow: hidden;
 }
 .ql-t-con {
     width: 1300px;
-    height: 240px;
+    height: 190px;
     margin: 0 auto;
 }
 .qltconLeft {
-    width: 680px;
-    height: 240px;
+    width: 700px;
+    height: 190px;
     float: left;
+}
+.qltconLeft i {
+    position: absolute;
+    right: 0px ;
+    top: 0px;
+    display: block;
+    width: 30px;
+    height: 45px;
+    text-align: center;
+    line-height: 45px;
+    cursor: pointer;
+}
+.qltconLeft i:hover {
+    color: #0059ff;
 }
 .qltconLeft h1 {
     margin-top: 70px;
@@ -28,28 +42,30 @@
     font-size: 24px;
 }
 .qltconLeft .el-input__inner {
-    height: 57px !important;
-    font-size: 20px;
+    height: 45px !important;
+    font-size: 16px;
+    padding-right: 30px !important;
 }
 .qltconright {
-    width: 355px;
-    height: 240px;
+    height: 190px;
     float: left;
-    margin-left: 30px;
+    margin-left: 35px;
 }
 .qltconright img {
     float: left;
 }
 .qltconAdd {
-    width: 211px;
+    width: 222px;
     float: right;
     margin-top: 66.5px;
 }
 .qltconAdd a {
     font-size: 12px;
-    margin-top: 20px;
+    margin-top: 17px;
     display: inline-block;
     text-decoration: none;
+    text-align: center;
+    width: 100%;
     color: #888888;
 }
 /* 标题结束 */
@@ -59,16 +75,46 @@
     margin-top: 38px;
 }
 .qlConTab {
-    padding: 20px 20px 0px 20px;
-    height: 50px;
+    background-color: #fff;
+    width: 790px;
+    padding: 18px 20px 1px 20px;
+    height: 37px;
 }
-.qlConTab div{
+.qlConTab .qlConTabS {
     float: left;
-    margin-right: 20px;
+    margin-right: 15px;
     background-color: #f5f6f7;
-    padding: 16px 20px;
+    padding: 8px 18px;
     border-radius: 10px;
     font-size: 16px;
+    cursor: pointer;
+}
+.qlConTab .qlConTabS i {
+    margin-left: 15px;
+}
+.qlConTab .qlConTabS i:hover {
+    color: #0059ff;
+}
+.qlConTabNClass {
+    background-color: #f5f6f7;
+    color: #0059ff;
+}
+.qlConTab .qlConTabN{
+    float: left;
+    margin-right: 15px;
+    background-color: #f5f6f7;
+    padding: 8px 18px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+.qlConTab .qlConTabN:hover {
+    background-color: #f3f9fd;
+    color: #1da1f2;
+}
+.qlConTab .qlConTabN img {
+    vertical-align: sub;
+    margin-right: 6px;
 }
 .qlBodyCon {
     width: 1300px;
@@ -77,8 +123,8 @@
 }
 .qlBodyLeft {
     float: left;
-    width: 227px;
-    margin-right: 24px;
+    width: 215px;
+    margin-right: 15px;
     background: #fff;
     padding: 15px 0px 15px 0px;
 }
@@ -106,7 +152,7 @@
     width: 800px;
 }
 .qlBodyMeiCon {
-    width: 800px;
+    width: 830px;
     margin-bottom: 10px;
     background: #fff;
     overflow: hidden;
@@ -123,7 +169,7 @@
 .qlBodyMeiConLeft h4 {
     margin-top: 15px;
     margin-bottom: 20px;
-    font-size: 22px;
+    font-size: 18px;
     word-wrap:break-word
 }
 .qlBodyMeiConLeft h4 a:hover {
@@ -153,7 +199,7 @@
 .qlBodyConImg img {
     width: 190px;
     margin-right: 10px;
-    height: 190px;
+    height: 125px;
 }
 .qlBodyImg {
     margin-bottom: 20px;
@@ -171,8 +217,8 @@
     margin-left: 7px;
 }
 .viewimages {
-    width: 160px;
-    height: 190px;
+    width: 190px;
+    height: 125px;
     float: right;
     background-color: #fafafa;
     text-align: center;
@@ -180,7 +226,7 @@
     display: block;
 }
 .viewimages p {
-    margin-top: 74px;
+    margin-top: 41.5px;
     color: #999999;
 }
 .qlBodyMeiConRight {
@@ -188,7 +234,7 @@
     color: #fff;
     text-align: center;
     cursor: pointer;
-    padding: 10px 20px;
+    padding: 7px 20px;
     width: 136px;
     border-radius: 10px;
 }
@@ -203,8 +249,9 @@
     color: #888888;
     margin-left: 20px;
     position: absolute;
-    bottom: 30px;
+    bottom: 26px;
     left: 200px;
+    font-size: 14px;
 }
 .pageturning {
     text-align: center;
@@ -350,8 +397,8 @@
     z-index: 100;
 }
 .ql-editQuzi {
-    width: 710px;
-    padding: 20px 20px 30px 20px;
+    width: 560px;
+    padding: 20px 20px 50px 20px;
     margin: 0 auto;
     background-color: #fff;
     position: relative;
@@ -359,10 +406,12 @@
     transform: translateY(-50%);
     border-radius: 4px;
 }
+.queTime .el-input--prefix .el-input__inner{
+    height: 48px !important;
+}
 .ql-editQuziTi .el-input__inner {
-    height: 58px !important;
-    font-size: 22px !important;
-    padding: 10px 20px !important;
+    height: 48px !important;
+    padding: 10px 18px !important;
 }
 .ql-editQuziTi .el-form-item__error {
     left: 0px !important;
@@ -479,16 +528,21 @@
     line-height: 0px !important;
 }
 .ql-shade .el-upload-list--picture-card .el-upload-list__item {
-    width: 50px !important;
-    height: 50px !important;
+    width: 45px !important;
+    height: 45px !important;
 }
 .ql-shade .el-upload-list--picture-card .el-upload-list__item-actions {
     font-size: 12px !important;
 }
 .upImg {
-    text-align: right;
-    margin-bottom: 11px;
-    
+    position: relative;
+    float: left;
+}
+.upImg .el-upload-list--picture-card{
+    position: absolute;
+    overflow-x:auto;
+    top: 48px;
+    width: 560px;
 }
 .upImgBut i {
     font-size: 16px !important;

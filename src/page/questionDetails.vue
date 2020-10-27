@@ -6,49 +6,89 @@
       <div class="qdConMe">
         <div class="qdConLeft" v-if="qdConLeftShow">
           <div class="qdConTitle">
-            <div class="qlBodyImg">
+            <i
+              class="el-icon-arrow-up DeShowCSS"
+              @click="DeShowHand"
+              v-show="DeShow == true"
+            ></i>
+            <i
+              class="el-icon-arrow-down DeShowCSS"
+              @click="DeShowHand"
+              v-show="DeShow == false"
+            ></i>
+            <h4>{{ qlList.que.question.title }}</h4>
+            <div class="qlBodyImgD">
               <img :src="qlList.que.qimage" alt />
-              {{qlList.que.qname}}
-              <span>{{qlList.que.Times}}</span>
+              {{ qlList.que.qname }}
+              <span>{{ qlList.que.Times }}</span>
             </div>
-            <h4>{{qlList.que.question.title}}</h4>
-            <p style="font-size:14px;" v-html="qlList.que.question.content"></p>
-            <div>
-              <img class="qlBodyQuImg" v-for="item in qlList.que.images" :src="item.url" alt @click="suspendImg(item.url)"/>
-            </div>
+            <div v-show="DeShow">
+              <p
+                style="font-size: 14px; margin-bottom: 15px"
+                v-html="qlList.que.question.content"
+              ></p>
+              <div>
+                <img
+                  class="qlBodyQuImg"
+                  v-for="item in qlList.que.images"
+                  :src="item.url"
+                  alt
+                  @click="suspendImg(item.url)"
+                />
+              </div>
 
-            <div style="margin-top:15px;">
-              <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span>
-              <el-button
-                size="mini"
-                class="button2"
-                type="primary"
-                @click="editShade(qlList)"
-                v-show="editS"
-              >编辑</el-button>
-              <!-- <el-button
+              <div style="margin-top: 15px">
+                <!-- <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span> -->
+                <el-button
+                  size="mini"
+                  class="button2"
+                  type="primary"
+                  @click="editShade(qlList)"
+                  v-show="editS"
+                  icon="el-icon-edit-outline"
+                  >编辑问题</el-button
+                >
+                <!-- <el-button
                 size="mini"
                 type="primary"
                 class="button2"
                 @click="evaluate(qlList.que.question.id)"
                 v-show="evaluateS"
               >评价</el-button>-->
-              <el-button
-                size="mini"
-                class="button2"
-                type="primary"
-                @click="service(qlList.que.question.id)"
-                v-show="serviceS"
-              >申请客服</el-button>
-              <!-- <el-button
+                <el-button
+                  size="mini"
+                  class="button2"
+                  type="primary"
+                  @click="service(qlList.que.question.id)"
+                  v-show="serviceS"
+                  >申请客服</el-button
+                >
+                <!-- <el-button
                 class="el-icon-chat-line-round privateLetter"
                 style="margin-top:2px;margin-right: 11px;"
                 title="通知留言"
                 v-show="inforQuiz"
                 @click="informQuizzer(qlList.que)"
               ></el-button>-->
-              <div class="qdConBlsR3" @click="informQuizzer(qlList.que)" v-if="inforQuiz">
-                <img src="../assets/问答详情3.jpg" alt />聊天
+                <el-button
+                  size="mini"
+                  class="collect"
+                  @click="service(qlList.que.question.id)"
+                  v-show="inforQuiz"
+                  icon="el-icon-star-on"
+                  >收藏该问题</el-button
+                >
+                <div
+                  class="qdConBlsR3"
+                  @click="informQuizzer(qlList.que)"
+                  v-if="inforQuiz"
+                >
+                  <img src="../assets/问答详情3.jpg" alt />对话
+                </div>
+                <div style="float: right; margin-top: 7.5px">
+                  <p style="float: left;font-size:14px;color:#888888;margin-right:20px">11人收藏</p>
+                  <p style="float: left;font-size:14px;color:#888888;">11人浏览</p>
+                </div>
               </div>
             </div>
           </div>
@@ -60,44 +100,73 @@
             <div class="qdConMyBls2">你已选择 {{qlList.bls[0].bname}} 回答本问题</div>
             <div class="qdConMyBls3"></div>
           </div>-->
+          <div v-show="replyShadeShow">
+            <div class="qd-Time">
+              该问题需要在 <b>{{qlList.que.question.endTime|formatDate}}</b> 前回答完毕  剩余 1天1小时23分
+            </div>
+          </div>
+          <!-- <div class="zhengzaijingpai" v-if="inforQuiz">
+            <img :src="clientImg" alt="">
+            <span>你正在参与竞拍</span>
+          </div> -->
           <div
             class="qd-title-right-2"
             v-if="qlList.bls.length > 0 && qlList.que.question.answerer == 0"
           >
-            <p>该问题目前已有{{qlList.bls.length}}人参与竞拍</p>
+            <div class="qd-title-right-2-l"></div>
+            <p>{{ qlList.bls.length }}人正在竞拍</p>
+            <div class="qd-title-right-2-r"></div>
           </div>
           <div class="qd-title-right-3" v-if="selectbname">
             <div></div>
-            <p>你已选择&nbsp;{{qlList.bls[0].bname}}&nbsp;回答问题</p>
+            <p>你已选择&nbsp;{{ qlList.bls[0].bname }}&nbsp;回答问题</p>
             <div></div>
           </div>
-          <div class="qd-title-right-3" v-if="qlList.bls.length == 0">
+          <!-- <div class="qd-title-right-3" v-if="qlList.bls.length == 0">
             <div></div>
             <p>暂时无人参与竞拍</p>
             <div></div>
-          </div>
-          <div class="qdConBls" v-for="item in qlList.bls">
-            <b v-show="qdConMyBls == false">{{item.bname}}&nbsp;提交的竞拍</b>
-            <b v-show="qdConMyBls == true">回答者&nbsp;{{item.bname}}</b>
-            <div class="qdConBlsD">
-              <img src="../assets/问答详情2.jpg" alt />
-              完成时间:{{item.bidding.endTime | formatDate}}
+          </div> -->
+          <div>
+            <div class="qdConBls" v-for="item in qlList.bls">
+            <div class="qdConBlsName">
+              <img class="qdConBlsBimg" :src="item.bimage" alt />
+              <div>
+                <b v-show="qdConMyBls == false">{{ item.bname }}</b>
+                <b v-show="qdConMyBls == true">{{ item.bname }}</b>
+                <router-link to="/home">查看TA的主页</router-link>
+              </div>
             </div>
-            <div class="qdConBlsD">
-              <img src="../assets/问答详情1.jpg" alt />
-              鲸灵币:{{item.bidding.currency}}
+            <div class="qdConBlsCurrency">
+              <span>{{ item.bidding.currency }}</span>
+              <br /><span style="font-size: 12px; color: #333">鲸灵币</span>
             </div>
+            <div class="qdConBlsgrade">
+              <p>100%</p>
+              <el-rate v-model="blsgrade" disabled style="float: left;position: relative;top: -2px;">
+              </el-rate>
+              <div style="font-size:14px;color:#333;margin-top:25px;letter-spacing: 2px;">回答过1234个问题</div>
+              <!-- 完成时间:{{ item.bidding.endTime | formatDate }} -->
+            </div>
+
             <div class="qdConBlsR">
-              <div class="qdConBlsR1" @click="inform(item)" v-if="auctionClient">
-                <img src="../assets/问答详情3.jpg" alt />聊天
+              <div
+                class="qdConBlsR1"
+                @click="inform(item)"
+                v-if="auctionClient"
+              >对话
               </div>
               <div
                 class="qdConBlsR2"
                 v-if="auctionbutton"
                 @click="auctionss(item.bidding.createBy)"
-              >选择TA</div>
+              >
+                选择TA
+              </div>
             </div>
           </div>
+          </div>
+          
           <!-- <div class="qdConMyBls" v-show="qdConMyBls">
             <div style="overflow:hidden;" v-show="auctionText">
               <div class="qdConMyBls1"></div>
@@ -124,15 +193,23 @@
           <div class="qdConMyAns" v-show="editan">
             <div class="qd-editan">
               <div v-for="item in qlList.als" class="submitAns">
-                <div style="overflow:hidden;margin-bottom:33px">
+                <div style="overflow: hidden; margin-bottom: 33px">
                   <div class="qdEditanName">
-                    <span style="color:#333;">{{qlList.bls[0].bname}}</span>&nbsp;发布了问题
+                    <span style="color: #333">{{ qlList.bls[0].bname }}</span
+                    >&nbsp;发布了问题
                   </div>
-                  <div class="qdEditanTime">{{item.createTime | formatDate}}</div>
+                  <div class="qdEditanTime">
+                    {{ item.createTime | formatDate }}
+                  </div>
                 </div>
                 <P v-html="item.content"></P>
                 <div class="subImgdiv" v-for="img in item.images">
-                  <img class="subImg" :src="img.url" alt  @click="suspendImg(img.url)"/>
+                  <img
+                    class="subImg"
+                    :src="img.url"
+                    alt
+                    @click="suspendImg(img.url)"
+                  />
                 </div>
               </div>
             </div>
@@ -142,11 +219,29 @@
             </div>
             <div>内容</div>-->
           </div>
-          <div class="qdConEvaluate" @click="evaluate(qlList.que.question.id)" v-show="evaluateS">评价</div>
-          <div class="qdConEvaluate" @click="replyShade(qlList)" v-if="replyShadeShow">参与竞拍</div>
+          <div
+            class="qdConEvaluate"
+            @click="evaluate(qlList.que.question.id)"
+            v-show="evaluateS"
+          >
+            评价
+          </div>
+          <div
+            class="qdConEvaluate"
+            @click="replyShade(qlList)"
+            v-if="replyShadeShow"
+          >
+            参与竞拍
+          </div>
           <div class="countTime" v-if="countdown">
-            <div style="margin-bottom:14px;font-size:20px">恭喜你!&nbsp;该问题竞拍成功!</div>
-            <div style="font-size:14px;">请在约定的时间范围内提交回答,剩余{{d}}天{{h}}小时{{m}}分{{s}}秒</div>
+            <div style="margin-bottom: 14px; font-size: 20px">
+              恭喜你!&nbsp;该问题竞拍成功!
+            </div>
+            <div style="font-size: 14px">
+              请在约定的时间范围内提交回答,剩余{{ d }}天{{ h }}小时{{ m }}分{{
+                s
+              }}秒
+            </div>
           </div>
           <div class="qd-edit" v-show="qdeditShow">
             <div v-show="editors">
@@ -162,7 +257,7 @@
                 :on-preview="handlePictureCardPreviewAns"
                 :on-remove="handleRemoveAns"
                 :file-list="quefileListAns"
-                :data="{questionId:this.qlList.que.question.id}"
+                :data="{ questionId: this.qlList.que.question.id }"
               >
                 <el-button size="small" type="primary" class="upImgBut">
                   上传答案图片
@@ -170,7 +265,10 @@
                 </el-button>
                 <!-- <i slot="default" class="el-icon-picture" title="添加图片附件"></i> -->
               </el-upload>
-              <el-dialog :visible.sync="dialogVisible" :modal-append-to-body="false">
+              <el-dialog
+                :visible.sync="dialogVisible"
+                :modal-append-to-body="false"
+              >
                 <img width="100%" :src="dialogImageUrl" alt />
               </el-dialog>
 
@@ -182,8 +280,15 @@
               class="qd-edit-submit"
               @click="submit"
               v-if="savesubmitShow"
-            >提交回答</el-button>
-            <el-button type="primary" class="qd-edit-submit" @click="save" v-if="replenishShow">补充回答</el-button>
+              >提交回答</el-button
+            >
+            <el-button
+              type="primary"
+              class="qd-edit-submit"
+              @click="save"
+              v-if="replenishShow"
+              >补充回答</el-button
+            >
           </div>
         </div>
         <div class="qdConRight" v-if="qdConRigtS">
@@ -195,9 +300,14 @@
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
         <h3>选择您向提问人提出的时间和赏金要求</h3>
-        <el-form :model="auction" :rules="auctionrules" ref="auction" class="demo-ruleForm">
-          <div style="overflow: hidden;">
-            <div style="float:left;">
+        <el-form
+          :model="auction"
+          :rules="auctionrules"
+          ref="auction"
+          class="demo-ruleForm"
+        >
+          <div style="overflow: hidden">
+            <div style="float: left">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
@@ -207,28 +317,34 @@
                   value-format="yyyy-MM-dd HH:mm:ss"
                   placeholder="选择日期时间"
                   :picker-options="{
-                    disabledDate: time => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
                     },
-                    selectableRange: austartTimeRange
+                    selectableRange: austartTimeRange,
                   }"
                 ></el-date-picker>
               </el-form-item>
             </div>
-            <div style="float:right;">
+            <div style="float: right">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
                   placeholder="鲸灵币(选填)"
-                  style="width:130px;"
+                  style="width: 130px"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
         </el-form>
-        <div style="overflow:hidden">
-          <el-button class="releaseQl" type="primary" size="medium" @click="auctionQl('auction')">提交</el-button>
+        <div style="overflow: hidden">
+          <el-button
+            class="releaseQl"
+            type="primary"
+            size="medium"
+            @click="auctionQl('auction')"
+            >提交</el-button
+          >
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
       </div>
@@ -243,7 +359,10 @@
           class="demo-ruleForm"
         >
           <el-form-item prop="Title" class="ql-editQuziTi">
-            <el-input v-model="QuestionsQuiz.Title" placeholder="写下你的问题，准确的描述问题更容易得到解答"></el-input>
+            <el-input
+              v-model="QuestionsQuiz.Title"
+              placeholder="写下你的问题，准确的描述问题更容易得到解答"
+            ></el-input>
           </el-form-item>
           <el-upload
             :action="imgSite"
@@ -269,8 +388,8 @@
           <el-form-item prop="Content" class="ql-editNameDetail">
             <editor id="tinymces" v-model="myValues" :init="inits"></editor>
           </el-form-item>
-          <div style="overflow: hidden;">
-            <div style="float:left;">
+          <div style="overflow: hidden">
+            <div style="float: left">
               <div class="PR">答题时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
@@ -279,34 +398,40 @@
                   placeholder="选择日期时间"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
-                    disabledDate: time => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
                     },
-                    selectableRange: startTimeRange
+                    selectableRange: startTimeRange,
                   }"
                 ></el-date-picker>
               </el-form-item>
             </div>
-            <div style="float:right;">
+            <div style="float: right">
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="QuestionsQuiz.Currency"
                   placeholder="鲸灵币(选填)"
-                  style="width:130px;"
+                  style="width: 130px"
                 ></el-input>
               </el-form-item>
             </div>
           </div>
         </el-form>
-        <div style="overflow:hidden">
+        <div style="overflow: hidden">
           <el-button
             class="releaseQl"
             type="primary"
             size="medium"
             @click="releaseQl('QuestionsQuiz')"
-          >发布问题</el-button>
-          <el-button size="medium" @click="CloseQuitBt" style="margin-right:10px;float:right;">取消</el-button>
+            >发布问题</el-button
+          >
+          <el-button
+            size="medium"
+            @click="CloseQuitBt"
+            style="margin-right: 10px; float: right"
+            >取消</el-button
+          >
         </div>
 
         <!-- <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div> -->
@@ -314,19 +439,33 @@
     </div>
     <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
       <div class="ql-editQuzi">
-        <div style="min-height:117px;">
-          <div style="float:left;">您的评价:</div>
+        <div style="min-height: 117px">
+          <div style="float: left">您的评价:</div>
           <el-switch
-            style="display: block;float:right;"
+            style="display: block; float: right"
             v-model="evaluateSwitch"
             active-color="#13ce66"
             inactive-color="#ff4949"
             active-text="好评"
             inactive-text="差评"
           ></el-switch>
-          <el-input v-model="evaluateInput" style="margin-top:10px;margin-bottom:10px;"></el-input>
-          <el-button style="float:right;" type="primary" size="medium" @click="evaluateCon">确定</el-button>
-          <el-button style="float:right;margin-right:10px;" size="medium" @click="CloseEvaluate">取消</el-button>
+          <el-input
+            v-model="evaluateInput"
+            style="margin-top: 10px; margin-bottom: 10px"
+          ></el-input>
+          <el-button
+            style="float: right"
+            type="primary"
+            size="medium"
+            @click="evaluateCon"
+            >确定</el-button
+          >
+          <el-button
+            style="float: right; margin-right: 10px"
+            size="medium"
+            @click="CloseEvaluate"
+            >取消</el-button
+          >
         </div>
       </div>
     </div>
@@ -335,27 +474,30 @@
         <div>
           <div class="chatTitle">
             <img :src="bls.bimage" alt />
-            {{bls.bname}}
+            {{ bls.bname }}
           </div>
           <div id="chatConss" class="chatCon">
             <div class="chatCons" v-for="item in ChatRecordArray">
               <img :src="item.img" alt />
-              <span>{{item.createTime | formatDate}}</span>
-              <span>{{item.contentsUrl}}</span>
+              <span>{{ item.createTime | formatDate }}</span>
+              <span>{{ item.contentsUrl }}</span>
             </div>
           </div>
           <div v-show="newInfo" class="newInfo1" @click="newInfo1">新消息</div>
           <div class="chatSend">
             <el-input
               v-model="chatSends"
-              style="width:480px;margin-right:10px"
+              style="width: 480px; margin-right: 10px"
               @keyup.enter.native="chatSendHead"
             ></el-input>
             <el-button @click="chatSendHead">发送</el-button>
           </div>
         </div>
 
-        <div class="qlreleaseClose el-icon-close" @click="CloseChatRecords"></div>
+        <div
+          class="qlreleaseClose el-icon-close"
+          @click="CloseChatRecords"
+        ></div>
       </div>
     </div>
     <div class="ql-shade" v-show="quizzerChatRecords">
@@ -363,37 +505,40 @@
         <div>
           <div class="chatTitle">
             <!-- <img :src="quizzerbls.qimage" alt /> -->
-            {{quizzerbls.qname}}
+            {{ quizzerbls.qname }}
           </div>
           <div id="chatCons" class="chatCon">
             <div class="chatCons" v-for="item in quizzerChatRecordArray">
               <img :src="item.img" alt />
-              <span
-                style="font-size:14px;color:#131313;margin-top:0px"
-              >{{item.createTime | formatDate}}</span>
-              <span>{{item.contentsUrl}}</span>
+              <span style="font-size: 14px; color: #131313; margin-top: 0px">{{
+                item.createTime | formatDate
+              }}</span>
+              <span>{{ item.contentsUrl }}</span>
             </div>
           </div>
           <div v-show="newInfos" class="newInfo1" @click="newInfo2">新消息</div>
           <div class="chatSend">
             <el-input
               v-model="quizzerchatSends"
-              style="width:480px;margin-right:10px"
+              style="width: 480px; margin-right: 10px"
               @keyup.enter.native="quizzerChatSendHead"
             ></el-input>
             <el-button @click="quizzerChatSendHead">发送</el-button>
           </div>
         </div>
 
-        <div class="qlreleaseClose el-icon-close" @click="quizzerCloseChatRecords"></div>
+        <div
+          class="qlreleaseClose el-icon-close"
+          @click="quizzerCloseChatRecords"
+        ></div>
       </div>
     </div>
     <div class="suspend-img" v-show="suspendimgShow">
-        <div class="suspend-img-re">
-          <img :src="suImg" alt />
-          <div class="suspendClose el-icon-close" @click="CloseQuitBts"></div>
-        </div>
+      <div class="suspend-img-re">
+        <img :src="suImg" alt />
+        <div class="suspendClose el-icon-close" @click="CloseQuitBts"></div>
       </div>
+    </div>
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -666,9 +811,12 @@ export default {
       newInfo: false,
       // 已选择竞拍者之后显示文字
       selectbname: false,
-      startTimeRange:"",
-      suImg:"",
-      suspendimgShow:false
+      startTimeRange: "",
+      suImg: "",
+      suspendimgShow: false,
+      DeShow: true,
+      blsgrade: 3.7,
+      clientImg:""
     };
   },
   created: function () {
@@ -765,6 +913,7 @@ export default {
           })
           .then(function (res) {
             _this.clientID = res.data.data.id;
+            _this.clientImg = res.data.data.image;
             _this.QuDe();
           })
           .catch(function (error) {
@@ -826,11 +975,11 @@ export default {
             let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
             let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
             let m = Math.floor((leftTime / 1000 / 60) % 60);
-            if (d == 0 && h > 0 ) {
+            if (d == 0 && h > 0) {
               _this.qlList.que.Times = "在" + h + "小时前发布了这个问题";
-            } else if(h <= 0 && d <= 0){
+            } else if (h <= 0 && d <= 0) {
               _this.qlList.que.Times = "刚刚发布的问题";
-            }else {
+            } else {
               _this.qlList.que.Times =
                 "在" + d + "天" + h + "小时前发布了这个问题";
             }
@@ -1583,8 +1732,7 @@ export default {
       _this.quefileListImg = imgurl.slice(1);
     },
     // 编辑答案内容图片上传前
-    beforeAvatarUploadAns(file) {
-    },
+    beforeAvatarUploadAns(file) {},
     // 关闭评价遮罩
     CloseEvaluate() {
       const _this = this;
@@ -1683,8 +1831,7 @@ export default {
       _this.QuestionsQuiz.Img = imgurl.slice(1);
     },
     // 编辑问题的图片上传前
-    beforeAvatarUpload(file) {
-    },
+    beforeAvatarUpload(file) {},
     // 关闭聊天框
     CloseChatRecords() {
       this.ChatRecords = false;
@@ -1718,16 +1865,20 @@ export default {
       _this.scrollToBottom();
     },
     // 提问内容里的图片放大
-    suspendImg(item){
+    suspendImg(item) {
       const _this = this;
       _this.suImg = item;
       _this.suspendimgShow = !_this.suspendimgShow;
     },
     // 提问内容里的图片关闭放大遮罩
-    CloseQuitBts(){
+    CloseQuitBts() {
       const _this = this;
       _this.suspendimgShow = !_this.suspendimgShow;
-    }
+    },
+    // 右上角隐藏箭头
+    DeShowHand() {
+      this.DeShow = !this.DeShow;
+    },
   },
   mounted() {
     tinymce.init({});
