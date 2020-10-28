@@ -52,6 +52,7 @@ import changePassword from '@/components/client/changePassword.vue'  //修改密
 import inform from '@/components/client/inform.vue'  //通知信息
 import attention from '@/components/client/attention.vue'  //我的关注
 import myQuestion from '@/components/client/myQuestion.vue'  //我的关注
+import myAnswers from '@/components/client/myAnswers.vue'  //我的关注
 import vip from '@/components/client/vip.vue'  //购买会员
 import orderHistory from '@/components/client/orderHistory.vue'  //购买会员记录
 import award from '@/components/client/award.vue'  //上传奖励
@@ -160,6 +161,11 @@ export default new Router({
                     path: 'myQuestion',      //设置跳转
                     name: 'myQuestion',
                     component: myQuestion,
+                },
+                {
+                    path: 'myAnswers',      //设置跳转
+                    name: 'myAnswers',
+                    component: myAnswers,
                 }
 
             ]

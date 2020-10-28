@@ -90,7 +90,7 @@
           </router-link>
           <router-link :to="{path:'/personalData/myQuestion',query: {type: 'finish'}}">
             已完毕的提问
-            <span v-show="haveToAnswer != 0">{{haveToAnswer}}</span>
+            <span v-show="noAnswer != 0">{{noAnswer}}</span>
           </router-link>
         </div>
       </div>
@@ -104,21 +104,21 @@
           <img class="qlBodyRightI2" src="../../assets/问答5.jpg" alt />
         </div>
         <div class="qlBodyRightBott">
-          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'auction'}}">
+          <router-link :to="{path:'/personalData/myAnswers',query: {type: 'auction'}}">
             竞拍中的回答
             <span v-show="paAuctions != 0">{{paAuctions}}</span>
           </router-link>
-          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'tofinish'}}">
+          <router-link :to="{path:'/personalData/myAnswers',query: {type: 'tofinish'}}">
             待完成的回答
             <span v-show="paToAnswer != 0">{{paToAnswer}}</span>
           </router-link>
-          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'evaluate'}}">
+          <router-link :to="{path:'/personalData/myAnswers',query: {type: 'evaluate'}}">
             待评价的回答
             <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
           </router-link>
-          <router-link :to="{path:'/personalData/myQuestion',query: {type: 'finish'}}">
+          <router-link :to="{path:'/personalData/myAnswers',query: {type: 'finish'}}">
             已完毕的回答
-            <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
+            <span v-show="PaNoAnswer != 0">{{PaNoAnswer}}</span>
           </router-link>
         </div>
       </div>
@@ -140,10 +140,12 @@ export default {
       auctions: 0,
       toAnswer: 0,
       haveToAnswer: 0,
+      noAnswer:0,
       // 当前登录人参与的问题数量
       paAuctions: 0,
       paToAnswer: 0,
       paHaveToAnswer: 0,
+      PaNoAnswer:0,
       Questionsnum: "",
       Answernum: "",
       quedistinction: 0,
@@ -179,11 +181,12 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              _this.auctions = res.data.data.bnum;
-              _this.toAnswer = res.data.data.nonum;
-              _this.haveToAnswer = res.data.data.answernum;
+              _this.auctions = res.data.data.bidding;
+              _this.toAnswer = res.data.data.no;
+              _this.haveToAnswer = res.data.data.evaluate;
+              _this.noAnswer = res.data.data.complete;
               _this.$store.state.queNum.toAnswer =
-                _this.auctions + _this.toAnswer + _this.haveToAnswer;
+                _this.auctions + _this.toAnswer + _this.haveToAnswer + _this.noAnswer;
               if (
                 _this.$store.state.queNum.toAnswer >
                 _this.$store.state.queNum.auctions
@@ -217,11 +220,15 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              _this.paAuctions = res.data.data.bnum;
-              _this.paToAnswer = res.data.data.nonum;
-              _this.paHaveToAnswer = res.data.data.answernum;
+              _this.paAuctions = res.data.data.bidding;
+              _this.paToAnswer = res.data.data.no;
+              _this.paHaveToAnswer = res.data.data.evaluate;
+              _this.PaNoAnswer = res.data.data.complete;
+
+
+
               _this.$store.state.queNum.paToAnswer =
-                _this.paAuctions + _this.paToAnswer + _this.paHaveToAnswer;
+                _this.paAuctions + _this.paToAnswer + _this.paHaveToAnswer + _this.PaNoAnswer;
               if (
                 _this.$store.state.queNum.paAuctions >
                 _this.$store.state.queNum.paToAnswer
@@ -255,11 +262,12 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              _this.auctions = res.data.data.bnum;
-              _this.toAnswer = res.data.data.nonum;
-              _this.haveToAnswer = res.data.data.answernum;
+              _this.auctions = res.data.data.bidding;
+              _this.toAnswer = res.data.data.no;
+              _this.haveToAnswer = res.data.data.evaluate;
+              _this.noAnswer = res.data.data.complete;
               _this.$store.state.queNum.auctions =
-                _this.auctions + _this.toAnswer + _this.haveToAnswer;
+                _this.auctions + _this.toAnswer + _this.haveToAnswer + _this.noAnswer;
             }
           })
           .catch(function(error) {
@@ -285,11 +293,12 @@ export default {
           })
           .then(function(res) {
             if (res.data.status == 1) {
-              _this.paAuctions = res.data.data.bnum;
-              _this.paToAnswer = res.data.data.nonum;
-              _this.paHaveToAnswer = res.data.data.answernum;
+              _this.paAuctions = res.data.data.bidding;
+              _this.paToAnswer = res.data.data.no;
+              _this.paHaveToAnswer = res.data.data.evaluate;
+              _this.PaNoAnswer = res.data.data.complete;
               _this.$store.state.queNum.paAuctions =
-                _this.paAuctions + _this.paToAnswer + _this.paHaveToAnswer;
+                _this.paAuctions + _this.paToAnswer + _this.paHaveToAnswer + _this.PaNoAnswer;
             }
           })
           .catch(function(error) {

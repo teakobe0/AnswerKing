@@ -109,13 +109,13 @@
                     type="text"
                     size="mini"
                     @click="editQuiz(scope.row)"
-                    v-show="scope.row.que.status <= 3"
+                    v-show="scope.row.que.status <= 2"
                     >编辑</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
-                    v-show="scope.row.que.status > 3"
+                    v-show="scope.row.que.status >= 3"
                     disabled
                     >编辑</el-button
                   >
@@ -158,11 +158,80 @@
                   ref="QuestionsQuiz"
                   class="demo-ruleForm"
                 >
-                  <el-form-item prop="Title" class="ql-editQuziTi">
-                    <el-input
-                      v-model="QuestionsQuiz.Title"
-                      placeholder="写下你的问题，准确的描述问题更容易得到解答"
-                    ></el-input>
+                  <div style="overflow: hidden; float: left">
+                    <div class="PR">选择你的科目</div>
+                    <!-- :inline="true" -->
+                    <el-form-item
+                      prop="type"
+                      class="ql-editQuziTi"
+                      style="width: 270px"
+                    >
+                      <el-select
+                        v-model="QuestionsQuiz.type"
+                        placeholder="请选择"
+                        style="width: 270px"
+                      >
+                        <el-option
+                          v-for="item in quClassSelect"
+                          :key="item.name"
+                          :label="item.name"
+                          :value="item.type"
+                        >
+                        </el-option>
+                      </el-select>
+                    </el-form-item>
+                  </div>
+                  <div style="overflow: hidden; margin-left: 289px">
+                    <div class="PR">输入你的主题或课程</div>
+                    <el-form-item
+                      prop="Title"
+                      class="ql-editQuziTi"
+                      style="width: 270px"
+                    >
+                      <el-input
+                        v-model="QuestionsQuiz.Title"
+                        placeholder="Write about..."
+                      ></el-input>
+                    </el-form-item>
+                  </div>
+
+                  <div style="overflow: hidden">
+                    <div style="float: left" class="queTime">
+                      <div class="PR">答题截止时间</div>
+                      <el-form-item prop="EndTime">
+                        <el-date-picker
+                          v-model="QuestionsQuiz.EndTime"
+                          type="datetime"
+                          style="width: 270px"
+                          placeholder="选择日期时间"
+                          value-format="yyyy-MM-dd HH:mm:ss"
+                          :picker-options="{
+                            disabledDate: (time) => {
+                              return (
+                                time.getTime() < Date.now() - 3600 * 1000 * 24
+                              );
+                            },
+                            selectableRange: startTimeRange,
+                          }"
+                        ></el-date-picker>
+                      </el-form-item>
+                    </div>
+                  </div>
+
+                  <el-form-item prop="Content" class="ql-editNameDetail">
+                    <!-- <el-input
+              type="textarea"
+              placeholder="输入问题背景、条件等详细信(选填)"
+              v-model="QuestionsQuiz.Content"
+              :autosize="{ minRows: 2, maxRows: 22}"
+            ></el-input>-->
+
+                    <!-- 富文本 -->
+                    <editor
+                      id="tinymce"
+                      v-model="myValue"
+                      :init="init"
+                    ></editor>
                   </el-form-item>
                   <el-upload
                     :action="imgSite"
@@ -175,58 +244,22 @@
                     :before-upload="beforeAvatarUpload"
                     :on-preview="handlePictureCardPreview"
                     :on-remove="handleRemove"
-                    :file-list="quefileList"
+                    :file-list="fileList"
                   >
                     <el-button size="small" type="primary" class="upImgBut">
                       上传问题图片
                       <i class="el-icon-picture"></i>
                     </el-button>
+                    <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
                   </el-upload>
                   <el-dialog
-                    :visible.sync="queVisible"
+                    :visible.sync="dialogVisible"
                     :modal-append-to-body="false"
                   >
-                    <img width="100%" :src="queImageUrl" alt />
+                    <img width="100%" :src="dialogImageUrl" alt />
                   </el-dialog>
-                  <el-form-item prop="Content" class="ql-editNameDetail">
-                    <editor
-                      id="tinymces"
-                      v-model="myValue"
-                      :init="init"
-                    ></editor>
-                  </el-form-item>
-                  <div style="overflow: hidden">
-                    <div style="float: left">
-                      <div class="PR">答题时间</div>
-                      <el-form-item prop="EndTime">
-                        <el-date-picker
-                          v-model="QuestionsQuiz.EndTime"
-                          type="datetime"
-                          value-format="yyyy-MM-dd HH:mm:ss"
-                          placeholder="选择日期时间"
-                          :picker-options="{
-                            disabledDate: (time) => {
-                              return (
-                                time.getTime() < Date.now() - 3600 * 1000 * 24
-                              );
-                            },
-                            selectableRange: austartTimeRange,
-                          }"
-                        ></el-date-picker>
-                      </el-form-item>
-                    </div>
-                    <div style="float: right">
-                      <div class="PR">鲸灵币</div>
-                      <el-form-item prop="Currency">
-                        <el-input
-                          v-model="QuestionsQuiz.Currency"
-                          placeholder="鲸灵币(选填)"
-                          style="width: 130px"
-                        ></el-input>
-                      </el-form-item>
-                    </div>
-                  </div>
                 </el-form>
+
                 <div style="overflow: hidden">
                   <el-button
                     class="releaseQl"
@@ -235,15 +268,12 @@
                     @click="releaseQl('QuestionsQuiz')"
                     >发布问题</el-button
                   >
-                  <el-button
-                    size="medium"
-                    @click="CloseQuitBt"
-                    style="margin-right: 10px; float: right"
-                    >取消</el-button
-                  >
                 </div>
 
-                <!-- <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div> -->
+                <div
+                  class="qlreleaseClose el-icon-close"
+                  @click="CloseQuitBt"
+                ></div>
               </div>
             </div>
             <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
@@ -294,58 +324,9 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="我回答的问题" name="first2">
+          <el-tab-pane label="竞拍中的提问" name="first2">
             <el-table
-              :data="answerTableData"
-              border
-              style="width: 100%"
-              v-if="answerShow"
-            >
-              <el-table-column label="发布日期" width="100">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.createTime | formatDate }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="题目">
-                <template slot-scope="scope">
-                  <router-link
-                    :to="'/questionDetails/' + scope.row.questionId"
-                    >{{ scope.row.title }}</router-link
-                  >
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="我竞拍的问题" name="first3">
-            <el-table
-              :data="auctionTableData"
-              border
-              style="width: 100%"
-              v-if="auctionShow"
-            >
-              <el-table-column label="发布日期" width="100">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.createTime | formatDate }}</span>
-                </template>
-              </el-table-column>
-              <el-table-column label="题目">
-                <template slot-scope="scope">
-                  <router-link
-                    :to="'/questionDetails/' + scope.row.questionId"
-                    >{{ scope.row.title }}</router-link
-                  >
-                </template>
-              </el-table-column>
-              <el-table-column label="状态" width="100">
-                <template slot-scope="scope">
-                  <span>{{ scope.row.bstatus }}</span>
-                </template>
-              </el-table-column>
-            </el-table>
-          </el-tab-pane>
-          <el-tab-pane label="竞拍中的提问" name="first4">
-            <el-table
-              :data="auction"
+              :data="quizTableData"
               border
               style="width: 100%"
               class="quiz"
@@ -383,7 +364,7 @@
                   <span>{{ scope.row.type }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="130">
+              <el-table-column label="操作" width="50">
                 <template slot-scope="scope">
                   <!-- <el-button
                     v-show="scope.row.que.status == 1"
@@ -412,32 +393,206 @@
                     disabled
                     >编辑</el-button
                   >
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="mynextpage">
+              <div class="block">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :page-size="pagesizes"
+                  layout="total, prev, pager, next"
+                  :total="pageTotal"
+                ></el-pagination>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="待完成的提问" name="first3">
+            <el-table
+              :data="quizTableData"
+              border
+              style="width: 100%"
+              class="quiz"
+              v-if="quizShow"
+            >
+              <el-table-column label="发布日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.createTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="题目">
+                <template slot-scope="scope">
+                  <router-link :to="'/questionDetails/' + scope.row.que.id">{{
+                    scope.row.que.title
+                  }}</router-link>
+                </template>
+              </el-table-column>
+              <el-table-column label="悬赏" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.currency }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="竞拍者" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.number }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="截至日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.endTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.type }}</span>
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="mynextpage">
+              <div class="block">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :page-size="pagesizes"
+                  layout="total, prev, pager, next"
+                  :total="pageTotal"
+                ></el-pagination>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="待评价的提问" name="first4">
+            <el-table
+              :data="quizTableData"
+              border
+              style="width: 100%"
+              class="quiz"
+              v-if="quizShow"
+            >
+              <el-table-column label="发布日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.createTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="题目">
+                <template slot-scope="scope">
+                  <router-link :to="'/questionDetails/' + scope.row.que.id">{{
+                    scope.row.que.title
+                  }}</router-link>
+                </template>
+              </el-table-column>
+              <el-table-column label="悬赏" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.currency }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="竞拍者" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.number }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="截至日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.endTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.type }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="50">
+                <template slot-scope="scope">
+                  <!-- <el-button
+                    v-show="scope.row.que.status == 1"
+                    type="text"
+                    size="mini"
+                    @click="editQuiz(scope.row)"
+                  >编辑</el-button>
+                  <el-button
+                    v-show="scope.row.que.status != 1"
+                    type="text"
+                    size="mini"
+                    disabled
+                    title="竞拍者已经开始作答,禁止修改"
+                  >编辑</el-button>-->
                   <el-button
                     type="text"
                     size="mini"
                     @click="evaluate(scope.row.que.id)"
-                    v-show="scope.row.que.status == 4"
                     >评价</el-button
                   >
+                </template>
+              </el-table-column>
+            </el-table>
+            <div class="mynextpage">
+              <div class="block">
+                <el-pagination
+                  @current-change="handleCurrentChange"
+                  :page-size="pagesizes"
+                  layout="total, prev, pager, next"
+                  :total="pageTotal"
+                ></el-pagination>
+              </div>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="已完毕的提问" name="first5">
+            <el-table
+              :data="quizTableData"
+              border
+              style="width: 100%"
+              class="quiz"
+              v-if="quizShow"
+            >
+              <el-table-column label="发布日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.createTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="题目">
+                <template slot-scope="scope">
+                  <router-link :to="'/questionDetails/' + scope.row.que.id">{{
+                    scope.row.que.title
+                  }}</router-link>
+                </template>
+              </el-table-column>
+              <el-table-column label="悬赏" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.currency }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="竞拍者" width="70">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.number }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="截至日期" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.que.endTime | formatDate }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="状态" width="100">
+                <template slot-scope="scope">
+                  <span>{{ scope.row.type }}</span>
+                </template>
+              </el-table-column>
+              <el-table-column label="操作" width="50">
+                <template slot-scope="scope">
+                  <!-- <el-button
+                    v-show="scope.row.que.status == 1"
+                    type="text"
+                    size="mini"
+                    @click="editQuiz(scope.row)"
+                  >编辑</el-button>
                   <el-button
+                    v-show="scope.row.que.status != 1"
                     type="text"
                     size="mini"
                     disabled
-                    v-show="scope.row.que.status != 4"
-                    >评价</el-button
-                  >
+                    title="竞拍者已经开始作答,禁止修改"
+                  >编辑</el-button>-->
                   <el-button
                     type="text"
                     size="mini"
                     @click="service(scope.row.que.id)"
-                    v-show="scope.row.que.status == 6"
-                    >客服</el-button
-                  >
-                  <el-button
-                    type="text"
-                    size="mini"
-                    disabled
-                    v-show="scope.row.que.status != 6"
                     >客服</el-button
                   >
                 </template>
@@ -446,9 +601,10 @@
             <div class="mynextpage">
               <div class="block">
                 <el-pagination
-                  @current-change="auctionhandleCurrentChange"
+                  @current-change="handleCurrentChange"
                   :page-size="pagesizes"
                   layout="total, prev, pager, next"
+                  :total="pageTotal"
                 ></el-pagination>
               </div>
             </div>
@@ -580,6 +736,7 @@ export default {
       pagenums: 1,
       pagesizes: 13,
       pageTotal: 0,
+      status: 0,
       // 图片
       imgSite: this.URLport.serverPath + "/File/UploadQuestion",
       myHeaders: {
@@ -590,13 +747,31 @@ export default {
       quefileList: [],
       austartTimeRange: "",
       auction: [],
+      quClassSelect:[]
     };
   },
   created: function () {
     const _this = this;
-    _this.quizList();
-    _this.answerList();
-    _this.auctionlist();
+    if (this.$route.query.type == "auction") {
+      _this.status = 2;
+      _this.activeName = "first2";
+      _this.quizList();
+    } else if (this.$route.query.type == "tofinish") {
+      _this.status = 3;
+      _this.activeName = "first3";
+      _this.quizList();
+    } else if (this.$route.query.type == "evaluate") {
+      _this.status = 4;
+      _this.activeName = "first4";
+      _this.quizList();
+    } else if (this.$route.query.type == "finish") {
+      _this.status = 6;
+      _this.activeName = "first5";
+      _this.quizList();
+    } else {
+      _this.quizList();
+    }
+    _this.quClass();
   },
   filters: {
     formatDate: function (time) {
@@ -634,21 +809,48 @@ export default {
     },
   },
   methods: {
+    // 检索科目
+    quClass() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/Classes`,
+          async: false,
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
+        .then(function (res) {
+          var a = Object.keys(res.data.data).length;
+          for (var i = 1; i <= a; i++) {
+            _this.quClassSelect.push({ name: res.data.data[i], type: i });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     handleClick(tab, event) {
       const _this = this;
-      console.log(tab);
+      _this.pagenums = 1;
+      _this.pagesizes = 13;
       if (tab.label == "竞拍中的提问") {
-        for (var i = 0; i < _this.quizTableData.length; i++) {
-          if (_this.quizTableData[i].que.status <= 3) {
-            _this.auction.push(_this.quizTableData[i]);
-          }
-        }
-        console.log(_this.quizTableData);
+        _this.status = 2;
+        _this.quizList();
+      } else if (tab.label == "我的提问") {
+        _this.status = 0;
+        _this.quizList();
+      } else if (tab.label == "待完成的提问") {
+        _this.status = 3;
+        _this.quizList();
+      } else if (tab.label == "待评价的提问") {
+        _this.status = 4;
+        _this.quizList();
+      } else if (tab.label == "已完毕的提问") {
+        _this.status = 6;
+        _this.quizList();
       }
-    },
-    auctionhandleCurrentChange(val){
-      const _this =this;
-      _this.handleCurrentChange(val);
     },
     formatDate: function (time) {
       let date = new Date(time);
@@ -665,6 +867,7 @@ export default {
           params: {
             pagenum: val,
             pagesize: _this.pagesizes,
+            status: _this.status,
           },
           xhrFields: {
             withCredentials: true,
@@ -710,6 +913,8 @@ export default {
     // 检索问题列表
     quizList() {
       const _this = this;
+
+      console.log(this.$route.query.type);
       _this
         .axios({
           method: "get",
@@ -718,6 +923,7 @@ export default {
           params: {
             pagenum: _this.pagenums,
             pagesize: _this.pagesizes,
+            status: _this.status,
           },
           xhrFields: {
             withCredentials: true,
@@ -761,56 +967,56 @@ export default {
           console.log(error);
         });
     },
-    // 我回答的问题列表
-    answerList() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Answer/MyAnswer`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(function (res) {
-          if (res.data.status == 1) {
-            _this.answerTableData = res.data.data;
-            _this.answerShow = true;
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    // 我竞拍的问题列表
-    auctionlist() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Bidding/MyBidding`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        })
-        .then(function (res) {
-          if (res.data.status == 1) {
-            _this.auctionTableData = res.data.data;
-            _this.auctionShow = true;
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
+    // // 我回答的问题列表
+    // answerList() {
+    //   const _this = this;
+    //   _this
+    //     .axios({
+    //       method: "get",
+    //       url: `${_this.URLport.serverPath}/Answer/MyAnswer`,
+    //       async: false,
+    //       xhrFields: {
+    //         withCredentials: true,
+    //       },
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //       },
+    //     })
+    //     .then(function (res) {
+    //       if (res.data.status == 1) {
+    //         _this.answerTableData = res.data.data;
+    //         _this.answerShow = true;
+    //       }
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // },
+    // // 我竞拍的问题列表
+    // auctionlist() {
+    //   const _this = this;
+    //   _this
+    //     .axios({
+    //       method: "get",
+    //       url: `${_this.URLport.serverPath}/Bidding/MyBidding`,
+    //       async: false,
+    //       xhrFields: {
+    //         withCredentials: true,
+    //       },
+    //       headers: {
+    //         Authorization: `Bearer ${localStorage.getItem("token")}`,
+    //       },
+    //     })
+    //     .then(function (res) {
+    //       if (res.data.status == 1) {
+    //         _this.auctionTableData = res.data.data;
+    //         _this.auctionShow = true;
+    //       }
+    //     })
+    //     .catch(function (error) {
+    //       console.log(error);
+    //     });
+    // },
     // 编辑提问
     editQuiz(list) {
       const _this = this;
@@ -821,6 +1027,7 @@ export default {
       _this.QuestionsQuiz.Currency = list.que.currency;
       _this.QuestionsQuiz.id = list.que.id;
       _this.QuestionsQuiz.Img = list.que.img;
+      _this.QuestionsQuiz.type = list.que.type;
       if (list.que.img) {
         var a = list.que.img.split("|");
         for (var i = 0; i < a.length; i++) {
@@ -862,6 +1069,7 @@ export default {
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
                 _this.QuestionsQuiz.Img = "";
+                _this.QuestionsQuiz.type = "";
                 _this.qlShade = !_this.qlShade;
                 _this.quizList();
                 _this.$message({

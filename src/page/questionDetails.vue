@@ -37,7 +37,7 @@
                 />
               </div>
 
-              <div style="margin-top: 15px">
+              <div style="margin-top: 15px; min-height: 36px">
                 <!-- <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span> -->
                 <el-button
                   size="mini"
@@ -78,16 +78,21 @@
                   icon="el-icon-star-on"
                   >收藏该问题</el-button
                 >
-                <div
-                  class="qdConBlsR3"
-                  @click="informQuizzer(qlList.que)"
-                  v-if="inforQuiz"
-                >
-                  <img src="../assets/问答详情3.jpg" alt />对话
-                </div>
+
                 <div style="float: right; margin-top: 7.5px">
-                  <p style="float: left;font-size:14px;color:#888888;margin-right:20px">11人收藏</p>
-                  <p style="float: left;font-size:14px;color:#888888;">11人浏览</p>
+                  <p
+                    style="
+                      float: left;
+                      font-size: 14px;
+                      color: #888888;
+                      margin-right: 20px;
+                    "
+                  >
+                    {{ qlList.que.favourite }}人收藏
+                  </p>
+                  <p style="float: left; font-size: 14px; color: #888888">
+                    {{ qlList.que.question.views }}人浏览
+                  </p>
                 </div>
               </div>
             </div>
@@ -102,13 +107,33 @@
           </div>-->
           <div v-show="replyShadeShow">
             <div class="qd-Time">
-              该问题需要在 <b>{{qlList.que.question.endTime|formatDate}}</b> 前回答完毕  剩余 1天1小时23分
+              该问题需要在
+              <b>{{ qlList.que.question.endTime | formatDate }}</b> 前回答完毕
+              剩余 {{ d }}天{{ h }}小时{{ m }}分
             </div>
           </div>
-          <!-- <div class="zhengzaijingpai" v-if="inforQuiz">
-            <img :src="clientImg" alt="">
-            <span>你正在参与竞拍</span>
-          </div> -->
+          <div class="zhengzaijingpai" v-if="currencyNums">
+            <img :src="clientImg" alt="" />
+            <div class="zheng1">你正在参与竞拍</div>
+            <span class="zheng2">等待提问者选择</span>
+            <div class="zheng3">
+              <span>{{ currencyNum }}</span>
+              <br />
+              <p>鲸灵币</p>
+            </div>
+            <div class="zheng4">
+              <el-button
+                size="small"
+                style="
+                  color: #fff;
+                  background-color: #3291cb;
+                  border: none;
+                  font-size: 14px;
+                "
+                >编辑竞拍</el-button
+              >
+            </div>
+          </div>
           <div
             class="qd-title-right-2"
             v-if="qlList.bls.length > 0 && qlList.que.question.answerer == 0"
@@ -117,56 +142,173 @@
             <p>{{ qlList.bls.length }}人正在竞拍</p>
             <div class="qd-title-right-2-r"></div>
           </div>
-          <div class="qd-title-right-3" v-if="selectbname">
+          <!-- <div class="qd-title-right-3" v-if="selectbname">
             <div></div>
             <p>你已选择&nbsp;{{ qlList.bls[0].bname }}&nbsp;回答问题</p>
             <div></div>
-          </div>
+          </div> -->
           <!-- <div class="qd-title-right-3" v-if="qlList.bls.length == 0">
             <div></div>
             <p>暂时无人参与竞拍</p>
             <div></div>
           </div> -->
-          <div>
+          <div v-show="questionCurrSa == false">
             <div class="qdConBls" v-for="item in qlList.bls">
-            <div class="qdConBlsName">
-              <img class="qdConBlsBimg" :src="item.bimage" alt />
-              <div>
-                <b v-show="qdConMyBls == false">{{ item.bname }}</b>
-                <b v-show="qdConMyBls == true">{{ item.bname }}</b>
-                <router-link to="/home">查看TA的主页</router-link>
+              <div class="qdConBlsName">
+                <img class="qdConBlsBimg" :src="item.bimage" alt />
+                <div>
+                  <b v-show="qdConMyBls == false">{{ item.bname }}</b>
+                  <b v-show="qdConMyBls == true">{{ item.bname }}</b>
+                  <router-link to="/home">查看TA的主页</router-link>
+                </div>
               </div>
-            </div>
-            <div class="qdConBlsCurrency">
-              <span>{{ item.bidding.currency }}</span>
-              <br /><span style="font-size: 12px; color: #333">鲸灵币</span>
-            </div>
-            <div class="qdConBlsgrade">
-              <p>100%</p>
-              <el-rate v-model="blsgrade" disabled style="float: left;position: relative;top: -2px;">
-              </el-rate>
-              <div style="font-size:14px;color:#333;margin-top:25px;letter-spacing: 2px;">回答过1234个问题</div>
-              <!-- 完成时间:{{ item.bidding.endTime | formatDate }} -->
-            </div>
+              <div class="qdConBlsCurrency">
+                <span>{{ item.bidding.currency }}</span>
+                <br /><span style="font-size: 12px; color: #333">鲸灵币</span>
+              </div>
+              <div class="qdConBlsgrade">
+                <p>100%</p>
+                <el-rate
+                  v-model="blsgrade"
+                  disabled
+                  style="float: left; position: relative; top: -2px"
+                >
+                </el-rate>
+                <div
+                  style="
+                    font-size: 14px;
+                    color: #333;
+                    margin-top: 25px;
+                    letter-spacing: 2px;
+                  "
+                >
+                  回答过1234个问题
+                </div>
+                <!-- 完成时间:{{ item.bidding.endTime | formatDate }} -->
+              </div>
 
-            <div class="qdConBlsR">
-              <div
-                class="qdConBlsR1"
-                @click="inform(item)"
-                v-if="auctionClient"
-              >对话
-              </div>
-              <div
-                class="qdConBlsR2"
-                v-if="auctionbutton"
-                @click="auctionss(item.bidding.createBy)"
-              >
-                选择TA
+              <div class="qdConBlsR">
+                <div
+                  class="qdConBlsR1"
+                  @click="inform(item)"
+                  v-if="auctionClient"
+                >
+                  对话
+                </div>
+                <div
+                  class="qdConBlsR2"
+                  v-if="auctionbutton"
+                  @click="auctionss(item.bidding.createBy)"
+                >
+                  选择TA
+                </div>
               </div>
             </div>
           </div>
+          <div v-show="questionCurrSa == true">
+            <div class="questionCurrCss" v-for="item in qlList.bls">
+              <div class="questionCurrName">
+                <div
+                  v-show="qdConMyBls == false"
+                  style="font-size: 12px; color: #333"
+                >
+                  提问者
+                </div>
+                <div
+                  v-show="qdConMyBls == true"
+                  style="font-size: 12px; color: #333"
+                >
+                  回答者
+                </div>
+                <img class="questionCurrBimg" :src="item.bimage" alt />
+                <div>
+                  <b v-show="qdConMyBls == false">{{ item.bname }}</b>
+                  <b v-show="qdConMyBls == true">{{ item.bname }}</b>
+                  <router-link to="/home">查看TA的主页</router-link>
+                </div>
+              </div>
+              <div class="questionCurrTime">
+                <div style="font-size: 12px; color: #333">截止日期</div>
+                <div style="margin-top: 15px">
+                  <p style="color: #333">
+                    {{ qlList.que.question.endTime | formatDate }}
+                  </p>
+                  <span
+                    style="
+                      color: #333;
+                      font-size: 12px;
+                      margin-top: 7px;
+                      display: block;
+                    "
+                    >剩余 {{ d }}天{{ h }}小时{{ m }}分</span
+                  >
+                </div>
+              </div>
+              <div class="questionCurrMon">
+                <div style="font-size: 12px; color: #333">竞拍金额</div>
+                <div style="margin-top: 15px">
+                  <b style="color: #333">{{ item.bidding.currency }}</b
+                  ><br />
+                  <p style="color: #333; font-size: 12px; margin-top: 7px">
+                    鲸灵币
+                  </p>
+                </div>
+              </div>
+              <div class="questionCurrType">
+                <div style="font-size: 12px; color: #333">当前状态</div>
+                <div style="margin-top: 15px; height: 41px">
+                  <!-- 4：已回答，5：申请客服，6：已完成,7:已关闭 -->
+                  <b
+                    v-show="qlList.que.question.status == 3"
+                    style="color: #333"
+                    >等待完成中</b
+                  >
+                  <b
+                    v-show="qlList.que.question.status == 4"
+                    style="color: #333"
+                    >已回答</b
+                  >
+                  <b
+                    v-show="qlList.que.question.status == 5"
+                    style="color: #333"
+                    >申请客服</b
+                  >
+                  <b
+                    v-show="qlList.que.question.status == 6"
+                    style="color: #333"
+                    >已完成</b
+                  >
+                  <b
+                    v-show="qlList.que.question.status == 7"
+                    style="color: #333"
+                    >已关闭</b
+                  >
+                </div>
+              </div>
+              <div class="questionCurrJiao">
+                <div
+                  v-show="qdConMyBls == false"
+                  style="font-size: 12px; color: #333; text-align: right"
+                >
+                  随时通过对话按钮与提问者交流
+                </div>
+                <div
+                  v-show="qdConMyBls == true"
+                  style="font-size: 12px; color: #333; text-align: right"
+                >
+                  随时通过对话按钮与回答者交流
+                </div>
+                <div style="margin-top: 15px" v-show="qdConMyBls == false">
+                  <div class="qdConBlsR3" @click="informQuizzer(qlList.que)">
+                    对话
+                  </div>
+                </div>
+                <div style="margin-top: 15px" v-show="qdConMyBls == true">
+                  <div class="qdConBlsR3" @click="inform(item)">对话</div>
+                </div>
+              </div>
+            </div>
           </div>
-          
           <!-- <div class="qdConMyBls" v-show="qdConMyBls">
             <div style="overflow:hidden;" v-show="auctionText">
               <div class="qdConMyBls1"></div>
@@ -220,7 +362,7 @@
             <div>内容</div>-->
           </div>
           <div
-            class="qdConEvaluate"
+            class="qdConEvaluateP"
             @click="evaluate(qlList.que.question.id)"
             v-show="evaluateS"
           >
@@ -274,21 +416,22 @@
 
               <editor id="tinymce" v-model="myValue" :init="init"></editor>
             </div>
-
-            <el-button
-              type="primary"
-              class="qd-edit-submit"
-              @click="submit"
-              v-if="savesubmitShow"
-              >提交回答</el-button
-            >
-            <el-button
-              type="primary"
-              class="qd-edit-submit"
-              @click="save"
-              v-if="replenishShow"
-              >补充回答</el-button
-            >
+            <div>
+              <el-button
+                type="primary"
+                class="qd-edit-submit"
+                @click="submit"
+                v-if="savesubmitShow"
+                >提交回答</el-button
+              >
+              <el-button
+                type="primary"
+                class="qd-edit-submit"
+                @click="save"
+                v-if="replenishShow"
+                >补充回答</el-button
+              >
+            </div>
           </div>
         </div>
         <div class="qdConRight" v-if="qdConRigtS">
@@ -307,7 +450,7 @@
           class="demo-ruleForm"
         >
           <div style="overflow: hidden">
-            <div style="float: left">
+            <!-- <div style="float: left">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
@@ -324,14 +467,14 @@
                   }"
                 ></el-date-picker>
               </el-form-item>
-            </div>
-            <div style="float: right">
+            </div> -->
+            <div>
               <div class="PR">鲸灵币</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
                   placeholder="鲸灵币(选填)"
-                  style="width: 130px"
+                  style="width: 270px"
                 ></el-input>
               </el-form-item>
             </div>
@@ -358,11 +501,74 @@
           ref="QuestionsQuiz"
           class="demo-ruleForm"
         >
-          <el-form-item prop="Title" class="ql-editQuziTi">
-            <el-input
-              v-model="QuestionsQuiz.Title"
-              placeholder="写下你的问题，准确的描述问题更容易得到解答"
-            ></el-input>
+          <div style="overflow: hidden; float: left">
+            <div class="PR">选择你的科目</div>
+            <!-- :inline="true" -->
+            <el-form-item
+              prop="type"
+              class="ql-editQuziTi"
+              style="width: 270px"
+            >
+              <el-select
+                v-model="QuestionsQuiz.type"
+                placeholder="请选择"
+                style="width: 270px"
+              >
+                <el-option
+                  v-for="item in quClassSelect"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.type"
+                >
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </div>
+          <div style="overflow: hidden; margin-left: 289px">
+            <div class="PR">输入你的主题或课程</div>
+            <el-form-item
+              prop="Title"
+              class="ql-editQuziTi"
+              style="width: 270px"
+            >
+              <el-input
+                v-model="QuestionsQuiz.Title"
+                placeholder="Write about..."
+              ></el-input>
+            </el-form-item>
+          </div>
+
+          <div style="overflow: hidden">
+            <div style="float: left" class="queTime">
+              <div class="PR">答题截止时间</div>
+              <el-form-item prop="EndTime">
+                <el-date-picker
+                  v-model="QuestionsQuiz.EndTime"
+                  type="datetime"
+                  style="width: 270px"
+                  placeholder="选择日期时间"
+                  value-format="yyyy-MM-dd HH:mm:ss"
+                  :picker-options="{
+                    disabledDate: (time) => {
+                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
+                    },
+                    selectableRange: startTimeRange,
+                  }"
+                ></el-date-picker>
+              </el-form-item>
+            </div>
+          </div>
+
+          <el-form-item prop="Content" class="ql-editNameDetail">
+            <!-- <el-input
+              type="textarea"
+              placeholder="输入问题背景、条件等详细信(选填)"
+              v-model="QuestionsQuiz.Content"
+              :autosize="{ minRows: 2, maxRows: 22}"
+            ></el-input>-->
+
+            <!-- 富文本 -->
+            <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
           <el-upload
             :action="imgSite"
@@ -375,49 +581,22 @@
             :before-upload="beforeAvatarUpload"
             :on-preview="handlePictureCardPreview"
             :on-remove="handleRemove"
-            :file-list="quefileList"
+            :file-list="fileList"
           >
             <el-button size="small" type="primary" class="upImgBut">
               上传问题图片
               <i class="el-icon-picture"></i>
             </el-button>
+            <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
           </el-upload>
-          <el-dialog :visible.sync="queVisible" :modal-append-to-body="false">
-            <img width="100%" :src="queImageUrl" alt />
+          <el-dialog
+            :visible.sync="dialogVisible"
+            :modal-append-to-body="false"
+          >
+            <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
-          <el-form-item prop="Content" class="ql-editNameDetail">
-            <editor id="tinymces" v-model="myValues" :init="inits"></editor>
-          </el-form-item>
-          <div style="overflow: hidden">
-            <div style="float: left">
-              <div class="PR">答题时间</div>
-              <el-form-item prop="EndTime">
-                <el-date-picker
-                  v-model="QuestionsQuiz.EndTime"
-                  type="datetime"
-                  placeholder="选择日期时间"
-                  value-format="yyyy-MM-dd HH:mm:ss"
-                  :picker-options="{
-                    disabledDate: (time) => {
-                      return time.getTime() < Date.now() - 3600 * 1000 * 24;
-                    },
-                    selectableRange: startTimeRange,
-                  }"
-                ></el-date-picker>
-              </el-form-item>
-            </div>
-            <div style="float: right">
-              <div class="PR">鲸灵币</div>
-              <el-form-item prop="Currency">
-                <el-input
-                  v-model.number="QuestionsQuiz.Currency"
-                  placeholder="鲸灵币(选填)"
-                  style="width: 130px"
-                ></el-input>
-              </el-form-item>
-            </div>
-          </div>
         </el-form>
+
         <div style="overflow: hidden">
           <el-button
             class="releaseQl"
@@ -426,15 +605,9 @@
             @click="releaseQl('QuestionsQuiz')"
             >发布问题</el-button
           >
-          <el-button
-            size="medium"
-            @click="CloseQuitBt"
-            style="margin-right: 10px; float: right"
-            >取消</el-button
-          >
         </div>
 
-        <!-- <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div> -->
+        <div class="qlreleaseClose el-icon-close" @click="CloseQuitBt"></div>
       </div>
     </div>
     <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
@@ -753,9 +926,13 @@ export default {
         EndTime: "",
         Currency: "",
         Img: "",
+        type: "",
       },
       // 编辑提问表单验证
       QuestionsQuizrules: {
+        type: [
+          { required: true, message: "请选择科目", trigger: "change" },
+        ],
         Title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" },
@@ -816,12 +993,19 @@ export default {
       suspendimgShow: false,
       DeShow: true,
       blsgrade: 3.7,
-      clientImg:""
+      clientImg: "",
+      // 当前竞拍人的货币数量
+      currencyNum: 0,
+      currencyNums: false,
+      // 当前问题选择竞拍者之后展示
+      questionCurrSa: false,
+      quClassSelect:[],
     };
   },
   created: function () {
     const _this = this;
     _this.personal();
+    _this.quClass();
   },
   filters: {
     formatDate: function (time) {
@@ -859,6 +1043,28 @@ export default {
     },
   },
   methods: {
+    // 检索科目
+    quClass() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/Classes`,
+          async: false,
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
+        .then(function (res) {
+          var a = Object.keys(res.data.data).length;
+          for (var i = 1; i <= a; i++) {
+            _this.quClassSelect.push({ name: res.data.data[i], type: i });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     formatDate: function (time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
@@ -931,7 +1137,6 @@ export default {
     // 检索问题详情
     QuDe() {
       const _this = this;
-
       _this
         .axios({
           method: "get",
@@ -942,6 +1147,9 @@ export default {
           },
           xhrFields: {
             withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
         })
         .then(function (res) {
@@ -1001,7 +1209,9 @@ export default {
                   _this.auctionbutton = false;
                   _this.replyShadeShow = false;
                   _this.inforQuiz = true;
-                  // console.log("我是竞拍者之一");
+                  _this.currencyNum = _this.qlList.bls[i].bidding.currency;
+                  _this.currencyNums = true;
+                  console.log("我是竞拍者之一");
                 }
               }
               // 我是提问者
@@ -1019,7 +1229,7 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.editS = true;
-                // console.log("提问者小于3");
+                console.log("提问者小于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 3
@@ -1037,7 +1247,12 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                // console.log("提问者等于3");
+                _this.questionCurrSa = true;
+                _this.endtime = _this.formatDate(
+                  _this.qlList.que.question.endTime
+                );
+                _this.countTime();
+                console.log("提问者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 4
@@ -1055,7 +1270,12 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                // console.log("提问者等于4");
+                _this.questionCurrSa = true;
+                _this.endtime = _this.formatDate(
+                  _this.qlList.que.question.endTime
+                );
+                _this.countTime();
+                console.log("提问者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status == 5
@@ -1072,7 +1292,12 @@ export default {
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
-                // console.log("提问者等于5");
+                _this.questionCurrSa = true;
+                _this.endtime = _this.formatDate(
+                  _this.qlList.que.question.endTime
+                );
+                _this.countTime();
+                console.log("提问者等于5");
               } else if (
                 _this.clientID == _this.qlList.que.question.createBy &&
                 _this.qlList.que.question.status >= 6
@@ -1090,13 +1315,14 @@ export default {
                 _this.serviceS = true;
                 _this.qdConMyBls = true;
                 _this.selectbname = true;
-                // console.log("提问者大于6");
+                _this.questionCurrSa = true;
+                console.log("提问者大于6");
               }
 
               // 我是答题者
               if (
                 _this.clientID == _this.qlList.que.question.answerer &&
-                _this.qlList.que.question.status <= 3
+                _this.qlList.que.question.status <= 2
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1112,7 +1338,28 @@ export default {
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                // console.log("答题者小于等于3");
+                console.log("答题者小于等于2");
+              } else if (
+                _this.clientID == _this.qlList.que.question.answerer &&
+                _this.qlList.que.question.status == 3
+              ) {
+                _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
+                _this.auctionbutton = false;
+                _this.qdeditnullShow = false; //左侧没有答案的框体
+                _this.qdeditShow = true; //编辑器的隐藏
+                _this.editors = true;
+                _this.savesubmitShow = true; //保存进度提交的隐藏
+                _this.replenishShow = false;
+                _this.countdown = true; //倒计时的隐藏
+                _this.replyShadeShow = false;
+                _this.inforQuiz = true;
+                _this.currencyNums = false;
+                _this.questionCurrSa = true;
+                _this.endtime = _this.formatDate(
+                  _this.qlList.que.question.endTime
+                );
+                _this.countTime();
+                console.log("答题者等于3");
               } else if (
                 _this.clientID == _this.qlList.que.question.answerer &&
                 _this.qlList.que.question.status == 4
@@ -1129,11 +1376,13 @@ export default {
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
                 _this.editan = true;
+                _this.currencyNums = false;
+                _this.questionCurrSa = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                // console.log("答题者等于4");
+                console.log("答题者等于4");
               } else if (
                 _this.clientID == _this.qlList.que.question.answerer &&
                 _this.qlList.que.question.status == 5
@@ -1149,11 +1398,13 @@ export default {
                 _this.countdown = true; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
+                _this.currencyNums = false;
+                _this.questionCurrSa = true;
                 _this.endtime = _this.formatDate(
                   _this.qlList.que.question.endTime
                 );
                 _this.countTime();
-                // console.log("答题者等于5");
+                console.log("答题者等于5");
               }
               // 当问题已完成
               if (_this.qlList.que.question.status >= 6) {
@@ -1167,12 +1418,31 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.submitAnss = true;
                 _this.replyShadeShow = false;
-                // console.log("问题已完成");
+                _this.currencyNums = false;
+                _this.questionCurrSa = true;
+                console.log("问题已完成");
               }
 
               if (_this.qlList.answer != null) {
                 _this.myValue = _this.qlList.answer.content;
                 // console.log("有答案");
+              }
+              // 我是访客
+              if (
+                _this.clientID != _this.qlList.que.question.createBy &&
+                _this.clientID != _this.qlList.que.question.answerer
+              ) {
+                console.log("我是访客");
+
+                if (_this.qlList.que.question.status >= 3) {
+                  _this.replyShadeShow = false;
+                } else {
+                  _this.replyShadeShow = true;
+                  _this.endtime = _this.formatDate(
+                    _this.qlList.que.question.endTime
+                  );
+                  _this.countTime();
+                }
               }
             } else {
               _this.qdeditShow = false;
@@ -1535,6 +1805,7 @@ export default {
       _this.QuestionsQuiz.Currency = list.que.question.currency;
       _this.QuestionsQuiz.id = list.que.question.id;
       _this.QuestionsQuiz.Img = list.que.question.img;
+      _this.QuestionsQuiz.type = list.que.question.type;
       if (list.que.question.img) {
         var a = list.que.question.img.split("|");
         for (var i = 0; i < a.length; i++) {
@@ -1764,15 +2035,17 @@ export default {
                 _this.QuestionsQuiz.EndTime = new Date();
                 _this.QuestionsQuiz.Currency = "";
                 _this.QuestionsQuiz.Img = "";
+                _this.QuestionsQuiz.type = "";
                 _this.qlShade = !_this.qlShade;
                 _this.$message({
                   message: "发布成功,将跳转到新页面",
                   type: "success",
                 });
-                _this.$router.push({
-                  path: "/questionDetails/" + res.data.data.id,
-                });
-                _this.$router.go(0);
+                // _this.$router.push({
+                //   path: "/questionDetails/" + res.data.data.id,
+                // });
+                // _this.$router.go(0);
+                _this.QuDe();
               } else {
                 _this.$message({
                   message: "请确认填写相关内容",

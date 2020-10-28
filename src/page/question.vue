@@ -7,7 +7,7 @@
         <div class="ql-t-con">
           <div class="qltconLeft">
             <h1>提升学业最好的方式就是互相帮助。</h1>
-            <div style="position: relative;">
+            <div style="position: relative">
               <el-input
                 v-model="topInput"
                 @change="topInputs"
@@ -42,15 +42,19 @@
       <div class="ql-body">
         <div class="qlBodyCon">
           <div class="qlBodyLeft">
-            <div :class="{ qlBodyConActive: num == 0 }" @click="newTime">
-              全部科目
+            <div
+              v-for="(item, index) in this.quClasss"
+              :class="{ qlBodyConActive: index == num }"
+              @click="newTime(index)"
+            >
+              {{ item.name }}
             </div>
-            <div :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
-              即将结束
+            <!-- <div  :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
+              
             </div>
             <div :class="{ qlBodyConActive: num == 2 }" @click="topAll">
               全部提问
-            </div>
+            </div> -->
           </div>
           <div class="qlBodyMei">
             <div
@@ -62,7 +66,7 @@
             </div>
             <!-- 没有登录时 -->
             <!-- 没登录 -->
-            <div class="qlBodyMeiCon" v-for="item in qlList" v-show="qlcon">
+            <div v-show="qlcon">
               <div class="qlConTab">
                 <div class="qlConTabS" v-show="topInput != ''">
                   搜索&nbsp;&nbsp;"{{ topInput }}"<i
@@ -85,74 +89,84 @@
                   <img src="../assets/问答huo.png" alt="" />人气问题
                 </div>
               </div>
-              <div class="qlBodyMeiConLeft">
-                <!-- <div>
+              <div class="qlBodyMeiCon" v-for="item in qlList">
+                <div class="qlBodyMeiConLeft">
+                  <!-- <div>
                   <span class="qlBodyI" v-show="item.question.currency != 0"
                     >{{ item.question.currency }}&nbsp;鲸灵币</span
                   >
                 </div> -->
-                <div style="font-size: 12px; color: #adadad">2人正在竞拍</div>
-                <h4>
-                  <router-link :to="'/questionDetails/' + item.question.id">{{
-                    item.question.title
-                  }}</router-link>
-                </h4>
+                  <div style="font-size: 12px; color: #adadad">
+                    {{ item.question.biddingNum }}人正在竞拍
+                  </div>
+                  <h4>
+                    <router-link :to="'/questionDetails/' + item.question.id">{{
+                      item.question.title
+                    }}</router-link>
+                  </h4>
 
-                <div class="qlBodyImg">
-                  <img :src="item.qimage" alt />
-                  {{ item.qname }}
-                  <span>{{ item.Times }}</span>
-                </div>
-                <div class="qlBodyConImg">
-                  <img
-                    v-for="items in item.question.images"
-                    :src="items.url"
-                    alt
-                  />
-                  <router-link
-                    :to="'/questionDetails/' + item.question.id"
-                    v-show="item.question.imagesNum > 3"
-                    class="viewimages"
-                  >
-                    <p>
-                      点击查看<br />剩余{{ item.question.imagesNum - 3 }}张图片
-                    </p>
-                  </router-link>
-                </div>
-                <div class="qlBodyMeiConRight" @click="replyShade(item)">
-                  <div class="qlBodyMeiConRightTable">
-                    <div>参与竞拍回答</div>
+                  <div class="qlBodyImg">
+                    <img :src="item.qimage" alt />
+                    {{ item.qname }}
+                    <span>{{ item.Times }}</span>
+                  </div>
+                  <div class="qlBodyConImg">
+                    <img
+                      v-for="items in item.question.images"
+                      :src="items.url"
+                      alt
+                    />
+                    <router-link
+                      :to="'/questionDetails/' + item.question.id"
+                      v-show="item.question.imagesNum > 3"
+                      class="viewimages"
+                    >
+                      <p>
+                        点击查看<br />剩余{{
+                          item.question.imagesNum - 3
+                        }}张图片
+                      </p>
+                    </router-link>
+                  </div>
+                  <div class="qlBodyMeiConRight" @click="replyShade(item)">
+                    <div class="qlBodyMeiConRightTable">
+                      <div>参与竞拍回答</div>
+                    </div>
+                  </div>
+                  <div class="qlBodyMeiConshou">
+                    {{ item.favourite }}人收藏 {{ item.question.views }}人浏览
                   </div>
                 </div>
-                <div class="qlBodyMeiConshou">11人收藏 21人浏览</div>
               </div>
             </div>
+
             <!-- 登录时 -->
-            <div class="qlConTab">
-              <div class="qlConTabS" v-show="topInput != ''">
-                搜索&nbsp;&nbsp;"{{ topInput }}"<i
-                  class="el-icon-close"
-                  @click="topInClose"
-                ></i>
+            <div v-show="myQlcon">
+              <div class="qlConTab">
+                <div class="qlConTabS" v-show="topInput != ''">
+                  搜索&nbsp;&nbsp;"{{ topInput }}"<i
+                    class="el-icon-close"
+                    @click="topInClose"
+                  ></i>
+                </div>
+                <div
+                  class="qlConTabN"
+                  :class="{ qlConTabNClass: qlConTabnum == 0 }"
+                  @click="tab('n')"
+                >
+                  <img src="../assets/问答new.png" alt="" />最新问题
+                </div>
+                <div
+                  class="qlConTabN"
+                  :class="{ qlConTabNClass: qlConTabnum == 1 }"
+                  @click="tab('r')"
+                >
+                  <img src="../assets/问答huo.png" alt="" />人气问题
+                </div>
               </div>
-              <div
-                class="qlConTabN"
-                :class="{ qlConTabNClass: qlConTabnum == 0 }"
-                @click="tab('n')"
-              >
-                <img src="../assets/问答new.png" alt="" />最新问题
-              </div>
-              <div
-                class="qlConTabN"
-                :class="{ qlConTabNClass: qlConTabnum == 1 }"
-                @click="tab('r')"
-              >
-                <img src="../assets/问答huo.png" alt="" />人气问题
-              </div>
-            </div>
-            <div class="qlBodyMeiCon" v-for="item in myQlList" v-show="myQlcon">
-              <div class="qlBodyMeiConLeft">
-                <!-- <div>
+              <div class="qlBodyMeiCon" v-for="item in myQlList">
+                <div class="qlBodyMeiConLeft">
+                  <!-- <div>
                   <span class="qlBodyU" v-show="item.bidd != null">{{
                     item.bidd
                   }}</span>
@@ -166,35 +180,47 @@
                     >{{ item.que.currency }}&nbsp;鲸灵币</span
                   >
                 </div> -->
-                <div style="font-size: 12px; color: #adadad">2人正在竞拍</div>
-                <h4>
-                  <router-link :to="'/questionDetails/' + item.que.id">{{
-                    item.que.title
-                  }}</router-link>
-                </h4>
-                <div class="qlBodyImg">
-                  <img :src="item.qimage" alt />
-                  {{ item.qname }}
-                  <span>{{ item.Times }}</span>
-                </div>
-                <div class="qlBodyConImg">
-                  <img v-for="items in item.que.images" :src="items.url" alt />
-                  <router-link
-                    :to="'/questionDetails/' + item.que.id"
-                    v-show="item.que.imagesNum > 3"
-                    class="viewimages"
-                  >
-                    <p>点击查看<br />剩余{{ item.que.imagesNum - 3 }}张图片</p>
-                  </router-link>
-                </div>
-                <div class="qlBodyMeiConRight" @click="replyShade(item)">
-                  <div class="qlBodyMeiConRightTable">
-                    <div>参与竞拍回答</div>
+                  <div style="font-size: 12px; color: #adadad">
+                    {{ item.que.biddingNum }}人正在竞拍
+                  </div>
+                  <h4>
+                    <router-link :to="'/questionDetails/' + item.que.id">{{
+                      item.que.title
+                    }}</router-link>
+                  </h4>
+                  <div class="qlBodyImg">
+                    <img :src="item.qimage" alt />
+                    {{ item.qname }}
+                    <span>{{ item.Times }}</span>
+                  </div>
+                  <div class="qlBodyConImg">
+                    <img
+                      v-for="items in item.que.images"
+                      :src="items.url"
+                      alt
+                    />
+                    <router-link
+                      :to="'/questionDetails/' + item.que.id"
+                      v-show="item.que.imagesNum > 3"
+                      class="viewimages"
+                    >
+                      <p>
+                        点击查看<br />剩余{{ item.que.imagesNum - 3 }}张图片
+                      </p>
+                    </router-link>
+                  </div>
+                  <div class="qlBodyMeiConRight" @click="replyShade(item)">
+                    <div class="qlBodyMeiConRightTable">
+                      <div>参与竞拍回答</div>
+                    </div>
+                  </div>
+                  <div class="qlBodyMeiConshou">
+                    {{ item.favourite }}人收藏 {{ item.que.views }}人浏览
                   </div>
                 </div>
-                <div class="qlBodyMeiConshou">11人收藏 21人浏览</div>
               </div>
             </div>
+
             <div class="pageturning" @click="nextpages">...</div>
           </div>
           <div class="qlBodyRight">
@@ -210,26 +236,36 @@
           :rules="QuestionsQuizrules"
           ref="QuestionsQuiz"
           class="demo-ruleForm"
-          
         >
           <div style="overflow: hidden; float: left">
             <div class="PR">选择你的科目</div>
             <!-- :inline="true" -->
             <el-form-item
-              prop="Title"
+              prop="type"
               class="ql-editQuziTi"
-              style="width: 270px;"
+              style="width: 270px"
             >
-              <el-input v-model="QuestionsQuiz.Title"></el-input>
+              <el-select
+                v-model="QuestionsQuiz.type"
+                placeholder="请选择"
+                style="width: 270px"
+              >
+                <el-option
+                  v-for="item in quClassSelect"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.type"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </div>
-          <div style="overflow: hidden;margin-left:289px">
+          <div style="overflow: hidden; margin-left: 289px">
             <div class="PR">输入你的主题或课程</div>
             <el-form-item
               prop="Title"
               class="ql-editQuziTi"
-              style="width: 270px; "
-              
+              style="width: 270px"
             >
               <el-input
                 v-model="QuestionsQuiz.Title"
@@ -238,7 +274,7 @@
             </el-form-item>
           </div>
 
-          <div style="overflow: hidden;">
+          <div style="overflow: hidden">
             <div style="float: left" class="queTime">
               <div class="PR">答题截止时间</div>
               <el-form-item prop="EndTime">
@@ -467,9 +503,13 @@ export default {
         EndTime: "",
         Img: "",
         imgContent: "",
+        type: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
+        type: [
+          { required: true, message: "请选择科目", trigger: "change" },
+        ],
         Title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" },
@@ -510,7 +550,7 @@ export default {
       num: 0,
       typeNum: "new",
       pagenums: 1,
-      pagesizes: 3,
+      pagesizes: 5,
       clientID: 0,
       myqus: false,
       qlcon: false,
@@ -536,11 +576,15 @@ export default {
       Answernum: "",
       qdConRigtS: false,
       qlConTabnum: 0,
+      quClasss: [{ name: "全部科目", type: 0 }],
+      quClassSelect: [],
+      claNum: 0,
     };
   },
   created: function () {
     const _this = this;
     _this.personal();
+    _this.quClass();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
@@ -586,6 +630,29 @@ export default {
     tinymce.init({});
   },
   methods: {
+    // 检索科目
+    quClass() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/Classes`,
+          async: false,
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
+        .then(function (res) {
+          var a = Object.keys(res.data.data).length;
+          for (var i = 1; i <= a; i++) {
+            _this.quClasss.push({ name: res.data.data[i], type: i });
+            _this.quClassSelect.push({ name: res.data.data[i], type: i });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
     // 获取最新的问题数量
     answerNum() {
       const _this = this;
@@ -707,6 +774,7 @@ export default {
                   url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
                   async: false,
                   params: {
+                    classes: _this.claNum,
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
                     pagesize: _this.pagesizes,
@@ -996,6 +1064,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
           async: false,
           params: {
+            classes: _this.claNum,
             type: _this.typeNum,
             pagenum: _this.pagenums,
             pagesize: _this.pagesizes,
@@ -1056,10 +1125,11 @@ export default {
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
     },
     // 点击最新按钮展示
-    newTime() {
+    newTime(index) {
       const _this = this;
-      _this.num = 0;
-      _this.typeNum = "new";
+      console.log(index);
+      _this.num = index;
+      _this.claNum = index;
       _this.pagenums = 1;
       if (localStorage.token) {
         _this.myquizList();
@@ -1216,6 +1286,7 @@ export default {
                 _this.QuestionsQuiz.Title = "";
                 _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.imgContent = "";
+                _this.QuestionsQuiz.type = "";
                 _this.QuestionsQuiz.EndTime = new Date();
                 setTimeout(function () {
                   _this.newAnswerTime = new Date();
@@ -1314,6 +1385,7 @@ export default {
             url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
             async: false,
             params: {
+              classes: _this.claNum,
               type: _this.typeNum,
               pagenum: _this.pagenums,
               pagesize: _this.pagesizes,
@@ -1439,6 +1511,7 @@ export default {
             url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
             async: false,
             params: {
+              classes: _this.claNum,
               type: _this.typeNum,
               pagenum: ++_this.pagenums,
               pagesize: _this.pagesizes,
@@ -1674,10 +1747,23 @@ export default {
     // 最新和人气切换
     tab(tab) {
       const _this = this;
+      _this.pagenums = 1;
       if (tab == "n") {
         _this.qlConTabnum = 0;
+        _this.typeNum = "new";
+        if (localStorage.token) {
+          _this.myquizList();
+        } else {
+          _this.quizList();
+        }
       } else if (tab == "r") {
         _this.qlConTabnum = 1;
+        _this.typeNum = "moods";
+        if (localStorage.token) {
+          _this.myquizList();
+        } else {
+          _this.quizList();
+        }
       }
     },
   },
