@@ -536,13 +536,13 @@
 }
 .upImg {
     position: relative;
-    float: left;
+    float: right;
 }
 .upImg .el-upload-list--picture-card{
-    position: absolute;
+    /* position: absolute;
     overflow-x:auto;
     top: 48px;
-    width: 560px;
+    width: 560px; */
 }
 .upImgBut i {
     font-size: 16px !important;
@@ -560,4 +560,8 @@
 }
 .newAnswer:hover {
     background: #2ebbe68f;
+}
+.qdconMeshow {
+    text-align: center;
+    line-height: 500px;
 }

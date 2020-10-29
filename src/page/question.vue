@@ -294,19 +294,8 @@
               </el-form-item>
             </div>
           </div>
-
-          <el-form-item prop="Content" class="ql-editNameDetail">
-            <!-- <el-input
-              type="textarea"
-              placeholder="输入问题背景、条件等详细信(选填)"
-              v-model="QuestionsQuiz.Content"
-              :autosize="{ minRows: 2, maxRows: 22}"
-            ></el-input>-->
-
-            <!-- 富文本 -->
-            <editor id="tinymce" v-model="myValue" :init="init"></editor>
-          </el-form-item>
-          <el-upload
+          <div style="overflow: hidden;margin-bottom: 10px;">
+            <el-upload
             :action="imgSite"
             :headers="myHeaders"
             list-type="picture-card"
@@ -331,6 +320,20 @@
           >
             <img width="100%" :src="dialogImageUrl" alt />
           </el-dialog>
+          </div>
+          <el-form-item prop="Content" class="ql-editNameDetail">
+            <!-- <el-input
+              type="textarea"
+              placeholder="输入问题背景、条件等详细信(选填)"
+              v-model="QuestionsQuiz.Content"
+              :autosize="{ minRows: 2, maxRows: 22}"
+            ></el-input>-->
+
+            <!-- 富文本 -->
+            <editor id="tinymce" v-model="myValue" :init="init"></editor>
+          </el-form-item>
+          
+          
         </el-form>
 
         <div style="overflow: hidden">
@@ -1000,6 +1003,7 @@ export default {
           url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
           async: false,
           params: {
+            classes: _this.claNum,
             type: _this.typeNum,
             pagenum: _this.pagenums,
             pagesize: _this.pagesizes,

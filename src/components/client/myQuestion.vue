@@ -150,164 +150,7 @@
                 </template>
               </el-table-column>
             </el-table>
-            <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
-              <div class="ql-editQuzi">
-                <el-form
-                  :model="QuestionsQuiz"
-                  :rules="QuestionsQuizrules"
-                  ref="QuestionsQuiz"
-                  class="demo-ruleForm"
-                >
-                  <div style="overflow: hidden; float: left">
-                    <div class="PR">选择你的科目</div>
-                    <!-- :inline="true" -->
-                    <el-form-item
-                      prop="type"
-                      class="ql-editQuziTi"
-                      style="width: 270px"
-                    >
-                      <el-select
-                        v-model="QuestionsQuiz.type"
-                        placeholder="请选择"
-                        style="width: 270px"
-                      >
-                        <el-option
-                          v-for="item in quClassSelect"
-                          :key="item.name"
-                          :label="item.name"
-                          :value="item.type"
-                        >
-                        </el-option>
-                      </el-select>
-                    </el-form-item>
-                  </div>
-                  <div style="overflow: hidden; margin-left: 289px">
-                    <div class="PR">输入你的主题或课程</div>
-                    <el-form-item
-                      prop="Title"
-                      class="ql-editQuziTi"
-                      style="width: 270px"
-                    >
-                      <el-input
-                        v-model="QuestionsQuiz.Title"
-                        placeholder="Write about..."
-                      ></el-input>
-                    </el-form-item>
-                  </div>
 
-                  <div style="overflow: hidden">
-                    <div style="float: left" class="queTime">
-                      <div class="PR">答题截止时间</div>
-                      <el-form-item prop="EndTime">
-                        <el-date-picker
-                          v-model="QuestionsQuiz.EndTime"
-                          type="datetime"
-                          style="width: 270px"
-                          placeholder="选择日期时间"
-                          value-format="yyyy-MM-dd HH:mm:ss"
-                          :picker-options="{
-                            disabledDate: (time) => {
-                              return (
-                                time.getTime() < Date.now() - 3600 * 1000 * 24
-                              );
-                            },
-                            selectableRange: startTimeRange,
-                          }"
-                        ></el-date-picker>
-                      </el-form-item>
-                    </div>
-                  </div>
-
-                  <el-form-item prop="Content" class="ql-editNameDetail">
-                    <!-- <el-input
-              type="textarea"
-              placeholder="输入问题背景、条件等详细信(选填)"
-              v-model="QuestionsQuiz.Content"
-              :autosize="{ minRows: 2, maxRows: 22}"
-            ></el-input>-->
-
-                    <!-- 富文本 -->
-                    <editor
-                      id="tinymce"
-                      v-model="myValue"
-                      :init="init"
-                    ></editor>
-                  </el-form-item>
-                  <el-upload
-                    :action="imgSite"
-                    :headers="myHeaders"
-                    list-type="picture-card"
-                    :auto-upload="true"
-                    class="upImg"
-                    multiple
-                    :on-success="handleAvatarSuccess"
-                    :before-upload="beforeAvatarUpload"
-                    :on-preview="handlePictureCardPreview"
-                    :on-remove="handleRemove"
-                    :file-list="fileList"
-                  >
-                    <el-button size="small" type="primary" class="upImgBut">
-                      上传问题图片
-                      <i class="el-icon-picture"></i>
-                    </el-button>
-                    <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
-                  </el-upload>
-                  <el-dialog
-                    :visible.sync="dialogVisible"
-                    :modal-append-to-body="false"
-                  >
-                    <img width="100%" :src="dialogImageUrl" alt />
-                  </el-dialog>
-                </el-form>
-
-                <div style="overflow: hidden">
-                  <el-button
-                    class="releaseQl"
-                    type="primary"
-                    size="medium"
-                    @click="releaseQl('QuestionsQuiz')"
-                    >发布问题</el-button
-                  >
-                </div>
-
-                <div
-                  class="qlreleaseClose el-icon-close"
-                  @click="CloseQuitBt"
-                ></div>
-              </div>
-            </div>
-            <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
-              <div class="ql-editQuzi">
-                <div style="min-height: 117px">
-                  <div style="float: left">您的评价:</div>
-                  <el-switch
-                    style="display: block; float: right"
-                    v-model="evaluateSwitch"
-                    active-color="#13ce66"
-                    inactive-color="#ff4949"
-                    active-text="好评"
-                    inactive-text="差评"
-                  ></el-switch>
-                  <el-input
-                    v-model="evaluateInput"
-                    style="margin-top: 10px; margin-bottom: 10px"
-                  ></el-input>
-                  <el-button
-                    style="float: right"
-                    type="primary"
-                    size="medium"
-                    @click="evaluateCon"
-                    >确定</el-button
-                  >
-                  <el-button
-                    style="float: right; margin-right: 10px"
-                    size="medium"
-                    @click="CloseEvaluate"
-                    >取消</el-button
-                  >
-                </div>
-              </div>
-            </div>
             <!-- <div class="ql-shade" v-show="serviceShade" @mousewheel.prevent>
               <div class="ql-editQuzi">
                 <div class="qlreleaseClose el-icon-close" @click="CloseService"></div>
@@ -609,6 +452,161 @@
               </div>
             </div>
           </el-tab-pane>
+          <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
+            <div class="ql-editQuzi">
+              <el-form
+                :model="QuestionsQuiz"
+                :rules="QuestionsQuizrules"
+                ref="QuestionsQuiz"
+                class="demo-ruleForm"
+              >
+                <div style="overflow: hidden; float: left">
+                  <div class="PR">选择你的科目</div>
+                  <!-- :inline="true" -->
+                  <el-form-item
+                    prop="type"
+                    class="ql-editQuziTi"
+                    style="width: 270px"
+                  >
+                    <el-select
+                      v-model="QuestionsQuiz.type"
+                      placeholder="请选择"
+                      style="width: 270px"
+                    >
+                      <el-option
+                        v-for="item in quClassSelect"
+                        :key="item.name"
+                        :label="item.name"
+                        :value="item.type"
+                      >
+                      </el-option>
+                    </el-select>
+                  </el-form-item>
+                </div>
+                <div style="overflow: hidden; margin-left: 289px">
+                  <div class="PR">输入你的主题或课程</div>
+                  <el-form-item
+                    prop="Title"
+                    class="ql-editQuziTi"
+                    style="width: 270px"
+                  >
+                    <el-input
+                      v-model="QuestionsQuiz.title"
+                      placeholder="Write about..."
+                    ></el-input>
+                  </el-form-item>
+                </div>
+
+                <div style="overflow: hidden">
+                  <div style="float: left" class="queTime">
+                    <div class="PR">答题截止时间</div>
+                    <el-form-item prop="EndTime">
+                      <el-date-picker
+                        v-model="QuestionsQuiz.EndTime"
+                        type="datetime"
+                        style="width: 270px"
+                        placeholder="选择日期时间"
+                        value-format="yyyy-MM-dd HH:mm:ss"
+                        :picker-options="{
+                          disabledDate: (time) => {
+                            return (
+                              time.getTime() < Date.now() - 3600 * 1000 * 24
+                            );
+                          },
+                          selectableRange: austartTimeRange,
+                        }"
+                      ></el-date-picker>
+                    </el-form-item>
+                  </div>
+                </div>
+                <div style="overflow: hidden;margin-bottom: 10px;">
+                  <el-upload
+                    :action="imgSite"
+                    :headers="myHeaders"
+                    list-type="picture-card"
+                    :auto-upload="true"
+                    class="upImg"
+                    multiple
+                    :on-success="handleAvatarSuccess"
+                    :before-upload="beforeAvatarUpload"
+                    :on-preview="handlePictureCardPreview"
+                    :on-remove="handleRemove"
+                    :file-list="quefileList"
+                  >
+                    <el-button size="small" type="primary" class="upImgBut">
+                      上传问题图片
+                      <i class="el-icon-picture"></i>
+                    </el-button>
+                  </el-upload>
+                  <el-dialog
+                    :visible.sync="queVisible"
+                    :modal-append-to-body="false"
+                  >
+                    <img width="100%" :src="queImageUrl" alt />
+                  </el-dialog>
+                </div>
+                <el-form-item prop="Content" class="ql-editNameDetail">
+                  <!-- <el-input
+              type="textarea"
+              placeholder="输入问题背景、条件等详细信(选填)"
+              v-model="QuestionsQuiz.Content"
+              :autosize="{ minRows: 2, maxRows: 22}"
+            ></el-input>-->
+
+                  <!-- 富文本 -->
+                  <editor id="tinymce" v-model="myValue" :init="init"></editor>
+                </el-form-item>
+                
+              </el-form>
+
+              <div style="overflow: hidden">
+                <el-button
+                  class="releaseQl"
+                  type="primary"
+                  size="medium"
+                  @click="releaseQl('QuestionsQuiz')"
+                  >发布问题</el-button
+                >
+              </div>
+
+              <div
+                class="qlreleaseClose el-icon-close"
+                @click="CloseQuitBt"
+              ></div>
+            </div>
+          </div>
+          <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
+            <div class="ql-editQuzi">
+              <div style="min-height: 117px">
+                <div style="float: left">您的评价:</div>
+                <el-switch
+                  style="display: block; float: right"
+                  v-model="evaluateSwitch"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  active-text="好评"
+                  inactive-text="差评"
+                ></el-switch>
+                <el-input
+                  v-model="evaluateInput"
+                  style="margin-top: 10px; margin-bottom: 10px"
+                ></el-input>
+                <el-button
+                  style="float: right"
+                  type="primary"
+                  size="medium"
+                  @click="evaluateCon"
+                  >确定</el-button
+                >
+                <el-button
+                  style="float: right; margin-right: 10px"
+                  size="medium"
+                  @click="CloseEvaluate"
+                  >取消</el-button
+                >
+              </div>
+            </div>
+          </div>
         </el-tabs>
       </div>
     </div>
@@ -700,15 +698,17 @@ export default {
       answerShow: false,
       answerTableData: [],
       QuestionsQuiz: {
-        Title: "",
-        Content: "",
-        EndTime: "",
-        Currency: "",
-        Img: "",
+        // Title: "",
+        // Content: "",
+        // EndTime: "",
+        // Currency: "",
+        // Img: "",
+        // type: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
-        Title: [
+        type: [{ required: true, message: "请选择科目", trigger: "change" }],
+        title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" },
         ],
@@ -747,7 +747,7 @@ export default {
       quefileList: [],
       austartTimeRange: "",
       auction: [],
-      quClassSelect:[]
+      quClassSelect: [],
     };
   },
   created: function () {
@@ -833,6 +833,7 @@ export default {
     },
     handleClick(tab, event) {
       const _this = this;
+      _this.quizTableData = [];
       _this.pagenums = 1;
       _this.pagesizes = 13;
       if (tab.label == "竞拍中的提问") {
@@ -913,8 +914,6 @@ export default {
     // 检索问题列表
     quizList() {
       const _this = this;
-
-      console.log(this.$route.query.type);
       _this
         .axios({
           method: "get",
@@ -1020,14 +1019,15 @@ export default {
     // 编辑提问
     editQuiz(list) {
       const _this = this;
-      _this.QuestionsQuiz.Title = list.que.title;
-      _this.QuestionsQuiz.Content = list.que.content;
+      _this.QuestionsQuiz = list.que;
+      _this.QuestionsQuiz.title = list.que.title;
+      // _this.QuestionsQuiz.Content = list.que.content;
       _this.myValue = list.que.content;
       _this.QuestionsQuiz.EndTime = _this.formatDate(list.que.endTime);
-      _this.QuestionsQuiz.Currency = list.que.currency;
-      _this.QuestionsQuiz.id = list.que.id;
-      _this.QuestionsQuiz.Img = list.que.img;
-      _this.QuestionsQuiz.type = list.que.type;
+      // _this.QuestionsQuiz.Currency = list.que.currency;
+      // _this.QuestionsQuiz.id = list.que.id;
+      // _this.QuestionsQuiz.Img = list.que.img;
+      // _this.QuestionsQuiz.type = list.que.type;
       if (list.que.img) {
         var a = list.que.img.split("|");
         for (var i = 0; i < a.length; i++) {
@@ -1064,12 +1064,13 @@ export default {
             })
             .then(function (res) {
               if (res.data.status == 1) {
-                _this.QuestionsQuiz.Title = "";
-                _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz = {};
+                // _this.QuestionsQuiz.Title = "";
+                // _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
-                _this.QuestionsQuiz.Currency = "";
-                _this.QuestionsQuiz.Img = "";
-                _this.QuestionsQuiz.type = "";
+                // _this.QuestionsQuiz.Currency = "";
+                // _this.QuestionsQuiz.Img = "";
+                // _this.QuestionsQuiz.type = "";
                 _this.qlShade = !_this.qlShade;
                 _this.quizList();
                 _this.$message({

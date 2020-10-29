@@ -304,7 +304,7 @@
 .zheng3 {
   position: absolute;
   top: 24px;
-  right: 130px;
+  right: 138px;
   text-align: center;
 }
 .zheng3 span {
@@ -758,7 +758,12 @@
   float: left;
   width: 187px;
 }
-
+.upp .el-upload--picture-card {
+  width: 130px !important;
+  height: 36px !important;
+  line-height: 36px !important;
+  border: 0px !important;
+}
 
 
 

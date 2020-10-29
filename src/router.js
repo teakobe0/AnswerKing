@@ -35,7 +35,7 @@ import questionDetails from '@/page/questionDetails.vue'  //问答大厅
 import emailVerify from '@/page/emailVerify.vue'  //邮箱验证
 
 import ownness from '@/components/client/ownness.vue'  //个人资料
-
+import personalQuestions from '@/page/personalQuestions.vue'  //个人问答页面
 
 
 // Footer里的页面
@@ -271,6 +271,10 @@ export default new Router({
         {
             path: '/emailVerify',      //设置跳转
             component: emailVerify
+        },
+        {
+            path: '/personalQuestions/:pq_id',      //设置跳转
+            component: personalQuestions
         },
 
     ]

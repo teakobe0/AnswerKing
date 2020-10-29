@@ -37,7 +37,7 @@
                 />
               </div>
 
-              <div style="margin-top: 15px; min-height: 36px">
+              <div style="margin-top: 15px; min-height: 36px" class="upp">
                 <!-- <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span> -->
                 <el-button
                   size="mini"
@@ -48,6 +48,14 @@
                   icon="el-icon-edit-outline"
                   >编辑问题</el-button
                 >
+                <!-- <el-button
+                  size="mini"
+                  class="button2"
+                  type="primary"
+                  @click="editIMG(qlList)"
+                  >上传补充资料</el-button
+                > -->
+
                 <!-- <el-button
                 size="mini"
                 type="primary"
@@ -73,7 +81,7 @@
                 <el-button
                   size="mini"
                   class="collect"
-                  @click="service(qlList.que.question.id)"
+                  @click="collectQue(qlList.que.question.id)"
                   v-show="inforQuiz"
                   icon="el-icon-star-on"
                   >收藏该问题</el-button
@@ -111,6 +119,13 @@
               <b>{{ qlList.que.question.endTime | formatDate }}</b> 前回答完毕
               剩余 {{ d }}天{{ h }}小时{{ m }}分
             </div>
+            <div
+              class="qdConEvaluate"
+              @click="replyShade(qlList)"
+              v-if="replyShadeShow"
+            >
+              参与竞拍
+            </div>
           </div>
           <div class="zhengzaijingpai" v-if="currencyNums">
             <img :src="clientImg" alt="" />
@@ -123,6 +138,7 @@
             </div>
             <div class="zheng4">
               <el-button
+                @click="editauctionshow"
                 size="small"
                 style="
                   color: #fff;
@@ -159,7 +175,10 @@
                 <div>
                   <b v-show="qdConMyBls == false">{{ item.bname }}</b>
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
-                  <router-link to="/home">查看TA的主页</router-link>
+                  <router-link
+                    :to="'/personalQuestions/' + item.bidding.createBy"
+                    >查看TA的主页</router-link
+                  >
                 </div>
               </div>
               <div class="qdConBlsCurrency">
@@ -167,9 +186,9 @@
                 <br /><span style="font-size: 12px; color: #333">鲸灵币</span>
               </div>
               <div class="qdConBlsgrade">
-                <p>100%</p>
+                <p>{{ item.gradetext }}%</p>
                 <el-rate
-                  v-model="blsgrade"
+                  v-model="item.grade"
                   disabled
                   style="float: left; position: relative; top: -2px"
                 >
@@ -182,7 +201,7 @@
                     letter-spacing: 2px;
                   "
                 >
-                  回答过1234个问题
+                  回答过{{ item.qnum }}个问题
                 </div>
                 <!-- 完成时间:{{ item.bidding.endTime | formatDate }} -->
               </div>
@@ -224,7 +243,10 @@
                 <div>
                   <b v-show="qdConMyBls == false">{{ item.bname }}</b>
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
-                  <router-link to="/home">查看TA的主页</router-link>
+                  <router-link
+                    :to="'/personalQuestions/' + item.bidding.createBy"
+                    >查看TA的主页</router-link
+                  >
                 </div>
               </div>
               <div class="questionCurrTime">
@@ -368,13 +390,7 @@
           >
             评价
           </div>
-          <div
-            class="qdConEvaluate"
-            @click="replyShade(qlList)"
-            v-if="replyShadeShow"
-          >
-            参与竞拍
-          </div>
+
           <div class="countTime" v-if="countdown">
             <div style="margin-bottom: 14px; font-size: 20px">
               恭喜你!&nbsp;该问题竞拍成功!
@@ -438,6 +454,7 @@
           <questionNum></questionNum>
         </div>
       </div>
+      <div v-if="qdconMeshow == false" class="qdconMeshow">请登录之后查看</div>
     </div>
 
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
@@ -558,7 +575,32 @@
               </el-form-item>
             </div>
           </div>
-
+          <div style="overflow: hidden; margin-bottom: 10px">
+            <el-upload
+              :action="imgSite"
+              :headers="myHeaders"
+              list-type="picture-card"
+              :auto-upload="true"
+              class="upImg"
+              multiple
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :file-list="quefileList"
+            >
+              <el-button size="small" type="primary" class="upImgBut">
+                上传问题图片
+                <i class="el-icon-picture"></i>
+              </el-button>
+            </el-upload>
+            <el-dialog
+              :visible.sync="dialogVisible"
+              :modal-append-to-body="false"
+            >
+              <img width="100%" :src="dialogImageUrl" alt />
+            </el-dialog>
+          </div>
           <el-form-item prop="Content" class="ql-editNameDetail">
             <!-- <el-input
               type="textarea"
@@ -568,33 +610,8 @@
             ></el-input>-->
 
             <!-- 富文本 -->
-            <editor id="tinymce" v-model="myValue" :init="init"></editor>
+            <editor id="tinymces" v-model="myValues" :init="inits"></editor>
           </el-form-item>
-          <el-upload
-            :action="imgSite"
-            :headers="myHeaders"
-            list-type="picture-card"
-            :auto-upload="true"
-            class="upImg"
-            multiple
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary" class="upImgBut">
-              上传问题图片
-              <i class="el-icon-picture"></i>
-            </el-button>
-            <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
-          </el-upload>
-          <el-dialog
-            :visible.sync="dialogVisible"
-            :modal-append-to-body="false"
-          >
-            <img width="100%" :src="dialogImageUrl" alt />
-          </el-dialog>
         </el-form>
 
         <div style="overflow: hidden">
@@ -703,6 +720,76 @@
         <div
           class="qlreleaseClose el-icon-close"
           @click="quizzerCloseChatRecords"
+        ></div>
+      </div>
+    </div>
+    <div class="ql-shade" v-show="editImgs">
+      <!-- <div class="ql-editQuzi">
+        <div style="min-height:200px">
+          <el-upload
+            :action="imgSite"
+            :headers="myHeaders"
+            list-type="picture-card"
+            :auto-upload="true"
+            class="upImg"
+            multiple
+            :on-success="handleAvatarSuccess"
+            :before-upload="beforeAvatarUpload"
+            :on-preview="handlePictureCardPreview"
+            :on-remove="handleRemove"
+            :file-list="fileList"
+          >
+            <el-button size="small" type="primary" class="upImgBut">
+              上传问题图片
+              <i class="el-icon-picture"></i>
+            </el-button>
+          </el-upload>
+          <el-dialog
+            :visible.sync="dialogVisible"
+            :modal-append-to-body="false"
+          >
+            <img width="100%" :src="dialogImageUrl" alt />
+          </el-dialog>
+        </div>
+
+        <div class="qlreleaseClose el-icon-close" @click="CloseeditIMG"></div>
+      </div> -->
+    </div>
+    <div class="ql-shade" v-show="editauction">
+      <div class="ql-editReply">
+        <h3>变更您的赏金要求</h3>
+        <el-form
+          :model="editauctions"
+          :rules="editauctionrules"
+          ref="editauctions"
+          class="demo-ruleForm"
+        >
+          <div style="overflow: hidden">
+            <div style="float: left">
+              <div class="PR">鲸灵币</div>
+              <el-form-item prop="currencys">
+                <el-input
+                  v-model.number="editauctions.currencys"
+                  placeholder="请输入鲸灵币"
+                  style="width: 270px"
+                ></el-input>
+              </el-form-item>
+            </div>
+          </div>
+        </el-form>
+        <div style="overflow: hidden">
+          <el-button
+            class="releaseQl"
+            type="primary"
+            size="medium"
+            @click="editauctionQl('editauctions')"
+            >提交</el-button
+          >
+        </div>
+
+        <div
+          class="qlreleaseClose el-icon-close"
+          @click="Closeeditauction"
         ></div>
       </div>
     </div>
@@ -906,6 +993,17 @@ export default {
           { type: "number", message: "必须为数字" },
         ],
       },
+      // 编辑竞拍列表
+      editauctions: {
+        currencys: "",
+      },
+      // 我要答表单验证
+      editauctionrules: {
+        currencys: [
+          { required: true, message: "请输入鲸灵币", trigger: "blur" },
+          { type: "number", message: "必须为数字" },
+        ],
+      },
       austartTimeRange: "",
       replyShadeShow: true,
       dialogImageUrl: "",
@@ -930,10 +1028,8 @@ export default {
       },
       // 编辑提问表单验证
       QuestionsQuizrules: {
-        type: [
-          { required: true, message: "请选择科目", trigger: "change" },
-        ],
-        Title: [
+        type: [{ required: true, message: "请选择科目", trigger: "change" }],
+        title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" },
         ],
@@ -992,14 +1088,18 @@ export default {
       suImg: "",
       suspendimgShow: false,
       DeShow: true,
-      blsgrade: 3.7,
+      blsgrade: 0.86,
       clientImg: "",
       // 当前竞拍人的货币数量
       currencyNum: 0,
       currencyNums: false,
       // 当前问题选择竞拍者之后展示
       questionCurrSa: false,
-      quClassSelect:[],
+      quClassSelect: [],
+      editImgs: false,
+      editauction: false,
+      rencurrency: {},
+      qdconMeshow: true,
     };
   },
   created: function () {
@@ -1127,6 +1227,7 @@ export default {
           });
       } else {
         _this.QuDe();
+        _this.qdconMeshow = false;
       }
     },
     // 写回答按钮
@@ -1204,6 +1305,13 @@ export default {
               }
               // 确定登录人是否是竞拍者之一
               for (var i = 0; i < _this.qlList.bls.length; i++) {
+                _this.$set(_this.qlList.bls[i], "gradetext", "");
+                _this.$set(_this.qlList.bls[i], "grade", "");
+                _this.qlList.bls[i].gradetext =
+                  _this.qlList.bls[i].goodReviewRate * 100;
+                _this.qlList.bls[i].grade =
+                  _this.qlList.bls[i].goodReviewRate * 5;
+                console.log(_this.qlList.bls);
                 if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
                   _this.auctionClient = false;
                   _this.auctionbutton = false;
@@ -1211,7 +1319,19 @@ export default {
                   _this.inforQuiz = true;
                   _this.currencyNum = _this.qlList.bls[i].bidding.currency;
                   _this.currencyNums = true;
+                  _this.rencurrency = _this.qlList.bls[i].bidding;
+                  console.log(_this.rencurrency);
                   console.log("我是竞拍者之一");
+                } else {
+                  if (_this.qlList.que.question.status >= 3) {
+                    _this.replyShadeShow = false;
+                  } else {
+                    _this.replyShadeShow = true;
+                    _this.endtime = _this.formatDate(
+                      _this.qlList.que.question.endTime
+                    );
+                    _this.countTime();
+                  }
                 }
               }
               // 我是提问者
@@ -1243,7 +1363,7 @@ export default {
                 _this.replenishShow = false;
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
-                _this.editS = true;
+                _this.editS = false;
                 _this.qdConMyBls = true;
                 _this.auctionText = true;
                 _this.selectbname = true;
@@ -1433,16 +1553,10 @@ export default {
                 _this.clientID != _this.qlList.que.question.answerer
               ) {
                 console.log("我是访客");
-
-                if (_this.qlList.que.question.status >= 3) {
-                  _this.replyShadeShow = false;
-                } else {
-                  _this.replyShadeShow = true;
-                  _this.endtime = _this.formatDate(
-                    _this.qlList.que.question.endTime
-                  );
-                  _this.countTime();
-                }
+                _this.endtime = _this.formatDate(
+                  _this.qlList.que.question.endTime
+                );
+                _this.countTime();
               }
             } else {
               _this.qdeditShow = false;
@@ -1798,12 +1912,14 @@ export default {
     // 编辑按钮
     editShade(list) {
       const _this = this;
+
+      // _this.QuestionsQuiz = a;
       _this.QuestionsQuiz.Title = list.que.question.title;
       _this.QuestionsQuiz.Content = list.que.question.content;
       _this.myValues = list.que.question.content;
       _this.QuestionsQuiz.EndTime = _this.formatDate(list.que.question.endTime);
       _this.QuestionsQuiz.Currency = list.que.question.currency;
-      _this.QuestionsQuiz.id = list.que.question.id;
+      // _this.QuestionsQuiz.id = list.que.question.id;
       _this.QuestionsQuiz.Img = list.que.question.img;
       _this.QuestionsQuiz.type = list.que.question.type;
       if (list.que.question.img) {
@@ -1812,14 +1928,75 @@ export default {
           _this.quefileList.push({ url: a[i], response: { file: a[i] } });
         }
       }
-
       _this.qlShade = !_this.qlShade;
     },
     // 编辑取消
     CloseQuitBt() {
       const _this = this;
       _this.quefileList = [];
+      // _this.QuestionsQuiz = {};
       _this.qlShade = !_this.qlShade;
+    },
+    // 编辑发布问题
+    releaseQl(QuestionsQuiz) {
+      const _this = this;
+      console.log(_this.QuestionsQuiz);
+      var a = _this.qlList.que.question;
+      // _this.QuestionsQuiz.Content = ;
+      a.content = _this.myValues;
+      a.title = _this.QuestionsQuiz.Title;
+      a.endTime = _this.QuestionsQuiz.EndTime;
+      a.currency = _this.QuestionsQuiz.Currency;
+      a.type = _this.QuestionsQuiz.type;
+      a.img = _this.QuestionsQuiz.Img;
+      console.log(a);
+      _this.$refs[QuestionsQuiz].validate((valid) => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Questions/Add`,
+              async: false,
+              data: a,
+              xhrFields: {
+                withCredentials: true,
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then(function (res) {
+              if (res.data.status == 1) {
+                _this.quefileList = [];
+                // _this.QuestionsQuiz = {};
+                // _this.QuestionsQuiz.Title = "";
+                // _this.QuestionsQuiz.Content = "";
+                _this.QuestionsQuiz.EndTime = new Date();
+                // _this.QuestionsQuiz.Currency = "";
+                // _this.QuestionsQuiz.Img = "";
+                // _this.QuestionsQuiz.type = "";
+                _this.qlShade = !_this.qlShade;
+                _this.$message({
+                  message: "编辑成功",
+                  type: "success",
+                });
+                // _this.$router.push({
+                //   path: "/questionDetails/" + res.data.data.id,
+                // });
+                // _this.$router.go(0);
+                _this.QuDe();
+              } else {
+                _this.$message({
+                  message: "请确认填写相关内容",
+                  type: "error",
+                });
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      });
     },
     // 评价按钮
     evaluate(id) {
@@ -2009,56 +2186,6 @@ export default {
       const _this = this;
       _this.evaluateShade = !_this.evaluateShade;
     },
-    // 编辑发布问题
-    releaseQl(QuestionsQuiz) {
-      const _this = this;
-      _this.QuestionsQuiz.Content = _this.myValues;
-      _this.$refs[QuestionsQuiz].validate((valid) => {
-        if (valid) {
-          _this
-            .axios({
-              method: "post",
-              url: `${_this.URLport.serverPath}/Questions/Add`,
-              async: false,
-              data: _this.QuestionsQuiz,
-              xhrFields: {
-                withCredentials: true,
-              },
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            })
-            .then(function (res) {
-              if (res.data.status == 1) {
-                _this.QuestionsQuiz.Title = "";
-                _this.QuestionsQuiz.Content = "";
-                _this.QuestionsQuiz.EndTime = new Date();
-                _this.QuestionsQuiz.Currency = "";
-                _this.QuestionsQuiz.Img = "";
-                _this.QuestionsQuiz.type = "";
-                _this.qlShade = !_this.qlShade;
-                _this.$message({
-                  message: "发布成功,将跳转到新页面",
-                  type: "success",
-                });
-                // _this.$router.push({
-                //   path: "/questionDetails/" + res.data.data.id,
-                // });
-                // _this.$router.go(0);
-                _this.QuDe();
-              } else {
-                _this.$message({
-                  message: "请确认填写相关内容",
-                  type: "error",
-                });
-              }
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
-      });
-    },
     // 编辑问题的图片删除后
     handleRemove(file, fileList) {
       const _this = this;
@@ -2151,6 +2278,100 @@ export default {
     // 右上角隐藏箭头
     DeShowHand() {
       this.DeShow = !this.DeShow;
+    },
+    // 收藏问题
+    collectQue(id) {
+      const _this = this;
+      var Favourite = { QuestionId: id };
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/Favourite/Add`,
+          async: false,
+          data: Favourite,
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.$message({
+              message: "收藏成功",
+              type: "success",
+            });
+          } else {
+            _this.$message({
+              message: res.data.message,
+              type: "error",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    editIMG() {
+      const _this = this;
+      _this.editImgs = !_this.editImgs;
+    },
+    CloseeditIMG() {
+      const _this = this;
+      _this.editImgs = !_this.editImgs;
+    },
+    // 编辑竞拍金额
+    editauctionshow() {
+      const _this = this;
+      _this.editauctions.currencys = _this.rencurrency.currency;
+      _this.editauction = !_this.editauction;
+    },
+    Closeeditauction() {
+      const _this = this;
+      _this.editauction = !_this.editauction;
+    },
+    // 编辑竞拍确定
+    editauctionQl(editauctions) {
+      const _this = this;
+      _this.rencurrency.currency = _this.editauctions.currencys;
+      console.log(_this.editauctions);
+      console.log(_this.rencurrency);
+      _this.$refs[editauctions].validate((valid) => {
+        if (valid) {
+          _this
+            .axios({
+              method: "post",
+              url: `${_this.URLport.serverPath}/Bidding/Edit`,
+              async: false,
+              data: _this.rencurrency,
+              xhrFields: {
+                withCredentials: true,
+              },
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            })
+            .then(function (res) {
+              if (res.data.status == 1) {
+                _this.editauction = !_this.editauction;
+                _this.QuDe();
+                _this.$message({
+                  message: "编辑成功。",
+                  type: "success",
+                });
+              } else {
+                _this.$message({
+                  message: res.data.msg,
+                  type: "error",
+                });
+              }
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      });
     },
   },
   mounted() {
