@@ -16,21 +16,26 @@
               @click="DeShowHand"
               v-show="DeShow == false"
             ></i>
-            <h4>{{ qlList.que.question.title }}</h4>
+            <h4>{{ qlList.question.title }}</h4>
             <div class="qlBodyImgD">
-              <img :src="qlList.que.qimage" alt />
-              {{ qlList.que.qname }}
-              <span>{{ qlList.que.Times }}</span>
+              <img :src="qlList.qimage" alt v-show="qlList.qimage != null" />
+              <img
+                src="../assets/头像.jpg"
+                alt
+                v-show="qlList.qimage == null"
+              />
+              {{ qlList.qname }}
+              <span>{{ qlList.Times }}</span>
             </div>
             <div v-show="DeShow">
               <p
                 style="font-size: 14px; margin-bottom: 15px"
-                v-html="qlList.que.question.content"
+                v-html="qlList.question.content"
               ></p>
               <div>
                 <img
                   class="qlBodyQuImg"
-                  v-for="item in qlList.que.images"
+                  v-for="item in qlList.images"
                   :src="item.url"
                   alt
                   @click="suspendImg(item.url)"
@@ -38,7 +43,7 @@
               </div>
 
               <div style="margin-top: 15px; min-height: 36px" class="upp">
-                <!-- <span class="qlBodyIs">{{qlList.que.question.currency}}&nbsp;鲸灵币</span> -->
+                <!-- <span class="qlBodyIs">{{qlList.question.currency}}&nbsp;鲸灵币</span> -->
                 <el-button
                   size="mini"
                   class="button2"
@@ -53,21 +58,50 @@
                   class="button2"
                   type="primary"
                   @click="editIMG(qlList)"
-                  >上传补充资料</el-button
+                  v-show="quizzerUpload"
+                  >上传补充材料</el-button
                 > -->
-
+                <div v-show="quizzerUpload" style="display:inline-block;">
+                  <el-upload
+                  :action="imgSite"
+                  :headers="myHeaders"
+                  list-type="picture-card"
+                  :auto-upload="true"
+                  class="upImgs"
+                  multiple
+                  :on-success="quUphandleAvatarSuccess"
+                  :before-upload="quUpbeforeAvatarUpload"
+                  :on-preview="quUphandlePictureCardPreview"
+                  :on-remove="quUphandleRemove"
+                  :file-list="quUpfileList"
+                  :show-file-list="false"
+                  
+                >
+                  <el-button size="small" type="primary" class="upImgBut">
+                    上传补充材料
+                    <i class="el-icon-picture"></i>
+                  </el-button>
+                </el-upload>
+                <el-dialog
+                  :visible.sync="dialogVisible"
+                  :modal-append-to-body="false"
+                >
+                  <img width="100%" :src="dialogImageUrl" alt />
+                </el-dialog>
+                </div>
+                
                 <!-- <el-button
                 size="mini"
                 type="primary"
                 class="button2"
-                @click="evaluate(qlList.que.question.id)"
+                @click="evaluate(qlList.question.id)"
                 v-show="evaluateS"
               >评价</el-button>-->
                 <el-button
                   size="mini"
                   class="button2"
                   type="primary"
-                  @click="service(qlList.que.question.id)"
+                  @click="service(qlList.question.id)"
                   v-show="serviceS"
                   >申请客服</el-button
                 >
@@ -76,12 +110,12 @@
                 style="margin-top:2px;margin-right: 11px;"
                 title="通知留言"
                 v-show="inforQuiz"
-                @click="informQuizzer(qlList.que)"
+                @click="informQuizzer(qlList)"
               ></el-button>-->
                 <el-button
                   size="mini"
                   class="collect"
-                  @click="collectQue(qlList.que.question.id)"
+                  @click="collectQue(qlList.question.id)"
                   v-show="inforQuiz"
                   icon="el-icon-star-on"
                   >收藏该问题</el-button
@@ -96,10 +130,10 @@
                       margin-right: 20px;
                     "
                   >
-                    {{ qlList.que.favourite }}人收藏
+                    {{ qlList.favourite }}人收藏
                   </p>
                   <p style="float: left; font-size: 14px; color: #888888">
-                    {{ qlList.que.question.views }}人浏览
+                    {{ qlList.question.views }}人浏览
                   </p>
                 </div>
               </div>
@@ -116,8 +150,8 @@
           <div v-show="replyShadeShow">
             <div class="qd-Time">
               该问题需要在
-              <b>{{ qlList.que.question.endTime | formatDate }}</b> 前回答完毕
-              剩余 {{ d }}天{{ h }}小时{{ m }}分
+              <b>{{ qlList.question.endTime | formatDate }}</b> 前回答完毕 剩余
+              {{ d }}天{{ h }}小时{{ m }}分
             </div>
             <div
               class="qdConEvaluate"
@@ -128,7 +162,12 @@
             </div>
           </div>
           <div class="zhengzaijingpai" v-if="currencyNums">
-            <img :src="clientImg" alt="" />
+            <img :src="clientImg" v-show="clientImg.length > 30" alt="" />
+            <img
+              src="../assets/头像.jpg"
+              v-show="clientImg.length < 30"
+              alt=""
+            />
             <div class="zheng1">你正在参与竞拍</div>
             <span class="zheng2">等待提问者选择</span>
             <div class="zheng3">
@@ -152,10 +191,10 @@
           </div>
           <div
             class="qd-title-right-2"
-            v-if="qlList.bls.length > 0 && qlList.que.question.answerer == 0"
+            v-if="blsinfo.length > 0 && qlList.question.answerer == 0"
           >
             <div class="qd-title-right-2-l"></div>
-            <p>{{ qlList.bls.length }}人正在竞拍</p>
+            <p>{{ blsinfo.length }}人正在竞拍</p>
             <div class="qd-title-right-2-r"></div>
           </div>
           <!-- <div class="qd-title-right-3" v-if="selectbname">
@@ -169,9 +208,20 @@
             <div></div>
           </div> -->
           <div v-show="questionCurrSa == false">
-            <div class="qdConBls" v-for="item in qlList.bls">
+            <div class="qdConBls" v-for="item in blsinfo">
               <div class="qdConBlsName">
-                <img class="qdConBlsBimg" :src="item.bimage" alt />
+                <img
+                  class="qdConBlsBimg"
+                  :src="item.bimage"
+                  alt
+                  v-show="item.bimage != null"
+                />
+                <img
+                  class="qdConBlsBimg"
+                  src="../assets/头像.jpg"
+                  alt
+                  v-show="item.bimage == null"
+                />
                 <div>
                   <b v-show="qdConMyBls == false">{{ item.bname }}</b>
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
@@ -225,7 +275,7 @@
             </div>
           </div>
           <div v-show="questionCurrSa == true">
-            <div class="questionCurrCss" v-for="item in qlList.bls">
+            <div class="questionCurrCss" v-for="item in blsinfo">
               <div class="questionCurrName">
                 <div
                   v-show="qdConMyBls == false"
@@ -239,7 +289,18 @@
                 >
                   回答者
                 </div>
-                <img class="questionCurrBimg" :src="item.bimage" alt />
+                <img
+                  class="questionCurrBimg"
+                  :src="item.bimage"
+                  alt
+                  v-show="item.bimage != null"
+                />
+                <img
+                  class="questionCurrBimg"
+                  src="../assets/头像.jpg"
+                  alt
+                  v-show="item.bimage == null"
+                />
                 <div>
                   <b v-show="qdConMyBls == false">{{ item.bname }}</b>
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
@@ -253,7 +314,7 @@
                 <div style="font-size: 12px; color: #333">截止日期</div>
                 <div style="margin-top: 15px">
                   <p style="color: #333">
-                    {{ qlList.que.question.endTime | formatDate }}
+                    {{ qlList.question.endTime | formatDate }}
                   </p>
                   <span
                     style="
@@ -280,29 +341,19 @@
                 <div style="font-size: 12px; color: #333">当前状态</div>
                 <div style="margin-top: 15px; height: 41px">
                   <!-- 4：已回答，5：申请客服，6：已完成,7:已关闭 -->
-                  <b
-                    v-show="qlList.que.question.status == 3"
-                    style="color: #333"
+                  <b v-show="qlList.question.status == 3" style="color: #333"
                     >等待完成中</b
                   >
-                  <b
-                    v-show="qlList.que.question.status == 4"
-                    style="color: #333"
+                  <b v-show="qlList.question.status == 4" style="color: #333"
                     >已回答</b
                   >
-                  <b
-                    v-show="qlList.que.question.status == 5"
-                    style="color: #333"
+                  <b v-show="qlList.question.status == 5" style="color: #333"
                     >申请客服</b
                   >
-                  <b
-                    v-show="qlList.que.question.status == 6"
-                    style="color: #333"
+                  <b v-show="qlList.question.status == 6" style="color: #333"
                     >已完成</b
                   >
-                  <b
-                    v-show="qlList.que.question.status == 7"
-                    style="color: #333"
+                  <b v-show="qlList.question.status == 7" style="color: #333"
                     >已关闭</b
                   >
                 </div>
@@ -321,7 +372,7 @@
                   随时通过对话按钮与回答者交流
                 </div>
                 <div style="margin-top: 15px" v-show="qdConMyBls == false">
-                  <div class="qdConBlsR3" @click="informQuizzer(qlList.que)">
+                  <div class="qdConBlsR3" @click="informQuizzer(qlList)">
                     对话
                   </div>
                 </div>
@@ -356,10 +407,10 @@
           </div>-->
           <div class="qdConMyAns" v-show="editan">
             <div class="qd-editan">
-              <div v-for="item in qlList.als" class="submitAns">
+              <div v-for="item in alsinfo" class="submitAns">
                 <div style="overflow: hidden; margin-bottom: 33px">
                   <div class="qdEditanName">
-                    <span style="color: #333">{{ qlList.bls[0].bname }}</span
+                    <span style="color: #333">{{ blsinfo[0].bname }}</span
                     >&nbsp;发布了问题
                   </div>
                   <div class="qdEditanTime">
@@ -385,7 +436,7 @@
           </div>
           <div
             class="qdConEvaluateP"
-            @click="evaluate(qlList.que.question.id)"
+            @click="evaluate(qlList.question.id)"
             v-show="evaluateS"
           >
             评价
@@ -415,7 +466,7 @@
                 :on-preview="handlePictureCardPreviewAns"
                 :on-remove="handleRemoveAns"
                 :file-list="quefileListAns"
-                :data="{ questionId: this.qlList.que.question.id }"
+                :data="{ questionId: this.qlList.question.id }"
               >
                 <el-button size="small" type="primary" class="upImgBut">
                   上传答案图片
@@ -454,7 +505,21 @@
           <questionNum></questionNum>
         </div>
       </div>
-      <div v-if="qdconMeshow == false" class="qdconMeshow">请登录之后查看</div>
+      <div v-if="qdconMeshow == false" class="qdconMeshow">
+        <div
+          style="
+            width: 200px;
+            height: 500px;
+            margin: 0 auto;
+            text-align: center;
+            line-height: 500px;
+          "
+        >
+          请<router-link to="/login" style="text-decoration: none"
+            >登录</router-link
+          >之后查看问题详情
+        </div>
+      </div>
     </div>
 
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
@@ -663,12 +728,14 @@
       <div class="ql-editQuzi">
         <div>
           <div class="chatTitle">
-            <img :src="bls.bimage" alt />
+            <img :src="bls.bimage" alt v-show="bls.bimage != null" />
+            <img src="../assets/头像.jpg" alt v-show="bls.bimage == null" />
             {{ bls.bname }}
           </div>
           <div id="chatConss" class="chatCon">
             <div class="chatCons" v-for="item in ChatRecordArray">
-              <img :src="item.img" alt />
+              <img :src="item.img" alt v-show="item.img != null" />
+              <img src="../assets/头像.jpg" alt v-show="item.img == null" />
               <span>{{ item.createTime | formatDate }}</span>
               <span>{{ item.contentsUrl }}</span>
             </div>
@@ -699,7 +766,8 @@
           </div>
           <div id="chatCons" class="chatCon">
             <div class="chatCons" v-for="item in quizzerChatRecordArray">
-              <img :src="item.img" alt />
+              <img :src="item.img" alt v-show="item.img != null" />
+              <img src="../assets/头像.jpg" alt v-show="item.img == null" />
               <span style="font-size: 14px; color: #131313; margin-top: 0px">{{
                 item.createTime | formatDate
               }}</span>
@@ -975,19 +1043,11 @@ export default {
       qlreplyShade: false,
       // 我要答列表
       auction: {
-        EndTime: "",
         Currency: "",
         QuestionId: "",
       },
       // 我要答表单验证
       auctionrules: {
-        EndTime: [
-          {
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
         Currency: [
           { required: true, message: "请输入鲸灵币", trigger: "blur" },
           { type: "number", message: "必须为数字" },
@@ -1067,8 +1127,8 @@ export default {
       quizzerbls: [],
       quizzerChatRecordArray: [],
       quizzerChatRecords: false,
-      timeChat: "",
-      timeChatss: "",
+      timeChat: null,
+      timeChatss: null,
       submitAnss: false,
       editors: false,
       inforQuiz: false,
@@ -1095,17 +1155,62 @@ export default {
       currencyNums: false,
       // 当前问题选择竞拍者之后展示
       questionCurrSa: false,
-      quClassSelect: [],
+      quClassSelect: [
+        { name: "非裔文化 African-American Studies", type: 1 },
+        { name: "会计 Accounting", type: 2 },
+        { name: "人类学 Anthropology", type: 3 },
+        { name: "建筑学 Architecture", type: 4 },
+        { name: "艺术类 Art, Theatre and Film", type: 5 },
+        { name: "生物学 Biology", type: 6 },
+        { name: "商科类 Business and Entrepreneurship", type: 7 },
+        { name: "化学 Chemistry", type: 8 },
+        { name: "沟通战略 Communication Strategies ", type: 9 },
+        { name: "电脑科学 Computer Science", type: 10 },
+        { name: "犯罪学 Criminology", type: 11 },
+        { name: "经济学 Economic", type: 12 },
+        { name: "教育类 Education", type: 13 },
+        { name: "工程学 Engineering", type: 14 },
+        { name: "环境问题 Environmental Issues", type: 15 },
+        { name: "伦理学 Ethics", type: 16 },
+        { name: "金融类 Finance", type: 17 },
+        { name: "地理学 Geography", type: 18 },
+        { name: "健康类 Healthcare", type: 19 },
+        { name: "历史学 History", type: 20 },
+        { name: "国际关系 International and Public Relations", type: 21 },
+        { name: "法律类 Law and Legal Issues", type: 22 },
+        { name: "语言学 Linguistic", type: 23 },
+        { name: "文学 Literature", type: 24 },
+        { name: "管理学 Management", type: 25 },
+        { name: "市场营销 Marketing", type: 26 },
+        { name: "数学 Mathematics", type: 27 },
+        { name: "音乐类 Music", type: 28 },
+        { name: "护理类 Nursing", type: 29 },
+        { name: "营养学 Nutrition", type: 30 },
+        { name: "哲学类 Philosophy", type: 31 },
+        { name: "物理学 Physics", type: 32 },
+        { name: "政治科学 Politcal Science", type: 33 },
+        { name: "心理学 Psychology", type: 34 },
+        { name: "宗教神学 Religion and Theology", type: 35 },
+        { name: "社会学 Sociology", type: 36 },
+        { name: "体育类 Sport", type: 37 },
+        { name: "科技类 Technology", type: 38 },
+        { name: "旅游类 Tourism", type: 39 },
+        { name: "其他 Other", type: 40 },
+      ],
       editImgs: false,
       editauction: false,
       rencurrency: {},
       qdconMeshow: true,
+      alsinfo: [],
+      blsinfo: [],
+      timeAlsBlsinfo: null,
+      quizzerUpload: false,
+      quUpfileList: [],
     };
   },
   created: function () {
     const _this = this;
     _this.personal();
-    _this.quClass();
   },
   filters: {
     formatDate: function (time) {
@@ -1143,28 +1248,6 @@ export default {
     },
   },
   methods: {
-    // 检索科目
-    quClass() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/Classes`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          var a = Object.keys(res.data.data).length;
-          for (var i = 1; i <= a; i++) {
-            _this.quClassSelect.push({ name: res.data.data[i], type: i });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     formatDate: function (time) {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm:ss");
@@ -1226,7 +1309,6 @@ export default {
             console.log(error);
           });
       } else {
-        _this.QuDe();
         _this.qdconMeshow = false;
       }
     },
@@ -1234,6 +1316,90 @@ export default {
     myAnswer() {
       const _this = this;
       // _this.qdeditShow = true;
+    },
+    // 检索竞拍者和答案
+    BiddingInfos() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/BiddingInfo`,
+          async: false,
+          params: {
+            questionid: _this.$route.params.question_id,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.alsinfo = res.data.data.als;
+            _this.blsinfo = res.data.data.bls;
+            if (localStorage.token) {
+              for (var i = 0; i < _this.alsinfo.length; i++) {
+                _this.$set(_this.alsinfo[i], "images", []);
+                if (_this.alsinfo[i].img) {
+                  var a = _this.alsinfo[i].img.split("|");
+                  for (var j = 0; j < a.length; j++) {
+                    _this.alsinfo[i].images.push({ url: a[j] });
+                  }
+                }
+              }
+              // 确定登录人是否是竞拍者之一
+              for (var i = 0; i < _this.blsinfo.length; i++) {
+                _this.$set(_this.blsinfo[i], "gradetext", "");
+                _this.$set(_this.blsinfo[i], "grade", "");
+                _this.blsinfo[i].gradetext =
+                  _this.blsinfo[i].goodReviewRate * 100;
+                _this.blsinfo[i].grade = _this.blsinfo[i].goodReviewRate * 5;
+                if (_this.clientID == _this.blsinfo[i].bidding.createBy) {
+                  _this.auctionClient = false;
+                  _this.auctionbutton = false;
+                  _this.replyShadeShow = false;
+                  _this.inforQuiz = true;
+                  _this.currencyNum = _this.blsinfo[i].bidding.currency;
+                  _this.currencyNums = true;
+                  _this.rencurrency = _this.blsinfo[i].bidding;
+                  // console.log("我是竞拍者之一");
+                } else {
+                  _this.currencyNums = false;
+                  if (_this.qlList.question.status >= 3) {
+                    _this.replyShadeShow = false;
+                  } else if (_this.clientID == _this.qlList.question.createBy) {
+                    _this.replyShadeShow = false;
+                  } else {
+                    _this.replyShadeShow = true;
+                    _this.endtime = _this.formatDate(
+                      _this.qlList.question.endTime
+                    );
+                    _this.countTime();
+                  }
+                }
+                if (
+                  _this.clientID == _this.blsinfo[i].bidding.createBy &&
+                  _this.clientID == _this.qlList.question.answerer
+                ) {
+                  _this.currencyNums = false;
+                }
+              }
+              if(_this.blsinfo.length == 0 && _this.clientID != _this.qlList.question.createBy){
+                _this.currencyNums = false;
+                _this.replyShadeShow = true;
+                _this.endtime = _this.formatDate(
+                  _this.qlList.question.endTime
+                );
+                _this.countTime();
+              }
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     },
     // 检索问题详情
     QuDe() {
@@ -1271,73 +1437,32 @@ export default {
 
             let date = new Date();
             let now = date.getTime();
-            _this.$set(_this.qlList.que, "Times", "");
-            _this.$set(_this.qlList.que, "images", []);
-            if (_this.qlList.que.question.img != "") {
-              var a = _this.qlList.que.question.img.split("|");
+            _this.$set(_this.qlList, "Times", "");
+            _this.$set(_this.qlList, "images", []);
+            if (_this.qlList.question.img != null) {
+              var a = _this.qlList.question.img.split("|");
               for (var j = 0; j < a.length; j++) {
-                _this.qlList.que.images.push({ url: a[j] });
+                _this.qlList.images.push({ url: a[j] });
               }
             }
             let leftTime =
-              now - new Date(_this.qlList.que.question.createTime).getTime();
+              now - new Date(_this.qlList.question.createTime).getTime();
             let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
             let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
             let m = Math.floor((leftTime / 1000 / 60) % 60);
             if (d == 0 && h > 0) {
-              _this.qlList.que.Times = "在" + h + "小时前发布了这个问题";
+              _this.qlList.Times = "在" + h + "小时前发布了这个问题";
             } else if (h <= 0 && d <= 0) {
-              _this.qlList.que.Times = "刚刚发布的问题";
+              _this.qlList.Times = "刚刚发布的问题";
             } else {
-              _this.qlList.que.Times =
-                "在" + d + "天" + h + "小时前发布了这个问题";
+              _this.qlList.Times = "在" + d + "天" + h + "小时前发布了这个问题";
             }
 
             if (localStorage.token) {
-              for (var i = 0; i < _this.qlList.als.length; i++) {
-                _this.$set(_this.qlList.als[i], "images", []);
-                if (_this.qlList.als[i].img) {
-                  var a = _this.qlList.als[i].img.split("|");
-                  for (var j = 0; j < a.length; j++) {
-                    _this.qlList.als[i].images.push({ url: a[j] });
-                  }
-                }
-              }
-              // 确定登录人是否是竞拍者之一
-              for (var i = 0; i < _this.qlList.bls.length; i++) {
-                _this.$set(_this.qlList.bls[i], "gradetext", "");
-                _this.$set(_this.qlList.bls[i], "grade", "");
-                _this.qlList.bls[i].gradetext =
-                  _this.qlList.bls[i].goodReviewRate * 100;
-                _this.qlList.bls[i].grade =
-                  _this.qlList.bls[i].goodReviewRate * 5;
-                console.log(_this.qlList.bls);
-                if (_this.clientID == _this.qlList.bls[i].bidding.createBy) {
-                  _this.auctionClient = false;
-                  _this.auctionbutton = false;
-                  _this.replyShadeShow = false;
-                  _this.inforQuiz = true;
-                  _this.currencyNum = _this.qlList.bls[i].bidding.currency;
-                  _this.currencyNums = true;
-                  _this.rencurrency = _this.qlList.bls[i].bidding;
-                  console.log(_this.rencurrency);
-                  console.log("我是竞拍者之一");
-                } else {
-                  if (_this.qlList.que.question.status >= 3) {
-                    _this.replyShadeShow = false;
-                  } else {
-                    _this.replyShadeShow = true;
-                    _this.endtime = _this.formatDate(
-                      _this.qlList.que.question.endTime
-                    );
-                    _this.countTime();
-                  }
-                }
-              }
               // 我是提问者
               if (
-                _this.clientID == _this.qlList.que.question.createBy &&
-                _this.qlList.que.question.status < 3
+                _this.clientID == _this.qlList.question.createBy &&
+                _this.qlList.question.status < 3
               ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = true;
@@ -1349,10 +1474,10 @@ export default {
                 _this.countdown = false; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.editS = true;
-                console.log("提问者小于3");
+                // console.log("提问者小于3");
               } else if (
-                _this.clientID == _this.qlList.que.question.createBy &&
-                _this.qlList.que.question.status == 3
+                _this.clientID == _this.qlList.question.createBy &&
+                _this.qlList.question.status == 3
               ) {
                 _this.auctionClient = true; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1368,14 +1493,13 @@ export default {
                 _this.auctionText = true;
                 _this.selectbname = true;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.quizzerUpload = true;
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("提问者等于3");
+                // console.log("提问者等于3");
               } else if (
-                _this.clientID == _this.qlList.que.question.createBy &&
-                _this.qlList.que.question.status == 4
+                _this.clientID == _this.qlList.question.createBy &&
+                _this.qlList.question.status == 4
               ) {
                 _this.auctionClient = true;
                 _this.auctionbutton = false;
@@ -1391,14 +1515,13 @@ export default {
                 _this.auctionText = true;
                 _this.selectbname = true;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.quizzerUpload = true;
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("提问者等于4");
+                // console.log("提问者等于4");
               } else if (
-                _this.clientID == _this.qlList.que.question.createBy &&
-                _this.qlList.que.question.status == 5
+                _this.clientID == _this.qlList.question.createBy &&
+                _this.qlList.question.status == 5
               ) {
                 _this.auctionClient = true;
                 _this.auctionbutton = false;
@@ -1413,14 +1536,12 @@ export default {
                 _this.auctionText = true;
                 _this.selectbname = true;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("提问者等于5");
+                // console.log("提问者等于5");
               } else if (
-                _this.clientID == _this.qlList.que.question.createBy &&
-                _this.qlList.que.question.status >= 6
+                _this.clientID == _this.qlList.question.createBy &&
+                _this.qlList.question.status >= 6
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1436,13 +1557,13 @@ export default {
                 _this.qdConMyBls = true;
                 _this.selectbname = true;
                 _this.questionCurrSa = true;
-                console.log("提问者大于6");
+                // console.log("提问者大于6");
               }
 
               // 我是答题者
               if (
-                _this.clientID == _this.qlList.que.question.answerer &&
-                _this.qlList.que.question.status <= 2
+                _this.clientID == _this.qlList.question.answerer &&
+                _this.qlList.question.status <= 2
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1454,14 +1575,12 @@ export default {
                 _this.countdown = true; //倒计时的隐藏
                 _this.replyShadeShow = false;
                 _this.inforQuiz = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("答题者小于等于2");
+                // console.log("答题者小于等于2");
               } else if (
-                _this.clientID == _this.qlList.que.question.answerer &&
-                _this.qlList.que.question.status == 3
+                _this.clientID == _this.qlList.question.answerer &&
+                _this.qlList.question.status == 3
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1475,14 +1594,12 @@ export default {
                 _this.inforQuiz = true;
                 _this.currencyNums = false;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("答题者等于3");
+                // console.log("答题者等于3");
               } else if (
-                _this.clientID == _this.qlList.que.question.answerer &&
-                _this.qlList.que.question.status == 4
+                _this.clientID == _this.qlList.question.answerer &&
+                _this.qlList.question.status == 4
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1498,14 +1615,12 @@ export default {
                 _this.editan = true;
                 _this.currencyNums = false;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("答题者等于4");
+                // console.log("答题者等于4");
               } else if (
-                _this.clientID == _this.qlList.que.question.answerer &&
-                _this.qlList.que.question.status == 5
+                _this.clientID == _this.qlList.question.answerer &&
+                _this.qlList.question.status == 5
               ) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
@@ -1520,14 +1635,12 @@ export default {
                 _this.inforQuiz = true;
                 _this.currencyNums = false;
                 _this.questionCurrSa = true;
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
-                console.log("答题者等于5");
+                // console.log("答题者等于5");
               }
               // 当问题已完成
-              if (_this.qlList.que.question.status >= 6) {
+              if (_this.qlList.question.status >= 6) {
                 _this.auctionClient = false; //竞拍者栏的留言、选他答、时间、悬赏的隐藏
                 _this.auctionbutton = false;
                 _this.qdeditnullShow = false; //左侧没有答案的框体
@@ -1540,7 +1653,7 @@ export default {
                 _this.replyShadeShow = false;
                 _this.currencyNums = false;
                 _this.questionCurrSa = true;
-                console.log("问题已完成");
+                // console.log("问题已完成");
               }
 
               if (_this.qlList.answer != null) {
@@ -1549,15 +1662,19 @@ export default {
               }
               // 我是访客
               if (
-                _this.clientID != _this.qlList.que.question.createBy &&
-                _this.clientID != _this.qlList.que.question.answerer
+                _this.clientID != _this.qlList.question.createBy &&
+                _this.clientID != _this.qlList.question.answerer
               ) {
-                console.log("我是访客");
-                _this.endtime = _this.formatDate(
-                  _this.qlList.que.question.endTime
-                );
+                // console.log("我是访客");
+                _this.endtime = _this.formatDate(_this.qlList.question.endTime);
                 _this.countTime();
               }
+              _this.BiddingInfos();
+            _this.timeAlsBlsinfo = setInterval(_this.BiddingInfos, 5000);
+
+            
+              
+              
             } else {
               _this.qdeditShow = false;
               _this.nullLoginShow = true;
@@ -1569,6 +1686,7 @@ export default {
               _this.replyShadeShow = true;
               _this.qdConRigtS = false;
             }
+            
           }
         })
         .catch(function (error) {
@@ -1604,6 +1722,7 @@ export default {
               if (res.data.status == 1) {
                 _this.auctionbutton = false;
                 _this.qdConMyBls = true;
+                clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
                 _this.$message({
                   message: "发布成功,竞拍者可以开始答题。",
@@ -1870,7 +1989,9 @@ export default {
           .then(function (res) {
             if (res.data.status == 1) {
               _this.myValue = "";
+              clearInterval(_this.timeAlsBlsinfo);
               _this.QuDe();
+
               _this.$message({
                 message: "保存成功",
                 type: "success",
@@ -1898,9 +2019,8 @@ export default {
     replyShade(item) {
       const _this = this;
       if (localStorage.getItem("token")) {
-        _this.auction.QuestionId = item.que.question.id;
-        _this.auction.EndTime = _this.formatDate(item.que.question.endTime);
-        _this.auction.Currency = item.que.question.currency;
+        _this.auction.QuestionId = item.question.id;
+        _this.auction.Currency = item.question.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
@@ -1914,16 +2034,16 @@ export default {
       const _this = this;
 
       // _this.QuestionsQuiz = a;
-      _this.QuestionsQuiz.Title = list.que.question.title;
-      _this.QuestionsQuiz.Content = list.que.question.content;
-      _this.myValues = list.que.question.content;
-      _this.QuestionsQuiz.EndTime = _this.formatDate(list.que.question.endTime);
-      _this.QuestionsQuiz.Currency = list.que.question.currency;
-      // _this.QuestionsQuiz.id = list.que.question.id;
-      _this.QuestionsQuiz.Img = list.que.question.img;
-      _this.QuestionsQuiz.type = list.que.question.type;
-      if (list.que.question.img) {
-        var a = list.que.question.img.split("|");
+      _this.QuestionsQuiz.Title = list.question.title;
+      _this.QuestionsQuiz.Content = list.question.content;
+      _this.myValues = list.question.content;
+      _this.QuestionsQuiz.EndTime = _this.formatDate(list.question.endTime);
+      _this.QuestionsQuiz.Currency = list.question.currency;
+      // _this.QuestionsQuiz.id = list.question.id;
+      _this.QuestionsQuiz.Img = list.question.img;
+      _this.QuestionsQuiz.type = list.question.type;
+      if (list.question.img) {
+        var a = list.question.img.split("|");
         for (var i = 0; i < a.length; i++) {
           _this.quefileList.push({ url: a[i], response: { file: a[i] } });
         }
@@ -1940,8 +2060,7 @@ export default {
     // 编辑发布问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
-      console.log(_this.QuestionsQuiz);
-      var a = _this.qlList.que.question;
+      var a = _this.qlList.question;
       // _this.QuestionsQuiz.Content = ;
       a.content = _this.myValues;
       a.title = _this.QuestionsQuiz.Title;
@@ -1949,7 +2068,6 @@ export default {
       a.currency = _this.QuestionsQuiz.Currency;
       a.type = _this.QuestionsQuiz.type;
       a.img = _this.QuestionsQuiz.Img;
-      console.log(a);
       _this.$refs[QuestionsQuiz].validate((valid) => {
         if (valid) {
           _this
@@ -1984,6 +2102,7 @@ export default {
                 //   path: "/questionDetails/" + res.data.data.id,
                 // });
                 // _this.$router.go(0);
+                clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
               } else {
                 _this.$message({
@@ -2032,6 +2151,8 @@ export default {
           if (res.data.status == 1) {
             _this.evaluateS = false;
             _this.evaluateShade = false;
+            _this.quizzerUpload = false;
+            clearInterval(_this.timeAlsBlsinfo);
             _this.QuDe();
             _this.$message({
               message: "评价成功",
@@ -2117,6 +2238,7 @@ export default {
             .then(function (res) {
               if (res.data.status == 1) {
                 _this.qlreplyShade = !_this.qlreplyShade;
+                clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
                 _this.replyShadeShow = false;
                 _this.$message({
@@ -2230,8 +2352,89 @@ export default {
       }
       _this.QuestionsQuiz.Img = imgurl.slice(1);
     },
-    // 编辑问题的图片上传前
+    // 补充材料的图片上传前
     beforeAvatarUpload(file) {},
+    // 补充材料的图片删除后
+    quUphandleRemove(file, fileList) {
+      const _this = this;
+      _this
+        .axios({
+          method: "delete",
+          url: `${_this.URLport.serverPath}/Questions/RemoveImg`,
+          async: false,
+          params: {
+            questionid: _this.$route.params.question_id,
+            imgurl: file.response.file,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          var imgurl = "";
+          for (let i = 0; i < fileList.length; i++) {
+            imgurl = imgurl + "|" + fileList[i].response.file;
+          }
+          _this.QuestionsQuiz.Img = imgurl.slice(1);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 补充材料的图片预览
+    quUphandlePictureCardPreview(file) {
+      this.queImageUrl = file.url;
+      this.queVisible = true;
+    },
+    // 补充材料的图片成功后
+    quUphandleAvatarSuccess(res, file, fileList) {
+      const _this = this;
+      
+      var imgurl = "";
+      for (let i = 0; i < fileList.length; i++) {
+        imgurl = imgurl + "|" + fileList[i].response.file;
+      }
+      var a = {id:0,img:""}
+      a = { id: _this.$route.params.question_id, img: imgurl.slice(1) };
+      
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/Questions/Save`,
+          async: false,
+          data: a,
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.quUpfileList = [];
+            clearInterval(_this.timeAlsBlsinfo);
+            _this.QuDe();
+            _this.$message({
+              message: "上传资料补充成功。",
+              type: "success",
+            });
+          } else {
+            _this.$message({
+              message: res.data.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 编辑问题的图片上传前
+    quUpbeforeAvatarUpload(file) {},
     // 关闭聊天框
     CloseChatRecords() {
       this.ChatRecords = false;
@@ -2335,8 +2538,6 @@ export default {
     editauctionQl(editauctions) {
       const _this = this;
       _this.rencurrency.currency = _this.editauctions.currencys;
-      console.log(_this.editauctions);
-      console.log(_this.rencurrency);
       _this.$refs[editauctions].validate((valid) => {
         if (valid) {
           _this
@@ -2355,6 +2556,7 @@ export default {
             .then(function (res) {
               if (res.data.status == 1) {
                 _this.editauction = !_this.editauction;
+                clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
                 _this.$message({
                   message: "编辑成功。",
@@ -2397,6 +2599,10 @@ export default {
   beforeDestroy() {
     clearInterval(this.timeChat);
     clearInterval(this.timeChatss);
+    clearInterval(this.timeAlsBlsinfo);
+    this.timeChat = null;
+    this.timeChatss = null;
+    this.timeAlsBlsinfo = null;
   },
   watch: {
     "auction.EndTime": {

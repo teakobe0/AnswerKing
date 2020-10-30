@@ -10,6 +10,7 @@
   /* margin-top: 80px; */
   overflow: hidden;
   background: #f6f6f6;
+  padding-bottom: 137px;
 }
 .qdConMe {
   width: 1300px;
@@ -19,7 +20,7 @@
 .qdConLeft {
   width: 1040px;
   float: left;
-  padding-bottom: 137px;
+  /* padding-bottom: 137px; */
 }
 .qdConTitle {
   margin-top: 20px;
@@ -345,6 +346,7 @@
 .qdConRight {
   width: 224px;
   float: right;
+  padding-top: 20px;
 }
 
 .qd-title-back {
@@ -767,8 +769,16 @@
 
 
 
-
-
+.upImgs {
+  display: inline-block;
+}
+.upImgs li {
+  width: 45px !important;
+    height: 45px !important;
+}
+.upImgs .el-upload-list--picture-card .el-upload-list__item-actions {
+  font-size: 12px !important;
+}
 
 
 

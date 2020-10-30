@@ -47,7 +47,7 @@
               :class="{ qlBodyConActive: index == num }"
               @click="newTime(index)"
             >
-              {{ item.name }}
+              {{ item.name }}<br/><span style="font-size: 12px;display: block;width: 170px;height: 30px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;position: relative;top: -10px;">{{item.ename}}</span>
             </div>
             <!-- <div  :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
               
@@ -106,7 +106,12 @@
                   </h4>
 
                   <div class="qlBodyImg">
-                    <img :src="item.qimage" alt />
+                    <img :src="item.qimage" alt v-show="item.qimage != null" />
+                    <img
+                      src="../assets/头像.jpg"
+                      alt
+                      v-show="item.qimage == null"
+                    />
                     {{ item.qname }}
                     <span>{{ item.Times }}</span>
                   </div>
@@ -130,7 +135,7 @@
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div>参与竞拍回答</div>
+                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>参与竞拍回答</div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
@@ -189,7 +194,12 @@
                     }}</router-link>
                   </h4>
                   <div class="qlBodyImg">
-                    <img :src="item.qimage" alt />
+                    <img :src="item.qimage" alt v-show="item.qimage != null" />
+                    <img
+                      src="../assets/头像.jpg"
+                      alt
+                      v-show="item.qimage == null"
+                    />
                     {{ item.qname }}
                     <span>{{ item.Times }}</span>
                   </div>
@@ -211,7 +221,7 @@
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div>参与竞拍回答</div>
+                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>参与竞拍回答</div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
@@ -251,7 +261,7 @@
                 style="width: 270px"
               >
                 <el-option
-                  v-for="item in quClassSelect"
+                  v-for="item in classSelectDate"
                   :key="item.name"
                   :label="item.name"
                   :value="item.type"
@@ -294,32 +304,32 @@
               </el-form-item>
             </div>
           </div>
-          <div style="overflow: hidden;margin-bottom: 10px;">
+          <div style="overflow: hidden; margin-bottom: 10px">
             <el-upload
-            :action="imgSite"
-            :headers="myHeaders"
-            list-type="picture-card"
-            :auto-upload="true"
-            class="upImg"
-            multiple
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary" class="upImgBut">
-              上传问题图片
-              <i class="el-icon-picture"></i>
-            </el-button>
-            <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
-          </el-upload>
-          <el-dialog
-            :visible.sync="dialogVisible"
-            :modal-append-to-body="false"
-          >
-            <img width="100%" :src="dialogImageUrl" alt />
-          </el-dialog>
+              :action="imgSite"
+              :headers="myHeaders"
+              list-type="picture-card"
+              :auto-upload="true"
+              class="upImg"
+              multiple
+              :on-success="handleAvatarSuccess"
+              :before-upload="beforeAvatarUpload"
+              :on-preview="handlePictureCardPreview"
+              :on-remove="handleRemove"
+              :file-list="fileList"
+            >
+              <el-button size="small" type="primary" class="upImgBut">
+                上传问题图片
+                <i class="el-icon-picture"></i>
+              </el-button>
+              <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
+            </el-upload>
+            <el-dialog
+              :visible.sync="dialogVisible"
+              :modal-append-to-body="false"
+            >
+              <img width="100%" :src="dialogImageUrl" alt />
+            </el-dialog>
           </div>
           <el-form-item prop="Content" class="ql-editNameDetail">
             <!-- <el-input
@@ -332,8 +342,6 @@
             <!-- 富文本 -->
             <editor id="tinymce" v-model="myValue" :init="init"></editor>
           </el-form-item>
-          
-          
         </el-form>
 
         <div style="overflow: hidden">
@@ -510,9 +518,7 @@ export default {
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
-        type: [
-          { required: true, message: "请选择科目", trigger: "change" },
-        ],
+        type: [{ required: true, message: "请选择科目", trigger: "change" }],
         Title: [
           { required: true, message: "请输入标题", trigger: "blur" },
           { min: 4, message: "最少输入4个字", trigger: "blur" },
@@ -529,19 +535,11 @@ export default {
       },
       // 我要答列表
       auction: {
-        EndTime: "",
         Currency: "",
         QuestionId: "",
       },
       // 我要答表单验证
       auctionrules: {
-        EndTime: [
-          {
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
         Currency: [
           { required: true, message: "请输入鲸灵币", trigger: "blur" },
           { type: "number", message: "必须为数字" },
@@ -553,7 +551,7 @@ export default {
       num: 0,
       typeNum: "new",
       pagenums: 1,
-      pagesizes: 5,
+      pagesizes: 10,
       clientID: 0,
       myqus: false,
       qlcon: false,
@@ -566,7 +564,7 @@ export default {
       newAnswerNum: 0,
       newAnswerTime: new Date(),
       newAnswerTimes: "",
-      newAnswer: "",
+      newAnswer: null,
       newAnswerShow: false,
       // 图片
       imgSite: this.URLport.serverPath + "/File/UploadQuestion",
@@ -579,15 +577,102 @@ export default {
       Answernum: "",
       qdConRigtS: false,
       qlConTabnum: 0,
-      quClasss: [{ name: "全部科目", type: 0 }],
+      quClasss: [
+        { name: "全部科目", type: 0 ,ename:"All"},
+        { name: "非裔文化", type: 1, ename: "African-American Studies" },
+        { name: "会计", type: 2, ename: "Accounting" },
+        { name: "人类学", type: 3, ename: "Anthropology" },
+        { name: "建筑学", type: 4, ename: "Architecture" },
+        { name: "艺术类", type: 5, ename: "Art, Theatre and Film" },
+        { name: "生物学", type: 6, ename: "Biology" },
+        { name: "商科类", type: 7, ename: "Business and Entrepreneurship" },
+        { name: "化学", type: 8, ename: "Chemistry" },
+        { name: "沟通战略", type: 9, ename: "Communication Strategies" },
+        { name: "电脑科学", type: 10, ename: "Computer Sciencee" },
+        { name: "犯罪学", type: 11, ename: "Criminology" },
+        { name: "经济学", type: 12, ename: "Economic" },
+        { name: "教育类", type: 13, ename: "Education" },
+        { name: "工程学", type: 14, ename: "Engineering" },
+        { name: "环境问题", type: 15, ename: "Environmental Issues" },
+        { name: "伦理学", type: 16, ename: "Ethics" },
+        { name: "金融类", type: 17, ename: "Finance" },
+        { name: "地理学", type: 18, ename: "Geography" },
+        { name: "健康类", type: 19, ename: "Healthcare" },
+        { name: "历史学", type: 20, ename: "History" },
+        {
+          name: "国际关系",
+          type: 21,
+          ename: "International and Public Relations",
+        },
+        { name: "法律类", type: 22, ename: "Law and Legal Issues" },
+        { name: "语言学", type: 23, ename: "Linguistic" },
+        { name: "文学", type: 24, ename: "Literature" },
+        { name: "管理学", type: 25, ename: "Management" },
+        { name: "市场营销", type: 26, ename: "Marketing" },
+        { name: "数学", type: 27, ename: "Mathematics" },
+        { name: "音乐类", type: 28, ename: "Music" },
+        { name: "护理类", type: 29, ename: "Nursing" },
+        { name: "营养学", type: 30, ename: "Nutrition" },
+        { name: "哲学类", type: 31, ename: "Philosophy" },
+        { name: "物理学", type: 32, ename: "Physics" },
+        { name: "政治科学", type: 33, ename: "Politcal Science" },
+        { name: "心理学", type: 34, ename: "Psychology" },
+        { name: "宗教神学", type: 35, ename: "Religion and Theology" },
+        { name: "社会学", type: 36, ename: "Sociology" },
+        { name: "体育类", type: 37, ename: "Sport" },
+        { name: "科技类", type: 38, ename: "Technology" },
+        { name: "旅游类", type: 39, ename: "Tourism" },
+        { name: "其他", type: 40, ename: "Other" },
+      ],
       quClassSelect: [],
       claNum: 0,
+      classSelectDate: [
+        { name: "非裔文化 African-American Studies", type: 1 },
+        { name: "会计 Accounting", type: 2 },
+        { name: "人类学 Anthropology", type: 3 },
+        { name: "建筑学 Architecture", type: 4 },
+        { name: "艺术类 Art, Theatre and Film", type: 5 },
+        { name: "生物学 Biology", type: 6 },
+        { name: "商科类 Business and Entrepreneurship", type: 7 },
+        { name: "化学 Chemistry", type: 8 },
+        { name: "沟通战略 Communication Strategies ", type: 9 },
+        { name: "电脑科学 Computer Science", type: 10 },
+        { name: "犯罪学 Criminology", type: 11 },
+        { name: "经济学 Economic", type: 12 },
+        { name: "教育类 Education", type: 13 },
+        { name: "工程学 Engineering", type: 14 },
+        { name: "环境问题 Environmental Issues", type: 15 },
+        { name: "伦理学 Ethics", type: 16 },
+        { name: "金融类 Finance", type: 17 },
+        { name: "地理学 Geography", type: 18 },
+        { name: "健康类 Healthcare", type: 19 },
+        { name: "历史学 History", type: 20 },
+        { name: "国际关系 International and Public Relations", type: 21 },
+        { name: "法律类 Law and Legal Issues", type: 22 },
+        { name: "语言学 Linguistic", type: 23 },
+        { name: "文学 Literature", type: 24 },
+        { name: "管理学 Management", type: 25 },
+        { name: "市场营销 Marketing", type: 26 },
+        { name: "数学 Mathematics", type: 27 },
+        { name: "音乐类 Music", type: 28 },
+        { name: "护理类 Nursing", type: 29 },
+        { name: "营养学 Nutrition", type: 30 },
+        { name: "哲学类 Philosophy", type: 31 },
+        { name: "物理学 Physics", type: 32 },
+        { name: "政治科学 Politcal Science", type: 33 },
+        { name: "心理学 Psychology", type: 34 },
+        { name: "宗教神学 Religion and Theology", type: 35 },
+        { name: "社会学 Sociology", type: 36 },
+        { name: "体育类 Sport", type: 37 },
+        { name: "科技类 Technology", type: 38 },
+        { name: "旅游类 Tourism", type: 39 },
+        { name: "其他 Other", type: 40 },
+      ],
     };
   },
   created: function () {
     const _this = this;
     _this.personal();
-    _this.quClass();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
   filters: {
@@ -633,29 +718,6 @@ export default {
     tinymce.init({});
   },
   methods: {
-    // 检索科目
-    quClass() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/Classes`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          var a = Object.keys(res.data.data).length;
-          for (var i = 1; i <= a; i++) {
-            _this.quClasss.push({ name: res.data.data[i], type: i });
-            _this.quClassSelect.push({ name: res.data.data[i], type: i });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     // 获取最新的问题数量
     answerNum() {
       const _this = this;
@@ -709,43 +771,41 @@ export default {
             _this.newAnswerShow = false;
             _this.newAnswerNum = 0;
             _this.newAnswerTime = res.data.data[0].que.createTime;
-            let myQlList = [];
-            myQlList = res.data.data;
-            if (myQlList[0].que.id != _this.myQlList[0].que.id) {
+            let a = [];
+            a = res.data.data;
+            if (a[0].que.id != _this.myQlList[0].que.id) {
               let date = new Date();
               let now = date.getTime();
               if (localStorage.token) {
                 for (let i = 0; i < res.data.data.length; i++) {
-                  _this.$set(myQlList[i], "Times", "");
-                  _this.$set(myQlList[i].que, "images", []);
-                  _this.$set(myQlList[i].que, "imagesNum", 0);
-                  if (myQlList[i].que.img != "") {
-                    var b = myQlList[i].que.img.split("|");
-                    myQlList[i].que.imagesNum = b.length;
+                  _this.$set(a[i], "Times", "");
+                  _this.$set(a[i].que, "images", []);
+                  _this.$set(a[i].que, "imagesNum", 0);
+                  if (a[i].que.img != "") {
+                    var b = a[i].que.img.split("|");
+                    a[i].que.imagesNum = b.length;
                     if (a.length >= 3) {
                       for (var j = 0; j <= 2; j++) {
-                        myQlList[i].que.images.push({ url: b[j] });
+                        a[i].que.images.push({ url: b[j] });
                       }
                     } else {
                       for (var j = 0; j < a.length; j++) {
-                        myQlList[i].que.images.push({ url: b[j] });
+                        a[i].que.images.push({ url: b[j] });
                       }
                     }
                   }
-                  let leftTime =
-                    now - new Date(myQlList[i].que.createTime).getTime();
+                  let leftTime = now - new Date(a[i].que.createTime).getTime();
                   let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
                   let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                   let m = Math.floor((leftTime / 1000 / 60) % 60);
                   if (d == 0 && h > 0) {
-                    myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                    a[i].Times = "在" + h + "个小时前发布了这个问题";
                   } else if (h <= 0 && d <= 0) {
-                    myQlList[i].Times = "刚刚发布的问题";
+                    a[i].Times = "刚刚发布的问题";
                   } else {
-                    myQlList[i].Times =
-                      "在" + d + "天" + h + "个小时前发布了这个问题";
+                    a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
                   }
-                  _this.myQlList.unshift(myQlList[i]);
+                  _this.myQlList.unshift(a[i]);
                 }
               }
             }
@@ -1131,7 +1191,6 @@ export default {
     // 点击最新按钮展示
     newTime(index) {
       const _this = this;
-      console.log(index);
       _this.num = index;
       _this.claNum = index;
       _this.pagenums = 1;
@@ -1301,6 +1360,8 @@ export default {
                 _this.fileList = [];
                 _this.$refs[QuestionsQuiz].resetFields();
                 _this.qlShade = !_this.qlShade;
+                _this.pagenums = 1;
+                _this.pagesizes = 5;
                 _this.myquizList();
                 _this.$message({
                   message: "发布成功",
@@ -1324,7 +1385,6 @@ export default {
       const _this = this;
       if (localStorage.getItem("token")) {
         _this.auction.QuestionId = item.que.id;
-        _this.auction.EndTime = _this.formatDate(item.que.endTime);
         // _this.auction.Currency = item.que.currency;
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
@@ -1342,7 +1402,6 @@ export default {
     // 我要答竞拍确定
     auctionQl(auction) {
       const _this = this;
-
       _this.$refs[auction].validate((valid) => {
         if (valid) {
           _this
@@ -1773,6 +1832,7 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.newAnswer);
+    this.newAnswer = null;
     window.removeEventListener("scroll", this.handleScroll);
   },
   watch: {

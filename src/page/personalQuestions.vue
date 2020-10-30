@@ -9,6 +9,7 @@
 .pequ {
   width: 1300px;
   margin: 0 auto;
+  padding-bottom: 137px;
 }
 .pequleft {
   width: 1040px;
@@ -105,9 +106,9 @@
 .pequDetaitop .pequDetaitoptab div {
   display: inline-block;
   width: 140px;
-  height: 20px;
+  min-height: 20px;
   line-height: 20px;
-  padding: 10px 14px;
+  padding: 5px 14px 3px 14px;
   text-align: center;
   color: #333;
   margin-right: 12px;
@@ -119,6 +120,14 @@
 .pequDetaitop .pequDetaitoptab div:hover {
   background-color: #f3f9fd;
   color: #1da1f2;
+}
+.pequDetaitop .pequDetaitoptab span {
+  font-size: 12px;
+  display: block;
+  width: 140px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .pequDetaitopView {
   position: absolute;
@@ -167,7 +176,7 @@
   display: block;
 }
 .pequDetaibott-con1:hover {
-    color: #1da1f2;
+  color: #1da1f2;
 }
 .pequDetaibott-con2 {
   font-size: 14px;
@@ -208,32 +217,39 @@
   text-align: center;
 }
 .pequright {
-    float: right;
-    margin-top: 20px;
+  float: right;
+  margin-top: 20px;
 }
-.pequright .el-button{
-    width:223px;
-    background: #1da1f2;
-    color: #fff;
+.pequright .el-button {
+  width: 223px;
+  background: #1da1f2;
+  color: #fff;
 }
-.pequright .el-button:hover{
-    color: #333 !important;
+.pequright .el-button:hover {
+  color: #333 !important;
 }
 .pequright div {
-    text-align: center;
-    font-size: 14px;
-    color: #333;
-    margin-top: 13px;
+  text-align: center;
+  font-size: 14px;
+  color: #333;
+  margin-top: 13px;
+}
+.InvitedAnswer {
+  margin-top: 20px;
+}
+.InvitedAnswer .el-select {
+  width: 400px !important;
 }
 </style>
 <template>
   <div class="personalQuestions">
     <homeNav />
     <div class="pequ">
-      <div class="pequleft">
+      <div class="pequleft" v-if="pequleftShow">
         <div class="pequlefttop">
           <div class="pequlefttop-name">
-            <img :src="pq.qimage" alt="" />
+            <img :src="pq.qimage" alt="" v-show="pq.qimage != null" />
+            <img src="../assets/头像.jpg" alt="" v-show="pq.qimage == null" />
             <p class="pequlefttop-name1">{{ pq.qname }}</p>
             <p class="pequlefttop-name2">
               完成了&nbsp;<b>{{ pq.cqinfo.completedQuestions }}</b
@@ -316,7 +332,7 @@
                 :class="{ pequDetaitoptabS: index == num }"
                 @click="quClassSelectTab(index)"
               >
-                {{ item.name }}
+                {{ item.name }}<br /><span style="">{{ item.ename }}</span>
               </div>
             </div>
             <div class="pequDetaitopView" @click="pequDetaitopViewHald">
@@ -342,7 +358,10 @@
                 </div>
               </div>
               <div class="pequDetaibott-con">
-                <router-link class="pequDetaibott-con1" :to="'/questionDetails/'+item.question.id">
+                <router-link
+                  class="pequDetaibott-con1"
+                  :to="'/questionDetails/' + item.question.id"
+                >
                   {{ item.question.title }}
                 </router-link>
                 <div class="pequDetaibott-con2">
@@ -368,11 +387,43 @@
           </div>
         </div>
       </div>
-      <div class="pequright">
-          <el-button >邀请回答</el-button>
-          <div>
-              TA有{{pq.bunm}}个正在竞拍的问题
-          </div>
+      <div class="pequright" v-if="pequleftShow">
+        <el-button @click="InvitedAnswer">邀请回答</el-button>
+        <div>TA有{{ pq.bunm }}个正在竞拍的问题</div>
+      </div>
+    </div>
+    <div class="ql-shade" v-show="InvitedAnswerShow">
+      <div class="ql-editQuzi">
+        <h3>选择您要邀请的问题</h3>
+        <div class="InvitedAnswer">
+          <el-select
+            v-model="myQuestionselct"
+            placeholder="请选择"
+            @change="abc"
+          >
+            <el-option
+              v-for="item in myQuestions"
+              :key="item.title"
+              :label="item.title"
+              :value="item.id"
+            >
+            </el-option>
+          </el-select>
+        </div>
+        <div style="text-align: right">
+          <el-button
+            class="InvitedAnswerButton"
+            type="primary"
+            size="medium"
+            @click="InvitedAnswerHand"
+            >提交</el-button
+          >
+        </div>
+
+        <div
+          class="qlreleaseClose el-icon-close"
+          @click="CloseInvitedAnswer"
+        ></div>
       </div>
     </div>
     <homeFooter></homeFooter>
@@ -393,13 +444,65 @@ export default {
   data() {
     return {
       pq: [],
-      quClassSelect: [{ name: "全部科目", type: 0 }],
+      quClassSelect: [
+        { name: "全部科目", type: 0, ename: "All" },
+        { name: "非裔文化", type: 1, ename: "African-American Studies" },
+        { name: "会计", type: 2, ename: "Accounting" },
+        { name: "人类学", type: 3, ename: "Anthropology" },
+        { name: "建筑学", type: 4, ename: "Architecture" },
+        { name: "艺术类", type: 5, ename: "Art, Theatre and Film" },
+        { name: "生物学", type: 6, ename: "Biology" },
+        { name: "商科类", type: 7, ename: "Business and Entrepreneurship" },
+        { name: "化学", type: 8, ename: "Chemistry" },
+        { name: "沟通战略", type: 9, ename: "Communication Strategies" },
+        { name: "电脑科学", type: 10, ename: "Computer Sciencee" },
+        { name: "犯罪学", type: 11, ename: "Criminology" },
+        { name: "经济学", type: 12, ename: "Economic" },
+        { name: "教育类", type: 13, ename: "Education" },
+        { name: "工程学", type: 14, ename: "Engineering" },
+        { name: "环境问题", type: 15, ename: "Environmental Issues" },
+        { name: "伦理学", type: 16, ename: "Ethics" },
+        { name: "金融类", type: 17, ename: "Finance" },
+        { name: "地理学", type: 18, ename: "Geography" },
+        { name: "健康类", type: 19, ename: "Healthcare" },
+        { name: "历史学", type: 20, ename: "History" },
+        {
+          name: "国际关系",
+          type: 21,
+          ename: "International and Public Relations",
+        },
+        { name: "法律类", type: 22, ename: "Law and Legal Issues" },
+        { name: "语言学", type: 23, ename: "Linguistic" },
+        { name: "文学", type: 24, ename: "Literature" },
+        { name: "管理学", type: 25, ename: "Management" },
+        { name: "市场营销", type: 26, ename: "Marketing" },
+        { name: "数学", type: 27, ename: "Mathematics" },
+        { name: "音乐类", type: 28, ename: "Music" },
+        { name: "护理类", type: 29, ename: "Nursing" },
+        { name: "营养学", type: 30, ename: "Nutrition" },
+        { name: "哲学类", type: 31, ename: "Philosophy" },
+        { name: "物理学", type: 32, ename: "Physics" },
+        { name: "政治科学", type: 33, ename: "Politcal Science" },
+        { name: "心理学", type: 34, ename: "Psychology" },
+        { name: "宗教神学", type: 35, ename: "Religion and Theology" },
+        { name: "社会学", type: 36, ename: "Sociology" },
+        { name: "体育类", type: 37, ename: "Sport" },
+        { name: "科技类", type: 38, ename: "Technology" },
+        { name: "旅游类", type: 39, ename: "Tourism" },
+        { name: "其他", type: 40, ename: "Other" },
+      ],
       pqCon: [],
       pqtype: 0,
       pqpagenum: 1,
       pqpagesize: 10,
       num: 0,
       active: false,
+      pequleftShow: false,
+      InvitedAnswerShow: false,
+      myQuestions: [],
+      myQuestionselct: "",
+      myQuestionselctId: "",
+      clientID: "",
     };
   },
   filters: {
@@ -410,11 +513,37 @@ export default {
   },
   created: function () {
     const _this = this;
-    _this.personalQuestions();
-    _this.quClass();
-    _this.cquestion();
+    _this.personal();
   },
   methods: {
+    // 拿到当前登录人信息
+    personal: function () {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(function (res) {
+            _this.clientID = res.data.data.id;
+            _this.personalQuestions();
+            _this.cquestion();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        _this.qdconMeshow = false;
+      }
+    },
     // 检索个人详情信息
     personalQuestions() {
       const _this = this;
@@ -436,6 +565,7 @@ export default {
         .then(function (res) {
           if (res.data.status == 1) {
             _this.pq = res.data.data;
+            _this.pequleftShow = true;
             _this.$set(_this.pq, "goodReviewRate", 0);
             _this.$set(_this.pq, "goodReviewRateNum", 0);
             _this.$set(_this.pq, "recentGoodReviewRate", 0);
@@ -448,29 +578,6 @@ export default {
             _this.pq.recentGoodReviewRateNum =
               _this.pq.cqinfo.recentGoodReviewRate * 100;
             _this.pq.overtimerateNum = _this.pq.overtimerate * 100;
-            console.log(_this.pq);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
-    // 检索科目
-    quClass() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/Classes`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          var a = Object.keys(res.data.data).length;
-          for (var i = 1; i <= a; i++) {
-            _this.quClassSelect.push({ name: res.data.data[i], type: i });
           }
         })
         .catch(function (error) {
@@ -499,7 +606,6 @@ export default {
           if (res.data.status == 1) {
             _this.pqCon = res.data.data.data;
             _this.pqConNum = res.data.data.pageTotal;
-            console.log(_this.pqCon);
           }
         })
         .catch(function (error) {
@@ -511,7 +617,6 @@ export default {
       const _this = this;
       _this.pqtype = index;
       _this.cquestion();
-      console.log(index);
     },
     handleCurrentChange(val) {
       const _this = this;
@@ -521,6 +626,79 @@ export default {
     pequDetaitopViewHald() {
       const _this = this;
       _this.active = !_this.active;
+    },
+    // 邀请回答
+    InvitedAnswer() {
+      const _this = this;
+      _this.InvitedAnswerShow = !_this.InvitedAnswerShow;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/GetBiddingQuestions`,
+          async: false,
+          params: {
+            biddingid: _this.clientID,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.myQuestions = res.data.data;
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 关闭邀请回答
+    CloseInvitedAnswer() {
+      const _this = this;
+      _this.InvitedAnswerShow = !_this.InvitedAnswerShow;
+    },
+    // 提交邀请回答
+    InvitedAnswerHand() {
+      const _this = this;
+      _this
+        .axios({
+          method: "post",
+          url: `${_this.URLport.serverPath}/Bidding/Ask`,
+          async: false,
+          params: {
+            biddingid: _this.pq.cqinfo.clientId,
+            questionid: _this.myQuestionselctId,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.InvitedAnswerShow = !_this.InvitedAnswerShow;
+            _this.$message({
+              message: "邀请成功",
+              type: "success",
+            });
+          } else {
+            _this.$message({
+              message: res.data.msg,
+              type: "error",
+            });
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    abc(a) {
+      this.myQuestionselctId = a;
     },
   },
   mounted() {},

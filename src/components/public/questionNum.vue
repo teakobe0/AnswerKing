@@ -16,7 +16,7 @@
 }
 .qlBodyRightTop {
   width: 224px;
-  margin-top: 35px;
+  margin-bottom: 35px;
 }
 .qlBodyRightTitle {
   /* margin-bottom: 10px; */
