@@ -407,9 +407,10 @@ export default {
       addComments: {
         parentId: "",
         contents: "",
-        classInfoId: "",
+        typeid: "",
         clientid: "",
-        contenturl: ""
+        contenturl: "",
+        type:1
       },
       comment: [],
       //登录人信息
@@ -488,7 +489,8 @@ export default {
           url: `${_this.URLport.serverPath}/Comment/Comments`,
           async: false,
           params: {
-            classinfoid: _this.$route.params.classinfo_id
+            typeid: _this.$route.params.classinfo_id,
+            type:1
           },
           xhrFields: {
             withCredentials: true
@@ -562,7 +564,7 @@ export default {
           } else {
             _this.addComments.parentId = 0;
             _this.addComments.contents = _this.retext;
-            _this.addComments.classInfoId = _this.$route.params.classinfo_id;
+            _this.addComments.typeid = _this.$route.params.classinfo_id;
             _this.addComments.clientid = _this.personreviewsid;
             _this
               .axios({
@@ -617,7 +619,7 @@ export default {
           } else {
             _this.addComments.parentId = _this.replyOneTwoid;
             _this.addComments.contents = model;
-            _this.addComments.classInfoId = _this.$route.params.classinfo_id;
+            _this.addComments.typeid = _this.$route.params.classinfo_id;
             _this.addComments.clientid = _this.personreviewsid;
             _this.addComments.contenturl =
               model +

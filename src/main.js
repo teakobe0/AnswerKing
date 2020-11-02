@@ -143,6 +143,9 @@ Vue.prototype.axios = axios;
 import URLport from './URLport'
 Vue.prototype.URLport = URLport
 
+// 引入vue-cookies
+import VueCookies from 'vue-cookies'
+Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 

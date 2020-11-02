@@ -129,36 +129,53 @@
   <div id="answer">
     <div class="popupLogins" v-show="popup">
       <div class="popup-con">
-        <i class="el-icon-close pop-close" v-show="popup" @click="popupShows"></i>
+        <i
+          class="el-icon-close pop-close"
+          v-show="popup"
+          @click="popupShows"
+        ></i>
         <popupLogin v-show="popup"></popupLogin>
       </div>
     </div>
 
     <div class="tabCon">
-      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">{{$t('content.con23')}}</p>
+      <p class="tabCon-wu" v-if="this.$store.state.answer.tabconwu">
+        {{ $t("content.con23") }}
+      </p>
       <div
         oncontextmenu="return false;"
         ondragstart="return false;"
-        v-for="(items,index) in this.$store.state.answer.answer"
+        v-for="(items, index) in this.$store.state.answer.answer"
       >
         <div
           class="cover"
-          v-for="(item,indexs) in items.origin"
-          @click="() => handleanwer(indexs,item)"
+          v-for="(item, indexs) in items.origin"
+          @click="() => handleanwer(indexs, item)"
         >
-          
           <img
-            style="width:100%;height:100%;filter: blur(1px);"
+            style="width: 100%; height: 100%; filter: blur(1px)"
             :src="item.url"
             :alt="item.contents"
           />
         </div>
       </div>
       <el-button class="imgShow" size="mini" v-show="imgshow">
-            <router-link
-              :to="'/classes/'+$route.params.classes_id+'/content/'+itemImg.classInfoId+'/weeks/'+itemImg.classWeek+'/weektype/'+itemImg.classWeekType+'/imgDetails/'+itemImg.id"
-            >{{$t('content.con16')}}</router-link>
-          </el-button>
+        <router-link
+          :to="
+            '/classes/' +
+            $route.params.classes_id +
+            '/content/' +
+            itemImg.classInfoId +
+            '/weeks/' +
+            itemImg.classWeek +
+            '/weektype/' +
+            itemImg.classWeekType +
+            '/imgDetails/' +
+            itemImg.id
+          "
+          >{{ $t("content.con16") }}</router-link
+        >
+      </el-button>
       <VueEasyLightbox
         :visible="visible"
         :imgs="this.$store.state.answer.imgss"
@@ -167,9 +184,12 @@
       ></VueEasyLightbox>
     </div>
     <div class="popContainer-wrap">
-      <div class="popContainer" v-show="shade==true">
-        <p class="time">{{content}}</p>
-        <p class="purchase" @click="joim">{{$t('content.con24')}}</p>
+      <div class="popContainer" v-show="shade == true">
+        <p class="time">{{ content }}</p>
+        <p style="color: #fff; text-align: center; margin-top: 10px">
+          {{ contentLgoin }}
+        </p>
+        <p class="purchase" @click="joim">{{ $t("content.con24") }}</p>
         <div
           class="closeshade el-icon-close"
           @click="Closemask"
@@ -185,11 +205,12 @@
 <script type="es6">
 import VueEasyLightbox from "vue-easy-lightbox";
 import popupLogin from "@/components/public/popupLogin.vue";
+import { formatDate } from "@/common/js/date.js";
 export default {
   name: "answer",
   components: {
     VueEasyLightbox,
-    popupLogin
+    popupLogin,
   },
   data() {
     return {
@@ -202,6 +223,7 @@ export default {
       // 控制遮罩的打开关闭
       shade: false,
       content: "请购买会员！",
+      contentLgoin: "",
       countdownClock: null,
       totalTime: 30,
       // 控制全屏遮罩的打开
@@ -212,13 +234,30 @@ export default {
       imgshow: false,
       popup: false,
       // 当前图片信息
-      itemImg:{}
+      itemImg: {},
+      Xtime: null,
+      purButton: true,
     };
   },
-  created: function() {
+  created: function () {
     const _this = this;
+    // console.log(_this.Dtime())
   },
   methods: {
+    formatDate: function (time) {
+      let date = new Date(time);
+      return formatDate(date, "yyyy-MM-dd hh:mm");
+    },
+    // 获取当天最后一秒的时间绑定cookies过期时间
+    Dtime(num) {
+      const _this = this;
+      this.Xtime = new Date(
+        new Date(new Date().toLocaleDateString()).getTime() +
+          24 * 60 * 60 * 1000 -
+          1
+      );
+      this.$cookies.set("user_timeNum", num, this.Xtime);
+    },
     // 控制图片查看器的展开
     shows() {
       let _this = this;
@@ -233,7 +272,7 @@ export default {
       _this.imgshow = false;
     },
     // 开通会员前查看用户状态
-    joim: function() {
+    joim: function () {
       const _this = this;
       if (localStorage.token) {
         _this.$router.push({ path: "/personalData/vip" });
@@ -241,31 +280,37 @@ export default {
         _this.visible = false;
         _this.fullscreenLoading = false;
         _this.shade = false;
-        this.$confirm("您还未登录!请先登录!", "登录", {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning"
-        })
-          .then(() => {
-            _this.$router.push({
-              path: "/login",
-              query: {
-                type: "skip"
-              }
-            });
-          })
-          .catch(() => {
-            _this.shade = true;
-            if (_this.totalTime == 30) {
-              _this.shade = false;
-              _this.fullscreenLoading = false;
-              _this.visible = false;
-            }
-          });
+        _this.popup = true;
+        window.clearInterval(_this.clock); //清除定时器
+
+        // console.log(this.$cookies.keys());
+        // this.$cookies.remove("user_session")
+
+        // this.$confirm("您还未登录!请先登录!", "登录", {
+        //   confirmButtonText: "确定",
+        //   cancelButtonText: "取消",
+        //   type: "warning",
+        // })
+        //   .then(() => {
+        //     _this.$router.push({
+        //       path: "/login",
+        //       query: {
+        //         type: "skip",
+        //       },
+        //     });
+        //   })
+        //   .catch(() => {
+        //     _this.shade = true;
+        //     if (_this.totalTime == 30) {
+        //       _this.shade = false;
+        //       _this.fullscreenLoading = false;
+        //       _this.visible = false;
+        //     }
+        //   });
       }
     },
     //点击答案显示遮罩方法
-    handleanwer: function(index,item) {
+    handleanwer: function (index, item) {
       const _this = this;
       _this.itemImg = item;
       event.preventDefault(); //阻止URL跳转方法
@@ -276,31 +321,61 @@ export default {
           _this.index = index;
           _this.shows();
         } else {
-          _this.shade = true;
-          _this.totalTime = 30;
-          _this.content =
-            _this.totalTime + "s" + " " + _this.$t("content.con25");
-
-          _this.clock = window.setInterval(() => {
-            _this.totalTime--;
-            _this.content =
-              _this.totalTime + "s" + " " + _this.$t("content.con25");
-
-            if (_this.totalTime < 1) {
-              _this.content = "s后可观看答案";
-              _this.totalTime = 30;
-              _this.shade = false;
-              // 控制图片查看器的打开
-              _this.index = index;
-              _this.shows();
-              //当倒计时小于0时清除定时器
-              window.clearInterval(_this.clock); //清除定时器
+          if (_this.$cookies.get("user_timeNum")) {
+            if (_this.$cookies.get("user_timeNum") > 0) {
+              _this.ditmes("非vip用户每天可以看50张答案!");
+            }else {
+              _this.$message({
+              message: "您今天的观看次数没有了!开通VIP后享受无限制浏览!",
+              type: "error",
+            });
             }
-          }, 1000);
+          } else {
+            _this.Dtime(50);
+            _this.ditmes("非vip用户每天可以看50张答案!");
+          }
         }
       } else {
-        _this.popup = true;
+        if (_this.$cookies.get("user_timeNum")) {
+          if (_this.$cookies.get("user_timeNum") > 0) {
+            _this.ditmes("非登录用户每天可以看5张答案!");
+          } else {
+            _this.$message({
+              message: "您今天的观看次数没有了!登录之后送您50张观看次数!",
+              type: "error",
+            });
+          }
+        } else {
+          _this.Dtime(5);
+          _this.ditmes("非登录用户每天可以看5张答案!");
+        }
+
+        // _this.popup = true;
       }
+    },
+
+    ditmes(text) {
+      const _this = this;
+      _this.purButton = false;
+      _this.shade = true;
+      _this.totalTime = 30;
+      _this.content = _this.totalTime + "s" + " " + _this.$t("content.con25");
+      _this.contentLgoin = text;
+      _this.clock = window.setInterval(() => {
+        _this.totalTime--;
+        _this.content = _this.totalTime + "s" + " " + _this.$t("content.con25");
+        if (_this.totalTime < 1) {
+          _this.content = "s后可观看答案";
+          _this.totalTime = 30;
+          _this.shade = false;
+          _this.Dtime(_this.$cookies.get("user_timeNum") - 1);
+          // 控制图片查看器的打开
+          _this.index = index;
+          _this.shows();
+          //当倒计时小于0时清除定时器
+          window.clearInterval(_this.clock); //清除定时器
+        }
+      }, 1000);
     },
     // 关闭遮罩
     Closemask() {
@@ -317,7 +392,7 @@ export default {
     popupShows() {
       const _this = this;
       _this.popup = false;
-    }
-  }
+    },
+  },
 };
 </script>

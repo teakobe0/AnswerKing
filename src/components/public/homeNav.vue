@@ -362,7 +362,7 @@ export default {
         }
       ],
       value: "zh",
-      times: ""
+      times: null
     };
   },
   created: function() {
