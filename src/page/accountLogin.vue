@@ -180,7 +180,6 @@ export default {
     return {
       loadings: false,
       ruleForm: {
-        Email: "",
         Password: "",
         Username: ""
       },
@@ -199,7 +198,8 @@ export default {
           }
         ],
         Password: [{ required: true, validator: validatePass, trigger: "blur" }]
-      }
+      },
+      Ip:""
     };
   },
   created: function() {
@@ -211,6 +211,7 @@ export default {
   //页面的方法还是写在methods{}中
   methods: {
     submitForm(ruleForm) {
+      this.Ip = localStorage.Ip;
       //$refs是获取DOM节点的，它直接在页面找到ruleForm这个表单
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate(valid => {
@@ -222,6 +223,9 @@ export default {
             url: `${_this.URLport.serverPath}/client/login`,
             async: false,
             data: this.ruleForm,
+            params:{
+              loginip:this.Ip
+            },
             xhrFields: {
               withCredentials: true
             }

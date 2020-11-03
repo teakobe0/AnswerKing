@@ -244,10 +244,10 @@ export default {
           .then(function(res) {
             _this.value = res.data.data;
             _this.inviterId = _this.value.id;
-            let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
-            let encryptText = "http://coursewhale.com/register?inviter="+encrypt;
-            _this.copy = encryptText;
-            _this.input = encryptText;
+            // let encrypt = Utils.encrypt(_this.inviterId,'hAw6eqnFLKxpsDv3');
+            // let encryptText = "http://coursewhale.com/register?inviter="+encrypt;
+            _this.copy = "http://coursewhale.com/register?inviter="+_this.value.id;
+            _this.input = "http://coursewhale.com/register?inviter="+_this.value.id;
             if(_this.value.isValidate){
               _this.InvitationShow = true;
             }

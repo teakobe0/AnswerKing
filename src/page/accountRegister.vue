@@ -50,7 +50,11 @@
 
 
 <template>
-  <div class="register" v-title :data-title="$t('popupLogin.con6')+'-CourseWhale'">
+  <div
+    class="register"
+    v-title
+    :data-title="$t('popupLogin.con6') + '-CourseWhale'"
+  >
     <!--<Nav msg="登录/注册"></Nav>-->
     <div class="regi-emp">
       <div class="regi-cc">
@@ -67,10 +71,14 @@
               label-width="50px"
               class="demo-ruleForm"
             >
-              <el-form-item style="margin-left: -50px;" label prop="Email">
-                <el-input prefix-icon="el-icon-edit" v-model="ruleForm.Email" :placeholder="$t('popupLogin.con1')"></el-input>
+              <el-form-item style="margin-left: -50px" label prop="Email">
+                <el-input
+                  prefix-icon="el-icon-edit"
+                  v-model="ruleForm.Email"
+                  :placeholder="$t('popupLogin.con1')"
+                ></el-input>
               </el-form-item>
-              <el-form-item style="margin-left: -50px;" label prop="Password">
+              <el-form-item style="margin-left: -50px" label prop="Password">
                 <el-input
                   prefix-icon="el-icon-goods"
                   type="Password"
@@ -79,7 +87,7 @@
                   autocomplete="off"
                 ></el-input>
               </el-form-item>
-              <el-form-item style="margin-left: -50px;" label prop="Passwords">
+              <el-form-item style="margin-left: -50px" label prop="Passwords">
                 <el-input
                   prefix-icon="el-icon-goods"
                   type="Password"
@@ -89,23 +97,28 @@
                   @keyup.enter.native="register('ruleForm')"
                 ></el-input>
               </el-form-item>
-              <el-form-item style="margin-left: -50px;text-align: center">
+              <el-form-item style="margin-left: -50px; text-align: center">
                 <el-button
                   type="primary"
                   id="regi"
                   @click="register('ruleForm')"
                   :loading="loadings"
-                >{{$t('popupLogin.con6')}}</el-button>
+                  >{{ $t("popupLogin.con6") }}</el-button
+                >
               </el-form-item>
             </el-form>
             <p class="termsOfService">
-              {{$t('popupLogin.con8')}}
-              <router-link to="/termsOfService">{{$t('popupLogin.con9')}}</router-link>
+              {{ $t("popupLogin.con8") }}
+              <router-link to="/termsOfService">{{
+                $t("popupLogin.con9")
+              }}</router-link>
             </p>
           </div>
           <div class="reg-bottom">
-            <span>{{$t('popupLogin.con10')}}</span>
-            <router-link class="login-resi" to="/login">{{$t('popupLogin.con4')}}</router-link>
+            <span>{{ $t("popupLogin.con10") }}</span>
+            <router-link class="login-resi" to="/login">{{
+              $t("popupLogin.con4")
+            }}</router-link>
           </div>
         </div>
       </div>
@@ -118,18 +131,18 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import Footer from "@/components/public/footer.vue";
-import Utils from "@/utils.js";
+// import Utils from "@/utils.js";
 export default {
   name: "register",
   components: {
     Nav,
-    Footer
+    Footer,
   },
   data() {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con15')));
+        callback(new Error(this.$t("popupLogin.con15")));
       } else {
         if (this.ruleForm.Passwords !== "") {
           this.$refs.ruleForm.validateField("Passwords");
@@ -139,9 +152,9 @@ export default {
     };
     var validatePass2 = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con16')));
+        callback(new Error(this.$t("popupLogin.con16")));
       } else if (value !== this.ruleForm.Password) {
-        callback(new Error(this.$t('popupLogin.con17')));
+        callback(new Error(this.$t("popupLogin.con17")));
       } else {
         callback();
       }
@@ -153,50 +166,56 @@ export default {
         Email: "",
         Password: "",
         Passwords: "",
-        inviterid: 0
+        inviterid: 0,
+        Ip: "",
       },
       //rules是Element的表单验证规则
       rules: {
         Email: [
-          { required: true, message: this.$t('popupLogin.con11'), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("popupLogin.con11"),
+            trigger: "blur",
+          },
           {
             type: "email",
-            message: this.$t('popupLogin.con12'),
-            trigger: ["blur", "change"]
-          }
+            message: this.$t("popupLogin.con12"),
+            trigger: ["blur", "change"],
+          },
         ],
         Password: [
-          { required: true, validator: validatePass, trigger: "blur" }
+          { required: true, validator: validatePass, trigger: "blur" },
         ],
         Passwords: [
-          { required: true, validator: validatePass2, trigger: "blur" }
-        ]
+          { required: true, validator: validatePass2, trigger: "blur" },
+        ],
       },
-      decrypt: 0
+      decrypt: 0,
     };
   },
-  created: function() {
+  created: function () {
     if (!localStorage.SkipPath) {
-      localStorage.SkipPath = '/'
+      localStorage.SkipPath = "/";
     }
   },
   //页面的方法还是写在methods{}中
   methods: {
     register(ruleForm) {
+     this.ruleForm.Ip = localStorage.Ip;
       //$refs是获取DOM节点的，它直接在页面找到ruleForm这个表单
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
-      this.$refs[ruleForm].validate(valid => {
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           const _this = this;
           _this.loadings = true;
           if (_this.$route.query.inviter) {
-            _this.decrypt = Utils.decrypt(
-              _this.$route.query.inviter.replace(/\s+/g, '+'),
-              "hAw6eqnFLKxpsDv3"
-            );
-            _this.ruleForm.inviterid = _this.decrypt;
+            // _this.decrypt = Utils.decrypt(
+            //   _this.$route.query.inviter.replace(/\s+/g, '+'),
+            //   "hAw6eqnFLKxpsDv3"
+            // );
+            _this.ruleForm.inviterid = _this.$route.query.inviter;
           }
-          
+
           _this
             .axios({
               method: "POST",
@@ -204,20 +223,20 @@ export default {
               async: false,
               data: _this.ruleForm,
               xhrFields: {
-                withCredentials: true
-              }
+                withCredentials: true,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               // 注册成功保存TOKEN相当于自动登录
               localStorage.token = res.data.data.token;
               if (res.data.status == 1) {
                 _this.$message({
-                  message: _this.$t('popupLogin.con14'),
-                  type: "success"
+                  message: _this.$t("popupLogin.con14"),
+                  type: "success",
                 });
                 if (localStorage.SkipPath) {
                   _this.$router.push({
-                    path: localStorage.SkipPath
+                    path: localStorage.SkipPath,
                   });
                   localStorage.removeItem("SkipPath");
                 }
@@ -228,13 +247,14 @@ export default {
                 _this.loadings = false;
                 _this.$message({
                   message: res.data.msg,
-                  type: "success"
+                  type: "success",
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
+
           // if (_this.$route.query.inviter) {
           //   _this
           //     .axios({
@@ -321,14 +341,14 @@ export default {
           return false;
         }
       });
-    }
+    },
   },
   watch: {
     "$i18n.locale"() {
       const _this = this;
       _this.rules.Email[0].message = _this.$t("popupLogin.con11");
       _this.rules.Email[1].message = _this.$t("popupLogin.con12");
-    }
-  }
+    },
+  },
 };
 </script>

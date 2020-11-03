@@ -500,6 +500,7 @@
               >
             </div>
           </div>
+          <reviews v-show="questionReviews"></reviews>
         </div>
         <div class="qdConRight" v-if="qdConRigtS">
           <questionNum></questionNum>
@@ -867,6 +868,7 @@
         <div class="suspendClose el-icon-close" @click="CloseQuitBts"></div>
       </div>
     </div>
+    
     <homeFooter></homeFooter>
   </div>
 </template>
@@ -878,7 +880,7 @@ import homeFooter from "@/components/public/homeFooter.vue";
 import questionNum from "@/components/public/questionNum.vue";
 
 import questionDetailsCss from "../pageCss/page/questionDetailsCss.css";
-
+import reviews from "@/components/questionBank/questionDetailsReviews.vue";
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
@@ -898,6 +900,7 @@ export default {
     Editor,
     questionDetailsCss,
     questionNum,
+    reviews,
   },
   props: {
     value: {
@@ -1206,6 +1209,7 @@ export default {
       timeAlsBlsinfo: null,
       quizzerUpload: false,
       quUpfileList: [],
+      questionReviews:false
     };
   },
   created: function () {
@@ -1653,6 +1657,7 @@ export default {
                 _this.replyShadeShow = false;
                 _this.currencyNums = false;
                 _this.questionCurrSa = true;
+                _this.questionReviews = true;
                 // console.log("问题已完成");
               }
 

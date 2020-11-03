@@ -237,6 +237,7 @@ export default {
       itemImg: {},
       Xtime: null,
       purButton: true,
+      indexS:0
     };
   },
   created: function () {
@@ -248,7 +249,7 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd hh:mm");
     },
-    // 获取当天最后一秒的时间绑定cookies过期时间
+    // 非注册用户获取当天最后一秒的时间绑定cookies过期时间
     Dtime(num) {
       const _this = this;
       this.Xtime = new Date(
@@ -257,6 +258,16 @@ export default {
           1
       );
       this.$cookies.set("user_timeNum", num, this.Xtime);
+    },
+    // 注册用户非VIP获取当天最后一秒的时间绑定cookies过期时间
+    DtimeVip(num) {
+      const _this = this;
+      this.Xtime = new Date(
+        new Date(new Date().toLocaleDateString()).getTime() +
+          24 * 60 * 60 * 1000 -
+          1
+      );
+      this.$cookies.set("user_timeNumVip", num, this.Xtime);
     },
     // 控制图片查看器的展开
     shows() {
@@ -321,9 +332,9 @@ export default {
           _this.index = index;
           _this.shows();
         } else {
-          if (_this.$cookies.get("user_timeNum")) {
-            if (_this.$cookies.get("user_timeNum") > 0) {
-              _this.ditmes("非vip用户每天可以看50张答案!");
+          if (_this.$cookies.get("user_timeNumVip")) {
+            if (_this.$cookies.get("user_timeNumVip") > 0) {
+              _this.ditmes("非vip用户每天可以看50张答案!",index);
             }else {
               _this.$message({
               message: "您今天的观看次数没有了!开通VIP后享受无限制浏览!",
@@ -331,14 +342,14 @@ export default {
             });
             }
           } else {
-            _this.Dtime(50);
-            _this.ditmes("非vip用户每天可以看50张答案!");
+            _this.DtimeVip(50);
+            _this.ditmes("非vip用户每天可以看50张答案!",index);
           }
         }
       } else {
         if (_this.$cookies.get("user_timeNum")) {
           if (_this.$cookies.get("user_timeNum") > 0) {
-            _this.ditmes("非登录用户每天可以看5张答案!");
+            _this.ditmes("非登录用户每天可以看5张答案!",index);
           } else {
             _this.$message({
               message: "您今天的观看次数没有了!登录之后送您50张观看次数!",
@@ -347,14 +358,13 @@ export default {
           }
         } else {
           _this.Dtime(5);
-          _this.ditmes("非登录用户每天可以看5张答案!");
+          _this.ditmes("非登录用户每天可以看5张答案!",index);
         }
 
         // _this.popup = true;
       }
     },
-
-    ditmes(text) {
+    ditmes(text,index) {
       const _this = this;
       _this.purButton = false;
       _this.shade = true;
@@ -368,12 +378,12 @@ export default {
           _this.content = "s后可观看答案";
           _this.totalTime = 30;
           _this.shade = false;
-          _this.Dtime(_this.$cookies.get("user_timeNum") - 1);
           // 控制图片查看器的打开
           _this.index = index;
           _this.shows();
           //当倒计时小于0时清除定时器
           window.clearInterval(_this.clock); //清除定时器
+          _this.Dtime(_this.$cookies.get("user_timeNum") - 1);
         }
       }, 1000);
     },

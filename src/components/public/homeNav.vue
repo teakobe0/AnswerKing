@@ -423,6 +423,10 @@ export default {
           method: "get",
           url: `${_this.URLport.serverPath}/Notice/Notices`,
           async: false,
+          params: {
+            pagenum: 1,
+            pagesize: 1,
+          },
           xhrFields: {
             withCredentials: true
           },
@@ -431,9 +435,9 @@ export default {
           }
         })
         .then(function(res) {
-          if (res.data.data.length >= 1) {
-            _this.$store.state.logo.message = res.data.data.length;
-            _this.messageLength = res.data.data.length;
+          if (res.data.data.pageTotal >= 1) {
+            _this.$store.state.logo.message = res.data.data.pageTotal;
+            _this.messageLength = res.data.data.pageTotal;
             _this.ismessage = true;
           } else {
             _this.ismessage = false;
@@ -443,7 +447,7 @@ export default {
           console.log(error);
         });
     },
-    // 检索通知信息
+    // 轮询检索通知信息
     gainmessages: function() {
       const _this = this;
       _this
@@ -451,6 +455,10 @@ export default {
           method: "get",
           url: `${_this.URLport.serverPath}/Notice/Notices`,
           async: false,
+          params: {
+            pagenum: 1,
+            pagesize: 1,
+          },
           xhrFields: {
             withCredentials: true
           },
@@ -459,14 +467,14 @@ export default {
           }
         })
         .then(function(res) {
-          if (res.data.data.length >= 1) {
-            _this.$store.state.logo.message = res.data.data.length;
-            if (res.data.data.length > _this.messageLength) {
+          if (res.data.data.pageTotal >= 1) {
+            _this.$store.state.logo.message = res.data.data.pageTotal;
+            if (res.data.data.pageTotal > _this.messageLength) {
               _this.$notify.info({
-                title: res.data.data[res.data.data.length-1].sendname + '说:',
-                message: res.data.data[res.data.data.length-1].contentsUrl
+                title: res.data.data.data[0].sendname + '说:',
+                message: res.data.data.data[0].contentsUrl
               });
-              _this.messageLength = res.data.data.length;
+              _this.messageLength = res.data.data.pageTotal;
             }
             _this.ismessage = true;
           } else {

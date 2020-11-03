@@ -147,6 +147,11 @@
   margin: 0 auto;
   margin-top: 24px;
 }
+.paypal-button-containers {
+  width: 300px;
+  margin: 0 auto;
+  margin-top: 24px;
+}
 </style>
 
 
@@ -166,9 +171,7 @@
                 <p>{{ item.name }}</p>
                 <p>
                   ${{ item.price }}
-                  <span style="color: #a1a1a1; font-size: 14px"
-                    >/个</span
-                  >
+                  <span style="color: #a1a1a1; font-size: 14px">/月</span>
                 </p>
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>
@@ -180,6 +183,13 @@
           <div class="sweep">
             <div>{{ $t("myvip.con3") }}</div>
           </div>
+          <div class="pay">
+            <div
+              id="paypal-button-container"
+              class="paypal-button-container"
+            ></div>
+          </div>
+          <div class="clauseText">{{ $t("myvip.con4") }}</div>
         </el-tab-pane>
         <el-tab-pane label="充值鲸灵币" name="second">
           <div class="dredgevip">
@@ -192,9 +202,7 @@
                 <p>{{ item.name }}</p>
                 <p>
                   ${{ item.price }}
-                  <span style="color: #a1a1a1; font-size: 14px"
-                    >/{{ $t("myvip.con1") }}</span
-                  >
+                  <span style="color: #a1a1a1; font-size: 14px">/个</span>
                 </p>
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>
@@ -206,15 +214,14 @@
           <div class="sweep">
             <div>{{ $t("myvip.con3") }}</div>
           </div>
+          <div class="pay">
+            <div
+              id="paypal-button-containers"
+              class="paypal-button-containers"
+            ></div>
+          </div>
+          <div class="clauseText">{{ $t("myvip.con4") }}</div>
         </el-tab-pane>
-
-        <div class="pay">
-          <div
-            id="paypal-button-container"
-            class="paypal-button-container"
-          ></div>
-        </div>
-        <div class="clauseText">{{ $t("myvip.con4") }}</div>
       </el-tabs>
     </div>
   </div>
@@ -237,18 +244,15 @@ export default {
       loadings: [],
       colModel: [],
       readySize: 0,
-      NumMoneys:[
-        {name:"1个币",price:"1",original:"2"},
-        {name:"10个币",price:"10",original:"15"},
-        {name:"50个币",price:"50",original:"80"},
-        {name:"100个币",price:"100",original:"140"},
-      ],
-      NumMoneysIndex:0
+      NumMoneys: [],
+      NumMoneysIndex: 0,
+      moneycurrency: 1,
     };
   },
   created: function () {
     const _this = this;
     _this.gainpersonal();
+    _this.IntegralGoods();
   },
   methods: {
     // 检索VIP的价钱
@@ -274,16 +278,40 @@ export default {
             _this.moneys[1].original = 50.99;
             _this.moneys[2].original = 101.99;
             _this.moneys[3].original = 203.99;
-            // _this.moneys[0].Onprice = 13.99;
-            // _this.moneys[1].Onprice = 12.99;
-            // _this.moneys[2].Onprice = 11.99;
-            // _this.moneys[3].Onprice = 10.99;
             _this.paypal();
           })
           .catch(function (error) {
             console.log("获取token失败");
           });
-      } else {
+      }
+    },
+    // 检索鲸灵币的价钱
+    IntegralGoods() {
+      const _this = this;
+      if (localStorage.getItem("token")) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Order/IntegralGoods`,
+            async: false,
+            xhrFields: {
+              withCredentials: true,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(function (res) {
+            _this.NumMoneys = res.data.data;
+            _this.NumMoneys[0].original = 2;
+            _this.NumMoneys[1].original = 15;
+            _this.NumMoneys[2].original = 80;
+            _this.NumMoneys[3].original = 140;
+            _this.paypals();
+          })
+          .catch(function (error) {
+            console.log("获取token失败");
+          });
       }
     },
     // 付款成功之后
@@ -332,10 +360,11 @@ export default {
                 })
                 .then(function (res) {
                   loading.close();
-                  if (res.data.data.msg != null) {
-                    _this.defeatedOpen();
-                  } else {
+                  console.log(res)
+                  if (res.data.status == 1) {
                     _this.open();
+                  } else {
+                    _this.defeatedOpen();
                   }
                 })
                 .catch(function (error) {
@@ -345,6 +374,66 @@ export default {
           },
         })
         .render("#paypal-button-container");
+    },
+    // 付款成功之后
+    paypals: function () {
+      const _this = this;
+      paypal
+        .Buttons({
+          // Set up the transaction
+          createOrder: function (data, actions) {
+            return actions.order.create({
+              purchase_units: [
+                {
+                  amount: {
+                    value: _this.moneycurrency,
+                  },
+                },
+              ],
+            });
+          },
+          // 完成这笔交易
+          onApprove: function (data, actions) {
+            // 从这里开始增加一个遮罩
+            const loading = _this.$loading({
+              lock: true,
+              text: "加载中...",
+              spinner: "el-icon-loading",
+              background: "rgba(0, 0, 0, 0.7)",
+            });
+            return actions.order.capture().then(function (details) {
+              // 向买家展示成功的信息
+              return _this
+                .axios({
+                  method: "POST",
+                  url: `${_this.URLport.serverPath}/Order/SaveIntegralOrder`,
+                  async: false,
+                  params: {
+                    orderId: data.orderID,
+                  },
+                  xhrFields: {
+                    withCredentials: true,
+                  },
+                  headers: {
+                    "content-type": "application/json",
+                    Authorization: `Bearer ${localStorage.getItem("token")}`,
+                  },
+                })
+                .then(function (res) {
+                  loading.close();
+                  if (res.data.status == 1) {
+                    _this.open();
+                  } else {
+                    _this.defeatedOpen();
+                  }
+                })
+                .catch(function (error) {
+                  console.log(error);
+                });
+            });
+          },
+        })
+        .render("#paypal-button-containers");
     },
     // 支付成功
     open() {
@@ -377,16 +466,17 @@ export default {
     tabdredgeNumMoneys: function (tab, money) {
       const _this = this;
       _this.NumMoneysIndex = tab;
-      _this.money = money;
+      _this.moneycurrency = money;
     },
     handleClick(tab, event) {
       const _this = this;
-      if(tab.label == "开通VIP"){
+      if (tab.label == "开通VIP") {
         _this.num = 0;
         _this.money = _this.moneys[0].price;
-      }else if(tab.label == "充值鲸灵币"){
+      } else if (tab.label == "充值鲸灵币") {
+        
         _this.NumMoneysIndex = 0;
-        _this.money = _this.NumMoneys[0].price;
+        _this.moneycurrency = _this.NumMoneys[0].price;
       }
     },
   },
