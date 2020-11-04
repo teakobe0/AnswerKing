@@ -51,7 +51,7 @@
                   @click="editShade(qlList)"
                   v-show="editS"
                   icon="el-icon-edit-outline"
-                  >编辑问题</el-button
+                  >{{$t('question.con25')}}</el-button
                 >
                 <!-- <el-button
                   size="mini"
@@ -78,7 +78,7 @@
                   
                 >
                   <el-button size="small" type="primary" class="upImgBut">
-                    上传补充材料
+                    {{$t('question.con26')}}
                     <i class="el-icon-picture"></i>
                   </el-button>
                 </el-upload>
@@ -103,7 +103,7 @@
                   type="primary"
                   @click="service(qlList.question.id)"
                   v-show="serviceS"
-                  >申请客服</el-button
+                  >{{$t('question.con27')}}</el-button
                 >
                 <!-- <el-button
                 class="el-icon-chat-line-round privateLetter"
@@ -118,7 +118,7 @@
                   @click="collectQue(qlList.question.id)"
                   v-show="inforQuiz"
                   icon="el-icon-star-on"
-                  >收藏该问题</el-button
+                  >{{$t('question.con28')}}</el-button
                 >
 
                 <div style="float: right; margin-top: 7.5px">
@@ -130,10 +130,10 @@
                       margin-right: 20px;
                     "
                   >
-                    {{ qlList.favourite }}人收藏
+                    {{ qlList.favourite }}{{$t('question.con29')}}
                   </p>
                   <p style="float: left; font-size: 14px; color: #888888">
-                    {{ qlList.question.views }}人浏览
+                    {{ qlList.question.views }}{{$t('question.con30')}}
                   </p>
                 </div>
               </div>
@@ -149,16 +149,16 @@
           </div>-->
           <div v-show="replyShadeShow">
             <div class="qd-Time">
-              该问题需要在
-              <b>{{ qlList.question.endTime | formatDate }}</b> 前回答完毕 剩余
-              {{ d }}天{{ h }}小时{{ m }}分
+              {{$t('question.con31')}}
+              <b>{{ qlList.question.endTime | formatDate }}</b> {{$t('question.con32')}}
+              {{ d }}{{$t('question.con33')}}{{ h }}{{$t('question.con34')}}{{ m }}{{$t('question.con35')}}
             </div>
             <div
               class="qdConEvaluate"
               @click="replyShade(qlList)"
               v-if="replyShadeShow"
             >
-              参与竞拍
+              {{$t('question.con36')}}
             </div>
           </div>
           <div class="zhengzaijingpai" v-if="currencyNums">
@@ -168,12 +168,12 @@
               v-show="clientImg.length < 30"
               alt=""
             />
-            <div class="zheng1">你正在参与竞拍</div>
-            <span class="zheng2">等待提问者选择</span>
+            <div class="zheng1">{{$t('question.con37')}}</div>
+            <span class="zheng2">{{$t('question.con38')}}</span>
             <div class="zheng3">
               <span>{{ currencyNum }}</span>
               <br />
-              <p>鲸灵币</p>
+              <p>{{$t('question.con39')}}</p>
             </div>
             <div class="zheng4">
               <el-button
@@ -185,7 +185,7 @@
                   border: none;
                   font-size: 14px;
                 "
-                >编辑竞拍</el-button
+                >{{$t('question.con40')}}</el-button
               >
             </div>
           </div>
@@ -194,7 +194,7 @@
             v-if="blsinfo.length > 0 && qlList.question.answerer == 0"
           >
             <div class="qd-title-right-2-l"></div>
-            <p>{{ blsinfo.length }}人正在竞拍</p>
+            <p>{{ blsinfo.length }}{{$t('question.con41')}}</p>
             <div class="qd-title-right-2-r"></div>
           </div>
           <!-- <div class="qd-title-right-3" v-if="selectbname">
@@ -227,13 +227,13 @@
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
                   <router-link
                     :to="'/personalQuestions/' + item.bidding.createBy"
-                    >查看TA的主页</router-link
+                    >{{$t('question.con42')}}</router-link
                   >
                 </div>
               </div>
               <div class="qdConBlsCurrency">
                 <span>{{ item.bidding.currency }}</span>
-                <br /><span style="font-size: 12px; color: #333">鲸灵币</span>
+                <br /><span style="font-size: 12px; color: #333">{{$t('question.con39')}}</span>
               </div>
               <div class="qdConBlsgrade">
                 <p>{{ item.gradetext }}%</p>
@@ -251,7 +251,7 @@
                     letter-spacing: 2px;
                   "
                 >
-                  回答过{{ item.qnum }}个问题
+                  {{$t('question.con43')}}{{ item.qnum }}{{$t('question.con44')}}
                 </div>
                 <!-- 完成时间:{{ item.bidding.endTime | formatDate }} -->
               </div>
@@ -262,14 +262,14 @@
                   @click="inform(item)"
                   v-if="auctionClient"
                 >
-                  对话
+                  {{$t('question.con45')}}
                 </div>
                 <div
                   class="qdConBlsR2"
                   v-if="auctionbutton"
                   @click="auctionss(item.bidding.createBy)"
                 >
-                  选择TA
+                  {{$t('question.con46')}}
                 </div>
               </div>
             </div>
@@ -281,13 +281,13 @@
                   v-show="qdConMyBls == false"
                   style="font-size: 12px; color: #333"
                 >
-                  提问者
+                  {{$t('question.con47')}}
                 </div>
                 <div
                   v-show="qdConMyBls == true"
                   style="font-size: 12px; color: #333"
                 >
-                  回答者
+                  {{$t('question.con48')}}
                 </div>
                 <img
                   class="questionCurrBimg"
@@ -306,12 +306,12 @@
                   <b v-show="qdConMyBls == true">{{ item.bname }}</b>
                   <router-link
                     :to="'/personalQuestions/' + item.bidding.createBy"
-                    >查看TA的主页</router-link
+                    >{{$t('question.con42')}}</router-link
                   >
                 </div>
               </div>
               <div class="questionCurrTime">
-                <div style="font-size: 12px; color: #333">截止日期</div>
+                <div style="font-size: 12px; color: #333">{{$t('question.con142')}}</div>
                 <div style="margin-top: 15px">
                   <p style="color: #333">
                     {{ qlList.question.endTime | formatDate }}
@@ -323,38 +323,38 @@
                       margin-top: 7px;
                       display: block;
                     "
-                    >剩余 {{ d }}天{{ h }}小时{{ m }}分</span
+                    >{{$t('question.con133')}} {{ d }}{{$t('question.con33')}}{{ h }}{{$t('question.con34')}}{{ m }}{{$t('question.con35')}}</span
                   >
                 </div>
               </div>
               <div class="questionCurrMon">
-                <div style="font-size: 12px; color: #333">竞拍金额</div>
+                <div style="font-size: 12px; color: #333">{{$t('question.con143')}}</div>
                 <div style="margin-top: 15px">
                   <b style="color: #333">{{ item.bidding.currency }}</b
                   ><br />
                   <p style="color: #333; font-size: 12px; margin-top: 7px">
-                    鲸灵币
+                    {{$t('question.con39')}}
                   </p>
                 </div>
               </div>
               <div class="questionCurrType">
-                <div style="font-size: 12px; color: #333">当前状态</div>
+                <div style="font-size: 12px; color: #333">{{$t('question.con144')}}</div>
                 <div style="margin-top: 15px; height: 41px">
                   <!-- 4：已回答，5：申请客服，6：已完成,7:已关闭 -->
                   <b v-show="qlList.question.status == 3" style="color: #333"
-                    >等待完成中</b
+                    >{{$t('question.con49')}}</b
                   >
                   <b v-show="qlList.question.status == 4" style="color: #333"
-                    >已回答</b
+                    >{{$t('question.con50')}}</b
                   >
                   <b v-show="qlList.question.status == 5" style="color: #333"
-                    >申请客服</b
+                    >{{$t('question.con51')}}</b
                   >
                   <b v-show="qlList.question.status == 6" style="color: #333"
-                    >已完成</b
+                    >{{$t('question.con52')}}</b
                   >
                   <b v-show="qlList.question.status == 7" style="color: #333"
-                    >已关闭</b
+                    >{{$t('question.con53')}}</b
                   >
                 </div>
               </div>
@@ -363,21 +363,21 @@
                   v-show="qdConMyBls == false"
                   style="font-size: 12px; color: #333; text-align: right"
                 >
-                  随时通过对话按钮与提问者交流
+                  {{$t('question.con54')}}
                 </div>
                 <div
                   v-show="qdConMyBls == true"
                   style="font-size: 12px; color: #333; text-align: right"
                 >
-                  随时通过对话按钮与回答者交流
+                  {{$t('question.con55')}}
                 </div>
                 <div style="margin-top: 15px" v-show="qdConMyBls == false">
                   <div class="qdConBlsR3" @click="informQuizzer(qlList)">
-                    对话
+                    {{$t('question.con45')}}
                   </div>
                 </div>
                 <div style="margin-top: 15px" v-show="qdConMyBls == true">
-                  <div class="qdConBlsR3" @click="inform(item)">对话</div>
+                  <div class="qdConBlsR3" @click="inform(item)">{{$t('question.con45')}}</div>
                 </div>
               </div>
             </div>
@@ -411,7 +411,7 @@
                 <div style="overflow: hidden; margin-bottom: 33px">
                   <div class="qdEditanName">
                     <span style="color: #333">{{ blsinfo[0].bname }}</span
-                    >&nbsp;发布了问题
+                    >&nbsp;{{$t('question.con56')}}
                   </div>
                   <div class="qdEditanTime">
                     {{ item.createTime | formatDate }}
@@ -439,17 +439,17 @@
             @click="evaluate(qlList.question.id)"
             v-show="evaluateS"
           >
-            评价
+            {{$t('question.con57')}}
           </div>
 
           <div class="countTime" v-if="countdown">
             <div style="margin-bottom: 14px; font-size: 20px">
-              恭喜你!&nbsp;该问题竞拍成功!
+              {{$t('question.con58')}}&nbsp;{{$t('question.con59')}}
             </div>
             <div style="font-size: 14px">
-              请在约定的时间范围内提交回答,剩余{{ d }}天{{ h }}小时{{ m }}分{{
+              {{$t('question.con60')}}{{$t('question.con133')}}{{ d }}{{$t('question.con33')}}{{ h }}{{$t('question.con34')}}{{ m }}{{$t('question.con35')}}{{
                 s
-              }}秒
+              }}{{$t('question.con61')}}
             </div>
           </div>
           <div class="qd-edit" v-show="qdeditShow">
@@ -469,7 +469,7 @@
                 :data="{ questionId: this.qlList.question.id }"
               >
                 <el-button size="small" type="primary" class="upImgBut">
-                  上传答案图片
+                  {{$t('question.con145')}}
                   <i class="el-icon-picture"></i>
                 </el-button>
                 <!-- <i slot="default" class="el-icon-picture" title="添加图片附件"></i> -->
@@ -489,14 +489,14 @@
                 class="qd-edit-submit"
                 @click="submit"
                 v-if="savesubmitShow"
-                >提交回答</el-button
+                >{{$t('question.con146')}}</el-button
               >
               <el-button
                 type="primary"
                 class="qd-edit-submit"
                 @click="save"
                 v-if="replenishShow"
-                >补充回答</el-button
+                >{{$t('question.con147')}}</el-button
               >
             </div>
           </div>
@@ -516,16 +516,16 @@
             line-height: 500px;
           "
         >
-          请<router-link to="/login" style="text-decoration: none"
-            >登录</router-link
-          >之后查看问题详情
+          {{$t('question.con62')}}<router-link to="/login" style="text-decoration: none"
+            >{{$t('question.con63')}}</router-link
+          >{{$t('question.con64')}}
         </div>
       </div>
     </div>
 
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
-        <h3>选择您向提问人提出的时间和赏金要求</h3>
+        <h3>{{$t('question.con65')}}</h3>
         <el-form
           :model="auction"
           :rules="auctionrules"
@@ -552,11 +552,11 @@
               </el-form-item>
             </div> -->
             <div>
-              <div class="PR">鲸灵币</div>
+              <div class="PR">{{$t('question.con39')}}</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
-                  placeholder="鲸灵币(选填)"
+                  :placeholder="$t('question.con66')"
                   style="width: 270px"
                 ></el-input>
               </el-form-item>
@@ -569,7 +569,7 @@
             type="primary"
             size="medium"
             @click="auctionQl('auction')"
-            >提交</el-button
+            >{{$t('question.con67')}}</el-button
           >
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
@@ -585,7 +585,7 @@
           class="demo-ruleForm"
         >
           <div style="overflow: hidden; float: left">
-            <div class="PR">选择你的科目</div>
+            <div class="PR">{{$t('question.con68')}}</div>
             <!-- :inline="true" -->
             <el-form-item
               prop="type"
@@ -594,7 +594,7 @@
             >
               <el-select
                 v-model="QuestionsQuiz.type"
-                placeholder="请选择"
+                :placeholder="$t('question.con69')"
                 style="width: 270px"
               >
                 <el-option
@@ -608,7 +608,7 @@
             </el-form-item>
           </div>
           <div style="overflow: hidden; margin-left: 289px">
-            <div class="PR">输入你的主题或课程</div>
+            <div class="PR">{{$t('question.con70')}}</div>
             <el-form-item
               prop="Title"
               class="ql-editQuziTi"
@@ -623,13 +623,13 @@
 
           <div style="overflow: hidden">
             <div style="float: left" class="queTime">
-              <div class="PR">答题截止时间</div>
+              <div class="PR">{{$t('question.con71')}}</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
                   style="width: 270px"
-                  placeholder="选择日期时间"
+                  :placeholder="$t('question.con72')"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
                     disabledDate: (time) => {
@@ -656,7 +656,7 @@
               :file-list="quefileList"
             >
               <el-button size="small" type="primary" class="upImgBut">
-                上传问题图片
+                {{$t('question.con73')}}
                 <i class="el-icon-picture"></i>
               </el-button>
             </el-upload>
@@ -686,7 +686,7 @@
             type="primary"
             size="medium"
             @click="releaseQl('QuestionsQuiz')"
-            >发布问题</el-button
+            >{{$t('question.con74')}}</el-button
           >
         </div>
 
@@ -696,14 +696,14 @@
     <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
       <div class="ql-editQuzi">
         <div style="min-height: 117px">
-          <div style="float: left">您的评价:</div>
+          <div style="float: left">{{$t('question.con75')}}</div>
           <el-switch
             style="display: block; float: right"
             v-model="evaluateSwitch"
             active-color="#13ce66"
             inactive-color="#ff4949"
-            active-text="好评"
-            inactive-text="差评"
+            :active-text="$t('question.con76')"
+            :inactive-text="$t('question.con77')"
           ></el-switch>
           <el-input
             v-model="evaluateInput"
@@ -714,13 +714,13 @@
             type="primary"
             size="medium"
             @click="evaluateCon"
-            >确定</el-button
+            >{{$t('question.con78')}}</el-button
           >
           <el-button
             style="float: right; margin-right: 10px"
             size="medium"
             @click="CloseEvaluate"
-            >取消</el-button
+            >{{$t('question.con79')}}</el-button
           >
         </div>
       </div>
@@ -741,14 +741,14 @@
               <span>{{ item.contentsUrl }}</span>
             </div>
           </div>
-          <div v-show="newInfo" class="newInfo1" @click="newInfo1">新消息</div>
+          <div v-show="newInfo" class="newInfo1" @click="newInfo1">{{$t('question.con80')}}</div>
           <div class="chatSend">
             <el-input
               v-model="chatSends"
               style="width: 480px; margin-right: 10px"
               @keyup.enter.native="chatSendHead"
             ></el-input>
-            <el-button @click="chatSendHead">发送</el-button>
+            <el-button @click="chatSendHead">{{$t('question.con81')}}</el-button>
           </div>
         </div>
 
@@ -775,14 +775,14 @@
               <span>{{ item.contentsUrl }}</span>
             </div>
           </div>
-          <div v-show="newInfos" class="newInfo1" @click="newInfo2">新消息</div>
+          <div v-show="newInfos" class="newInfo1" @click="newInfo2">{{$t('question.con80')}}</div>
           <div class="chatSend">
             <el-input
               v-model="quizzerchatSends"
               style="width: 480px; margin-right: 10px"
               @keyup.enter.native="quizzerChatSendHead"
             ></el-input>
-            <el-button @click="quizzerChatSendHead">发送</el-button>
+            <el-button @click="quizzerChatSendHead">{{$t('question.con81')}}</el-button>
           </div>
         </div>
 
@@ -792,41 +792,9 @@
         ></div>
       </div>
     </div>
-    <div class="ql-shade" v-show="editImgs">
-      <!-- <div class="ql-editQuzi">
-        <div style="min-height:200px">
-          <el-upload
-            :action="imgSite"
-            :headers="myHeaders"
-            list-type="picture-card"
-            :auto-upload="true"
-            class="upImg"
-            multiple
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload"
-            :on-preview="handlePictureCardPreview"
-            :on-remove="handleRemove"
-            :file-list="fileList"
-          >
-            <el-button size="small" type="primary" class="upImgBut">
-              上传问题图片
-              <i class="el-icon-picture"></i>
-            </el-button>
-          </el-upload>
-          <el-dialog
-            :visible.sync="dialogVisible"
-            :modal-append-to-body="false"
-          >
-            <img width="100%" :src="dialogImageUrl" alt />
-          </el-dialog>
-        </div>
-
-        <div class="qlreleaseClose el-icon-close" @click="CloseeditIMG"></div>
-      </div> -->
-    </div>
     <div class="ql-shade" v-show="editauction">
       <div class="ql-editReply">
-        <h3>变更您的赏金要求</h3>
+        <h3>{{$t('question.con82')}}</h3>
         <el-form
           :model="editauctions"
           :rules="editauctionrules"
@@ -835,11 +803,11 @@
         >
           <div style="overflow: hidden">
             <div style="float: left">
-              <div class="PR">鲸灵币</div>
+              <div class="PR">{{$t('question.con39')}}</div>
               <el-form-item prop="currencys">
                 <el-input
                   v-model.number="editauctions.currencys"
-                  placeholder="请输入鲸灵币"
+                  :placeholder="$t('question.con83')"
                   style="width: 270px"
                 ></el-input>
               </el-form-item>
@@ -852,7 +820,7 @@
             type="primary"
             size="medium"
             @click="editauctionQl('editauctions')"
-            >提交</el-button
+            >{{$t('question.con67')}}</el-button
           >
         </div>
 
@@ -931,7 +899,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
-        placeholder: "输入答案的详细内容",
+        placeholder: this.$t('question.con85'),
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 300,
         plugins: this.plugins,
@@ -975,7 +943,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
-        placeholder: "输入问题的详细描述",
+        placeholder: this.$t('question.con86'),
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 300,
         plugins: this.plugins,
@@ -1052,8 +1020,8 @@ export default {
       // 我要答表单验证
       auctionrules: {
         Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-          { type: "number", message: "必须为数字" },
+          { required: true, message: this.$t('question.con83'), trigger: "blur" },
+          { type: "number", message: this.$t('question.con84') },
         ],
       },
       // 编辑竞拍列表
@@ -1063,8 +1031,8 @@ export default {
       // 我要答表单验证
       editauctionrules: {
         currencys: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-          { type: "number", message: "必须为数字" },
+          { required: true, message: this.$t('question.con83'), trigger: "blur" },
+          { type: "number", message: this.$t('question.con84') },
         ],
       },
       austartTimeRange: "",
@@ -1091,23 +1059,23 @@ export default {
       },
       // 编辑提问表单验证
       QuestionsQuizrules: {
-        type: [{ required: true, message: "请选择科目", trigger: "change" }],
+        type: [{ required: true, message: this.$t('question.con87'), trigger: "change" }],
         title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" },
+          { required: true, message: this.$t('question.con88'), trigger: "blur" },
+          { min: 4, message: this.$t('question.con89'), trigger: "blur" },
         ],
-        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+        Content: [{ required: true, message: this.$t('question.con90'), trigger: "blur" }],
         EndTime: [
           {
             type: "string",
             required: true,
-            message: "请选择日期",
+            message: this.$t('question.con91'),
             trigger: "change",
           },
         ],
         Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-          { type: "number", message: "必须为数字" },
+          { required: true, message: this.$t('question.con83'), trigger: "blur" },
+          { type: "number", message: this.$t('question.con84') },
         ],
       },
       // 图片
@@ -1200,7 +1168,6 @@ export default {
         { name: "旅游类 Tourism", type: 39 },
         { name: "其他 Other", type: 40 },
       ],
-      editImgs: false,
       editauction: false,
       rencurrency: {},
       qdconMeshow: true,
@@ -1455,11 +1422,11 @@ export default {
             let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
             let m = Math.floor((leftTime / 1000 / 60) % 60);
             if (d == 0 && h > 0) {
-              _this.qlList.Times = "在" + h + "小时前发布了这个问题";
+              _this.qlList.Times = _this.$t('question.con20') + h + _this.$t('question.con21');
             } else if (h <= 0 && d <= 0) {
-              _this.qlList.Times = "刚刚发布的问题";
+              _this.qlList.Times = _this.$t('question.con19');
             } else {
-              _this.qlList.Times = "在" + d + "天" + h + "小时前发布了这个问题";
+              _this.qlList.Times = _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
             }
 
             if (localStorage.token) {
@@ -1701,9 +1668,9 @@ export default {
     // 选他答
     auctionss(clienid) {
       const _this = this;
-      this.$prompt("请输入您的账号密码", "CourseWhale", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt(_this.$t('question.con92'), "CourseWhale", {
+        confirmButtonText: _this.$t('question.con78'),
+        cancelButtonText: _this.$t('question.con79'),
       })
         .then(({ value }) => {
           _this
@@ -1730,7 +1697,7 @@ export default {
                 clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
                 _this.$message({
-                  message: "发布成功,竞拍者可以开始答题。",
+                  message: _this.$t('question.con93'),
                   type: "success",
                 });
               } else {
@@ -1843,7 +1810,7 @@ export default {
               _this.quizzerchatSends = "";
             } else {
               _this.$message({
-                message: "发送失败",
+                message: _this.$t('question.con94'),
                 type: "error",
               });
             }
@@ -1951,7 +1918,7 @@ export default {
               _this.chatSends = "";
             } else {
               _this.$message({
-                message: "发送失败",
+                message: _this.$t('question.con94'),
                 type: "error",
               });
             }
@@ -1998,7 +1965,7 @@ export default {
               _this.QuDe();
 
               _this.$message({
-                message: "保存成功",
+                message: _this.$t('question.con96'),
                 type: "success",
               });
             } else {
@@ -2029,7 +1996,7 @@ export default {
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
-          message: "请登录之后竞拍",
+          message: _this.$t('question.con97'),
           type: "warning",
         });
       }
@@ -2100,7 +2067,7 @@ export default {
                 // _this.QuestionsQuiz.type = "";
                 _this.qlShade = !_this.qlShade;
                 _this.$message({
-                  message: "编辑成功",
+                  message: _this.$t('question.con98'),
                   type: "success",
                 });
                 // _this.$router.push({
@@ -2111,7 +2078,7 @@ export default {
                 _this.QuDe();
               } else {
                 _this.$message({
-                  message: "请确认填写相关内容",
+                  message: _this.$t('question.con99'),
                   type: "error",
                 });
               }
@@ -2160,12 +2127,12 @@ export default {
             clearInterval(_this.timeAlsBlsinfo);
             _this.QuDe();
             _this.$message({
-              message: "评价成功",
+              message: _this.$t('question.con100'),
               type: "success",
             });
           } else {
             _this.$message({
-              message: "评价失败",
+              message: _this.$t('question.con101'),
               type: "error",
             });
           }
@@ -2177,9 +2144,9 @@ export default {
     // 申请客服按钮
     service(id) {
       const _this = this;
-      this.$prompt("您要对客服说:", "CourseWhale", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt(_this.$t('question.con102'), "CourseWhale", {
+        confirmButtonText: _this.$t('question.con78'),
+        cancelButtonText: _this.$t('question.con79'),
       })
         .then(({ value }) => {
           _this
@@ -2201,12 +2168,12 @@ export default {
             .then(function (res) {
               if (res.data.status == 1) {
                 _this.$message({
-                  message: "发送成功",
+                  message: _this.$t('basic.con28'),
                   type: "success",
                 });
               } else {
                 _this.$message({
-                  message: "发送失败",
+                  message: _this.$t('question.con94'),
                   type: "error",
                 });
               }
@@ -2247,7 +2214,7 @@ export default {
                 _this.QuDe();
                 _this.replyShadeShow = false;
                 _this.$message({
-                  message: "竞拍成功。",
+                  message: _this.$t('question.con103'),
                   type: "success",
                 });
               } else {
@@ -2424,7 +2391,7 @@ export default {
             clearInterval(_this.timeAlsBlsinfo);
             _this.QuDe();
             _this.$message({
-              message: "上传资料补充成功。",
+              message: _this.$t('question.con104'),
               type: "success",
             });
           } else {
@@ -2507,7 +2474,7 @@ export default {
         .then(function (res) {
           if (res.data.status == 1) {
             _this.$message({
-              message: "收藏成功",
+              message: _this.$t('question.con105'),
               type: "success",
             });
           } else {
@@ -2520,14 +2487,6 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
-    },
-    editIMG() {
-      const _this = this;
-      _this.editImgs = !_this.editImgs;
-    },
-    CloseeditIMG() {
-      const _this = this;
-      _this.editImgs = !_this.editImgs;
     },
     // 编辑竞拍金额
     editauctionshow() {
@@ -2564,7 +2523,7 @@ export default {
                 clearInterval(_this.timeAlsBlsinfo);
                 _this.QuDe();
                 _this.$message({
-                  message: "编辑成功。",
+                  message: _this.$t('question.con106'),
                   type: "success",
                 });
               } else {
@@ -2587,10 +2546,10 @@ export default {
   beforeRouteLeave: function (to, from, next) {
     next(false);
     if (this.value != "" && this.qdeditShow) {
-      this.$confirm("离开本页面?请注意保存您的数据.", "CourseWhale", {
+      this.$confirm(_this.$t('question.con107'), "CourseWhale", {
         distinguishCancelAndClose: true,
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+        confirmButtonText: _this.$t('question.con78'),
+        cancelButtonText: _this.$t('question.con79'),
         type: "warning",
       })
         .then(() => {

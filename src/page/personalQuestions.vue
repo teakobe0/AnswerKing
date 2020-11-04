@@ -252,19 +252,19 @@
             <img src="../assets/头像.jpg" alt="" v-show="pq.qimage == null" />
             <p class="pequlefttop-name1">{{ pq.qname }}</p>
             <p class="pequlefttop-name2">
-              完成了&nbsp;<b>{{ pq.cqinfo.completedQuestions }}</b
-              >&nbsp;个问题
+              {{$t('question.con108')}}&nbsp;<b>{{ pq.cqinfo.completedQuestions }}</b
+              >&nbsp;{{$t('question.con109')}}
             </p>
             <p class="pequlefttop-name3">
-              <b>好评率 {{ pq.goodReviewRateNum }}%</b>
+              <b>{{$t('question.con110')}} {{ pq.goodReviewRateNum }}%</b>
               &nbsp;
-              <b>超时率 {{ pq.overtimerateNum }}%</b>
+              <b>{{$t('question.con111')}} {{ pq.overtimerateNum }}%</b>
             </p>
           </div>
           <div class="pequlefttop-right">
-            <div style="width: 228px">
+            <div>
               <div class="pequlefttop-right1">
-                <p>总体评价&nbsp;&nbsp;&nbsp;{{ pq.goodReviewRateNum }}%</p>
+                <p>{{$t('question.con112')}}&nbsp;&nbsp;&nbsp;{{ pq.goodReviewRateNum }}%</p>
                 <div>
                   <el-rate
                     v-model="pq.goodReviewRate"
@@ -277,7 +277,7 @@
 
               <div class="pequlefttop-right1">
                 <p>
-                  最近评价&nbsp;&nbsp;&nbsp;{{ pq.recentGoodReviewRateNum }}%
+                  {{$t('question.con113')}}&nbsp;&nbsp;&nbsp;{{ pq.recentGoodReviewRateNum }}%
                 </p>
                 <div>
                   <el-rate
@@ -298,30 +298,30 @@
                 color: #888;
               "
             >
-              {{ pq.cqinfo.views }}&nbsp;人浏览过TA的主页
+              {{ pq.cqinfo.views }}&nbsp;{{$t('question.con114')}}
             </div>
           </div>
         </div>
         <div class="pequmin">
           <div class="pequmin1">
             <p>{{ pq.cqinfo.completedQuestions }}</p>
-            <div>完成的回答</div>
+            <div>{{$t('question.con115')}}</div>
           </div>
           <div class="pequmin1">
             <p>{{ pq.cqinfo.biddingQuestions }}</p>
-            <div>参与的回答</div>
+            <div>{{$t('question.con116')}}</div>
           </div>
           <div class="pequmin1">
             <p>{{ pq.goodReviewRateNum }}</p>
-            <div>好评率</div>
+            <div>{{$t('question.con117')}}</div>
           </div>
           <div class="pequmin1">
             <p>{{ pq.cqinfo.upvote }}</p>
-            <div>收货的赞</div>
+            <div>{{$t('question.con118')}}</div>
           </div>
           <div class="pequmin1">
             <p>{{ pq.cqinfo.favourites }}</p>
-            <div>被收藏次数</div>
+            <div>{{$t('question.con119')}}</div>
           </div>
         </div>
         <div class="pequDetai">
@@ -336,7 +336,7 @@
               </div>
             </div>
             <div class="pequDetaitopView" @click="pequDetaitopViewHald">
-              显示全部
+              {{$t('question.con120')}}
               <i class="el-icon-arrow-down" v-show="active == false"></i>
               <i class="el-icon-arrow-up" v-show="active == true"></i>
             </div>
@@ -344,14 +344,14 @@
           <div class="pequDetaibott">
             <div class="pequDetaibottlength">
               <div class="pequDetaibottx1"></div>
-              {{ pqConNum }}个问题
+              {{ pqConNum }}{{$t('question.con121')}}
               <div class="pequDetaibottx2"></div>
             </div>
             <div v-for="item in pqCon" class="pequDetaibottcon">
               <div class="pequDetaibott-top">
                 <img :src="item.qimage" alt="" />
                 <div>
-                  来自{{ item.qname }}的提问&nbsp;
+                  {{$t('question.con122')}}&nbsp;{{ item.qname }}&nbsp;{{$t('question.con123')}}&nbsp;
                   <span style="color: #888">{{
                     item.question.createTime | formatDate
                   }}</span>
@@ -365,7 +365,7 @@
                   {{ item.question.title }}
                 </router-link>
                 <div class="pequDetaibott-con2">
-                  来自{{ item.qname }}的评价&nbsp;
+                  {{$t('question.con122')}}&nbsp;{{ item.qname }}&nbsp;{{$t('question.con124')}}&nbsp;
                   <span style="color: #888">{{
                     item.question.endTime | formatDate
                   }}</span>
@@ -388,13 +388,13 @@
         </div>
       </div>
       <div class="pequright" v-if="pequleftShow">
-        <el-button @click="InvitedAnswer">邀请回答</el-button>
-        <div>TA有{{ pq.bunm }}个正在竞拍的问题</div>
+        <el-button @click="InvitedAnswer">{{$t('question.con125')}}</el-button>
+        <div>{{$t('question.con126')}}{{ pq.bunm }}{{$t('question.con127')}}</div>
       </div>
     </div>
     <div class="ql-shade" v-show="InvitedAnswerShow">
       <div class="ql-editQuzi">
-        <h3>选择您要邀请的问题</h3>
+        <h3>{{$t('question.con128')}}</h3>
         <div class="InvitedAnswer">
           <el-select
             v-model="myQuestionselct"
@@ -416,7 +416,7 @@
             type="primary"
             size="medium"
             @click="InvitedAnswerHand"
-            >提交</el-button
+            >{{$t('question.con67')}}</el-button
           >
         </div>
 

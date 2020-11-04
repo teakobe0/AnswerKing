@@ -56,7 +56,7 @@
   /* color: #FFF !important; */
   display: inline-block;
   line-height: 80px;
-  padding: 0 20px;
+  padding: 0 18px;
   text-decoration: none;
   font-weight: 700;
 }
@@ -275,7 +275,7 @@
         </el-menu-item>
 
         <el-menu-item index="5">
-          <router-link to="/question">问答中心</router-link>
+          <router-link to="/question">{{$t('question.con0')}}</router-link>
         </el-menu-item>
         <el-menu-item index="6" v-if="$store.state.logo.show">
           <router-link to="/login" style="width:56px;text-align: center;">{{$t('nav.nav5')}}</router-link>

@@ -612,7 +612,7 @@
   margin-top: 4vh !important;
 }
 .button2 {
-  width: 137px;
+  /* width: 137px; */
   height: 36px;
   margin-right: 10px !important;
   margin-left: 0px !important;
@@ -754,11 +754,11 @@
 }
 .questionCurrType {
   float: left;
-  width: 210px;
+  width: 180px;
 }
 .questionCurrJiao {
   float: left;
-  width: 187px;
+  width: 217px;
 }
 .upp .el-upload--picture-card {
   width: 130px !important;

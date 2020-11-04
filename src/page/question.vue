@@ -6,13 +6,13 @@
       <div class="ql-title">
         <div class="ql-t-con">
           <div class="qltconLeft">
-            <h1>提升学业最好的方式就是互相帮助。</h1>
+            <h1>{{$t('question.con1')}}</h1>
             <div style="position: relative">
               <el-input
                 v-model="topInput"
                 @change="topInputs"
                 style="width: 700px"
-                placeholder="在这里搜索你想找的学校，课程或其他学业相关内容..."
+                :placeholder="$t('question.con4')"
               ></el-input>
               <i class="el-icon-search" @click="topInputs"></i>
             </div>
@@ -31,10 +31,10 @@
                 font-size: 18px;
                 background: #1da1f2 !important;
               "
-              >提一个新问题&nbsp;></el-button
+              >{{$t('question.con2')}}&nbsp;></el-button
             >
             <router-link to="home"
-              >第一次使用课程精灵?点击这里查看教程</router-link
+              >{{$t('question.con3')}}</router-link
             >
           </div>
         </div>
@@ -62,14 +62,14 @@
               @click="newAnswerClick"
               v-show="newAnswerShow"
             >
-              有新的问题{{ newAnswerNum }}条,点击查看!
+              {{$t('question.con130')}}{{ newAnswerNum }}{{$t('question.con131')}}
             </div>
             <!-- 没有登录时 -->
             <!-- 没登录 -->
             <div v-show="qlcon">
               <div class="qlConTab">
                 <div class="qlConTabS" v-show="topInput != ''">
-                  搜索&nbsp;&nbsp;"{{ topInput }}"<i
+                  {{$t('question.con132')}}&nbsp;&nbsp;"{{ topInput }}"<i
                     class="el-icon-close"
                     @click="topInClose"
                   ></i>
@@ -79,14 +79,14 @@
                   :class="{ qlConTabNClass: qlConTabnum == 0 }"
                   @click="tab('n')"
                 >
-                  <img src="../assets/问答new.png" alt="" />最新问题
+                  <img src="../assets/问答new.png" alt="" />{{$t('question.con5')}}
                 </div>
                 <div
                   class="qlConTabN"
                   :class="{ qlConTabNClass: qlConTabnum == 1 }"
                   @click="tab('r')"
                 >
-                  <img src="../assets/问答huo.png" alt="" />人气问题
+                  <img src="../assets/问答huo.png" alt="" />{{$t('question.con6')}}
                 </div>
               </div>
               <div class="qlBodyMeiCon" v-for="item in qlList">
@@ -97,7 +97,7 @@
                   >
                 </div> -->
                   <div style="font-size: 12px; color: #adadad">
-                    {{ item.question.biddingNum }}人正在竞拍
+                    {{ item.question.biddingNum }}{{$t('question.con7')}}
                   </div>
                   <h4>
                     <router-link :to="'/questionDetails/' + item.question.id">{{
@@ -127,19 +127,19 @@
                       class="viewimages"
                     >
                       <p>
-                        点击查看<br />剩余{{
+                        {{$t('question.con11')}}<br />{{$t('question.con133')}}{{
                           item.question.imagesNum - 3
-                        }}张图片
+                        }}{{$t('question.con12')}}
                       </p>
                     </router-link>
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>参与竞拍回答</div>
+                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>{{$t('question.con10')}}</div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
-                    {{ item.favourite }}人收藏 {{ item.question.views }}人浏览
+                    {{ item.favourite }}{{$t('question.con8')}} {{ item.question.views }}{{$t('question.con9')}}
                   </div>
                 </div>
               </div>
@@ -149,7 +149,7 @@
             <div v-show="myQlcon">
               <div class="qlConTab">
                 <div class="qlConTabS" v-show="topInput != ''">
-                  搜索&nbsp;&nbsp;"{{ topInput }}"<i
+                  {{$t('question.con132')}}&nbsp;&nbsp;"{{ topInput }}"<i
                     class="el-icon-close"
                     @click="topInClose"
                   ></i>
@@ -159,14 +159,14 @@
                   :class="{ qlConTabNClass: qlConTabnum == 0 }"
                   @click="tab('n')"
                 >
-                  <img src="../assets/问答new.png" alt="" />最新问题
+                  <img src="../assets/问答new.png" alt="" />{{$t('question.con5')}}
                 </div>
                 <div
                   class="qlConTabN"
                   :class="{ qlConTabNClass: qlConTabnum == 1 }"
                   @click="tab('r')"
                 >
-                  <img src="../assets/问答huo.png" alt="" />人气问题
+                  <img src="../assets/问答huo.png" alt="" />{{$t('question.con6')}}
                 </div>
               </div>
               <div class="qlBodyMeiCon" v-for="item in myQlList">
@@ -186,7 +186,7 @@
                   >
                 </div> -->
                   <div style="font-size: 12px; color: #adadad">
-                    {{ item.que.biddingNum }}人正在竞拍
+                    {{ item.que.biddingNum }}{{$t('question.con7')}}
                   </div>
                   <h4>
                     <router-link :to="'/questionDetails/' + item.que.id">{{
@@ -215,17 +215,17 @@
                       class="viewimages"
                     >
                       <p>
-                        点击查看<br />剩余{{ item.que.imagesNum - 3 }}张图片
+                        {{$t('question.con11')}}<br />{{$t('question.con133')}}{{ item.que.imagesNum - 3 }}{{$t('question.con12')}}
                       </p>
                     </router-link>
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>参与竞拍回答</div>
+                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>{{$t('question.con10')}}</div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
-                    {{ item.favourite }}人收藏 {{ item.que.views }}人浏览
+                    {{ item.favourite }}{{$t('question.con8')}} {{ item.que.views }}{{$t('question.con9')}}
                   </div>
                 </div>
               </div>
@@ -248,7 +248,7 @@
           class="demo-ruleForm"
         >
           <div style="overflow: hidden; float: left">
-            <div class="PR">选择你的科目</div>
+            <div class="PR">{{$t('question.con68')}}</div>
             <!-- :inline="true" -->
             <el-form-item
               prop="type"
@@ -257,7 +257,7 @@
             >
               <el-select
                 v-model="QuestionsQuiz.type"
-                placeholder="请选择"
+                :placeholder="$t('question.con69')"
                 style="width: 270px"
               >
                 <el-option
@@ -271,7 +271,7 @@
             </el-form-item>
           </div>
           <div style="overflow: hidden; margin-left: 289px">
-            <div class="PR">输入你的主题或课程</div>
+            <div class="PR">{{$t('question.con70')}}</div>
             <el-form-item
               prop="Title"
               class="ql-editQuziTi"
@@ -286,13 +286,13 @@
 
           <div style="overflow: hidden">
             <div style="float: left" class="queTime">
-              <div class="PR">答题截止时间</div>
+              <div class="PR">{{$t('question.con71')}}</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
                   type="datetime"
                   style="width: 270px"
-                  placeholder="选择日期时间"
+                  :placeholder="$t('question.con72')"
                   value-format="yyyy-MM-dd HH:mm:ss"
                   :picker-options="{
                     disabledDate: (time) => {
@@ -319,7 +319,7 @@
               :file-list="fileList"
             >
               <el-button size="small" type="primary" class="upImgBut">
-                上传问题图片
+                {{$t('question.con73')}}
                 <i class="el-icon-picture"></i>
               </el-button>
               <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
@@ -350,7 +350,7 @@
             type="primary"
             size="medium"
             @click="releaseQl('QuestionsQuiz')"
-            >发布问题</el-button
+            >{{$t('question.con74')}}</el-button
           >
         </div>
 
@@ -359,7 +359,7 @@
     </div>
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
-        <h3>选择您向提问人提出的赏金要求</h3>
+        <h3>{{$t('question.con134')}}</h3>
         <el-form
           :model="auction"
           :rules="auctionrules"
@@ -386,11 +386,11 @@
               </el-form-item>
             </div> -->
             <div style="float: left">
-              <div class="PR">鲸灵币</div>
+              <div class="PR">{{$t('question.con39')}}</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
-                  placeholder="请输入鲸灵币"
+                  :placeholder="$t('question.con83')"
                   style="width: 270px"
                 ></el-input>
               </el-form-item>
@@ -403,7 +403,7 @@
             type="primary"
             size="medium"
             @click="auctionQl('auction')"
-            >提交</el-button
+            >{{$t('question.con67')}}</el-button
           >
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
@@ -465,7 +465,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
-        placeholder: "输入问题的详细描述",
+        placeholder: this.$t('question.con86'),
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 213,
         plugins: this.plugins,
@@ -541,8 +541,8 @@ export default {
       // 我要答表单验证
       auctionrules: {
         Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-          { type: "number", message: "必须为数字" },
+          { required: true, message: this.$t('question.con83'), trigger: "blur" },
+          { type: "number", message: this.$t('question.con84') },
         ],
       },
       qlList: [],
@@ -799,11 +799,11 @@ export default {
                   let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                   let m = Math.floor((leftTime / 1000 / 60) % 60);
                   if (d == 0 && h > 0) {
-                    a[i].Times = "在" + h + "个小时前发布了这个问题";
+                    a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                   } else if (h <= 0 && d <= 0) {
-                    a[i].Times = "刚刚发布的问题";
+                    a[i].Times = _this.$t('question.con19');
                   } else {
-                    a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
+                    a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con22') + h + _this.$t('question.con24');
                   }
                   _this.myQlList.unshift(a[i]);
                 }
@@ -884,12 +884,12 @@ export default {
                       let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                       let m = Math.floor((leftTime / 1000 / 60) % 60);
                       if (d == 0 && h > 0) {
-                        a[i].Times = "在" + h + "个小时前发布了这个问题";
+                        a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                       } else if (h <= 0 && d <= 0) {
-                        a[i].Times = "刚刚发布的问题";
+                        a[i].Times = _this.$t('question.con19');
                       } else {
                         a[i].Times =
-                          "在" + d + "天" + h + "个小时前发布了这个问题";
+                          _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                       }
                       _this.myQlList.push(a[i]);
                     }
@@ -948,12 +948,12 @@ export default {
                         let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                         let m = Math.floor((leftTime / 1000 / 60) % 60);
                         if (d == 0 && h > 0) {
-                          a[i].Times = "在" + h + "个小时前发布了这个问题";
+                          a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                         } else if (h <= 0 && d <= 0) {
-                          a[i].Times = "刚刚发布的问题";
+                          a[i].Times = _this.$t('question.con19');
                         } else {
                           a[i].Times =
-                            "在" + d + "天" + h + "个小时前发布了这个问题";
+                            _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                         }
                         _this.qlList.push(a[i]);
                       }
@@ -964,61 +964,61 @@ export default {
                   console.log(error);
                 });
             } else if (localStorage.token && _this.num == 3) {
-              _this
-                .axios({
-                  method: "get",
-                  url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-                  async: false,
-                  params: {
-                    name: _this.topInput,
-                    pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes,
-                    name: _this.topInput,
-                  },
-                  xhrFields: {
-                    withCredentials: true,
-                  },
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  },
-                })
-                .then(function (res) {
-                  if (res.data.status == 1) {
-                    let a = [];
-                    a = res.data.data.data;
-                    for (var i = 0; i < a.length; i++) {
-                      a[i].type = "";
-                      if (a[i].que.status == 1) {
-                        a[i].type = "保存";
-                      }
-                      if (a[i].que.status == 2) {
-                        a[i].type = "正在竞拍";
-                      }
-                      if (a[i].que.status == 3) {
-                        a[i].type = "已选竞拍者";
-                      }
-                      if (a[i].que.status == 4) {
-                        a[i].type = "已回答";
-                      }
-                      if (a[i].que.status == 5) {
-                        a[i].type = "提交修改";
-                      }
-                      if (a[i].que.status == 6) {
-                        a[i].type = "申请客服";
-                      }
-                      if (a[i].que.status == 7) {
-                        a[i].type = "已完成";
-                      }
-                      if (a[i].que.status == 8) {
-                        a[i].type = "已关闭";
-                      }
-                      _this.myQlList.push(a[i]);
-                    }
-                  }
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
+              // _this
+              //   .axios({
+              //     method: "get",
+              //     url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+              //     async: false,
+              //     params: {
+              //       name: _this.topInput,
+              //       pagenum: ++_this.pagenums,
+              //       pagesize: _this.pagesizes,
+              //       name: _this.topInput,
+              //     },
+              //     xhrFields: {
+              //       withCredentials: true,
+              //     },
+              //     headers: {
+              //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+              //     },
+              //   })
+              //   .then(function (res) {
+              //     if (res.data.status == 1) {
+              //       let a = [];
+              //       a = res.data.data.data;
+              //       for (var i = 0; i < a.length; i++) {
+              //         a[i].type = "";
+              //         if (a[i].que.status == 1) {
+              //           a[i].type = "保存";
+              //         }
+              //         if (a[i].que.status == 2) {
+              //           a[i].type = "正在竞拍";
+              //         }
+              //         if (a[i].que.status == 3) {
+              //           a[i].type = "已选竞拍者";
+              //         }
+              //         if (a[i].que.status == 4) {
+              //           a[i].type = "已回答";
+              //         }
+              //         if (a[i].que.status == 5) {
+              //           a[i].type = "提交修改";
+              //         }
+              //         if (a[i].que.status == 6) {
+              //           a[i].type = "申请客服";
+              //         }
+              //         if (a[i].que.status == 7) {
+              //           a[i].type = "已完成";
+              //         }
+              //         if (a[i].que.status == 8) {
+              //           a[i].type = "已关闭";
+              //         }
+              //         _this.myQlList.push(a[i]);
+              //       }
+              //     }
+              //   })
+              //   .catch(function (error) {
+              //     console.log(error);
+              //   });
             }
           }
         };
@@ -1103,12 +1103,12 @@ export default {
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               if (d == 0 && h > 0) {
-                _this.qlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                _this.qlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
               } else if (h <= 0 && d <= 0) {
-                _this.qlList[i].Times = "刚刚发布的问题";
+                _this.qlList[i].Times = _this.$t('question.con19');
               } else {
                 _this.qlList[i].Times =
-                  "在" + d + "天" + h + "个小时前发布了这个问题";
+                  _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
               }
             }
           }
@@ -1170,12 +1170,12 @@ export default {
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               if (d == 0 && h > 0) {
-                _this.myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                _this.myQlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
               } else if (h <= 0 && d <= 0) {
-                _this.myQlList[i].Times = "刚刚发布的问题";
+                _this.myQlList[i].Times = _this.$t('question.con19');
               } else {
                 _this.myQlList[i].Times =
-                  "在" + d + "天" + h + "个小时前发布了这个问题";
+                  _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
               }
             }
           }
@@ -1309,7 +1309,7 @@ export default {
         _this.qlShade = !_this.qlShade;
       } else {
         _this.$message({
-          message: "请登录之后提问",
+          message: _this.$t('upload.u2'),
           type: "warning",
         });
       }
@@ -1364,12 +1364,12 @@ export default {
                 _this.pagesizes = 5;
                 _this.myquizList();
                 _this.$message({
-                  message: "发布成功",
+                  message: _this.$t('question.con135'),
                   type: "success",
                 });
               } else {
                 _this.$message({
-                  message: "请检查相关内容是否填写",
+                  message: _this.$t('question.con136'),
                   type: "error",
                 });
               }
@@ -1389,7 +1389,7 @@ export default {
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
-          message: "请登录之后竞拍",
+          message: _this.$t('question.con97'),
           type: "warning",
         });
       }
@@ -1421,7 +1421,7 @@ export default {
               if (res.data.status == 1) {
                 _this.qlreplyShade = !_this.qlreplyShade;
                 _this.$message({
-                  message: "竞拍成功!",
+                  message: _this.$t('question.con137'),
                   type: "success",
                 });
               } else {
@@ -1489,12 +1489,12 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  _this.myQlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                  _this.myQlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                 } else if (h <= 0 && d <= 0) {
-                  _this.myQlList[i].Times = "刚刚发布的问题";
+                  _this.myQlList[i].Times = _this.$t('question.con19');
                 } else {
                   _this.myQlList[i].Times =
-                    "在" + d + "天" + h + "个小时前发布了这个问题";
+                    _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                 }
               }
             }
@@ -1547,12 +1547,12 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  _this.qlList[i].Times = "在" + h + "个小时前发布了这个问题";
+                  _this.qlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                 } else if (h <= 0 && d <= 0) {
-                  _this.qlList[i].Times = "刚刚发布的问题";
+                  _this.qlList[i].Times = _this.$t('question.con19');
                 } else {
                   _this.qlList[i].Times =
-                    "在" + d + "天" + h + "个小时前发布了这个问题";
+                    _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                 }
               }
             }
@@ -1619,11 +1619,11 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  a[i].Times = "在" + h + "个小时前发布了这个问题";
+                  a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                 } else if (h <= 0 && d <= 0) {
-                  a[i].Times = "刚刚发布的问题";
+                  a[i].Times = _this.$t('question.con19');
                 } else {
-                  a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
+                  a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                 }
                 _this.myQlList.push(a[i]);
               }
@@ -1681,11 +1681,11 @@ export default {
                   let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                   let m = Math.floor((leftTime / 1000 / 60) % 60);
                   if (d == 0 && h > 0) {
-                    a[i].Times = "在" + h + "个小时前发布了这个问题";
+                    a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
                   } else if (h <= 0 && d <= 0) {
-                    a[i].Times = "刚刚发布的问题";
+                    a[i].Times = _this.$t('question.con19');
                   } else {
-                    a[i].Times = "在" + d + "天" + h + "个小时前发布了这个问题";
+                    a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
                   }
                   _this.qlList.push(a[i]);
                 }
@@ -1696,60 +1696,60 @@ export default {
             console.log(error);
           });
       } else if (localStorage.token && _this.num == 3) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-            async: false,
-            params: {
-              name: _this.topInput,
-              pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              let a = [];
-              a = res.data.data.data;
-              for (var i = 0; i < a.length; i++) {
-                a[i].type = "";
-                if (a[i].que.status == 1) {
-                  a[i].type = "保存";
-                }
-                if (a[i].que.status == 2) {
-                  a[i].type = "正在竞拍";
-                }
-                if (a[i].que.status == 3) {
-                  a[i].type = "已选竞拍者";
-                }
-                if (a[i].que.status == 4) {
-                  a[i].type = "已回答";
-                }
-                if (a[i].que.status == 5) {
-                  a[i].type = "提交修改";
-                }
-                if (a[i].que.status == 6) {
-                  a[i].type = "申请客服";
-                }
-                if (a[i].que.status == 7) {
-                  a[i].type = "已完成";
-                }
-                if (a[i].que.status == 8) {
-                  a[i].type = "已关闭";
-                }
-                _this.myQlList.push(a[i]);
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        // _this
+        //   .axios({
+        //     method: "get",
+        //     url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
+        //     async: false,
+        //     params: {
+        //       name: _this.topInput,
+        //       pagenum: ++_this.pagenums,
+        //       pagesize: _this.pagesizes,
+        //     },
+        //     xhrFields: {
+        //       withCredentials: true,
+        //     },
+        //     headers: {
+        //       Authorization: `Bearer ${localStorage.getItem("token")}`,
+        //     },
+        //   })
+        //   .then(function (res) {
+        //     if (res.data.status == 1) {
+        //       let a = [];
+        //       a = res.data.data.data;
+        //       for (var i = 0; i < a.length; i++) {
+        //         a[i].type = "";
+        //         if (a[i].que.status == 1) {
+        //           a[i].type = "保存";
+        //         }
+        //         if (a[i].que.status == 2) {
+        //           a[i].type = "正在竞拍";
+        //         }
+        //         if (a[i].que.status == 3) {
+        //           a[i].type = "已选竞拍者";
+        //         }
+        //         if (a[i].que.status == 4) {
+        //           a[i].type = "已回答";
+        //         }
+        //         if (a[i].que.status == 5) {
+        //           a[i].type = "提交修改";
+        //         }
+        //         if (a[i].que.status == 6) {
+        //           a[i].type = "申请客服";
+        //         }
+        //         if (a[i].que.status == 7) {
+        //           a[i].type = "已完成";
+        //         }
+        //         if (a[i].que.status == 8) {
+        //           a[i].type = "已关闭";
+        //         }
+        //         _this.myQlList.push(a[i]);
+        //       }
+        //     }
+        //   })
+        //   .catch(function (error) {
+        //     console.log(error);
+        //   });
       }
     },
     // 上传问题图片删除后

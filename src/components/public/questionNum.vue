@@ -71,25 +71,25 @@
       <div>
         <div class="qlBodyRightTitle">
           <img class="qlBodyRightI1" src="../../assets/问答3.jpg" alt />
-          <span>我的提问</span>
+          <span>{{$t('question.con13')}}</span>
           <span class="queNums" v-show="quedistinction>0">{{quedistinction}}</span>
           <img class="qlBodyRightI2" src="../../assets/问答5.jpg" alt />
         </div>
         <div class="qlBodyRightBott">
           <router-link :to="{path:'/personalData/myQuestion',query: {type: 'auction'}}">
-            竞拍中的提问
+            {{$t('question.con14')}}
             <span v-show="auctions != 0">{{auctions}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myQuestion',query: {type: 'tofinish'}}">
-            待完成的提问
+            {{$t('question.con15')}}
             <span v-show="toAnswer != 0">{{toAnswer}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myQuestion',query: {type: 'evaluate'}}">
-            待评价的提问
+            {{$t('question.con16')}}
             <span v-show="haveToAnswer != 0">{{haveToAnswer}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myQuestion',query: {type: 'finish'}}">
-            已完毕的提问
+            {{$t('question.con17')}}
             <span v-show="noAnswer != 0">{{noAnswer}}</span>
           </router-link>
         </div>
@@ -99,25 +99,25 @@
       <div>
         <div class="qlBodyRightTitle">
           <img class="qlBodyRightI1" src="../../assets/问答4.jpg" alt />
-          <span>我的回答</span>
+          <span>{{$t('question.con18')}}</span>
           <span class="queNums" v-show="ansdistinction>0">{{ansdistinction}}</span>
           <img class="qlBodyRightI2" src="../../assets/问答5.jpg" alt />
         </div>
         <div class="qlBodyRightBott">
           <router-link :to="{path:'/personalData/myAnswers',query: {type: 'auction'}}">
-            竞拍中的回答
+            {{$t('question.con138')}}
             <span v-show="paAuctions != 0">{{paAuctions}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myAnswers',query: {type: 'tofinish'}}">
-            待完成的回答
+            {{$t('question.con139')}}
             <span v-show="paToAnswer != 0">{{paToAnswer}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myAnswers',query: {type: 'evaluate'}}">
-            待评价的回答
+            {{$t('question.con140')}}
             <span v-show="paHaveToAnswer != 0">{{paHaveToAnswer}}</span>
           </router-link>
           <router-link :to="{path:'/personalData/myAnswers',query: {type: 'finish'}}">
-            已完毕的回答
+            {{$t('question.con141')}}
             <span v-show="PaNoAnswer != 0">{{PaNoAnswer}}</span>
           </router-link>
         </div>

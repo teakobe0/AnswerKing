@@ -35,6 +35,7 @@
     color: #0059ff;
 }
 .qltconLeft h1 {
+    width: 750px;
     margin-top: 47px;
     color: #27427a;
     letter-spacing: 1px;
@@ -241,7 +242,8 @@
     text-align: center;
     cursor: pointer;
     padding: 7px 20px;
-    width: 136px;
+    /* width: 136px; */
+    display: inline-block;
     border-radius: 10px;
 }
 
@@ -254,9 +256,10 @@
     margin-top: 30px;
     color: #888888;
     margin-left: 20px;
-    position: absolute;
+    /* position: absolute;
     bottom: 26px;
-    left: 200px;
+    left: 200px; */
+    display: inline-block;
     font-size: 14px;
 }
 .pageturning {
@@ -529,7 +532,7 @@
 }
 .ql-shade .el-upload--picture-card {
     border: 0px !important;
-    width: 123px !important;
+    width: auto !important;
     height: 36px !important;
     line-height: 0px !important;
 }
