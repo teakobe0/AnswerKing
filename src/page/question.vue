@@ -6,7 +6,7 @@
       <div class="ql-title">
         <div class="ql-t-con">
           <div class="qltconLeft">
-            <h1>{{$t('question.con1')}}</h1>
+            <h1>{{ $t("question.con1") }}</h1>
             <div style="position: relative">
               <el-input
                 v-model="topInput"
@@ -31,23 +31,23 @@
                 font-size: 18px;
                 background: #1da1f2 !important;
               "
-              >{{$t('question.con2')}}&nbsp;></el-button
+              >{{ $t("question.con2") }}&nbsp;></el-button
             >
-            <router-link to="home"
-              >{{$t('question.con3')}}</router-link
-            >
+            <router-link to="home">{{ $t("question.con3") }}</router-link>
           </div>
         </div>
       </div>
       <div class="ql-body">
         <div class="qlBodyCon">
-          <div class="qlBodyLeft">
+          <div class="qlBodyLeft" v-show="localStoragelang == true">
             <div
               v-for="(item, index) in this.quClasss"
               :class="{ qlBodyConActive: index == num }"
               @click="newTime(index)"
             >
-              {{ item.name }}<br/><span style="font-size: 12px;display: block;width: 170px;height: 30px;overflow: hidden;text-overflow: ellipsis;white-space: nowrap;position: relative;top: -10px;">{{item.ename}}</span>
+              {{ item.name }}<br /><span class="quClassEN">{{
+                item.ename
+              }}</span>
             </div>
             <!-- <div  :class="{ qlBodyConActive: num == 1 }" @click="newTimes">
               
@@ -56,20 +56,33 @@
               全部提问
             </div> -->
           </div>
+          <div class="qlBodyLeft" v-show="localStoragelang == false">
+            <div
+              v-for="(item, index) in this.quClasssKO"
+              :class="{ qlBodyConActive: index == num }"
+              @click="newTime(index)"
+            >
+              {{ item.name }}<br /><span class="quClassEN">{{
+                item.ename
+              }}</span>
+            </div>
+          </div>
+
           <div class="qlBodyMei">
             <div
               class="newAnswer"
               @click="newAnswerClick"
               v-show="newAnswerShow"
             >
-              {{$t('question.con130')}}{{ newAnswerNum }}{{$t('question.con131')}}
+              {{ $t("question.con130") }}{{ newAnswerNum
+              }}{{ $t("question.con131") }}
             </div>
             <!-- 没有登录时 -->
             <!-- 没登录 -->
             <div v-show="qlcon">
               <div class="qlConTab">
                 <div class="qlConTabS" v-show="topInput != ''">
-                  {{$t('question.con132')}}&nbsp;&nbsp;"{{ topInput }}"<i
+                  {{ $t("question.con132") }}&nbsp;&nbsp;"{{ topInput }}"<i
                     class="el-icon-close"
                     @click="topInClose"
                   ></i>
@@ -79,14 +92,18 @@
                   :class="{ qlConTabNClass: qlConTabnum == 0 }"
                   @click="tab('n')"
                 >
-                  <img src="../assets/问答new.png" alt="" />{{$t('question.con5')}}
+                  <img src="../assets/问答new.png" alt="" />{{
+                    $t("question.con5")
+                  }}
                 </div>
                 <div
                   class="qlConTabN"
                   :class="{ qlConTabNClass: qlConTabnum == 1 }"
                   @click="tab('r')"
                 >
-                  <img src="../assets/问答huo.png" alt="" />{{$t('question.con6')}}
+                  <img src="../assets/问答huo.png" alt="" />{{
+                    $t("question.con6")
+                  }}
                 </div>
               </div>
               <div class="qlBodyMeiCon" v-for="item in qlList">
@@ -97,7 +114,7 @@
                   >
                 </div> -->
                   <div style="font-size: 12px; color: #adadad">
-                    {{ item.question.biddingNum }}{{$t('question.con7')}}
+                    {{ item.question.biddingNum }}{{ $t("question.con7") }}
                   </div>
                   <h4>
                     <router-link :to="'/questionDetails/' + item.question.id">{{
@@ -127,19 +144,27 @@
                       class="viewimages"
                     >
                       <p>
-                        {{$t('question.con11')}}<br />{{$t('question.con133')}}{{
-                          item.question.imagesNum - 3
-                        }}{{$t('question.con12')}}
+                        {{ $t("question.con11") }}<br />{{
+                          $t("question.con133")
+                        }}{{ item.question.imagesNum - 3
+                        }}{{ $t("question.con12") }}
                       </p>
                     </router-link>
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>{{$t('question.con10')}}</div>
+                      <div>
+                        <i
+                          class="el-icon-edit-outline"
+                          style="margin-right: 5px"
+                        ></i
+                        >{{ $t("question.con10") }}
+                      </div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
-                    {{ item.favourite }}{{$t('question.con8')}} {{ item.question.views }}{{$t('question.con9')}}
+                    {{ item.favourite }}{{ $t("question.con8") }}
+                    {{ item.question.views }}{{ $t("question.con9") }}
                   </div>
                 </div>
               </div>
@@ -149,7 +174,7 @@
             <div v-show="myQlcon">
               <div class="qlConTab">
                 <div class="qlConTabS" v-show="topInput != ''">
-                  {{$t('question.con132')}}&nbsp;&nbsp;"{{ topInput }}"<i
+                  {{ $t("question.con132") }}&nbsp;&nbsp;"{{ topInput }}"<i
                     class="el-icon-close"
                     @click="topInClose"
                   ></i>
@@ -159,14 +184,18 @@
                   :class="{ qlConTabNClass: qlConTabnum == 0 }"
                   @click="tab('n')"
                 >
-                  <img src="../assets/问答new.png" alt="" />{{$t('question.con5')}}
+                  <img src="../assets/问答new.png" alt="" />{{
+                    $t("question.con5")
+                  }}
                 </div>
                 <div
                   class="qlConTabN"
                   :class="{ qlConTabNClass: qlConTabnum == 1 }"
                   @click="tab('r')"
                 >
-                  <img src="../assets/问答huo.png" alt="" />{{$t('question.con6')}}
+                  <img src="../assets/问答huo.png" alt="" />{{
+                    $t("question.con6")
+                  }}
                 </div>
               </div>
               <div class="qlBodyMeiCon" v-for="item in myQlList">
@@ -186,7 +215,7 @@
                   >
                 </div> -->
                   <div style="font-size: 12px; color: #adadad">
-                    {{ item.que.biddingNum }}{{$t('question.con7')}}
+                    {{ item.que.biddingNum }}{{ $t("question.con7") }}
                   </div>
                   <h4>
                     <router-link :to="'/questionDetails/' + item.que.id">{{
@@ -215,17 +244,26 @@
                       class="viewimages"
                     >
                       <p>
-                        {{$t('question.con11')}}<br />{{$t('question.con133')}}{{ item.que.imagesNum - 3 }}{{$t('question.con12')}}
+                        {{ $t("question.con11") }}<br />{{
+                          $t("question.con133")
+                        }}{{ item.que.imagesNum - 3 }}{{ $t("question.con12") }}
                       </p>
                     </router-link>
                   </div>
                   <div class="qlBodyMeiConRight" @click="replyShade(item)">
                     <div class="qlBodyMeiConRightTable">
-                      <div><i class="el-icon-edit-outline" style="margin-right:5px"></i>{{$t('question.con10')}}</div>
+                      <div>
+                        <i
+                          class="el-icon-edit-outline"
+                          style="margin-right: 5px"
+                        ></i
+                        >{{ $t("question.con10") }}
+                      </div>
                     </div>
                   </div>
                   <div class="qlBodyMeiConshou">
-                    {{ item.favourite }}{{$t('question.con8')}} {{ item.que.views }}{{$t('question.con9')}}
+                    {{ item.favourite }}{{ $t("question.con8") }}
+                    {{ item.que.views }}{{ $t("question.con9") }}
                   </div>
                 </div>
               </div>
@@ -248,7 +286,7 @@
           class="demo-ruleForm"
         >
           <div style="overflow: hidden; float: left">
-            <div class="PR">{{$t('question.con68')}}</div>
+            <div class="PR">{{ $t("question.con68") }}</div>
             <!-- :inline="true" -->
             <el-form-item
               prop="type"
@@ -259,6 +297,8 @@
                 v-model="QuestionsQuiz.type"
                 :placeholder="$t('question.con69')"
                 style="width: 270px"
+                filterable
+                v-show="localStoragelang == true"
               >
                 <el-option
                   v-for="item in classSelectDate"
@@ -268,10 +308,25 @@
                 >
                 </el-option>
               </el-select>
+              <el-select
+                v-model="QuestionsQuiz.type"
+                :placeholder="$t('question.con69')"
+                style="width: 270px"
+                filterable
+                v-show="localStoragelang == false"
+              >
+                <el-option
+                  v-for="item in classSelectDateKo"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.type"
+                >
+                </el-option>
+              </el-select>
             </el-form-item>
           </div>
           <div style="overflow: hidden; margin-left: 289px">
-            <div class="PR">{{$t('question.con70')}}</div>
+            <div class="PR">{{ $t("question.con70") }}</div>
             <el-form-item
               prop="Title"
               class="ql-editQuziTi"
@@ -286,7 +341,7 @@
 
           <div style="overflow: hidden">
             <div style="float: left" class="queTime">
-              <div class="PR">{{$t('question.con71')}}</div>
+              <div class="PR">{{ $t("question.con71") }}</div>
               <el-form-item prop="EndTime">
                 <el-date-picker
                   v-model="QuestionsQuiz.EndTime"
@@ -319,7 +374,7 @@
               :file-list="fileList"
             >
               <el-button size="small" type="primary" class="upImgBut">
-                {{$t('question.con73')}}
+                {{ $t("question.con73") }}
                 <i class="el-icon-picture"></i>
               </el-button>
               <!-- <i slot="default" class="el-icon-picture" title="添加图片"></i> -->
@@ -350,7 +405,7 @@
             type="primary"
             size="medium"
             @click="releaseQl('QuestionsQuiz')"
-            >{{$t('question.con74')}}</el-button
+            >{{ $t("question.con74") }}</el-button
           >
         </div>
 
@@ -359,7 +414,7 @@
     </div>
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
       <div class="ql-editReply">
-        <h3>{{$t('question.con134')}}</h3>
+        <h3>{{ $t("question.con134") }}</h3>
         <el-form
           :model="auction"
           :rules="auctionrules"
@@ -386,7 +441,7 @@
               </el-form-item>
             </div> -->
             <div style="float: left">
-              <div class="PR">{{$t('question.con39')}}</div>
+              <div class="PR">{{ $t("question.con39") }}</div>
               <el-form-item prop="Currency">
                 <el-input
                   v-model.number="auction.Currency"
@@ -403,7 +458,7 @@
             type="primary"
             size="medium"
             @click="auctionQl('auction')"
-            >{{$t('question.con67')}}</el-button
+            >{{ $t("question.con67") }}</el-button
           >
         </div>
         <div class="shadeClose el-icon-close" @click="CloseReplyShade"></div>
@@ -465,7 +520,7 @@ export default {
         language_url: "/tinymce/langs/zh_CN.js",
         language: "zh_CN",
         skin_url: "/tinymce/skins/ui/oxide",
-        placeholder: this.$t('question.con86'),
+        placeholder: this.$t("question.con86"),
         // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
         height: 213,
         plugins: this.plugins,
@@ -518,17 +573,33 @@ export default {
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
-        type: [{ required: true, message: "请选择科目", trigger: "change" }],
-        Title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" },
+        type: [
+          {
+            required: true,
+            message: this.$t("question.con87"),
+            trigger: "change",
+          },
         ],
-        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+        Title: [
+          {
+            required: true,
+            message: this.$t("question.con88"),
+            trigger: "blur",
+          },
+          { min: 4, message: this.$t("question.con89"), trigger: "blur" },
+        ],
+        Content: [
+          {
+            required: true,
+            message: this.$t("question.con90"),
+            trigger: "blur",
+          },
+        ],
         EndTime: [
           {
             type: "string",
             required: true,
-            message: "请选择日期",
+            message: this.$t("question.con91"),
             trigger: "change",
           },
         ],
@@ -541,8 +612,12 @@ export default {
       // 我要答表单验证
       auctionrules: {
         Currency: [
-          { required: true, message: this.$t('question.con83'), trigger: "blur" },
-          { type: "number", message: this.$t('question.con84') },
+          {
+            required: true,
+            message: this.$t("question.con83"),
+            trigger: "blur",
+          },
+          { type: "number", message: this.$t("question.con84") },
         ],
       },
       qlList: [],
@@ -578,7 +653,7 @@ export default {
       qdConRigtS: false,
       qlConTabnum: 0,
       quClasss: [
-        { name: "全部科目", type: 0 ,ename:"All"},
+        { name: "全部科目", type: 0, ename: "All" },
         { name: "非裔文化", type: 1, ename: "African-American Studies" },
         { name: "会计", type: 2, ename: "Accounting" },
         { name: "人类学", type: 3, ename: "Anthropology" },
@@ -624,7 +699,57 @@ export default {
         { name: "旅游类", type: 39, ename: "Tourism" },
         { name: "其他", type: 40, ename: "Other" },
       ],
-      quClassSelect: [],
+      quClasssKO: [
+        { name: "모든 과목", type: 0, ename: "All" },
+        { name: "아프리카 문화", type: 1, ename: "African-American Studies" },
+        { name: "회계", type: 2, ename: "Accounting" },
+        { name: "인류학", type: 3, ename: "Anthropology" },
+        { name: "건축물", type: 4, ename: "Architecture" },
+        { name: "미술", type: 5, ename: "Art, Theatre and Film" },
+        { name: "생물학", type: 6, ename: "Biology" },
+        { name: "사업", type: 7, ename: "Business and Entrepreneurship" },
+        { name: "화학", type: 8, ename: "Chemistry" },
+        {
+          name: "커뮤니케이션 전략",
+          type: 9,
+          ename: "Communication Strategies",
+        },
+        { name: "컴퓨터 과학", type: 10, ename: "Computer Sciencee" },
+        { name: "범죄학", type: 11, ename: "Criminology" },
+        { name: "경제학", type: 12, ename: "Economic" },
+        { name: "교육", type: 13, ename: "Education" },
+        { name: "공학", type: 14, ename: "Engineering" },
+        { name: "환경 문제", type: 15, ename: "Environmental Issues" },
+        { name: "윤리학", type: 16, ename: "Ethics" },
+        { name: "재정적 인", type: 17, ename: "Finance" },
+        { name: "지리학", type: 18, ename: "Geography" },
+        { name: "건강", type: 19, ename: "Healthcare" },
+        { name: "역사", type: 20, ename: "History" },
+        {
+          name: "국제 관계",
+          type: 21,
+          ename: "International and Public Relations",
+        },
+        { name: "적법한", type: 22, ename: "Law and Legal Issues" },
+        { name: "언어학", type: 23, ename: "Linguistic" },
+        { name: "문학", type: 24, ename: "Literature" },
+        { name: "조치", type: 25, ename: "Management" },
+        { name: "마케팅", type: 26, ename: "Marketing" },
+        { name: "수학", type: 27, ename: "Mathematics" },
+        { name: "음악", type: 28, ename: "Music" },
+        { name: "육아", type: 29, ename: "Nursing" },
+        { name: "영양물 섭취", type: 30, ename: "Nutrition" },
+        { name: "철학", type: 31, ename: "Philosophy" },
+        { name: "물리학", type: 32, ename: "Physics" },
+        { name: "정치 과학", type: 33, ename: "Politcal Science" },
+        { name: "심리학", type: 34, ename: "Psychology" },
+        { name: "종교 신학", type: 35, ename: "Religion and Theology" },
+        { name: "사회학", type: 36, ename: "Sociology" },
+        { name: "스포츠", type: 37, ename: "Sport" },
+        { name: "과학 기술", type: 38, ename: "Technology" },
+        { name: "관광 여행", type: 39, ename: "Tourism" },
+        { name: "다른", type: 40, ename: "Other" },
+      ],
       claNum: 0,
       classSelectDate: [
         { name: "非裔文化 African-American Studies", type: 1 },
@@ -668,10 +793,59 @@ export default {
         { name: "旅游类 Tourism", type: 39 },
         { name: "其他 Other", type: 40 },
       ],
+      classSelectDateKo: [
+        { name: "아프리카 문화 African-American Studies", type: 1 },
+        { name: "회계 Accounting", type: 2 },
+        { name: "인류학 Anthropology", type: 3 },
+        { name: "건축물 Architecture", type: 4 },
+        { name: "미술 Art, Theatre and Film", type: 5 },
+        { name: "생물학 Biology", type: 6 },
+        { name: "사업 Business and Entrepreneurship", type: 7 },
+        { name: "화학 Chemistry", type: 8 },
+        { name: "커뮤니케이션 전략 Communication Strategies ", type: 9 },
+        { name: "컴퓨터 과학 Computer Science", type: 10 },
+        { name: "범죄학 Criminology", type: 11 },
+        { name: "경제학 Economic", type: 12 },
+        { name: "교육 Education", type: 13 },
+        {
+          name: "공학  Engineering",
+          type: 14,
+        },
+        { name: "환경 문제 Environmental Issues", type: 15 },
+        { name: "윤리학 Ethics", type: 16 },
+        { name: "재정적 인 Finance", type: 17 },
+        { name: "지리학 Geography", type: 18 },
+        { name: "건강 Healthcare", type: 19 },
+        { name: "역사 History", type: 20 },
+        { name: "국제 관계 International and Public Relations", type: 21 },
+        { name: "적법한 Law and Legal Issues", type: 22 },
+        { name: "언어학 Linguistic", type: 23 },
+        { name: "문학 Literature", type: 24 },
+        { name: "조치 Management", type: 25 },
+        { name: "마케팅 Marketing", type: 26 },
+        { name: "수학 Mathematics", type: 27 },
+        { name: "음악 Music", type: 28 },
+        { name: "육아 Nursing", type: 29 },
+        { name: "영양물 섭취 Nutrition", type: 30 },
+        { name: "철학 Philosophy", type: 31 },
+        { name: "물리학 Physics", type: 32 },
+        { name: "정치 과학 Politcal Science", type: 33 },
+        { name: "심리학 Psychology", type: 34 },
+        { name: "종교 신학 Religion and Theology", type: 35 },
+        { name: "사회학 Sociology", type: 36 },
+        { name: "스포츠 Sport", type: 37 },
+        { name: "과학 기술 Technology", type: 38 },
+        { name: "관광 여행 Tourism", type: 39 },
+        { name: "다른 Other", type: 40 },
+      ],
+      localStoragelang: true,
     };
   },
   created: function () {
     const _this = this;
+    if (localStorage.lang == "ko") {
+      _this.localStoragelang = false;
+    }
     _this.personal();
     _this.newAnswer = setInterval(_this.answerNum, 5000);
   },
@@ -799,11 +973,19 @@ export default {
                   let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                   let m = Math.floor((leftTime / 1000 / 60) % 60);
                   if (d == 0 && h > 0) {
-                    a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                    a[i].Times =
+                      _this.$t("question.con20") +
+                      h +
+                      _this.$t("question.con21");
                   } else if (h <= 0 && d <= 0) {
-                    a[i].Times = _this.$t('question.con19');
+                    a[i].Times = _this.$t("question.con19");
                   } else {
-                    a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con22') + h + _this.$t('question.con24');
+                    a[i].Times =
+                      _this.$t("question.con22") +
+                      d +
+                      _this.$t("question.con22") +
+                      h +
+                      _this.$t("question.con24");
                   }
                   _this.myQlList.unshift(a[i]);
                 }
@@ -884,12 +1066,19 @@ export default {
                       let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                       let m = Math.floor((leftTime / 1000 / 60) % 60);
                       if (d == 0 && h > 0) {
-                        a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                        a[i].Times =
+                          _this.$t("question.con20") +
+                          h +
+                          _this.$t("question.con21");
                       } else if (h <= 0 && d <= 0) {
-                        a[i].Times = _this.$t('question.con19');
+                        a[i].Times = _this.$t("question.con19");
                       } else {
                         a[i].Times =
-                          _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                          _this.$t("question.con22") +
+                          d +
+                          _this.$t("question.con23") +
+                          h +
+                          _this.$t("question.con24");
                       }
                       _this.myQlList.push(a[i]);
                     }
@@ -948,12 +1137,19 @@ export default {
                         let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                         let m = Math.floor((leftTime / 1000 / 60) % 60);
                         if (d == 0 && h > 0) {
-                          a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                          a[i].Times =
+                            _this.$t("question.con20") +
+                            h +
+                            _this.$t("question.con21");
                         } else if (h <= 0 && d <= 0) {
-                          a[i].Times = _this.$t('question.con19');
+                          a[i].Times = _this.$t("question.con19");
                         } else {
                           a[i].Times =
-                            _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                            _this.$t("question.con22") +
+                            d +
+                            _this.$t("question.con23") +
+                            h +
+                            _this.$t("question.con24");
                         }
                         _this.qlList.push(a[i]);
                       }
@@ -1103,12 +1299,17 @@ export default {
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               if (d == 0 && h > 0) {
-                _this.qlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                _this.qlList[i].Times =
+                  _this.$t("question.con20") + h + _this.$t("question.con21");
               } else if (h <= 0 && d <= 0) {
-                _this.qlList[i].Times = _this.$t('question.con19');
+                _this.qlList[i].Times = _this.$t("question.con19");
               } else {
                 _this.qlList[i].Times =
-                  _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                  _this.$t("question.con22") +
+                  d +
+                  _this.$t("question.con23") +
+                  h +
+                  _this.$t("question.con24");
               }
             }
           }
@@ -1170,12 +1371,17 @@ export default {
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               if (d == 0 && h > 0) {
-                _this.myQlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                _this.myQlList[i].Times =
+                  _this.$t("question.con20") + h + _this.$t("question.con21");
               } else if (h <= 0 && d <= 0) {
-                _this.myQlList[i].Times = _this.$t('question.con19');
+                _this.myQlList[i].Times = _this.$t("question.con19");
               } else {
                 _this.myQlList[i].Times =
-                  _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                  _this.$t("question.con22") +
+                  d +
+                  _this.$t("question.con23") +
+                  h +
+                  _this.$t("question.con24");
               }
             }
           }
@@ -1309,7 +1515,7 @@ export default {
         _this.qlShade = !_this.qlShade;
       } else {
         _this.$message({
-          message: _this.$t('upload.u2'),
+          message: _this.$t("upload.u2"),
           type: "warning",
         });
       }
@@ -1364,12 +1570,12 @@ export default {
                 _this.pagesizes = 5;
                 _this.myquizList();
                 _this.$message({
-                  message: _this.$t('question.con135'),
+                  message: _this.$t("question.con135"),
                   type: "success",
                 });
               } else {
                 _this.$message({
-                  message: _this.$t('question.con136'),
+                  message: _this.$t("question.con136"),
                   type: "error",
                 });
               }
@@ -1389,7 +1595,7 @@ export default {
         _this.qlreplyShade = !_this.qlreplyShade;
       } else {
         _this.$message({
-          message: _this.$t('question.con97'),
+          message: _this.$t("question.con97"),
           type: "warning",
         });
       }
@@ -1421,7 +1627,7 @@ export default {
               if (res.data.status == 1) {
                 _this.qlreplyShade = !_this.qlreplyShade;
                 _this.$message({
-                  message: _this.$t('question.con137'),
+                  message: _this.$t("question.con137"),
                   type: "success",
                 });
               } else {
@@ -1489,12 +1695,17 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  _this.myQlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                  _this.myQlList[i].Times =
+                    _this.$t("question.con20") + h + _this.$t("question.con21");
                 } else if (h <= 0 && d <= 0) {
-                  _this.myQlList[i].Times = _this.$t('question.con19');
+                  _this.myQlList[i].Times = _this.$t("question.con19");
                 } else {
                   _this.myQlList[i].Times =
-                    _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                    _this.$t("question.con22") +
+                    d +
+                    _this.$t("question.con23") +
+                    h +
+                    _this.$t("question.con24");
                 }
               }
             }
@@ -1547,12 +1758,17 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  _this.qlList[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                  _this.qlList[i].Times =
+                    _this.$t("question.con20") + h + _this.$t("question.con21");
                 } else if (h <= 0 && d <= 0) {
-                  _this.qlList[i].Times = _this.$t('question.con19');
+                  _this.qlList[i].Times = _this.$t("question.con19");
                 } else {
                   _this.qlList[i].Times =
-                    _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                    _this.$t("question.con22") +
+                    d +
+                    _this.$t("question.con23") +
+                    h +
+                    _this.$t("question.con24");
                 }
               }
             }
@@ -1619,11 +1835,17 @@ export default {
                 let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                 let m = Math.floor((leftTime / 1000 / 60) % 60);
                 if (d == 0 && h > 0) {
-                  a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                  a[i].Times =
+                    _this.$t("question.con20") + h + _this.$t("question.con21");
                 } else if (h <= 0 && d <= 0) {
-                  a[i].Times = _this.$t('question.con19');
+                  a[i].Times = _this.$t("question.con19");
                 } else {
-                  a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                  a[i].Times =
+                    _this.$t("question.con22") +
+                    d +
+                    _this.$t("question.con23") +
+                    h +
+                    _this.$t("question.con24");
                 }
                 _this.myQlList.push(a[i]);
               }
@@ -1681,11 +1903,19 @@ export default {
                   let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
                   let m = Math.floor((leftTime / 1000 / 60) % 60);
                   if (d == 0 && h > 0) {
-                    a[i].Times = _this.$t('question.con20') + h + _this.$t('question.con21');
+                    a[i].Times =
+                      _this.$t("question.con20") +
+                      h +
+                      _this.$t("question.con21");
                   } else if (h <= 0 && d <= 0) {
-                    a[i].Times = _this.$t('question.con19');
+                    a[i].Times = _this.$t("question.con19");
                   } else {
-                    a[i].Times = _this.$t('question.con22') + d + _this.$t('question.con23') + h + _this.$t('question.con24');
+                    a[i].Times =
+                      _this.$t("question.con22") +
+                      d +
+                      _this.$t("question.con23") +
+                      h +
+                      _this.$t("question.con24");
                   }
                   _this.qlList.push(a[i]);
                 }

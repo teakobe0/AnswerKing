@@ -1,57 +1,171 @@
 <style>
-.forgetPassword-cc {
-  height: 800px;
-  overflow: hidden;
-}
-.forgetPassword-lo {
-  background-image: url(../assets/347985.jpg);
-  background-color: #dfdfdf;
-  background-repeat: no-repeat;
-  background-position:left center;
-  background-size: cover;
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow: hidden;
-  text-align: center;
-}
+@media (min-width: 300px) {
+  .forgetPassword-cc {
+    height: 800px;
+    overflow: hidden;
+  }
+  .forgetPassword-lo {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
 
-.forgetPassword-con {
-  margin: 0 auto;
-  width: 410px;
-  margin-top: 220px;
-  /* margin-bottom: 310px; */
-  background-color: #ffffff;
-  border-radius: 2px;
-  text-align: center;
-  box-shadow: 0px 0px 5px #707070;
-}
+  .forgetPassword-con {
+    margin: 0 auto;
+    width: 300px;
+    margin-top: 155px;
+    /* margin-bottom: 310px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
 
-.forgetPassword-con-top {
-  padding: 30px 40px 0px 40px;
-}
+  .forgetPassword-con-top {
+    padding: 30px 40px 0px 40px;
+  }
 
-.slogan {
-  padding: 5px 0px;
-  color: #1781fe;
-  font-size: 18px;
-  text-align: center;
-}
+  .slogan {
+    padding: 5px 0px;
+    color: #1781fe;
+    font-size: 18px;
+    text-align: center;
+  }
 
-#submit {
-  margin-right: 10px;
-  width: 100%;
-}
+  #submit {
+    margin-right: 10px;
+    width: 100%;
+  }
 
-.forgetPassword-resi {
-  text-decoration: none;
-  line-height: 59px;
-  color: #1b5299;
-}
+  .forgetPassword-resi {
+    text-decoration: none;
+    line-height: 59px;
+    color: #1b5299;
+  }
 
-.forgetPassword-footer {
-  margin: 0 auto;
+  .forgetPassword-footer {
+    margin: 0 auto;
+  }
+}
+@media (min-width: 768px) {
+  .forgetPassword-cc {
+    height: 800px;
+    overflow: hidden;
+  }
+  .forgetPassword-lo {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .forgetPassword-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 310px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .forgetPassword-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  .slogan {
+    padding: 5px 0px;
+    color: #1781fe;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #submit {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .forgetPassword-resi {
+    text-decoration: none;
+    line-height: 59px;
+    color: #1b5299;
+  }
+
+  .forgetPassword-footer {
+    margin: 0 auto;
+  }
+}
+@media (min-width: 1200px) {
+  .forgetPassword-cc {
+    height: 800px;
+    overflow: hidden;
+  }
+  .forgetPassword-lo {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .forgetPassword-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 310px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .forgetPassword-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  .slogan {
+    padding: 5px 0px;
+    color: #1781fe;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #submit {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .forgetPassword-resi {
+    text-decoration: none;
+    line-height: 59px;
+    color: #1b5299;
+  }
+
+  .forgetPassword-footer {
+    margin: 0 auto;
+  }
 }
 </style>
 
@@ -74,7 +188,7 @@
               class="demo-ruleForm"
               @submit.native.prevent
             >
-              <el-form-item style="margin-left: -50px;" label prop="Username">
+              <el-form-item style="margin-left: -50px" label prop="Username">
                 <el-input
                   prefix-icon="el-icon-edit"
                   v-model="ruleForm.Username"
@@ -83,19 +197,22 @@
                 ></el-input>
               </el-form-item>
 
-              <el-form-item style="margin-left: -50px;">
+              <el-form-item style="margin-left: -50px">
                 <el-button
                   id="submit"
                   type="primary"
                   @click="submitForm('ruleForm')"
                   :loading="loadings"
-                >{{$t('upload.bottom')}}</el-button>
+                  >{{ $t("upload.bottom") }}</el-button
+                >
               </el-form-item>
             </el-form>
           </div>
           <div class="reg-bottom">
-            <span>{{$t('popupLogin.con19')}}</span>
-            <router-link class="forgetPassword-resi" to="/login">{{$t('popupLogin.con4')}}</router-link>
+            <span>{{ $t("popupLogin.con19") }}</span>
+            <router-link class="forgetPassword-resi" to="/login">{{
+              $t("popupLogin.con4")
+            }}</router-link>
           </div>
         </div>
       </div>
@@ -112,13 +229,13 @@ export default {
   name: "forgetPassword",
   components: {
     Nav,
-    Footer
+    Footer,
   },
   data() {
     //ES6中用箭头函授代替ES5中的function（）
     var validatePass = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error(this.$t('popupLogin.con15')));
+        callback(new Error(this.$t("popupLogin.con15")));
       }
       callback();
     };
@@ -126,32 +243,36 @@ export default {
     return {
       loadings: false,
       ruleForm: {
-        Username: ""
+        Username: "",
       },
       //rules是Element的表单验证规则
       rules: {
         Username: [
-          { required: true, message: this.$t('popupLogin.con11'), trigger: "blur" },
+          {
+            required: true,
+            message: this.$t("popupLogin.con11"),
+            trigger: "blur",
+          },
           {
             type: "email",
-            message: this.$t('popupLogin.con12'),
-            trigger: ["blur", "change"]
-          }
-        ]
-      }
+            message: this.$t("popupLogin.con12"),
+            trigger: ["blur", "change"],
+          },
+        ],
+      },
     };
   },
   watch: {
     "$i18n.locale"() {
-      this.rules.Username[0].message = this.$t('changePassword.con11');
-      this.rules.Username[1].message = this.$t('changePassword.con12');
-    }
+      this.rules.Username[0].message = this.$t("changePassword.con11");
+      this.rules.Username[1].message = this.$t("changePassword.con12");
+    },
   },
   //页面的方法还是写在methods{}中
   methods: {
     // 点击忘记密码下一步给邮箱发送重置密码页面
     submitForm(ruleForm) {
-      this.$refs[ruleForm].validate(valid => {
+      this.$refs[ruleForm].validate((valid) => {
         if (valid) {
           const _this = this;
           _this.loadings = true;
@@ -161,48 +282,44 @@ export default {
               url: `${_this.URLport.serverPath}/Client/ForgetPwd`,
               async: false,
               params: {
-                email: _this.ruleForm.Username
+                email: _this.ruleForm.Username,
               },
               xhrFields: {
-                withCredentials: true
-              }
+                withCredentials: true,
+              },
             })
-            .then(function(res) {
+            .then(function (res) {
               _this.loadings = false;
               if (res.data.status == 1) {
-                _this.$alert(
-                  _this.$t('popupLogin.con20'),
-                  "CourseWhale",
-                  {
-                    confirmButtonText: _this.$t('basic.con14'),
-                    callback: action => {
-                      _this.$message({
-                        type: "success",
-                        message: _this.$t('popupLogin.con21')
+                _this.$alert(_this.$t("popupLogin.con20"), "CourseWhale", {
+                  confirmButtonText: _this.$t("basic.con14"),
+                  callback: (action) => {
+                    _this.$message({
+                      type: "success",
+                      message: _this.$t("popupLogin.con21"),
+                    });
+                    setTimeout(function () {
+                      _this.$router.push({
+                        path: "/home",
                       });
-                      setTimeout(function() {
-                        _this.$router.push({
-                          path: "/home"
-                        });
-                      }, 2000);
-                    }
-                  }
-                );
+                    }, 2000);
+                  },
+                });
               } else {
                 _this.$message({
                   type: "success",
-                  message: res.data.msg
+                  message: res.data.msg,
                 });
               }
             })
-            .catch(function(error) {
+            .catch(function (error) {
               console.log(error);
             });
         } else {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>

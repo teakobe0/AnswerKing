@@ -32,7 +32,7 @@
                 style="font-size: 14px; margin-bottom: 15px"
                 v-html="qlList.question.content"
               ></p>
-              <div>
+              <div v-show="qlList.question.img != ''">
                 <img
                   class="qlBodyQuImg"
                   v-for="item in qlList.images"
@@ -248,7 +248,6 @@
                     font-size: 14px;
                     color: #333;
                     margin-top: 25px;
-                    letter-spacing: 2px;
                   "
                 >
                   {{$t('question.con43')}}{{ item.qnum }}{{$t('question.con44')}}
@@ -596,9 +595,26 @@
                 v-model="QuestionsQuiz.type"
                 :placeholder="$t('question.con69')"
                 style="width: 270px"
+                filterable
+                v-show="localStoragelang == true"
               >
                 <el-option
                   v-for="item in quClassSelect"
+                  :key="item.name"
+                  :label="item.name"
+                  :value="item.type"
+                >
+                </el-option>
+              </el-select>
+              <el-select
+                v-model="QuestionsQuiz.type"
+                :placeholder="$t('question.con69')"
+                style="width: 270px"
+                filterable
+                v-show="localStoragelang == false"
+              >
+                <el-option
+                  v-for="item in classSelectDateKo"
                   :key="item.name"
                   :label="item.name"
                   :value="item.type"
@@ -1053,14 +1069,13 @@ export default {
         Title: "",
         Content: "",
         EndTime: "",
-        Currency: "",
         Img: "",
         type: "",
       },
       // 编辑提问表单验证
       QuestionsQuizrules: {
         type: [{ required: true, message: this.$t('question.con87'), trigger: "change" }],
-        title: [
+        Title: [
           { required: true, message: this.$t('question.con88'), trigger: "blur" },
           { min: 4, message: this.$t('question.con89'), trigger: "blur" },
         ],
@@ -1072,10 +1087,6 @@ export default {
             message: this.$t('question.con91'),
             trigger: "change",
           },
-        ],
-        Currency: [
-          { required: true, message: this.$t('question.con83'), trigger: "blur" },
-          { type: "number", message: this.$t('question.con84') },
         ],
       },
       // 图片
@@ -1168,6 +1179,51 @@ export default {
         { name: "旅游类 Tourism", type: 39 },
         { name: "其他 Other", type: 40 },
       ],
+      classSelectDateKo: [
+        { name: "아프리카 문화 African-American Studies", type: 1 },
+        { name: "회계 Accounting", type: 2 },
+        { name: "인류학 Anthropology", type: 3 },
+        { name: "건축물 Architecture", type: 4 },
+        { name: "미술 Art, Theatre and Film", type: 5 },
+        { name: "생물학 Biology", type: 6 },
+        { name: "사업 Business and Entrepreneurship", type: 7 },
+        { name: "화학 Chemistry", type: 8 },
+        { name: "커뮤니케이션 전략 Communication Strategies ", type: 9 },
+        { name: "컴퓨터 과학 Computer Science", type: 10 },
+        { name: "범죄학 Criminology", type: 11 },
+        { name: "경제학 Economic", type: 12 },
+        { name: "교육 Education", type: 13 },
+        {
+          name: "공학  Engineering",
+          type: 14,
+        },
+        { name: "환경 문제 Environmental Issues", type: 15 },
+        { name: "윤리학 Ethics", type: 16 },
+        { name: "재정적 인 Finance", type: 17 },
+        { name: "지리학 Geography", type: 18 },
+        { name: "건강 Healthcare", type: 19 },
+        { name: "역사 History", type: 20 },
+        { name: "국제 관계 International and Public Relations", type: 21 },
+        { name: "적법한 Law and Legal Issues", type: 22 },
+        { name: "언어학 Linguistic", type: 23 },
+        { name: "문학 Literature", type: 24 },
+        { name: "조치 Management", type: 25 },
+        { name: "마케팅 Marketing", type: 26 },
+        { name: "수학 Mathematics", type: 27 },
+        { name: "음악 Music", type: 28 },
+        { name: "육아 Nursing", type: 29 },
+        { name: "영양물 섭취 Nutrition", type: 30 },
+        { name: "철학 Philosophy", type: 31 },
+        { name: "물리학 Physics", type: 32 },
+        { name: "정치 과학 Politcal Science", type: 33 },
+        { name: "심리학 Psychology", type: 34 },
+        { name: "종교 신학 Religion and Theology", type: 35 },
+        { name: "사회학 Sociology", type: 36 },
+        { name: "스포츠 Sport", type: 37 },
+        { name: "과학 기술 Technology", type: 38 },
+        { name: "관광 여행 Tourism", type: 39 },
+        { name: "다른 Other", type: 40 },
+      ],
       editauction: false,
       rencurrency: {},
       qdconMeshow: true,
@@ -1176,11 +1232,15 @@ export default {
       timeAlsBlsinfo: null,
       quizzerUpload: false,
       quUpfileList: [],
-      questionReviews:false
+      questionReviews:false,
+      localStoragelang:true
     };
   },
   created: function () {
     const _this = this;
+    if (localStorage.lang == "ko") {
+      _this.localStoragelang = false;
+    }
     _this.personal();
   },
   filters: {
@@ -1961,6 +2021,7 @@ export default {
           .then(function (res) {
             if (res.data.status == 1) {
               _this.myValue = "";
+              _this.quefileListAns = [];
               clearInterval(_this.timeAlsBlsinfo);
               _this.QuDe();
 

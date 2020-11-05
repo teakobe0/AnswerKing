@@ -47,10 +47,10 @@
 <template>
   <div id="myQuestion">
     <div class="myQuestion-right">
-      <h3>我的问答</h3>
+      <h3>{{$t('question.con18')}}</h3>
       <div class="myQuestion-con">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="竞拍中的回答" name="first">
+          <el-tab-pane :label="$t('question.con138')" name="first">
             <el-table
               :data="quizTableData"
               border
@@ -58,29 +58,29 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.id">{{
                     scope.row.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.bnum }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.endTime | formatDate }}</span>
                 </template>
@@ -97,7 +97,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待完成的回答" name="first2">
+          <el-tab-pane :label="$t('question.con139')" name="first2">
             <el-table
               :data="quizTableData"
               border
@@ -105,29 +105,29 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.id">{{
                     scope.row.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.bnum }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.endTime | formatDate }}</span>
                 </template>
@@ -144,7 +144,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待评价的回答" name="first3">
+          <el-tab-pane :label="$t('question.con140')" name="first3">
             <el-table
               :data="quizTableData"
               border
@@ -152,29 +152,29 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.id">{{
                     scope.row.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.bnum }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.endTime | formatDate }}</span>
                 </template>
@@ -196,7 +196,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="已完毕的回答" name="first4">
+          <el-tab-pane :label="$t('question.con141')" name="first4">
             <el-table
               :data="quizTableData"
               border
@@ -204,29 +204,29 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.id">{{
                     scope.row.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.bnum }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.endTime | formatDate }}</span>
                 </template>
@@ -286,100 +286,15 @@ export default {
   data() {
     //在ES6中添加数据是在return{}中
     return {
-      init: {
-        language_url: "/tinymce/langs/zh_CN.js",
-        language: "zh_CN",
-        skin_url: "/tinymce/skins/ui/oxide",
-        // skin_url: '/tinymce/skins/ui/oxide-dark',//暗色系
-        height: 300,
-        plugins: this.plugins,
-        toolbar: this.toolbar,
-        branding: false,
-        menubar: false,
-        // 此处为图片上传处理函数，这个直接用了base64的图片形式上传图片，
-        // 如需ajax上传可参考https://www.tiny.cloud/docs/configure/file-image-upload/#images_upload_handler
-        images_upload_handler: (blobInfo, success, failure) => {
-          // const img = "data:image/jpeg;base64," + blobInfo.base64();
-          // success(img);
-          let formData = new FormData();
-          // 服务端接收文件的参数名，文件数据，文件名
-          formData.append("file", blobInfo.blob(), blobInfo.filename());
-
-          this.axios({
-            method: "POST",
-            // 这里是你的上传地址
-            url: this.URLport.serverPath + "/File/UploadQuestion",
-            async: false,
-            data: formData,
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-            .then((res) => {
-              // 这里返回的是你图片的地址
-              success(res.data.file);
-            })
-            .catch(() => {
-              // failure("上传失败");
-            });
-        },
-      },
-      myValue: this.value,
       activeName: "first",
       quizShow: false,
       quizTableData: [],
-      answerShow: false,
-      answerTableData: [],
-      QuestionsQuiz: {
-        Title: "",
-        Content: "",
-        EndTime: "",
-        Currency: "",
-        Img: "",
-      },
-      // 我要提问表单验证
-      QuestionsQuizrules: {
-        Title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" },
-        ],
-        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
-        EndTime: [
-          {
-            required: true,
-            message: "请选择日期",
-            trigger: "change",
-          },
-        ],
-        Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
-        ],
-      },
       // 我的竞拍
-      auctionTableData: [],
-      auctionShow: false,
-      qlShade: false,
-      evaluateShade: false,
       // 评价内容
-      evaluateInput: "",
-      evaluateSwitch: true,
-      evaluateId: 0,
       pagenums: 1,
       pagesizes: 13,
       pageTotal: 0,
       status:0,
-      // 图片
-      imgSite: this.URLport.serverPath + "/File/UploadQuestion",
-      myHeaders: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-      queImageUrl: "",
-      queVisible: false,
-      quefileList: [],
-      austartTimeRange: "",
       auction: [],
     };
   },
@@ -409,50 +324,21 @@ export default {
       let date = new Date(time);
       return formatDate(date, "yyyy-MM-dd");
     },
-    sendTimeDate: function (date) {
-      if (!!date) {
-        var nowDate =
-          new Date(date).getFullYear() +
-          "-" +
-          (new Date(date).getMonth() + 1 < 10
-            ? "0" + (new Date(date).getMonth() + 1)
-            : new Date(date).getMonth() + 1) +
-          "-" +
-          (new Date(date).getDate(date) < 10
-            ? "0" + new Date(date).getDate(date)
-            : new Date(date).getDate(date));
-        var nowTime =
-          (new Date(date).getHours() < 10
-            ? "0" + new Date(date).getHours()
-            : new Date(date).getHours()) +
-          ":" +
-          (new Date(date).getMinutes() < 10
-            ? "0" + new Date(date).getMinutes()
-            : new Date(date).getMinutes()) +
-          ":" +
-          (new Date(date).getSeconds() < 10
-            ? "0" + new Date(date).getSeconds()
-            : new Date(date).getSeconds());
-        return nowDate + " " + nowTime;
-      } else {
-        return "";
-      }
-    },
   },
   methods: {
     handleClick(tab, event) {
       const _this = this;
       _this.pagenums = 1;
       _this.pagesizes = 13;
-      if (tab.label == "竞拍中的回答") {
+      if (tab.name == "first") {
         _this.auctionlist();
-      }else if(tab.label == "待完成的回答"){
+      }else if(tab.name == "first2"){
         _this.status = 3;
         _this.quizList();
-      }else if(tab.label == "待评价的回答"){
+      }else if(tab.name == "first3"){
         _this.status = 4;
         _this.quizList();
-      }else if(tab.label == "已完毕的回答"){
+      }else if(tab.name == "first4"){
         _this.status = 6;
         _this.quizList();
       }
@@ -623,32 +509,6 @@ export default {
     },
   },
   watch: {
-    "auction.EndTime": {
-      immediate: true,
-      handler(newValue, oldValue) {
-        const _this = this;
-        if (newValue) {
-          let newva = _this.$options.filters["sendTimeDate"](
-            new Date(newValue).getTime()
-          );
-          let nowDate = _this.$options.filters["sendTimeDate"](
-            new Date().getTime() + 7200000
-          ); // 2小时之后的时间(我是因业务要求,这里可以随意调整时间)
-          let dt = nowDate.split(" ");
-          let st = "";
-          if (newva.split(" ")[0] == dt[0]) {
-            // 是今天,选择 的时间开始为此刻的时分秒
-            st = dt[1];
-          } else {
-            // 明天及以后从0时开始
-            st = "00:00:00";
-          }
-          _this.austartTimeRange = st + " - 23:59:59";
-          // //例如：如果今天此刻时间为10:41:40 则选择时间范围为： 11:41:40 - 23:59:59
-          // //否则为：00:00:00- 23:59:59
-        }
-      },
-    },
     value(newValue) {
       this.myValue = newValue;
     },

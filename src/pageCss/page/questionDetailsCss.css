@@ -154,7 +154,7 @@
   border: 1px solid #e1e1e1;
   color: #333;
   padding: 10px;
-  width: 43px;
+  /* width: 43px; */
   height: 18px;
   font-size: 14px;
   text-align: center;
@@ -170,7 +170,7 @@
   background: #1da1f2;
   color: #fff;
   padding: 10px;
-  width: 45px;
+  /* width: 45px; */
   height: 20px;
   font-size: 14px;
   text-align: center;
@@ -596,7 +596,7 @@
 }
 .DeupImg .el-upload--picture-card {
   border: 0 !important;
-  width: 123px !important;
+  width: auto !important;
   height: 36px !important;
   line-height: 0px !important;
   background-color: #f6f6f6 !important;
@@ -620,7 +620,7 @@
   font-size: 14px;
 }
 .collect {
-  width: 126px;
+  /* width: 126px; */
   height: 36px;
   margin-right: 10px !important;
   margin-left: 0px !important;

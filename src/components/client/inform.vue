@@ -44,12 +44,12 @@
           {{ $t("inform.con1") }}
         </div>
         <div v-for="item in messages">
-          <div style="float: left; width: 865px">
+          <div style="float: left; width: 850px">
             <span class="sendname">{{ item.sendname }}</span>
             <span v-show="item.type == 1 || item.type == 3"
               >{{ $t("inform.con2") }}：</span
             >
-            <span v-show="item.type == 2">给您留言:</span>
+            <span v-show="item.type == 2">{{$t("inform.con5")}}:</span>
             <span v-html="item.contentsUrl"></span>
           </div>
           <div style="float: right">
@@ -58,7 +58,7 @@
               v-show="item.type == 1 || item.type == 3"
               style="float: right; margin-left: 10px"
               size="mini"
-              >删除</el-button
+              >{{ $t("inform.con4") }}</el-button
             >
             <el-button
               @click="gomessage(item.contentsId, item.id, item.type)"
@@ -73,14 +73,14 @@
               v-show="item.type == 2"
               style="float: right"
               size="mini"
-              >删除</el-button
+              >{{ $t("inform.con4") }}</el-button
             >
             <el-button
               @click="inform(item.sendId, item.sendname)"
               v-show="item.type == 2 && item.sendId != 0"
               style="float: right"
               size="mini"
-              >回复</el-button
+              >{{ $t("content.con14") }}</el-button
             >
           </div>
         </div>
@@ -90,7 +90,7 @@
           layout="total, prev, pager, next"
           :total="totals"
           style="text-align: center"
-          v-show="totals > 18"
+          v-show="totals > 16"
         >
         </el-pagination>
       </div>
@@ -114,7 +114,7 @@ export default {
       classinfoid: "",
       dataNull: false,
       pagenums: 1,
-      pagesizes: 18,
+      pagesizes: 16,
       totals: 0,
     };
   },

@@ -171,7 +171,7 @@
                 <p>{{ item.name }}</p>
                 <p>
                   ${{ item.price }}
-                  <span style="color: #a1a1a1; font-size: 14px">/月</span>
+                  <span style="color: #a1a1a1; font-size: 14px"></span>
                 </p>
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>
@@ -202,7 +202,7 @@
                 <p>{{ item.name }}</p>
                 <p>
                   ${{ item.price }}
-                  <span style="color: #a1a1a1; font-size: 14px">/个</span>
+                  <span style="color: #a1a1a1; font-size: 14px"></span>
                 </p>
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>

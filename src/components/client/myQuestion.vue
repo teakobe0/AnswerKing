@@ -47,10 +47,10 @@
 <template>
   <div id="myQuestion">
     <div class="myQuestion-right">
-      <h3>我的问答</h3>
+      <h3>{{$t('question.con13')}}</h3>
       <div class="myQuestion-con">
         <el-tabs v-model="activeName" @tab-click="handleClick">
-          <el-tab-pane label="我的提问" name="first">
+          <el-tab-pane :label="$t('question.con13')" name="first">
             <el-table
               :data="quizTableData"
               border
@@ -58,39 +58,39 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.que.id">{{
                     scope.row.que.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" width="70">
                 <template slot-scope="scope">
                   <span>{{ scope.row.number }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.endTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column :label="$t('question.con153')" width="100">
                 <template slot-scope="scope">
                   <span>{{ scope.row.type }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="130">
+              <el-table-column :label="$t('question.con154')" width="130">
                 <template slot-scope="scope">
                   <!-- <el-button
                     v-show="scope.row.que.status == 1"
@@ -110,42 +110,42 @@
                     size="mini"
                     @click="editQuiz(scope.row)"
                     v-show="scope.row.que.status <= 2"
-                    >编辑</el-button
+                    >{{$t('question.con155')}}</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
                     v-show="scope.row.que.status >= 3"
                     disabled
-                    >编辑</el-button
+                    >{{$t('question.con155')}}</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
                     @click="evaluate(scope.row.que.id)"
                     v-show="scope.row.que.status == 4"
-                    >评价</el-button
+                    >{{$t('question.con156')}}</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
                     disabled
                     v-show="scope.row.que.status != 4"
-                    >评价</el-button
+                    >{{$t('question.con156')}}</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
                     @click="service(scope.row.que.id)"
                     v-show="scope.row.que.status == 6"
-                    >客服</el-button
+                    >{{$t('question.con157')}}</el-button
                   >
                   <el-button
                     type="text"
                     size="mini"
                     disabled
                     v-show="scope.row.que.status != 6"
-                    >客服</el-button
+                    >{{$t('question.con157')}}</el-button
                   >
                 </template>
               </el-table-column>
@@ -167,7 +167,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="竞拍中的提问" name="first2">
+          <el-tab-pane :label="$t('question.con14')" name="first2">
             <el-table
               :data="quizTableData"
               border
@@ -175,39 +175,39 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')" width="400">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.que.id">{{
                     scope.row.que.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.number }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.endTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column :label="$t('question.con153')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.type }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="50">
+              <el-table-column :label="$t('question.con154')" >
                 <template slot-scope="scope">
                   <!-- <el-button
                     v-show="scope.row.que.status == 1"
@@ -226,15 +226,7 @@
                     type="text"
                     size="mini"
                     @click="editQuiz(scope.row)"
-                    v-show="scope.row.que.status <= 3"
-                    >编辑</el-button
-                  >
-                  <el-button
-                    type="text"
-                    size="mini"
-                    v-show="scope.row.que.status > 3"
-                    disabled
-                    >编辑</el-button
+                    >{{$t('question.con155')}}</el-button
                   >
                 </template>
               </el-table-column>
@@ -250,7 +242,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待完成的提问" name="first3">
+          <el-tab-pane :label="$t('question.con15')" name="first3">
             <el-table
               :data="quizTableData"
               border
@@ -258,34 +250,34 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')">
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')" width="400">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.que.id">{{
                     scope.row.que.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.number }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.endTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column :label="$t('question.con153')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.type }}</span>
                 </template>
@@ -302,7 +294,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="待评价的提问" name="first4">
+          <el-tab-pane :label="$t('question.con16')" name="first4">
             <el-table
               :data="quizTableData"
               border
@@ -310,58 +302,45 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')" width="400">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.que.id">{{
                     scope.row.que.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.number }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.endTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column :label="$t('question.con153')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.type }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="50">
+              <el-table-column :label="$t('question.con154')">
                 <template slot-scope="scope">
-                  <!-- <el-button
-                    v-show="scope.row.que.status == 1"
-                    type="text"
-                    size="mini"
-                    @click="editQuiz(scope.row)"
-                  >编辑</el-button>
-                  <el-button
-                    v-show="scope.row.que.status != 1"
-                    type="text"
-                    size="mini"
-                    disabled
-                    title="竞拍者已经开始作答,禁止修改"
-                  >编辑</el-button>-->
                   <el-button
                     type="text"
                     size="mini"
                     @click="evaluate(scope.row.que.id)"
-                    >评价</el-button
+                    >{{$t('question.con156')}}</el-button
                   >
                 </template>
               </el-table-column>
@@ -377,7 +356,7 @@
               </div>
             </div>
           </el-tab-pane>
-          <el-tab-pane label="已完毕的提问" name="first5">
+          <el-tab-pane :label="$t('question.con17')" name="first5">
             <el-table
               :data="quizTableData"
               border
@@ -385,58 +364,45 @@
               class="quiz"
               v-if="quizShow"
             >
-              <el-table-column label="发布日期" width="100">
+              <el-table-column :label="$t('question.con148')">
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.createTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="题目">
+              <el-table-column :label="$t('question.con149')" width="400">
                 <template slot-scope="scope">
                   <router-link :to="'/questionDetails/' + scope.row.que.id">{{
                     scope.row.que.title
                   }}</router-link>
                 </template>
               </el-table-column>
-              <el-table-column label="悬赏" width="70">
+              <el-table-column :label="$t('question.con150')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.currency }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="竞拍者" width="70">
+              <el-table-column :label="$t('question.con151')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.number }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="截至日期" width="100">
+              <el-table-column :label="$t('question.con152')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.que.endTime | formatDate }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="状态" width="100">
+              <el-table-column :label="$t('question.con153')" >
                 <template slot-scope="scope">
                   <span>{{ scope.row.type }}</span>
                 </template>
               </el-table-column>
-              <el-table-column label="操作" width="50">
+              <el-table-column :label="$t('question.con154')" width="116">
                 <template slot-scope="scope">
-                  <!-- <el-button
-                    v-show="scope.row.que.status == 1"
-                    type="text"
-                    size="mini"
-                    @click="editQuiz(scope.row)"
-                  >编辑</el-button>
-                  <el-button
-                    v-show="scope.row.que.status != 1"
-                    type="text"
-                    size="mini"
-                    disabled
-                    title="竞拍者已经开始作答,禁止修改"
-                  >编辑</el-button>-->
                   <el-button
                     type="text"
                     size="mini"
                     @click="service(scope.row.que.id)"
-                    >客服</el-button
+                    >{{$t('question.con157')}}</el-button
                   >
                 </template>
               </el-table-column>
@@ -461,7 +427,7 @@
                 class="demo-ruleForm"
               >
                 <div style="overflow: hidden; float: left">
-                  <div class="PR">选择你的科目</div>
+                  <div class="PR">{{$t('question.con68')}}</div>
                   <!-- :inline="true" -->
                   <el-form-item
                     prop="type"
@@ -470,8 +436,10 @@
                   >
                     <el-select
                       v-model="QuestionsQuiz.type"
-                      placeholder="请选择"
+                      :placeholder="$t('question.con69')"
                       style="width: 270px"
+                      filterable
+                      v-show="localStoragelang == true"
                     >
                       <el-option
                         v-for="item in quClassSelect"
@@ -481,17 +449,32 @@
                       >
                       </el-option>
                     </el-select>
+                    <el-select
+                      v-model="QuestionsQuiz.type"
+                      :placeholder="$t('question.con69')"
+                      style="width: 270px"
+                      filterable
+                      v-show="localStoragelang == false"
+                    >
+                      <el-option
+                        v-for="item in classSelectDateKo"
+                        :key="item.name"
+                        :label="item.name"
+                        :value="item.type"
+                      >
+                      </el-option>
+                    </el-select>
                   </el-form-item>
                 </div>
                 <div style="overflow: hidden; margin-left: 289px">
-                  <div class="PR">输入你的主题或课程</div>
+                  <div class="PR">{{$t('question.con70')}}</div>
                   <el-form-item
                     prop="Title"
                     class="ql-editQuziTi"
                     style="width: 270px"
                   >
                     <el-input
-                      v-model="QuestionsQuiz.title"
+                      v-model="QuestionsQuiz.Title"
                       placeholder="Write about..."
                     ></el-input>
                   </el-form-item>
@@ -499,13 +482,13 @@
 
                 <div style="overflow: hidden">
                   <div style="float: left" class="queTime">
-                    <div class="PR">答题截止时间</div>
+                    <div class="PR">{{$t('question.con71')}}</div>
                     <el-form-item prop="EndTime">
                       <el-date-picker
                         v-model="QuestionsQuiz.EndTime"
                         type="datetime"
                         style="width: 270px"
-                        placeholder="选择日期时间"
+                        :placeholder="$t('question.con72')"
                         value-format="yyyy-MM-dd HH:mm:ss"
                         :picker-options="{
                           disabledDate: (time) => {
@@ -534,7 +517,7 @@
                     :file-list="quefileList"
                   >
                     <el-button size="small" type="primary" class="upImgBut">
-                      上传问题图片
+                      {{$t('question.con73')}}
                       <i class="el-icon-picture"></i>
                     </el-button>
                   </el-upload>
@@ -565,7 +548,7 @@
                   type="primary"
                   size="medium"
                   @click="releaseQl('QuestionsQuiz')"
-                  >发布问题</el-button
+                  >{{$t('question.con157')}}</el-button
                 >
               </div>
 
@@ -578,14 +561,14 @@
           <div class="ql-shade" v-show="evaluateShade" @mousewheel.prevent>
             <div class="ql-editQuzi">
               <div style="min-height: 117px">
-                <div style="float: left">您的评价:</div>
+                <div style="float: left">{{$t('question.con75')}}</div>
                 <el-switch
                   style="display: block; float: right"
                   v-model="evaluateSwitch"
                   active-color="#13ce66"
                   inactive-color="#ff4949"
-                  active-text="好评"
-                  inactive-text="差评"
+                  :active-text="$t('question.con76')"
+                  :inactive-text="$t('question.con77')"
                 ></el-switch>
                 <el-input
                   v-model="evaluateInput"
@@ -596,13 +579,13 @@
                   type="primary"
                   size="medium"
                   @click="evaluateCon"
-                  >确定</el-button
+                  >{{$t('question.con78')}}</el-button
                 >
                 <el-button
                   style="float: right; margin-right: 10px"
                   size="medium"
                   @click="CloseEvaluate"
-                  >取消</el-button
+                  >{{$t('question.con79')}}</el-button
                 >
               </div>
             </div>
@@ -698,30 +681,27 @@ export default {
       answerShow: false,
       answerTableData: [],
       QuestionsQuiz: {
-        // Title: "",
-        // Content: "",
-        // EndTime: "",
-        // Currency: "",
-        // Img: "",
-        // type: "",
+        Title: "",
+        Content: "",
+        EndTime: "",
+        Img: "",
+        type: "",
       },
       // 我要提问表单验证
       QuestionsQuizrules: {
-        type: [{ required: true, message: "请选择科目", trigger: "change" }],
-        title: [
-          { required: true, message: "请输入标题", trigger: "blur" },
-          { min: 4, message: "最少输入4个字", trigger: "blur" },
+        type: [{ required: true, message: this.$t('question.con87'), trigger: "change" }],
+        Title: [
+          { required: true, message: this.$t('question.con88'), trigger: "blur" },
+          { min: 4, message: this.$t('question.con89'), trigger: "blur" },
         ],
-        Content: [{ required: true, message: "请输入内容", trigger: "blur" }],
+        Content: [{ required: true, message: this.$t('question.con90'), trigger: "blur" }],
         EndTime: [
           {
+            type: "string",
             required: true,
-            message: "请选择日期",
+            message: this.$t('question.con91'),
             trigger: "change",
           },
-        ],
-        Currency: [
-          { required: true, message: "请输入鲸灵币", trigger: "blur" },
         ],
       },
       // 我的竞拍
@@ -747,11 +727,102 @@ export default {
       quefileList: [],
       austartTimeRange: "",
       auction: [],
-      quClassSelect: [],
+      quClassSelect: [
+        { name: "非裔文化 African-American Studies", type: 1 },
+        { name: "会计 Accounting", type: 2 },
+        { name: "人类学 Anthropology", type: 3 },
+        { name: "建筑学 Architecture", type: 4 },
+        { name: "艺术类 Art, Theatre and Film", type: 5 },
+        { name: "生物学 Biology", type: 6 },
+        { name: "商科类 Business and Entrepreneurship", type: 7 },
+        { name: "化学 Chemistry", type: 8 },
+        { name: "沟通战略 Communication Strategies ", type: 9 },
+        { name: "电脑科学 Computer Science", type: 10 },
+        { name: "犯罪学 Criminology", type: 11 },
+        { name: "经济学 Economic", type: 12 },
+        { name: "教育类 Education", type: 13 },
+        { name: "工程学 Engineering", type: 14 },
+        { name: "环境问题 Environmental Issues", type: 15 },
+        { name: "伦理学 Ethics", type: 16 },
+        { name: "金融类 Finance", type: 17 },
+        { name: "地理学 Geography", type: 18 },
+        { name: "健康类 Healthcare", type: 19 },
+        { name: "历史学 History", type: 20 },
+        { name: "国际关系 International and Public Relations", type: 21 },
+        { name: "法律类 Law and Legal Issues", type: 22 },
+        { name: "语言学 Linguistic", type: 23 },
+        { name: "文学 Literature", type: 24 },
+        { name: "管理学 Management", type: 25 },
+        { name: "市场营销 Marketing", type: 26 },
+        { name: "数学 Mathematics", type: 27 },
+        { name: "音乐类 Music", type: 28 },
+        { name: "护理类 Nursing", type: 29 },
+        { name: "营养学 Nutrition", type: 30 },
+        { name: "哲学类 Philosophy", type: 31 },
+        { name: "物理学 Physics", type: 32 },
+        { name: "政治科学 Politcal Science", type: 33 },
+        { name: "心理学 Psychology", type: 34 },
+        { name: "宗教神学 Religion and Theology", type: 35 },
+        { name: "社会学 Sociology", type: 36 },
+        { name: "体育类 Sport", type: 37 },
+        { name: "科技类 Technology", type: 38 },
+        { name: "旅游类 Tourism", type: 39 },
+        { name: "其他 Other", type: 40 },
+      ],
+      classSelectDateKo: [
+        { name: "아프리카 문화 African-American Studies", type: 1 },
+        { name: "회계 Accounting", type: 2 },
+        { name: "인류학 Anthropology", type: 3 },
+        { name: "건축물 Architecture", type: 4 },
+        { name: "미술 Art, Theatre and Film", type: 5 },
+        { name: "생물학 Biology", type: 6 },
+        { name: "사업 Business and Entrepreneurship", type: 7 },
+        { name: "화학 Chemistry", type: 8 },
+        { name: "커뮤니케이션 전략 Communication Strategies ", type: 9 },
+        { name: "컴퓨터 과학 Computer Science", type: 10 },
+        { name: "범죄학 Criminology", type: 11 },
+        { name: "경제학 Economic", type: 12 },
+        { name: "교육 Education", type: 13 },
+        {
+          name: "공학  Engineering",
+          type: 14,
+        },
+        { name: "환경 문제 Environmental Issues", type: 15 },
+        { name: "윤리학 Ethics", type: 16 },
+        { name: "재정적 인 Finance", type: 17 },
+        { name: "지리학 Geography", type: 18 },
+        { name: "건강 Healthcare", type: 19 },
+        { name: "역사 History", type: 20 },
+        { name: "국제 관계 International and Public Relations", type: 21 },
+        { name: "적법한 Law and Legal Issues", type: 22 },
+        { name: "언어학 Linguistic", type: 23 },
+        { name: "문학 Literature", type: 24 },
+        { name: "조치 Management", type: 25 },
+        { name: "마케팅 Marketing", type: 26 },
+        { name: "수학 Mathematics", type: 27 },
+        { name: "음악 Music", type: 28 },
+        { name: "육아 Nursing", type: 29 },
+        { name: "영양물 섭취 Nutrition", type: 30 },
+        { name: "철학 Philosophy", type: 31 },
+        { name: "물리학 Physics", type: 32 },
+        { name: "정치 과학 Politcal Science", type: 33 },
+        { name: "심리학 Psychology", type: 34 },
+        { name: "종교 신학 Religion and Theology", type: 35 },
+        { name: "사회학 Sociology", type: 36 },
+        { name: "스포츠 Sport", type: 37 },
+        { name: "과학 기술 Technology", type: 38 },
+        { name: "관광 여행 Tourism", type: 39 },
+        { name: "다른 Other", type: 40 },
+      ],
+      editquestion:{},
+      localStoragelang:true
     };
   },
   created: function () {
     const _this = this;
+    if (localStorage.lang == "ko") {
+      _this.localStoragelang = false;
+    }
     if (this.$route.query.type == "auction") {
       _this.status = 2;
       _this.activeName = "first2";
@@ -771,7 +842,6 @@ export default {
     } else {
       _this.quizList();
     }
-    _this.quClass();
   },
   filters: {
     formatDate: function (time) {
@@ -809,46 +879,25 @@ export default {
     },
   },
   methods: {
-    // 检索科目
-    quClass() {
-      const _this = this;
-      _this
-        .axios({
-          method: "get",
-          url: `${_this.URLport.serverPath}/Questions/Classes`,
-          async: false,
-          xhrFields: {
-            withCredentials: true,
-          },
-        })
-        .then(function (res) {
-          var a = Object.keys(res.data.data).length;
-          for (var i = 1; i <= a; i++) {
-            _this.quClassSelect.push({ name: res.data.data[i], type: i });
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    },
     handleClick(tab, event) {
       const _this = this;
+      console.log(tab)
       _this.quizTableData = [];
       _this.pagenums = 1;
       _this.pagesizes = 13;
-      if (tab.label == "竞拍中的提问") {
+      if (tab.name == "first2") {
         _this.status = 2;
         _this.quizList();
-      } else if (tab.label == "我的提问") {
+      } else if (tab.name == "first") {
         _this.status = 0;
         _this.quizList();
-      } else if (tab.label == "待完成的提问") {
+      } else if (tab.name == "first3") {
         _this.status = 3;
         _this.quizList();
-      } else if (tab.label == "待评价的提问") {
+      } else if (tab.name == "first4") {
         _this.status = 4;
         _this.quizList();
-      } else if (tab.label == "已完毕的提问") {
+      } else if (tab.name == "first5") {
         _this.status = 6;
         _this.quizList();
       }
@@ -1019,23 +1068,23 @@ export default {
     // 编辑提问
     editQuiz(list) {
       const _this = this;
-      _this.QuestionsQuiz = list.que;
-      _this.QuestionsQuiz.title = list.que.title;
-      // _this.QuestionsQuiz.Content = list.que.content;
+      console.log(list)
+      _this.editquestion = list.que;
+      _this.QuestionsQuiz.Title = list.que.title;
+      _this.QuestionsQuiz.Content = list.que.content;
       _this.myValue = list.que.content;
       _this.QuestionsQuiz.EndTime = _this.formatDate(list.que.endTime);
-      // _this.QuestionsQuiz.Currency = list.que.currency;
       // _this.QuestionsQuiz.id = list.que.id;
-      // _this.QuestionsQuiz.Img = list.que.img;
-      // _this.QuestionsQuiz.type = list.que.type;
+      _this.QuestionsQuiz.Img = list.que.img;
+      _this.QuestionsQuiz.type = list.que.type;
       if (list.que.img) {
         var a = list.que.img.split("|");
         for (var i = 0; i < a.length; i++) {
           _this.quefileList.push({ url: a[i], response: { file: a[i] } });
         }
       }
-
       _this.qlShade = !_this.qlShade;
+
     },
     // 关闭编辑遮罩
     CloseQuitBt() {
@@ -1046,7 +1095,14 @@ export default {
     // 发布新的问题
     releaseQl(QuestionsQuiz) {
       const _this = this;
-      _this.QuestionsQuiz.Content = _this.myValue;
+      var a = _this.editquestion;
+      // _this.QuestionsQuiz.Content = ;
+      a.content = _this.myValue;
+      a.title = _this.QuestionsQuiz.Title;
+      a.endTime = _this.QuestionsQuiz.EndTime;
+      a.type = _this.QuestionsQuiz.type;
+      a.img = _this.QuestionsQuiz.Img;
+      // _this.QuestionsQuiz.Content = _this.myValue;
       _this.$refs[QuestionsQuiz].validate((valid) => {
         if (valid) {
           _this
@@ -1054,7 +1110,7 @@ export default {
               method: "post",
               url: `${_this.URLport.serverPath}/Questions/Add`,
               async: false,
-              data: _this.QuestionsQuiz,
+              data: a,
               xhrFields: {
                 withCredentials: true,
               },
@@ -1064,22 +1120,17 @@ export default {
             })
             .then(function (res) {
               if (res.data.status == 1) {
-                _this.QuestionsQuiz = {};
-                // _this.QuestionsQuiz.Title = "";
-                // _this.QuestionsQuiz.Content = "";
                 _this.QuestionsQuiz.EndTime = new Date();
-                // _this.QuestionsQuiz.Currency = "";
-                // _this.QuestionsQuiz.Img = "";
-                // _this.QuestionsQuiz.type = "";
+                _this.quefileList = [];
                 _this.qlShade = !_this.qlShade;
                 _this.quizList();
                 _this.$message({
-                  message: "发布成功",
+                  message: _this.$t('question.con135'),
                   type: "success",
                 });
               } else {
                 _this.$message({
-                  message: "发布失败",
+                  message: res.data.msg,
                   type: "error",
                 });
               }
@@ -1126,12 +1177,12 @@ export default {
             _this.quizList();
             _this.evaluateShade = false;
             _this.$message({
-              message: "评价成功",
+              message: _this.$t('question.con100'),
               type: "success",
             });
           } else {
             _this.$message({
-              message: "评价失败",
+              message: _this.$t('question.con101'),
               type: "error",
             });
           }
@@ -1143,9 +1194,9 @@ export default {
     // 发送客服
     service(id) {
       const _this = this;
-      this.$prompt("您要对客服说:", "CourseWhale", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
+      this.$prompt(_this.$t('question.con102'), "CourseWhale", {
+        confirmButtonText: _this.$t('question.con78'),
+        cancelButtonText: _this.$t('question.con79'),
       })
         .then(({ value }) => {
           _this
@@ -1167,12 +1218,12 @@ export default {
             .then(function (res) {
               if (res.data.status == 1) {
                 _this.$message({
-                  message: "发送成功",
+                  message: _this.$t('basic.con28'),
                   type: "success",
                 });
               } else {
                 _this.$message({
-                  message: "发送失败",
+                  message: _this.$t('question.con94'),
                   type: "error",
                 });
               }

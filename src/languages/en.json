@@ -248,7 +248,9 @@
     "inform": {
         "con1": "No data",
         "con2": "Reply to you",
-        "con3": "View"
+        "con3": "View",
+        "con4": "delete",
+        "con5": "Leave a message"
     },
     "award": {
         "con1": "Date",
@@ -390,7 +392,11 @@
         "con28": "Please log in and comment",
         "con29": "Please comment after the personal center verification email",
         "con30": "Please enter the content",
-        "con31": "Comment on success"
+        "con31": "Comment on success",
+        "con32": "Non-vip users can see 50 answers every day!",
+        "con33": "Your number of views today is gone! Enjoy unlimited browsing after opening VIP!",
+        "con34": "Non-login users can see 5 answers every day!",
+        "con35": "Your views today are gone! After logging in, you will be given 50 views!"
     },
     "popupLogin": {
         "con1": "Enter email address",
@@ -662,9 +668,9 @@
       "con11": "Click to view",
       "con12": "pictures",
       "con13": "My question",
-      "con14": "Questions in the auction",
-      "con15": "Questions to be completed",
-      "con16": "Questions to be evaluated",
+      "con14": "In Auction",
+      "con15": "To be completed",
+      "con16": "To be Reviewed",
       "con17": "Completed questions",
       "con18": "My answer",
       "con19": "Question just posted",
@@ -694,7 +700,7 @@
       "con43": "Answered",
       "con44": "question",
       "con45": "dialogue",
-      "con46": "Choose him",
+      "con46": "Choose",
       "con47": "questioner",
       "con48": "Answerer",
       "con49": "Waiting for completion",
@@ -795,6 +801,16 @@
       "con144": "Current state",
       "con145": "Upload answer picture",
       "con146": "Submit answer",
-      "con147": "Supplementary answer"
+      "con147": "Supplementary answer",
+      "con148": "Release date",
+      "con149": "topic",
+      "con150": "Offer a reward",
+      "con151": "Bidder",
+      "con152": "Deadline",
+      "con153": "status",
+      "con154": "operating",
+      "con155": "edit",
+      "con156": "Evaluation",
+      "con157": "Customer service"
     }
 }

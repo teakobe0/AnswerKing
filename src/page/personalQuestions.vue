@@ -326,9 +326,18 @@
         </div>
         <div class="pequDetai">
           <div class="pequDetaitop">
-            <div class="pequDetaitoptab" :class="{ pequDetaitoptabs: active }">
+            <div class="pequDetaitoptab" :class="{ pequDetaitoptabs: active }" v-show="localStoragelang == true">
               <div
                 v-for="(item, index) in quClassSelect"
+                :class="{ pequDetaitoptabS: index == num }"
+                @click="quClassSelectTab(index)"
+              >
+                {{ item.name }}<br /><span style="">{{ item.ename }}</span>
+              </div>
+            </div>
+            <div class="pequDetaitoptab" :class="{ pequDetaitoptabs: active }" v-show="localStoragelang == false">
+              <div
+                v-for="(item, index) in quClasssKO"
                 :class="{ pequDetaitoptabS: index == num }"
                 @click="quClassSelectTab(index)"
               >
@@ -491,6 +500,57 @@ export default {
         { name: "旅游类", type: 39, ename: "Tourism" },
         { name: "其他", type: 40, ename: "Other" },
       ],
+      quClasssKO: [
+        { name: "모든 과목", type: 0, ename: "All" },
+        { name: "아프리카 문화", type: 1, ename: "African-American Studies" },
+        { name: "회계", type: 2, ename: "Accounting" },
+        { name: "인류학", type: 3, ename: "Anthropology" },
+        { name: "건축물", type: 4, ename: "Architecture" },
+        { name: "미술", type: 5, ename: "Art, Theatre and Film" },
+        { name: "생물학", type: 6, ename: "Biology" },
+        { name: "사업", type: 7, ename: "Business and Entrepreneurship" },
+        { name: "화학", type: 8, ename: "Chemistry" },
+        {
+          name: "커뮤니케이션 전략",
+          type: 9,
+          ename: "Communication Strategies",
+        },
+        { name: "컴퓨터 과학", type: 10, ename: "Computer Sciencee" },
+        { name: "범죄학", type: 11, ename: "Criminology" },
+        { name: "경제학", type: 12, ename: "Economic" },
+        { name: "교육", type: 13, ename: "Education" },
+        { name: "공학", type: 14, ename: "Engineering" },
+        { name: "환경 문제", type: 15, ename: "Environmental Issues" },
+        { name: "윤리학", type: 16, ename: "Ethics" },
+        { name: "재정적 인", type: 17, ename: "Finance" },
+        { name: "지리학", type: 18, ename: "Geography" },
+        { name: "건강", type: 19, ename: "Healthcare" },
+        { name: "역사", type: 20, ename: "History" },
+        {
+          name: "국제 관계",
+          type: 21,
+          ename: "International and Public Relations",
+        },
+        { name: "적법한", type: 22, ename: "Law and Legal Issues" },
+        { name: "언어학", type: 23, ename: "Linguistic" },
+        { name: "문학", type: 24, ename: "Literature" },
+        { name: "조치", type: 25, ename: "Management" },
+        { name: "마케팅", type: 26, ename: "Marketing" },
+        { name: "수학", type: 27, ename: "Mathematics" },
+        { name: "음악", type: 28, ename: "Music" },
+        { name: "육아", type: 29, ename: "Nursing" },
+        { name: "영양물 섭취", type: 30, ename: "Nutrition" },
+        { name: "철학", type: 31, ename: "Philosophy" },
+        { name: "물리학", type: 32, ename: "Physics" },
+        { name: "정치 과학", type: 33, ename: "Politcal Science" },
+        { name: "심리학", type: 34, ename: "Psychology" },
+        { name: "종교 신학", type: 35, ename: "Religion and Theology" },
+        { name: "사회학", type: 36, ename: "Sociology" },
+        { name: "스포츠", type: 37, ename: "Sport" },
+        { name: "과학 기술", type: 38, ename: "Technology" },
+        { name: "관광 여행", type: 39, ename: "Tourism" },
+        { name: "다른", type: 40, ename: "Other" },
+      ],
       pqCon: [],
       pqtype: 0,
       pqpagenum: 1,
@@ -503,6 +563,7 @@ export default {
       myQuestionselct: "",
       myQuestionselctId: "",
       clientID: "",
+      localStoragelang:true
     };
   },
   filters: {
@@ -513,6 +574,9 @@ export default {
   },
   created: function () {
     const _this = this;
+    if (localStorage.lang == "ko") {
+      _this.localStoragelang = false;
+    }
     _this.personal();
   },
   methods: {

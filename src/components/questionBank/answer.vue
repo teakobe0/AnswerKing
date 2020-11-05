@@ -334,37 +334,37 @@ export default {
         } else {
           if (_this.$cookies.get("user_timeNumVip")) {
             if (_this.$cookies.get("user_timeNumVip") > 0) {
-              _this.ditmes("非vip用户每天可以看50张答案!",index);
+              _this.ditmes(_this.$t("content.con32"),index,"Thevip");
             }else {
               _this.$message({
-              message: "您今天的观看次数没有了!开通VIP后享受无限制浏览!",
+              message: _this.$t("content.con33"),
               type: "error",
             });
             }
           } else {
             _this.DtimeVip(50);
-            _this.ditmes("非vip用户每天可以看50张答案!",index);
+            _this.ditmes(_this.$t("content.con32"),index,"Thevip");
           }
         }
       } else {
         if (_this.$cookies.get("user_timeNum")) {
           if (_this.$cookies.get("user_timeNum") > 0) {
-            _this.ditmes("非登录用户每天可以看5张答案!",index);
+            _this.ditmes(_this.$t("content.con34"),index,"Thelogin");
           } else {
             _this.$message({
-              message: "您今天的观看次数没有了!登录之后送您50张观看次数!",
+              message: _this.$t("content.con35"),
               type: "error",
             });
           }
         } else {
           _this.Dtime(5);
-          _this.ditmes("非登录用户每天可以看5张答案!",index);
+          _this.ditmes(_this.$t("content.con34"),index,"Thelogin");
         }
 
         // _this.popup = true;
       }
     },
-    ditmes(text,index) {
+    ditmes(text,index,types) {
       const _this = this;
       _this.purButton = false;
       _this.shade = true;
@@ -383,7 +383,12 @@ export default {
           _this.shows();
           //当倒计时小于0时清除定时器
           window.clearInterval(_this.clock); //清除定时器
-          _this.Dtime(_this.$cookies.get("user_timeNum") - 1);
+          if(types == "Thelogin"){
+            _this.Dtime(_this.$cookies.get("user_timeNum") - 1);
+          }else if(types == "Thevip"){
+            _this.DtimeVip(_this.$cookies.get("user_timeNumVip") - 1);
+          }
+          
         }
       }, 1000);
     },

@@ -1,50 +1,150 @@
 <style>
-.regi-cc {
-  overflow: hidden;
-  height: 800px;
-}
-.regi-emp {
-  background-image: url(../assets/347985.jpg);
-  background-color: #dfdfdf;
-  background-repeat: no-repeat;
-  background-position: left center;
-  background-size: cover;
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  overflow: hidden;
-  text-align: center;
-}
+@media (min-width: 300px) {
+  .regi-cc {
+    overflow: hidden;
+    height: 800px;
+  }
+  .regi-emp {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
 
-.register-con {
-  margin: 0 auto;
-  width: 410px;
-  margin-top: 220px;
-  /* margin-bottom: 242px; */
-  background-color: #ffffff;
-  border-radius: 2px;
-  text-align: center;
-  box-shadow: 0px 0px 5px #707070;
-}
+  .register-con {
+    margin: 0 auto;
+    width: 300px;
+    margin-top: 90px;
+    /* margin-bottom: 242px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
 
-.register-con-top {
-  padding: 30px 40px 0px 40px;
-}
+  .register-con-top {
+    padding: 30px 40px 0px 40px;
+  }
 
-#regi {
-  margin-right: 10px;
-  width: 100%;
-}
+  #regi {
+    margin-right: 10px;
+    width: 100%;
+  }
 
-.termsOfService {
-  color: #8590a6;
-  font-size: 8px;
-  text-align: left;
+  .termsOfService {
+    color: #8590a6;
+    font-size: 8px;
+    text-align: left;
+  }
+  .termsOfService a {
+    text-decoration: none;
+    color: #8590a6;
+  }
 }
-.termsOfService a {
-  text-decoration: none;
-  color: #8590a6;
+@media (min-width: 768px) {
+  .regi-cc {
+    overflow: hidden;
+    height: 800px;
+  }
+  .regi-emp {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .register-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 242px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .register-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  #regi {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .termsOfService {
+    color: #8590a6;
+    font-size: 8px;
+    text-align: left;
+  }
+  .termsOfService a {
+    text-decoration: none;
+    color: #8590a6;
+  }
+}
+@media (min-width: 1200px) {
+  .regi-cc {
+    overflow: hidden;
+    height: 800px;
+  }
+  .regi-emp {
+    background-image: url(../assets/347985.jpg);
+    background-color: #dfdfdf;
+    background-repeat: no-repeat;
+    background-position: left center;
+    background-size: cover;
+    margin: 0 auto;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    overflow: hidden;
+    text-align: center;
+  }
+
+  .register-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 242px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .register-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  #regi {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .termsOfService {
+    color: #8590a6;
+    font-size: 8px;
+    text-align: left;
+  }
+  .termsOfService a {
+    text-decoration: none;
+    color: #8590a6;
+  }
 }
 </style>
 
@@ -166,7 +266,7 @@ export default {
         Email: "",
         Password: "",
         Passwords: "",
-        inviterid: 0,
+        inviterid: "",
         Ip: "",
       },
       //rules是Element的表单验证规则
@@ -201,7 +301,7 @@ export default {
   //页面的方法还是写在methods{}中
   methods: {
     register(ruleForm) {
-     this.ruleForm.Ip = localStorage.Ip;
+      this.ruleForm.Ip = localStorage.Ip;
       //$refs是获取DOM节点的，它直接在页面找到ruleForm这个表单
       //validate是element自带的一个表单验证功能，它将检验表单里的内容是否已经验证成功，成功后会传回一个回调函数
       this.$refs[ruleForm].validate((valid) => {
