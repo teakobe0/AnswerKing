@@ -60,6 +60,7 @@ import schoolall from '@/components/school/schoolall.vue'  //当前学校全部�
 import schoolClasses from '@/components/school/schoolClasses.vue'
 import file from '@/components/classes/file.vue'  //当前课程全部题库文件
 import schoolFile from '@/components/school/schoolFile.vue'
+import questionFaq from '@/components/public/questionFaq.vue'
 
 import answer from "@/components/questionBank/answer.vue";
 
@@ -275,6 +276,10 @@ export default new Router({
         {
             path: '/personalQuestions/:pq_id',      //设置跳转
             component: personalQuestions
+        },
+        {
+            path: '/questionFaq',      //设置跳转
+            component: questionFaq
         },
 
     ]

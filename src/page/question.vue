@@ -33,7 +33,7 @@
               "
               >{{ $t("question.con2") }}&nbsp;></el-button
             >
-            <router-link to="home">{{ $t("question.con3") }}</router-link>
+            <router-link to="/questionFaq">{{ $t("question.con3") }}</router-link>
           </div>
         </div>
       </div>
