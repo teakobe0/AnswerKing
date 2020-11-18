@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-// const login = () => import('@/page/accountLogin.vue')
-import login from '@/page/accountLogin.vue'  //登录
+const login = () => import('@/page/accountLogin.vue')
+// import login from '@/page/accountLogin.vue'  //登录
 // const register = () => import('@/page/accountRegister.vue')
 import register from '@/page/accountRegister.vue'  //注册
 // const forgetPassword = () => import('@/page/accountForgetPassword.vue')
@@ -10,24 +10,24 @@ import forgetPassword from '@/page/accountForgetPassword.vue'  //忘记密码
 import accountChangePassword from '@/page/accountChangePassword.vue'  //忘记密码之后的修改密码
 // const personalData = () => import('@/page/accountPersonalData.vue')
 import personalData from '@/page/accountPersonalData.vue'  //个人信息
-// const home = () => import('@/page/Home.vue')
-import home from '@/page/Home.vue'  //首页
+const home = () => import('@/page/Home.vue')
+// import home from '@/page/Home.vue'  //首页
 // const serch = () => import('@/page/search.vue')
 import serch from '@/page/search.vue'  //搜索结果
-// const schools = () => import('@/page/schoolStudy.vue')
-import schools from '@/page/schoolStudy.vue'  //学校资源
-// const classesStudy = () => import('@/page/classesStudy.vue')
-import classesStudy from '@/page/classesStudy.vue'  //课程资源
+const schools = () => import('@/page/schoolStudy.vue')
+// import schools from '@/page/schoolStudy.vue'  //学校资源
+const classesStudy = () => import('@/page/classesStudy.vue')
+// import classesStudy from '@/page/classesStudy.vue'  //课程资源
 // const serchDetails = () => import('@/page/searchDetails.vue')
-import serchDetails from '@/page/searchDetails.vue'  //搜索详情
+// import serchDetails from '@/page/searchDetails.vue'  //搜索详情
 // const serchDetailsContent = () => import('@/page/searchDetailsContent.vue')
 import content from '@/page/searchDetailsContent.vue'  //答案页面
 // const serchDetailsUniversity = () => import('@/page/searchDetailsUniversity.vue')
 import university from '@/page/searchDetailsUniversity.vue'  //学校详情页面
 // const classesDetails = () => import('@/page/classesDetails.vue')
 import classes from '@/page/classesDetails.vue'  //课程详情页面
-// const member = () => import('@/page/member.vue')
-import member from '@/page/member.vue'  //会员
+const member = () => import('@/page/member.vue')
+// import member from '@/page/member.vue'  //会员
 import imgDetails from '@/page/imgDetails.vue'  //图片详情
 import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
 import question from '@/page/question.vue'  //问答大厅
@@ -105,10 +105,6 @@ export default new Router({
         {
             path: '/classesStudy',      //设置跳转
             component: classesStudy
-        },
-        {
-            path: '/serchDetails',      //设置跳转
-            component: serchDetails
         },
         {
             path: '/personalData',      //设置跳转

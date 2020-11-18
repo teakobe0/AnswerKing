@@ -33,7 +33,9 @@
               "
               >{{ $t("question.con2") }}&nbsp;></el-button
             >
-            <router-link to="/questionFaq">{{ $t("question.con3") }}</router-link>
+            <router-link to="/questionFaq">{{
+              $t("question.con3")
+            }}</router-link>
           </div>
         </div>
       </div>
@@ -1010,7 +1012,7 @@ export default {
             document.documentElement.scrollHeight || document.body.scrollHeight;
 
           if (scrollTop + windowHeight == scrollHeight) {
-            if (localStorage.token && _this.num != 3) {
+            if (localStorage.token) {
               _this.myQlcon = true;
               _this.myqus = true;
               _this
@@ -1087,13 +1089,14 @@ export default {
                 .catch(function (error) {
                   console.log(error);
                 });
-            } else if (!localStorage.token && _this.num != 3) {
+            } else if (!localStorage.token) {
               _this
                 .axios({
                   method: "get",
                   url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
                   async: false,
                   params: {
+                    classes: _this.claNum,
                     type: _this.typeNum,
                     pagenum: ++_this.pagenums,
                     pagesize: _this.pagesizes,
@@ -1159,62 +1162,6 @@ export default {
                 .catch(function (error) {
                   console.log(error);
                 });
-            } else if (localStorage.token && _this.num == 3) {
-              // _this
-              //   .axios({
-              //     method: "get",
-              //     url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-              //     async: false,
-              //     params: {
-              //       name: _this.topInput,
-              //       pagenum: ++_this.pagenums,
-              //       pagesize: _this.pagesizes,
-              //       name: _this.topInput,
-              //     },
-              //     xhrFields: {
-              //       withCredentials: true,
-              //     },
-              //     headers: {
-              //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-              //     },
-              //   })
-              //   .then(function (res) {
-              //     if (res.data.status == 1) {
-              //       let a = [];
-              //       a = res.data.data.data;
-              //       for (var i = 0; i < a.length; i++) {
-              //         a[i].type = "";
-              //         if (a[i].que.status == 1) {
-              //           a[i].type = "保存";
-              //         }
-              //         if (a[i].que.status == 2) {
-              //           a[i].type = "正在竞拍";
-              //         }
-              //         if (a[i].que.status == 3) {
-              //           a[i].type = "已选竞拍者";
-              //         }
-              //         if (a[i].que.status == 4) {
-              //           a[i].type = "已回答";
-              //         }
-              //         if (a[i].que.status == 5) {
-              //           a[i].type = "提交修改";
-              //         }
-              //         if (a[i].que.status == 6) {
-              //           a[i].type = "申请客服";
-              //         }
-              //         if (a[i].que.status == 7) {
-              //           a[i].type = "已完成";
-              //         }
-              //         if (a[i].que.status == 8) {
-              //           a[i].type = "已关闭";
-              //         }
-              //         _this.myQlList.push(a[i]);
-              //       }
-              //     }
-              //   })
-              //   .catch(function (error) {
-              //     console.log(error);
-              //   });
             }
           }
         };
@@ -1434,80 +1381,6 @@ export default {
         _this.quizList();
       }
     },
-    // 已完成展示
-    // accomplish() {
-    //   const _this = this;
-    //   _this.num = 3;
-    //   _this.typeNum = "finish";
-    //   _this.pagenums = 1;
-    //   // _this.qlcon = true;
-    //   // _this.qlData = false;
-    //   if (localStorage.token) {
-    //     _this.myquizList();
-    //   } else {
-    //     _this.quizList();
-    //   }
-    // },
-    // 我的提问
-    // Myquestion() {
-    //   const _this = this;
-    //   _this.num = 4;
-    //   _this.pagenums = 1;
-    //   // _this.qlcon = false;
-    //   // _this.qlData = true;
-    //   _this
-    //     .axios({
-    //       method: "get",
-    //       url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-    //       async: false,
-    //       params: {
-    //         pagenum: _this.pagenums,
-    //         pagesize: _this.pagesizes,
-    //         name: _this.topInput
-    //       },
-    //       xhrFields: {
-    //         withCredentials: true
-    //       },
-    //       headers: {
-    //         Authorization: `Bearer ${localStorage.getItem("token")}`
-    //       }
-    //     })
-    //     .then(function(res) {
-    //       if (res.data.status == 1) {
-    //         _this.myQlList = res.data.data.data;
-    //         for (var i = 0; i < _this.myQlList.length; i++) {
-    //           _this.$set(_this.myQlList[i], "type", "");
-    //           if (_this.myQlList[i].que.status == 1) {
-    //             _this.myQlList[i].type = "保存";
-    //           }
-    //           if (_this.myQlList[i].que.status == 2) {
-    //             _this.myQlList[i].type = "正在竞拍";
-    //           }
-    //           if (_this.myQlList[i].que.status == 3) {
-    //             _this.myQlList[i].type = "已选竞拍者";
-    //           }
-    //           if (_this.myQlList[i].que.status == 4) {
-    //             _this.myQlList[i].type = "已回答";
-    //           }
-    //           if (_this.myQlList[i].que.status == 5) {
-    //             _this.myQlList[i].type = "提交修改";
-    //           }
-    //           if (_this.myQlList[i].que.status == 6) {
-    //             _this.myQlList[i].type = "申请客服";
-    //           }
-    //           if (_this.myQlList[i].que.status == 7) {
-    //             _this.myQlList[i].type = "已完成";
-    //           }
-    //           if (_this.myQlList[i].que.status == 8) {
-    //             _this.myQlList[i].type = "已关闭";
-    //           }
-    //         }
-    //       }
-    //     })
-    //     .catch(function(error) {
-    //       console.log(error);
-    //     });
-    // },
     // 我要提问按钮
     NewQuitBt() {
       const _this = this;
@@ -1720,8 +1593,9 @@ export default {
             url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
             async: false,
             params: {
+              classes: _this.claNum,
               type: _this.typeNum,
-              pagenum: _this.pagenums,
+              pagenum: ++_this.pagenums,
               pagesize: _this.pagesizes,
               name: _this.topInput,
             },
@@ -1781,7 +1655,7 @@ export default {
     // 点击页面底部的三个点加载下一页
     nextpages() {
       const _this = this;
-      if (localStorage.token && _this.num != 3) {
+      if (localStorage.token) {
         _this.myQlcon = true;
         _this.myqus = true;
         _this
@@ -1794,6 +1668,7 @@ export default {
               type: _this.typeNum,
               pagenum: ++_this.pagenums,
               pagesize: _this.pagesizes,
+              name: _this.topInput,
             },
             xhrFields: {
               withCredentials: true,
@@ -1854,16 +1729,18 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      } else if (!localStorage.token && _this.num != 3) {
+      } else if (!localStorage.token) {
         _this
           .axios({
             method: "get",
             url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
             async: false,
             params: {
+              classes: _this.claNum,
               type: _this.typeNum,
               pagenum: ++_this.pagenums,
               pagesize: _this.pagesizes,
+              name: _this.topInput,
             },
             xhrFields: {
               withCredentials: true,
@@ -1925,61 +1802,6 @@ export default {
           .catch(function (error) {
             console.log(error);
           });
-      } else if (localStorage.token && _this.num == 3) {
-        // _this
-        //   .axios({
-        //     method: "get",
-        //     url: `${_this.URLport.serverPath}/Questions/MyQuestion`,
-        //     async: false,
-        //     params: {
-        //       name: _this.topInput,
-        //       pagenum: ++_this.pagenums,
-        //       pagesize: _this.pagesizes,
-        //     },
-        //     xhrFields: {
-        //       withCredentials: true,
-        //     },
-        //     headers: {
-        //       Authorization: `Bearer ${localStorage.getItem("token")}`,
-        //     },
-        //   })
-        //   .then(function (res) {
-        //     if (res.data.status == 1) {
-        //       let a = [];
-        //       a = res.data.data.data;
-        //       for (var i = 0; i < a.length; i++) {
-        //         a[i].type = "";
-        //         if (a[i].que.status == 1) {
-        //           a[i].type = "保存";
-        //         }
-        //         if (a[i].que.status == 2) {
-        //           a[i].type = "正在竞拍";
-        //         }
-        //         if (a[i].que.status == 3) {
-        //           a[i].type = "已选竞拍者";
-        //         }
-        //         if (a[i].que.status == 4) {
-        //           a[i].type = "已回答";
-        //         }
-        //         if (a[i].que.status == 5) {
-        //           a[i].type = "提交修改";
-        //         }
-        //         if (a[i].que.status == 6) {
-        //           a[i].type = "申请客服";
-        //         }
-        //         if (a[i].que.status == 7) {
-        //           a[i].type = "已完成";
-        //         }
-        //         if (a[i].que.status == 8) {
-        //           a[i].type = "已关闭";
-        //         }
-        //         _this.myQlList.push(a[i]);
-        //       }
-        //     }
-        //   })
-        //   .catch(function (error) {
-        //     console.log(error);
-        //   });
       }
     },
     // 上传问题图片删除后

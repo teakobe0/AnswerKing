@@ -6,11 +6,14 @@ module.exports = {
     publicPath: process.env.NODE_ENV === 'production' ? '/' : '/',
     productionSourceMap: false,
     // externals表示不需要打包的文件
-    // configureWebpack: {
-    //     externals: {
-    //         'vue': 'Vue',
-    //     }
-    // },
+    configureWebpack: {
+        externals: {
+            vue: 'Vue',
+            'vue-router': 'VueRouter',
+            axios: 'axios',
+            vuex: 'Vuex',
+        }
+    },
     // css: {
     //     loaderOptions: {
     //       sass: {
@@ -52,7 +55,8 @@ module.exports = {
 
     devServer: {
         port: 8081, // 端口号
-        host: '192.168.1.8',
+        host: 'localhost',
+        // host: '192.168.1.11',
         https: false, // https:{type:Boolean}
         open: true, //配置自动启动浏览器
 
