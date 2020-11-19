@@ -122,8 +122,8 @@ Vue.use(VueClipboard)
 import './icon/iconfont.css'
 
 // 引入vue-i18n
-import VueI18n from 'vue-i18n'
-Vue.use(VueI18n);
+// import VueI18n from 'vue-i18n'
+// Vue.use(VueI18n);
 const i18n = new VueI18n({
   locale: localStorage.getItem('lang') || 'en', // 将要切换的语言，可以通过url拼的参数获取，用户行为select选择获取，本地manifest配置获取等，根据场景动态获取
   messages: {
@@ -144,8 +144,8 @@ import URLport from './URLport'
 Vue.prototype.URLport = URLport
 
 // 引入vue-cookies
-import VueCookies from 'vue-cookies'
-Vue.use(VueCookies)
+// import VueCookies from 'vue-cookies'
+// Vue.use(VueCookies)
 
 Vue.config.productionTip = false
 

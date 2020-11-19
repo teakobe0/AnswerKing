@@ -114,6 +114,143 @@
   cursor: pointer;
   z-index: 5;
 }
+.serchDetailsContent-top {
+  width: 1300px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.serchDetailsContent-top-img {
+  width: 140px;
+  height: 140px;
+  margin-top: 30px;
+  float: left;
+  overflow: hidden;
+}
+
+.serchDetailsContent-top-img img {
+  width: 140px;
+}
+
+.serchDetailsContent-top-info {
+  float: left;
+  width: 100%;
+  position: relative;
+}
+
+.serchDetailsContent-top-info h2 {
+  width: 900px;
+  margin-top: 24px;
+  margin-bottom: 8px;
+}
+.serchDetailsContent-top-info h2 a {
+  text-decoration: none;
+  color: #3b3b3b;
+}
+.serchDetailsContent-top-info h2 a:hover {
+  color: #fe2a93;
+}
+.serchDetailsContent-top-info p {
+  color: #777;
+  font-size: 16px;
+  margin-bottom: 24px;
+  float: left;
+}
+.serchDetailsContent-top-info p .ownness-name {
+  display: inline-block;
+  width: 118px;
+  height: 24px;
+  white-space: nowrap;
+  cursor: text;
+  margin-left: 5px;
+}
+.serchDetailsContent-top-info p .ownness-name:hover {
+  color: #777;
+}
+.serchDetailsContent-top-info p .ownness-name div {
+  display: inline;
+  font-size: 14px;
+  color: #3ccfcf;
+  font-weight: 700;
+  cursor: pointer;
+}
+.serchDetailsContent-top-info p .ownness-name div:hover {
+  color: #ffcd1f;
+}
+.serchDetailsContent-top-info p .ownness-name img {
+  width: 24px;
+  border-radius: 12px;
+  margin-right: 6px;
+  vertical-align: -6px;
+  cursor: pointer;
+  /* box-shadow: 0px 0px 5px #455358; */
+}
+.crumbs {
+  width: 100%;
+  overflow: hidden;
+  background-color: #4d60b3;
+}
+.crumbs .crumbs-con {
+  width: 1300px;
+  margin: 0 auto;
+}
+.crumbs span {
+  line-height: 38px;
+  color: #fff;
+}
+.content-bookmark {
+  position: absolute;
+  right: 0px;
+  bottom: 34.5px;
+  list-style-type: none;
+  /* margin-right: 66px; */
+}
+
+.content-bookmark li {
+  float: right;
+  overflow: hidden;
+  margin-left: 8px;
+  position: relative;
+}
+
+.content-bookmark i {
+  font-size: 14px;
+  /* color: #464646; */
+}
+
+.content-bookmark span {
+  /* color: #464646; */
+  font-size: 12px;
+}
+
+.content-bookmark:hover {
+  color: #5b8af9;
+  cursor: pointer;
+}
+.serchDetailsContent-top-info p b {
+  color: #777;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.serchDetailsContent-top-info p a {
+  color: #777;
+  text-decoration: none;
+}
+
+.serchDetailsContent-top-info p a:hover {
+  color: #fe2a93;
+  text-decoration: none;
+}
+
+.serchDetailsContent-top-info p span {
+  color: #777;
+  margin-left: 30px;
+}
+.ConAttens {
+    background-color: #58bce4 !important;
+    border: 1px solid #58bce4 !important;
+}
 </style>
 
 <template>

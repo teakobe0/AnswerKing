@@ -1,4 +1,11 @@
 <style>
+.pd-con-head-right {
+  width: 1000px;
+  height: 960px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 #orderHistory h3 {
   border-bottom: 1px solid #dddddd;
   color: #999999;

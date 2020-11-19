@@ -24,6 +24,14 @@
   /* width: 110%;
   height: 120%; */
 }
+#award .el-table th,
+.el-table tr {
+  background-color: #fafafa !important;
+}
+#award .el-table,
+.el-table__expanded-cell {
+  background-color: #fafafa !important;
+}
 </style>
 
 

@@ -786,9 +786,11 @@
 </template>
 
 <script type="es6">
+// const homeNav = () => import('@/components/public/homeNav.vue')
 import homeNav from "@/components/public/homeNav.vue";
+// const homeFooter = () => import('@/components/public/homeFooter.vue')
 import homeFooter from "@/components/public/homeFooter.vue";
-import { constants } from "crypto";
+// import { constants } from "crypto";
 import vueSeamless from "vue-seamless-scroll";
 import motionCss from "../../public/css/motion.min.css";
 // 引入jquery
@@ -861,7 +863,7 @@ export default {
   },
   created: function() {
     const _this = this;
-    _this.GetClassinfo();
+    
     _this.GetUniversitys();
     document.documentElement.scrollTop = 0;
   },
@@ -1076,6 +1078,7 @@ export default {
         })
         .then(function(res) {
           _this.universityNum = res.data.data;
+          _this.GetClassinfo();
         })
         .catch(function(error) {
           console.log(error);

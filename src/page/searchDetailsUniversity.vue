@@ -12,6 +12,7 @@
 .university-top {
   width: 1300px;
   margin: 0 auto;
+  overflow: hidden;
 }
 
 .university-tag {
@@ -91,6 +92,19 @@
   color: #000;
   padding: 0 20px;
   text-decoration: none;
+}
+.crumbs {
+  width: 100%;
+  overflow: hidden;
+  background-color: #4d60b3;
+}
+.crumbs .crumbs-con {
+  width: 1300px;
+  margin: 0 auto;
+}
+.crumbs span {
+  line-height: 38px;
+  color: #fff;
 }
 </style>
 

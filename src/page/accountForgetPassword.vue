@@ -54,6 +54,19 @@
   .forgetPassword-footer {
     margin: 0 auto;
   }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+  }
 }
 @media (min-width: 768px) {
   .forgetPassword-cc {
@@ -110,6 +123,19 @@
   .forgetPassword-footer {
     margin: 0 auto;
   }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+  }
 }
 @media (min-width: 1200px) {
   .forgetPassword-cc {
@@ -165,6 +191,19 @@
 
   .forgetPassword-footer {
     margin: 0 auto;
+  }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
   }
 }
 </style>

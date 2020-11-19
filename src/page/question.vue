@@ -475,9 +475,9 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-import questionNum from "@/components/public/questionNum.vue";
+const questionNum = () => import("@/components/public/questionNum.vue");
+// import questionNum from "@/components/public/questionNum.vue";
 import questionCss from "../pageCss/page/questionCss.css";
-
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";
@@ -1015,153 +1015,9 @@ export default {
             if (localStorage.token) {
               _this.myQlcon = true;
               _this.myqus = true;
-              _this
-                .axios({
-                  method: "get",
-                  url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
-                  async: false,
-                  params: {
-                    classes: _this.claNum,
-                    type: _this.typeNum,
-                    pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes,
-                    name: _this.topInput,
-                  },
-                  xhrFields: {
-                    withCredentials: true,
-                  },
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`,
-                  },
-                })
-                .then(function (res) {
-                  if (res.data.status == 1) {
-                    // _this.myQlList.push(res.data.data.data);
-                    let a = [];
-                    a = res.data.data.data;
-                    let date = new Date();
-                    let now = date.getTime();
-                    for (var i = 0; i < res.data.data.data.length; i++) {
-                      _this.$set(a[i], "Times", "");
-                      _this.$set(a[i].que, "images", []);
-                      _this.$set(a[i].que, "imagesNum", 0);
-                      if (a[i].que.img != "") {
-                        var b = a[i].que.img.split("|");
-                        a[i].que.imagesNum = b.length;
-                        if (b.length >= 3) {
-                          for (var j = 0; j <= 2; j++) {
-                            a[i].que.images.push({
-                              url: b[j],
-                            });
-                          }
-                        } else {
-                          for (var j = 0; j < b.length; j++) {
-                            a[i].que.images.push({
-                              url: b[j],
-                            });
-                          }
-                        }
-                      }
-                      let leftTime =
-                        now - new Date(a[i].que.createTime).getTime();
-                      let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                      let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                      let m = Math.floor((leftTime / 1000 / 60) % 60);
-                      if (d == 0 && h > 0) {
-                        a[i].Times =
-                          _this.$t("question.con20") +
-                          h +
-                          _this.$t("question.con21");
-                      } else if (h <= 0 && d <= 0) {
-                        a[i].Times = _this.$t("question.con19");
-                      } else {
-                        a[i].Times =
-                          _this.$t("question.con22") +
-                          d +
-                          _this.$t("question.con23") +
-                          h +
-                          _this.$t("question.con24");
-                      }
-                      _this.myQlList.push(a[i]);
-                    }
-                  }
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
+              _this.myquestions();
             } else if (!localStorage.token) {
-              _this
-                .axios({
-                  method: "get",
-                  url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-                  async: false,
-                  params: {
-                    classes: _this.claNum,
-                    type: _this.typeNum,
-                    pagenum: ++_this.pagenums,
-                    pagesize: _this.pagesizes,
-                    name: _this.topInput,
-                  },
-                  xhrFields: {
-                    withCredentials: true,
-                  },
-                })
-                .then(function (res) {
-                  if (res.data.status == 1) {
-                    if (res.data.data.data.length != 0) {
-                      let date = new Date();
-                      let now = date.getTime();
-                      let a = [];
-                      a = res.data.data.data;
-                      for (var i = 0; i < a.length; i++) {
-                        _this.$set(a[i].question, "images", []);
-                        _this.$set(a[i].question, "imagesNum", 0);
-                        _this.$set(a[i], "Times", "");
-                        if (a[i].question.img != "") {
-                          var b = a[i].question.img.split("|");
-                          a[i].question.imagesNum = b.length;
-                          if (b.length >= 3) {
-                            for (var j = 0; j <= 2; j++) {
-                              a[i].question.images.push({
-                                url: b[j],
-                              });
-                            }
-                          } else {
-                            for (var j = 0; j < b.length; j++) {
-                              a[i].question.images.push({
-                                url: b[j],
-                              });
-                            }
-                          }
-                        }
-                        let leftTime =
-                          now - new Date(a[i].question.createTime).getTime();
-                        let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                        let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                        let m = Math.floor((leftTime / 1000 / 60) % 60);
-                        if (d == 0 && h > 0) {
-                          a[i].Times =
-                            _this.$t("question.con20") +
-                            h +
-                            _this.$t("question.con21");
-                        } else if (h <= 0 && d <= 0) {
-                          a[i].Times = _this.$t("question.con19");
-                        } else {
-                          a[i].Times =
-                            _this.$t("question.con22") +
-                            d +
-                            _this.$t("question.con23") +
-                            h +
-                            _this.$t("question.con24");
-                        }
-                        _this.qlList.push(a[i]);
-                      }
-                    }
-                  }
-                })
-                .catch(function (error) {
-                  console.log(error);
-                });
+              _this.nomyquestions();
             }
           }
         };
@@ -1169,95 +1025,74 @@ export default {
         return;
       }
     },
-    // 检索当前登录人信息
-    personal: function () {
+    // 登录点击下一页push问题
+    myquestions() {
       const _this = this;
-      if (localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Client/GetClient`,
-            async: false,
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(function (res) {
-            _this.clientID = res.data.data.id;
-            _this.myquizList();
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      } else {
-        _this.quizList();
-      }
-    },
-    //  没有登录时检索问题列表
-    quizList() {
-      const _this = this;
-      _this.qlcon = true;
       _this
         .axios({
           method: "get",
-          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
           async: false,
           params: {
             classes: _this.claNum,
             type: _this.typeNum,
-            pagenum: _this.pagenums,
+            pagenum: ++_this.pagenums,
             pagesize: _this.pagesizes,
             name: _this.topInput,
           },
           xhrFields: {
             withCredentials: true,
           },
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
         })
         .then(function (res) {
           if (res.data.status == 1) {
-            _this.qlList = res.data.data.data;
-
+            // _this.myQlList.push(res.data.data.data);
+            let a = [];
+            a = res.data.data.data;
             let date = new Date();
             let now = date.getTime();
             for (var i = 0; i < res.data.data.data.length; i++) {
-              _this.$set(_this.qlList[i], "Times", "");
-              _this.$set(_this.qlList[i], "myType", "");
-              _this.$set(_this.qlList[i].question, "images", []);
-              _this.$set(_this.qlList[i].question, "imagesNum", 0);
-              if (_this.qlList[i].question.img != "") {
-                var a = _this.qlList[i].question.img.split("|");
-                _this.qlList[i].question.imagesNum = a.length;
-                if (a.length >= 3) {
+              _this.$set(a[i], "Times", "");
+              _this.$set(a[i].que, "images", []);
+              _this.$set(a[i].que, "imagesNum", 0);
+              if (a[i].que.img != "") {
+                var b = a[i].que.img.split("|");
+                a[i].que.imagesNum = b.length;
+                if (b.length >= 3) {
                   for (var j = 0; j <= 2; j++) {
-                    _this.qlList[i].question.images.push({ url: a[j] });
+                    a[i].que.images.push({
+                      url: b[j],
+                    });
                   }
                 } else {
-                  for (var j = 0; j < a.length; j++) {
-                    _this.qlList[i].question.images.push({ url: a[j] });
+                  for (var j = 0; j < b.length; j++) {
+                    a[i].que.images.push({
+                      url: b[j],
+                    });
                   }
                 }
               }
-              let leftTime =
-                now - new Date(_this.qlList[i].question.createTime).getTime();
+              let leftTime = now - new Date(a[i].que.createTime).getTime();
               let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
               let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
               let m = Math.floor((leftTime / 1000 / 60) % 60);
               if (d == 0 && h > 0) {
-                _this.qlList[i].Times =
+                a[i].Times =
                   _this.$t("question.con20") + h + _this.$t("question.con21");
               } else if (h <= 0 && d <= 0) {
-                _this.qlList[i].Times = _this.$t("question.con19");
+                a[i].Times = _this.$t("question.con19");
               } else {
-                _this.qlList[i].Times =
+                a[i].Times =
                   _this.$t("question.con22") +
                   d +
                   _this.$t("question.con23") +
                   h +
                   _this.$t("question.con24");
               }
+              _this.myQlList.push(a[i]);
             }
           }
         })
@@ -1265,11 +1100,9 @@ export default {
           console.log(error);
         });
     },
-    // 登录之后检索问题列表
-    myquizList() {
+    // 登录查询问题
+    MyQuestionPages(){
       const _this = this;
-      _this.myQlcon = true;
-      _this.myqus = true;
       _this
         .axios({
           method: "get",
@@ -1336,6 +1169,187 @@ export default {
         .catch(function (error) {
           console.log(error);
         });
+    },
+    // 非登录点击下一页push问题
+    nomyquestions() {
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            classes: _this.claNum,
+            type: _this.typeNum,
+            pagenum: ++_this.pagenums,
+            pagesize: _this.pagesizes,
+            name: _this.topInput,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            if (res.data.data.data.length != 0) {
+              let date = new Date();
+              let now = date.getTime();
+              let a = [];
+              a = res.data.data.data;
+              for (var i = 0; i < a.length; i++) {
+                _this.$set(a[i].question, "images", []);
+                _this.$set(a[i].question, "imagesNum", 0);
+                _this.$set(a[i], "Times", "");
+                if (a[i].question.img != "") {
+                  var b = a[i].question.img.split("|");
+                  a[i].question.imagesNum = b.length;
+                  if (b.length >= 3) {
+                    for (var j = 0; j <= 2; j++) {
+                      a[i].question.images.push({
+                        url: b[j],
+                      });
+                    }
+                  } else {
+                    for (var j = 0; j < b.length; j++) {
+                      a[i].question.images.push({
+                        url: b[j],
+                      });
+                    }
+                  }
+                }
+                let leftTime =
+                  now - new Date(a[i].question.createTime).getTime();
+                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+                let m = Math.floor((leftTime / 1000 / 60) % 60);
+                if (d == 0 && h > 0) {
+                  a[i].Times =
+                    _this.$t("question.con20") + h + _this.$t("question.con21");
+                } else if (h <= 0 && d <= 0) {
+                  a[i].Times = _this.$t("question.con19");
+                } else {
+                  a[i].Times =
+                    _this.$t("question.con22") +
+                    d +
+                    _this.$t("question.con23") +
+                    h +
+                    _this.$t("question.con24");
+                }
+                _this.qlList.push(a[i]);
+              }
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 非登录查询问题
+    noQuestionPages(){
+      const _this = this;
+      _this
+        .axios({
+          method: "get",
+          url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
+          async: false,
+          params: {
+            classes: _this.claNum,
+            type: _this.typeNum,
+            pagenum: _this.pagenums,
+            pagesize: _this.pagesizes,
+            name: _this.topInput,
+          },
+          xhrFields: {
+            withCredentials: true,
+          },
+        })
+        .then(function (res) {
+          if (res.data.status == 1) {
+            _this.qlList = res.data.data.data;
+            let date = new Date();
+            let now = date.getTime();
+            for (var i = 0; i < res.data.data.data.length; i++) {
+              _this.$set(_this.qlList[i], "Times", "");
+              _this.$set(_this.qlList[i], "myType", "");
+              _this.$set(_this.qlList[i].question, "images", []);
+              _this.$set(_this.qlList[i].question, "imagesNum", 0);
+              if (_this.qlList[i].question.img != "") {
+                var a = _this.qlList[i].question.img.split("|");
+                _this.qlList[i].question.imagesNum = a.length;
+                if (a.length >= 3) {
+                  for (var j = 0; j <= 2; j++) {
+                    _this.qlList[i].question.images.push({ url: a[j] });
+                  }
+                } else {
+                  for (var j = 0; j < a.length; j++) {
+                    _this.qlList[i].question.images.push({ url: a[j] });
+                  }
+                }
+              }
+              let leftTime =
+                now - new Date(_this.qlList[i].question.createTime).getTime();
+              let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
+              let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
+              let m = Math.floor((leftTime / 1000 / 60) % 60);
+              if (d == 0 && h > 0) {
+                _this.qlList[i].Times =
+                  _this.$t("question.con20") + h + _this.$t("question.con21");
+              } else if (h <= 0 && d <= 0) {
+                _this.qlList[i].Times = _this.$t("question.con19");
+              } else {
+                _this.qlList[i].Times =
+                  _this.$t("question.con22") +
+                  d +
+                  _this.$t("question.con23") +
+                  h +
+                  _this.$t("question.con24");
+              }
+            }
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    },
+    // 检索当前登录人信息
+    personal: function () {
+      const _this = this;
+      if (localStorage.token) {
+        _this
+          .axios({
+            method: "get",
+            url: `${_this.URLport.serverPath}/Client/GetClient`,
+            async: false,
+            xhrFields: {
+              withCredentials: true,
+            },
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          })
+          .then(function (res) {
+            _this.clientID = res.data.data.id;
+            _this.myquizList();
+          })
+          .catch(function (error) {
+            console.log(error);
+          });
+      } else {
+        _this.quizList();
+      }
+    },
+    //  没有登录时检索问题列表
+    quizList() {
+      const _this = this;
+      _this.qlcon = true;
+      _this.noQuestionPages();
+    },
+    // 登录之后检索问题列表
+    myquizList() {
+      const _this = this;
+      _this.myQlcon = true;
+      _this.myqus = true;
+      _this.MyQuestionPages();
     },
     formatDate: function (time) {
       let date = new Date(time);
@@ -1440,7 +1454,7 @@ export default {
                 _this.$refs[QuestionsQuiz].resetFields();
                 _this.qlShade = !_this.qlShade;
                 _this.pagenums = 1;
-                _this.pagesizes = 5;
+                _this.pagesizes = 10;
                 _this.myquizList();
                 _this.$message({
                   message: _this.$t("question.con135"),
@@ -1520,136 +1534,10 @@ export default {
     topInputs() {
       const _this = this;
       _this.pagenums = 1;
-      if (localStorage.token && _this.num != 3) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
-            async: false,
-            params: {
-              classes: _this.claNum,
-              type: _this.typeNum,
-              pagenum: _this.pagenums,
-              pagesize: _this.pagesizes,
-              name: _this.topInput,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              _this.myQlList = res.data.data.data;
-              let date = new Date();
-              let now = date.getTime();
-              for (var i = 0; i < res.data.data.data.length; i++) {
-                _this.$set(_this.myQlList[i], "Times", "");
-                _this.$set(_this.myQlList[i].que, "images", []);
-                _this.$set(_this.myQlList[i].que, "imagesNum", 0);
-                if (_this.myQlList[i].que.img != "") {
-                  var a = _this.myQlList[i].que.img.split("|");
-                  _this.myQlList[i].que.imagesNum = a.length;
-                  if (a.length >= 3) {
-                    for (var j = 0; j <= 2; j++) {
-                      _this.myQlList[i].que.images.push({ url: a[j] });
-                    }
-                  } else {
-                    for (var j = 0; j < a.length; j++) {
-                      _this.myQlList[i].que.images.push({ url: a[j] });
-                    }
-                  }
-                }
-                let leftTime =
-                  now - new Date(_this.myQlList[i].que.createTime).getTime();
-                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                let m = Math.floor((leftTime / 1000 / 60) % 60);
-                if (d == 0 && h > 0) {
-                  _this.myQlList[i].Times =
-                    _this.$t("question.con20") + h + _this.$t("question.con21");
-                } else if (h <= 0 && d <= 0) {
-                  _this.myQlList[i].Times = _this.$t("question.con19");
-                } else {
-                  _this.myQlList[i].Times =
-                    _this.$t("question.con22") +
-                    d +
-                    _this.$t("question.con23") +
-                    h +
-                    _this.$t("question.con24");
-                }
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
-      } else if (!localStorage.token && _this.num != 3) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-            async: false,
-            params: {
-              classes: _this.claNum,
-              type: _this.typeNum,
-              pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes,
-              name: _this.topInput,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              _this.qlList = res.data.data.data;
-              let date = new Date();
-              let now = date.getTime();
-              for (var i = 0; i < res.data.data.data.length; i++) {
-                _this.$set(_this.qlList[i], "Times", "");
-                _this.$set(_this.qlList[i], "myType", "");
-                _this.$set(_this.qlList[i].question, "images", []);
-                _this.$set(_this.qlList[i].question, "imagesNum", 0);
-                if (_this.qlList[i].question.img != "") {
-                  var a = _this.qlList[i].question.img.split("|");
-                  _this.qlList[i].question.imagesNum = a.length;
-                  if (a.length >= 3) {
-                    for (var j = 0; j <= 2; j++) {
-                      _this.qlList[i].question.images.push({ url: a[j] });
-                    }
-                  } else {
-                    for (var j = 0; j < a.length; j++) {
-                      _this.qlList[i].question.images.push({ url: a[j] });
-                    }
-                  }
-                }
-                let leftTime =
-                  now - new Date(_this.qlList[i].question.createTime).getTime();
-                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                let m = Math.floor((leftTime / 1000 / 60) % 60);
-                if (d == 0 && h > 0) {
-                  _this.qlList[i].Times =
-                    _this.$t("question.con20") + h + _this.$t("question.con21");
-                } else if (h <= 0 && d <= 0) {
-                  _this.qlList[i].Times = _this.$t("question.con19");
-                } else {
-                  _this.qlList[i].Times =
-                    _this.$t("question.con22") +
-                    d +
-                    _this.$t("question.con23") +
-                    h +
-                    _this.$t("question.con24");
-                }
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      if (localStorage.token) {
+        _this.MyQuestionPages();
+      } else if (!localStorage.token) {
+        _this.noQuestionPages();
       }
     },
     // 点击页面底部的三个点加载下一页
@@ -1658,150 +1546,9 @@ export default {
       if (localStorage.token) {
         _this.myQlcon = true;
         _this.myqus = true;
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/MyQuestionPage`,
-            async: false,
-            params: {
-              classes: _this.claNum,
-              type: _this.typeNum,
-              pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes,
-              name: _this.topInput,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              // _this.myQlList.push(res.data.data.data);
-              let a = [];
-              a = res.data.data.data;
-              let date = new Date();
-              let now = date.getTime();
-              for (var i = 0; i < a.length; i++) {
-                _this.$set(a[i], "Times", "");
-                _this.$set(a[i].que, "images", []);
-                _this.$set(a[i].que, "imagesNum", 0);
-                if (a[i].que.img != "") {
-                  var b = a[i].que.img.split("|");
-                  a[i].que.imagesNum = b.length;
-                  if (b.length >= 3) {
-                    for (var j = 0; j <= 2; j++) {
-                      a[i].que.images.push({
-                        url: b[j],
-                      });
-                    }
-                  } else {
-                    for (var j = 0; j < b.length; j++) {
-                      a[i].que.images.push({
-                        url: b[j],
-                      });
-                    }
-                  }
-                }
-                let leftTime = now - new Date(a[i].que.createTime).getTime();
-                let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                let m = Math.floor((leftTime / 1000 / 60) % 60);
-                if (d == 0 && h > 0) {
-                  a[i].Times =
-                    _this.$t("question.con20") + h + _this.$t("question.con21");
-                } else if (h <= 0 && d <= 0) {
-                  a[i].Times = _this.$t("question.con19");
-                } else {
-                  a[i].Times =
-                    _this.$t("question.con22") +
-                    d +
-                    _this.$t("question.con23") +
-                    h +
-                    _this.$t("question.con24");
-                }
-                _this.myQlList.push(a[i]);
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        _this.myquestions();
       } else if (!localStorage.token) {
-        _this
-          .axios({
-            method: "get",
-            url: `${_this.URLport.serverPath}/Questions/QuestionPage`,
-            async: false,
-            params: {
-              classes: _this.claNum,
-              type: _this.typeNum,
-              pagenum: ++_this.pagenums,
-              pagesize: _this.pagesizes,
-              name: _this.topInput,
-            },
-            xhrFields: {
-              withCredentials: true,
-            },
-          })
-          .then(function (res) {
-            if (res.data.status == 1) {
-              if (res.data.data.data.length != 0) {
-                let date = new Date();
-                let now = date.getTime();
-                let a = [];
-                a = res.data.data.data;
-                for (var i = 0; i < a.length; i++) {
-                  _this.$set(a[i].question, "images", []);
-                  _this.$set(a[i].question, "imagesNum", 0);
-                  _this.$set(a[i], "Times", "");
-                  if (a[i].question.img != "") {
-                    var b = a[i].question.img.split("|");
-                    a[i].question.imagesNum = b.length;
-                    if (b.length >= 3) {
-                      for (var j = 0; j <= 2; j++) {
-                        a[i].question.images.push({
-                          url: b[j],
-                        });
-                      }
-                    } else {
-                      for (var j = 0; j < b.length; j++) {
-                        a[i].question.images.push({
-                          url: b[j],
-                        });
-                      }
-                    }
-                  }
-                  let leftTime =
-                    now - new Date(a[i].question.createTime).getTime();
-                  let d = Math.floor(leftTime / 1000 / 60 / 60 / 24);
-                  let h = Math.floor((leftTime / 1000 / 60 / 60) % 24);
-                  let m = Math.floor((leftTime / 1000 / 60) % 60);
-                  if (d == 0 && h > 0) {
-                    a[i].Times =
-                      _this.$t("question.con20") +
-                      h +
-                      _this.$t("question.con21");
-                  } else if (h <= 0 && d <= 0) {
-                    a[i].Times = _this.$t("question.con19");
-                  } else {
-                    a[i].Times =
-                      _this.$t("question.con22") +
-                      d +
-                      _this.$t("question.con23") +
-                      h +
-                      _this.$t("question.con24");
-                  }
-                  _this.qlList.push(a[i]);
-                }
-              }
-            }
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+        _this.nomyquestions();
       }
     },
     // 上传问题图片删除后

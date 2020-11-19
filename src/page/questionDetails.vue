@@ -861,10 +861,11 @@
 // @ is an alias to /src
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-import questionNum from "@/components/public/questionNum.vue";
-
+const questionNum = () => import('@/components/public/questionNum.vue')
+// import questionNum from "@/components/public/questionNum.vue";
 import questionDetailsCss from "../pageCss/page/questionDetailsCss.css";
-import reviews from "@/components/questionBank/questionDetailsReviews.vue";
+const reviews = () => import('@/components/questionBank/questionDetailsReviews.vue')
+// import reviews from "@/components/questionBank/questionDetailsReviews.vue";
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";

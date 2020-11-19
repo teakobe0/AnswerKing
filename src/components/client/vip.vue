@@ -1,6 +1,20 @@
 <style>
 /*右侧*/
+.pd-con-head-right {
+  width: 1000px;
+  height: 960px;
+  float: left;
+  padding: 20px 40px 0px 40px;
+  overflow: hidden;
+}
 
+#vip h3 {
+  border-bottom: 1px solid #dddddd;
+  color: #999999;
+  line-height: 40px;
+  margin-bottom: 20px;
+  padding-bottom: 6px;
+}
 .el-tabs__item {
   /* width: 500px; */
   /* text-align: center; */
@@ -37,6 +51,8 @@
   text-align: center;
   cursor: pointer;
   position: relative;
+  display: inline-block;
+  line-height: 30px;
 }
 .dredgevip ul li a {
   text-decoration: none;
@@ -156,7 +172,7 @@
 
 
 <template>
-  <div id="changePassword">
+  <div id="vip">
     <div class="pd-con-head-right">
       <h3>{{ $t("personal.nav8") }}</h3>
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -207,7 +223,7 @@
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>
                 </p>
-                <img src="../../assets/对勾.png" alt v-show="num == index" />
+                <img src="../../assets/对勾.png" alt v-show="NumMoneysIndex == index" />
               </li>
             </ul>
           </div>
@@ -228,10 +244,10 @@
 </template>
 
 <script type="es6">
-import { constants } from "crypto";
+// import { constants } from "crypto";
 
 export default {
-  name: "changePassword",
+  name: "vip",
   components: {},
   data() {
     //在ES6中添加数据是在return{}中

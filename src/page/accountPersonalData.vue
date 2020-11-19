@@ -246,7 +246,7 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 import bluerightimg from "@/assets/5.jpg";
-import { constants } from "crypto";
+// import { constants } from "crypto";
 export default {
   name: "personalData",
   components: {

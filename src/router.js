@@ -2,67 +2,92 @@ import Vue from 'vue'
 import Router from 'vue-router'
 const login = () => import('@/page/accountLogin.vue')
 // import login from '@/page/accountLogin.vue'  //登录
-// const register = () => import('@/page/accountRegister.vue')
-import register from '@/page/accountRegister.vue'  //注册
-// const forgetPassword = () => import('@/page/accountForgetPassword.vue')
-import forgetPassword from '@/page/accountForgetPassword.vue'  //忘记密码
-// const accountChangePassword = () => import('@/page/accountChangePassword.vue')
-import accountChangePassword from '@/page/accountChangePassword.vue'  //忘记密码之后的修改密码
-// const personalData = () => import('@/page/accountPersonalData.vue')
-import personalData from '@/page/accountPersonalData.vue'  //个人信息
+const register = () => import('@/page/accountRegister.vue')
+// import register from '@/page/accountRegister.vue'  //注册
+const forgetPassword = () => import('@/page/accountForgetPassword.vue')
+// import forgetPassword from '@/page/accountForgetPassword.vue'  //忘记密码
+const accountChangePassword = () => import('@/page/accountChangePassword.vue')
+// import accountChangePassword from '@/page/accountChangePassword.vue'  //忘记密码之后的修改密码
+const personalData = () => import('@/page/accountPersonalData.vue')
+// import personalData from '@/page/accountPersonalData.vue'  //个人信息
 const home = () => import('@/page/Home.vue')
 // import home from '@/page/Home.vue'  //首页
 // const serch = () => import('@/page/search.vue')
-import serch from '@/page/search.vue'  //搜索结果
+// import serch from '@/page/search.vue'  //搜索结果
 const schools = () => import('@/page/schoolStudy.vue')
 // import schools from '@/page/schoolStudy.vue'  //学校资源
 const classesStudy = () => import('@/page/classesStudy.vue')
 // import classesStudy from '@/page/classesStudy.vue'  //课程资源
 // const serchDetails = () => import('@/page/searchDetails.vue')
 // import serchDetails from '@/page/searchDetails.vue'  //搜索详情
-// const serchDetailsContent = () => import('@/page/searchDetailsContent.vue')
-import content from '@/page/searchDetailsContent.vue'  //答案页面
-// const serchDetailsUniversity = () => import('@/page/searchDetailsUniversity.vue')
-import university from '@/page/searchDetailsUniversity.vue'  //学校详情页面
-// const classesDetails = () => import('@/page/classesDetails.vue')
-import classes from '@/page/classesDetails.vue'  //课程详情页面
+const content = () => import('@/page/searchDetailsContent.vue')
+// import content from '@/page/searchDetailsContent.vue'  //答案页面
+const university = () => import('@/page/searchDetailsUniversity.vue')
+// import university from '@/page/searchDetailsUniversity.vue'  //学校详情页面
+const classes = () => import('@/page/classesDetails.vue')
+// import classes from '@/page/classesDetails.vue'  //课程详情页面
 const member = () => import('@/page/member.vue')
 // import member from '@/page/member.vue'  //会员
-import imgDetails from '@/page/imgDetails.vue'  //图片详情
-import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
-import question from '@/page/question.vue'  //问答大厅
-import questionDetails from '@/page/questionDetails.vue'  //问答大厅
-import emailVerify from '@/page/emailVerify.vue'  //邮箱验证
+const imgDetails = () => import('@/page/imgDetails.vue')
+// import imgDetails from '@/page/imgDetails.vue'  //图片详情
+const uploadAnswer = () => import('@/page/uploadAnswer.vue')
+// import uploadAnswer from '@/page/uploadAnswer.vue'  //贡献资源上传答案
+const question = () => import('@/page/question.vue')
+// import question from '@/page/question.vue'  //问答大厅
+const questionDetails = () => import('@/page/questionDetails.vue')
+// import questionDetails from '@/page/questionDetails.vue'  //问答大厅
+const emailVerify = () => import('@/page/emailVerify.vue')
+// import emailVerify from '@/page/emailVerify.vue'  //邮箱验证
 
-import ownness from '@/components/client/ownness.vue'  //个人资料
-import personalQuestions from '@/page/personalQuestions.vue'  //个人问答页面
+const ownness = () => import('@/components/client/ownness.vue')
+// import ownness from '@/components/client/ownness.vue'  //个人资料
+const personalQuestions = () => import('@/page/personalQuestions.vue')
+// import personalQuestions from '@/page/personalQuestions.vue'  //个人问答页面
 
 
 // Footer里的页面
-import termsOfService from '@/page/footerView/termsOfService.vue' //条款
-import company from '@/page/footerView/company.vue' //公司
-import news from '@/page/footerView/news.vue'   //新闻
-import position from '@/page/footerView/position.vue'   //职位
-import standardBehavior from '@/page/footerView/standardBehavior.vue'     //帮助中心
-import faq from '@/page/footerView/faq.vue'     //行为准则
+const termsOfService = () => import('@/page/footerView/termsOfService.vue')
+// import termsOfService from '@/page/footerView/termsOfService.vue' //条款
+const company = () => import('@/page/footerView/company.vue')
+// import company from '@/page/footerView/company.vue' //公司
+const news = () => import('@/page/footerView/news.vue')
+// import news from '@/page/footerView/news.vue'   //新闻
+const position = () => import('@/page/footerView/position.vue')
+// import position from '@/page/footerView/position.vue'   //职位
+const standardBehavior = () => import('@/page/footerView/standardBehavior.vue')
+// import standardBehavior from '@/page/footerView/standardBehavior.vue'     //帮助中心
+const faq = () => import('@/page/footerView/faq.vue')
+// import faq from '@/page/footerView/faq.vue'     //行为准则
 //子组件
-import basic from '@/components/client/basic.vue'  //个人信息
-import modifiedData from '@/components/client/modifiedData.vue'  //修改资料
-import changePassword from '@/components/client/changePassword.vue'  //修改密码
-import inform from '@/components/client/inform.vue'  //通知信息
-import attention from '@/components/client/attention.vue'  //我的关注
-import myQuestion from '@/components/client/myQuestion.vue'  //我的关注
-import myAnswers from '@/components/client/myAnswers.vue'  //我的关注
-import vip from '@/components/client/vip.vue'  //购买会员
-import orderHistory from '@/components/client/orderHistory.vue'  //购买会员记录
-import award from '@/components/client/award.vue'  //上传奖励
-import schoolall from '@/components/school/schoolall.vue'  //当前学校全部课程
-import schoolClasses from '@/components/school/schoolClasses.vue'
-import file from '@/components/classes/file.vue'  //当前课程全部题库文件
-import schoolFile from '@/components/school/schoolFile.vue'
-import questionFaq from '@/components/public/questionFaq.vue'
+const basic = () => import('@/components/client/basic.vue')
+// import basic from '@/components/client/basic.vue'  //个人信息
+const modifiedData = () => import('@/components/client/modifiedData.vue')
+// import modifiedData from '@/components/client/modifiedData.vue'  //修改资料
+const changePassword = () => import('@/components/client/changePassword.vue')
+// import changePassword from '@/components/client/changePassword.vue'  //修改密码
+const inform = () => import('@/components/client/inform.vue')
+// import inform from '@/components/client/inform.vue'  //通知信息
+const attention = () => import('@/components/client/attention.vue')
+// import attention from '@/components/client/attention.vue'  //我的关注
+const myQuestion = () => import('@/components/client/myQuestion.vue')
+// import myQuestion from '@/components/client/myQuestion.vue'  //我的提问
+const myAnswers = () => import('@/components/client/myAnswers.vue')
+// import myAnswers from '@/components/client/myAnswers.vue'  //我的回答
+const vip = () => import('@/components/client/vip.vue')
+// import vip from '@/components/client/vip.vue'  //购买会员
+const orderHistory = () => import('@/components/client/orderHistory.vue')
+// import orderHistory from '@/components/client/orderHistory.vue'  //购买会员记录
+const award = () => import('@/components/client/award.vue')
+// import award from '@/components/client/award.vue'  //我的贡献
 
-import answer from "@/components/questionBank/answer.vue";
+const schoolall = () => import('@/components/school/schoolall.vue')
+// import schoolall from '@/components/school/schoolall.vue'  //当前学校全部课程
+const file = () => import('@/components/classes/file.vue')
+// import file from '@/components/classes/file.vue'  //当前课程全部题库文件
+const questionFaq = () => import('@/components/public/questionFaq.vue')
+// import questionFaq from '@/components/public/questionFaq.vue'
+
+// import answer from "@/components/questionBank/answer.vue";
 
 
 
@@ -93,10 +118,6 @@ export default new Router({
         {
             path: '/home',      //设置跳转
             component: home
-        },
-        {
-            path: '/serch',      //设置跳转
-            component: serch
         },
         {
             path: '/schools',      //设置跳转
@@ -183,16 +204,6 @@ export default new Router({
                     path: 'schoolall',      //设置跳转
                     name: 'schoolall',
                     component: schoolall,
-                },
-                {
-                    path: 'schoolClasses',      //设置跳转
-                    name: 'schoolClasses',
-                    component: schoolClasses,
-                },
-                {
-                    path: 'schoolFile',      //设置跳转
-                    name: 'schoolFile',
-                    component: schoolFile,
                 }
 
             ]

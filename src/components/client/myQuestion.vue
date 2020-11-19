@@ -41,6 +41,88 @@
 .el-pager li {
   background-color: #fafafa !important;
 }
+.ql-shade {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(26, 26, 26, 0.65);
+  z-index: 100;
+}
+.ql-shade .el-dialog {
+  width: 90% !important;
+  margin-top: 4vh !important;
+  margin-bottom: 0px !important;
+}
+.ql-shade .el-dialog img {
+  height: 500px !important;
+}
+.ql-shade .el-upload--picture-card {
+  border: 0px !important;
+  width: auto !important;
+  height: 36px !important;
+  line-height: 0px !important;
+}
+.ql-shade .el-upload-list--picture-card .el-upload-list__item {
+  width: 45px !important;
+  height: 45px !important;
+}
+.ql-shade .el-upload-list--picture-card .el-upload-list__item-actions {
+  font-size: 12px !important;
+}
+.ql-editQuzi {
+  width: 560px;
+  padding: 20px 20px 20px 20px;
+  margin: 0 auto;
+  background-color: #fff;
+  position: relative;
+  top: 50%;
+  transform: translateY(-50%);
+  border-radius: 4px;
+}
+.upImg {
+  position: relative;
+  float: right;
+}
+.upImg .el-upload-list--picture-card{
+  /* position: absolute;
+  overflow-x:auto;
+  top: 48px;
+  width: 560px; */
+}
+.upImgBut i {
+  font-size: 16px !important;
+  color: #fff !important;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+
+.qlreleaseClose {
+  position: absolute;
+  right: -50px;
+  top: 10px;
+  color: #fff;
+  cursor: pointer;
+  font-size: 30px;
+}
+.PR {
+  margin-bottom: 11px;
+  color: #76839b;
+  font-size: 14px;
+}
+.releaseQl {
+  float: right;
+}
+#myQuestion .el-table th,
+.el-table tr {
+  background-color: #fafafa !important;
+}
+#myQuestion .el-table,
+.el-table__expanded-cell {
+  background-color: #fafafa !important;
+}
 </style>
 
 
@@ -548,7 +630,7 @@
                   type="primary"
                   size="medium"
                   @click="releaseQl('QuestionsQuiz')"
-                  >{{$t('question.con157')}}</el-button
+                  >{{$t('question.con74')}}</el-button
                 >
               </div>
 

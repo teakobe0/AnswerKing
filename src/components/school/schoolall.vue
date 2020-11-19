@@ -181,7 +181,7 @@
   </div>
 </template>
 <script type="es6">
-import { constants } from "crypto";
+// import { constants } from "crypto";
 export default {
   name: "schoolall",
   components: {},

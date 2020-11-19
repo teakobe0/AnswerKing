@@ -47,6 +47,20 @@
     text-decoration: none;
     color: #8590a6;
   }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+        line-height: 59px;
+  }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
 }
 @media (min-width: 768px) {
   .regi-cc {
@@ -96,6 +110,20 @@
     text-decoration: none;
     color: #8590a6;
   }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+        line-height: 59px;
+  }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
 }
 @media (min-width: 1200px) {
   .regi-cc {
@@ -144,6 +172,20 @@
   .termsOfService a {
     text-decoration: none;
     color: #8590a6;
+  }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+        line-height: 59px;
+  }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
   }
 }
 </style>

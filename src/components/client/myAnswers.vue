@@ -41,6 +41,14 @@
 .el-pager li {
   background-color: #fafafa !important;
 }
+#myQuestion .el-table th,
+.el-table tr {
+  background-color: #fafafa !important;
+}
+#myQuestion .el-table,
+.el-table__expanded-cell {
+  background-color: #fafafa !important;
+}
 </style>
 
 

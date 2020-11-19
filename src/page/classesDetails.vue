@@ -193,6 +193,7 @@
 }
 .crumbs span {
   line-height: 38px;
+  color: #fff;
 }
 .ClassesAdvertising {
   width: 1300px;

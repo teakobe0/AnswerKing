@@ -12,8 +12,18 @@ module.exports = {
             'vue-router': 'VueRouter',
             axios: 'axios',
             vuex: 'Vuex',
+            'vue-i18n': 'vue-i18n',
+            'vue-cookies': 'vue-cookies',
         }
     },
+    // chainWebpack: config => {
+    //     config.set('externals', {
+    //         'vue': 'Vue',
+    //         'vue-router': 'VueRouter',
+    //         'axios': 'axios',
+    //         'vuex': 'Vuex',
+    //     })
+    // },
     // css: {
     //     loaderOptions: {
     //       sass: {

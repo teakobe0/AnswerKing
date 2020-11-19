@@ -358,7 +358,7 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import Footer from "@/components/public/footer.vue";
-import { truncate } from "fs";
+// import { truncate } from "fs";
 export default {
   name: "login",
   components: {

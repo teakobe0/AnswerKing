@@ -147,6 +147,7 @@
 .serchDetailsContent-tag {
   background-color: #ffffff;
   margin-top: 3px;
+  overflow: hidden;
 }
 
 .serchDetailsContent-tag-con {
@@ -398,6 +399,19 @@
   right: 35px;
   top: 15px;
 }
+.crumbs {
+  width: 100%;
+  overflow: hidden;
+  background-color: #4d60b3;
+}
+.crumbs .crumbs-con {
+  width: 1300px;
+  margin: 0 auto;
+}
+.crumbs span {
+  line-height: 38px;
+  color: #fff;
+}
 </style>
 
 <template>
@@ -572,17 +586,21 @@
 import homeNav from "@/components/public/homeNav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
 // 轮播图切换题库
-import otherQuestions from "@/components/questionBank/otherQuestions.vue";
+const otherQuestions = ()=>import("@/components/questionBank/otherQuestions.vue");
+// import otherQuestions from "@/components/questionBank/otherQuestions.vue";
 // 列表展示其他课程
-import recommendClass from "@/components/questionBank/recommendClass.vue";
+const recommendClass = ()=>import("@/components/questionBank/recommendClass.vue");
+// import recommendClass from "@/components/questionBank/recommendClass.vue";
 // 评论组件
-import reviews from "@/components/questionBank/reviews.vue";
+const reviews = ()=>import("@/components/questionBank/reviews.vue");
+// import reviews from "@/components/questionBank/reviews.vue";
 // 答案图片组件
-import answer from "@/components/questionBank/answer.vue";
+const answer = ()=>import("@/components/questionBank/answer.vue");
+// import answer from "@/components/questionBank/answer.vue";
 
-import { formatDate } from "@/common/js/date.js";
+// import { formatDate } from "@/common/js/date.js";
 
-import { constants } from "crypto";
+// import { constants } from "crypto";
 export default {
   name: "serchDetailsContent",
   components: {
