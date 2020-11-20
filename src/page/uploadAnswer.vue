@@ -1,4 +1,4 @@
-<style>
+<style >
 #uploadAnswer {
   position: relative;
   padding-bottom: 276px;

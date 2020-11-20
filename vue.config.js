@@ -14,6 +14,7 @@ module.exports = {
             vuex: 'Vuex',
             'vue-i18n': 'vue-i18n',
             'vue-cookies': 'vue-cookies',
+            'element-ui': 'ELEMENT'
         }
     },
     // chainWebpack: config => {

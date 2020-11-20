@@ -1,4 +1,4 @@
-<style>
+<style scoped>
 #serch {
   width: 100%;
   height: 100%;

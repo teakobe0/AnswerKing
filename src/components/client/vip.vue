@@ -173,6 +173,9 @@
 
 <template>
   <div id="vip">
+    <remote-js
+      src="https://www.paypal.com/sdk/js?client-id=AVplzXK74mZi6ltEo8QhoMMUdjc-OxXpinwbbgEtgePr8kT9zBMur4DtdQOOyNV76xUBRlcGm_llrO9o&currency=USD"
+    ></remote-js>
     <div class="pd-con-head-right">
       <h3>{{ $t("personal.nav8") }}</h3>
       <el-tabs v-model="activeName" @tab-click="handleClick">
@@ -223,7 +226,11 @@
                 <p>
                   <s>{{ $t("myvip.con2") }}${{ item.original }}</s>
                 </p>
-                <img src="../../assets/对勾.png" alt v-show="NumMoneysIndex == index" />
+                <img
+                  src="../../assets/对勾.png"
+                  alt
+                  v-show="NumMoneysIndex == index"
+                />
               </li>
             </ul>
           </div>
@@ -248,7 +255,18 @@
 
 export default {
   name: "vip",
-  components: {},
+  components: {
+    "remote-js": {
+      render(createElement) {
+        return createElement("script", {
+          attrs: { type: "text/javascript", src: this.src },
+        });
+      },
+      props: {
+        src: { type: String, required: true },
+      },
+    },
+  },
   data() {
     //在ES6中添加数据是在return{}中
     return {
@@ -265,6 +283,7 @@ export default {
       moneycurrency: 1,
     };
   },
+
   created: function () {
     const _this = this;
     _this.gainpersonal();
@@ -289,7 +308,6 @@ export default {
           })
           .then(function (res) {
             _this.moneys = res.data.data;
-            console.log(res.data.data);
             _this.moneys[0].original = 16.99;
             _this.moneys[1].original = 50.99;
             _this.moneys[2].original = 101.99;
@@ -376,7 +394,7 @@ export default {
                 })
                 .then(function (res) {
                   loading.close();
-                  console.log(res)
+                  console.log(res);
                   if (res.data.status == 1) {
                     _this.open();
                   } else {
@@ -490,7 +508,6 @@ export default {
         _this.num = 0;
         _this.money = _this.moneys[0].price;
       } else if (tab.label == "充值鲸灵币") {
-        
         _this.NumMoneysIndex = 0;
         _this.moneycurrency = _this.NumMoneys[0].price;
       }

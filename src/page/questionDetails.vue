@@ -520,6 +520,7 @@
           >{{$t('question.con64')}}
         </div>
       </div>
+      
     </div>
 
     <div class="ql-replyShade" v-show="qlreplyShade" @mousewheel.prevent>
@@ -575,7 +576,14 @@
       </div>
     </div>
 
+
+    
+
+   
+
+
     <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
+      
       <div class="ql-editQuzi">
         <el-form
           :model="QuestionsQuiz"
@@ -1234,7 +1242,8 @@ export default {
       quizzerUpload: false,
       quUpfileList: [],
       questionReviews:false,
-      localStoragelang:true
+      localStoragelang:true,
+      propsQuestionsQuiz:{}
     };
   },
   created: function () {
@@ -2082,6 +2091,7 @@ export default {
           _this.quefileList.push({ url: a[i], response: { file: a[i] } });
         }
       }
+      _this.propsQuestionsQuiz = _this.QuestionsQuiz;
       _this.qlShade = !_this.qlShade;
     },
     // 编辑取消

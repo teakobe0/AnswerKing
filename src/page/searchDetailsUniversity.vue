@@ -1,4 +1,4 @@
-<style>
+<style >
 #serchDetailsUniversity {
   position: relative;
   padding-bottom: 276px;
