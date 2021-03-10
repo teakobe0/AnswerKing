@@ -579,9 +579,9 @@
 
     
 
-   
+    <!-- <questionEdit v-show="qlShade" :propsQuestionsQuiz="this.qlList"></questionEdit> -->
 
-
+    
     <div class="ql-shade" v-show="qlShade" @mousewheel.prevent>
       
       <div class="ql-editQuzi">
@@ -874,6 +874,7 @@ const questionNum = () => import('@/components/public/questionNum.vue')
 import questionDetailsCss from "../pageCss/page/questionDetailsCss.css";
 const reviews = () => import('@/components/questionBank/questionDetailsReviews.vue')
 // import reviews from "@/components/questionBank/questionDetailsReviews.vue";
+// const questionEdit = ()=>import("@/components/public/questionEdit.vue");
 import { formatDate } from "@/common/js/date.js";
 import tinymce from "tinymce/tinymce";
 import Editor from "@tinymce/tinymce-vue";

@@ -274,12 +274,11 @@
 <script type="es6">
 import Nav from "@/components/public/nav.vue";
 import homeFooter from "@/components/public/homeFooter.vue";
-
 export default {
   name: "faq",
   components: {
     Nav,
-    homeFooter
+    homeFooter,
   },
   data() {
     return {

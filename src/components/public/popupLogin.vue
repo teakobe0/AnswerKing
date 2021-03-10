@@ -51,6 +51,123 @@
   color: #d4d4d4;
   z-index: 1000;
 }
+
+  .login-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 310px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .login-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  .brand {
+    /* height: 50px; */
+  }
+  .brand span {
+    display: block;
+    font-size: 32px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
+  .brand img {
+    width: 40px;
+    height: 32px;
+    vertical-align: middle;
+    margin-right: 5px;
+  }
+  .slogan {
+    padding: 5px 0px;
+    color: #1781fe;
+    font-size: 18px;
+    text-align: center;
+  }
+
+  #submit {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+  }
+
+  .login-resi {
+    text-decoration: none;
+    line-height: 59px;
+    color: #1b5299;
+  }
+
+  .login-footer {
+    margin: 0 auto;
+  }
+
+  .forgetpassword {
+    width: 100%;
+    height: 22px;
+    text-align: right;
+    margin-bottom: 10px;
+    margin-top: -12px;
+    font-size: 14px;
+    line-height: 22px;
+  }
+  .forgetpassword a {
+    text-decoration: none;
+    color: #707070;
+  }
+  .register-con {
+    margin: 0 auto;
+    width: 410px;
+    margin-top: 220px;
+    /* margin-bottom: 242px; */
+    background-color: #ffffff;
+    border-radius: 2px;
+    text-align: center;
+    box-shadow: 0px 0px 5px #707070;
+  }
+
+  .register-con-top {
+    padding: 30px 40px 0px 40px;
+  }
+
+  #regi {
+    margin-right: 10px;
+    width: 100%;
+  }
+
+  .termsOfService {
+    color: #8590a6;
+    font-size: 8px;
+    text-align: left;
+  }
+  .termsOfService a {
+    text-decoration: none;
+    color: #8590a6;
+  }
+  .reg-bottom {
+    background-color: #f5f5f5;
+    height: 59px;
+    margin-top: 22px;
+    border-top: 1px solid #ebebeb;
+        line-height: 59px;
+  }
+  .brand span {
+    display: block;
+    font-size: 28px;
+    color: #4458b0;
+    margin-bottom: 20px;
+    vertical-align: middle;
+  }
 </style>
 
 <template>

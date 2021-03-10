@@ -2,6 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 
+// 引入icon第三方
+import './icon/iconfont.css'
 // 引入Analytics
 import VueAnalytics from 'vue-analytics'
 Vue.use(VueAnalytics, {
@@ -70,6 +72,8 @@ router.beforeEach((to, from, next) => {
 //   RadioButton,
 //   Alert,
 //   Rate,
+//   Collapse,
+//   CollapseItem,
 // } from 'element-ui';
 // Vue.use(Button);
 // Vue.use(Select);
@@ -102,7 +106,8 @@ router.beforeEach((to, from, next) => {
 // Vue.use(RadioButton);
 // Vue.use(Alert);
 // Vue.use(Rate);
-
+// Vue.use(Collapse);
+// Vue.use(CollapseItem);
 
 // Vue.use(Loading.directive);
 // Vue.prototype.$alert = MessageBox.alert;
@@ -118,8 +123,8 @@ Vue.use(VueClipboard)
 // 引入vue-easy-lightbox（图片放大工具）
 // import Lightbox from 'vue-easy-lightbox'
 // Vue.use(Lightbox)
-// 引入icon第三方
-import './icon/iconfont.css'
+
+
 
 // 引入vue-i18n
 // import VueI18n from 'vue-i18n'
